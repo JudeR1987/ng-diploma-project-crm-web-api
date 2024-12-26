@@ -1,0 +1,88 @@
+
+<div class="modal-dialog modal-dialog-centered modal-lg">
+
+  <!-- форма выбора параметров запроса №3 -->
+  <form class="modal-content bg-light p-2"
+        #query03Form="ngForm" novalidate>
+
+    <!-- заголовок -->
+    <div class="modal-header bg-primary p-2">
+
+      <div class="w-100 p-2">
+        <h4 class="modal-title text-center text-light"
+            id="id-query03FormTitle">
+          Запрос №3 - Выбрать информацию о клиентах, совершивших поездки
+          с заданным количеством дней пребывания в стране
+        </h4>
+      </div>
+
+      <button class="btn-close bg-plum m-1 p-2 opacity-100
+                     hover-bg-paleturquoise border border-3
+                     border-black w-12px h-8px"
+              type="button"
+              data-bs-dismiss="modal"
+              data-bs-toggle="tooltip"
+              data-bs-trigger="hover"
+              data-bs-placement="bottom"
+              title="Закрыть...">
+      </button>
+    </div>
+
+    <!-- тело - основные параметры формы -->
+    <div class="modal-body p-0">
+
+      <div class="row mx-0 my-1 p-0 px-sm-0 py-sm-2 bg-primary-subtle
+                  border border-primary justify-content-center">
+
+        <!-- количество дней пребывания клиентов в стране -->
+        <div class="row m-0 p-2 justify-content-center align-items-center">
+          <label class="form-label col-lg-4 m-0 px-2" for="id-amountDaysQuery03">
+            Кол-во дней пребывания:
+          </label>
+          <div class="col-lg-8 p-0">
+            <input class="form-control text-end px-2" type="number" required
+                   id="id-amountDaysQuery03" name="amountDaysQuery03"
+                   [(ngModel)]="amountDays"
+                   min="{{minAmountDays}}" max="{{maxAmountDays}}" step="1" />
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- подвал - кнопки ввода/сброса -->
+    <div class="modal-footer bg-primary justify-content-evenly p-0">
+
+      <button class="btn bg-success-subtle fw-bold text-success
+                     text-opacity-75 w-50 w-min-140-max-160 m-1
+                     border border-success border-2 border-opacity-50"
+              type="button" id="btnQuery03Submit"
+              [class.disabled]="isWaitFlag"
+              (click)="sendQuery03Params(query03Form)"
+              data-bs-dismiss="modal"
+              title="Отправить запрос на сервер">
+        @if (isWaitFlag) {
+          <span class="spinner-border spinner-border-sm m-0 p-0"></span>
+        } @else {
+          Отправить
+        } <!-- if -->
+      </button>
+
+      <button class="btn bg-danger-subtle fw-bold text-danger
+                     text-opacity-75 w-50 w-min-140-max-160 m-1
+                     border border-danger border-2 border-opacity-50"
+              type="reset" id="btnQuery03Reset"
+              [class.disabled]="isWaitFlag"
+              title="Сброс выбора">
+        @if (isWaitFlag) {
+          <span class="spinner-border spinner-border-sm m-0 p-0"></span>
+        } @else {
+          Сброс
+        } <!-- if -->
+      </button>
+    </div>
+
+  </form>
+
+</div>

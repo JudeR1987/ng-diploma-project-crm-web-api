@@ -1,0 +1,50 @@
+<div class="dropdown m-0 p-0 h-100">
+  <button class="dropdown-toggle btn bg-main-color border-2
+                 border-back-color rounded-1 px-2 py-0 h-100"
+          type="button"
+          data-bs-toggle="dropdown"
+          title="{{component.dropdownTitle}}">
+    {{language}}
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end
+             dropdown-menu-language m-0 p-0">
+    <li>
+      <button class="dropdown-item px-0 py-1px"
+              type="button"
+              (click)="changeLanguage(component.languageRus)">
+        <div class="d-flex justify-content-center">
+          <img class="border"
+               src="{{component.srcImage}}{{component.fileNameImageRus}}"
+               alt="{{component.fileNameImageRus}}"
+               title="{{component.imageTitleRus}}" />
+        </div>
+      </button>
+    </li>
+    <li>
+      <button class="dropdown-item px-0 py-1px"
+              type="button"
+              (click)="changeLanguage(component.languageEng)">
+        <div class="d-flex justify-content-center">
+          <img class="border"
+               src="{{component.srcImage}}{{component.fileNameImageEng}}"
+               alt="{{component.fileNameImageEng}}"
+               title="{{component.imageTitleEng}}" />
+        </div>
+      </button>
+    </li>
+  </ul>
+</div>
+
+<!--<select class="bg-main-color border-2 border-back-color rounded-1 px-1 py-0"
+          id="language-select" name="language-select"
+          (change)="changeLanguage()" title="{{component.selectTitle}}"
+          [(ngModel)]="language">
+    <option class="px-2" value="{{component.languageRus}}"
+            title="{{component.optionTitleRus}}">
+      {{component.languageRus}}
+    </option>
+    <option class="px-2" value="{{component.languageEng}}"
+            title="{{component.optionTitleEng}}">
+      {{component.languageEng}}
+    </option>
+  </select>-->

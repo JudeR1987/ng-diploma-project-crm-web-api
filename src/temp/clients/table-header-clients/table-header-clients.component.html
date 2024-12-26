@@ -1,0 +1,21 @@
+<tr>
+  <th class="px-2 w-5">&numero;<br>п&nbsp;<b>&frasl;</b>&nbsp;п</th>
+  <th class="px-2 w-5">ID</th>
+  <th class="w-20">Фамилия</th>
+  <th class="w-20">Имя</th>
+  <th class="w-20">Отчество</th>
+  <th class="w-20">Серия и номер паспорта</th>
+  @if (!isQueryFlag) {
+    <th class="w-10">
+      изменить/<br>
+      <label for="isDelete" class="form-check-label">
+        удалить
+        <input class="form-check-input mt-5px"
+               id="isDelete"
+               [(ngModel)]="isDeleteFlag"
+               type="checkbox"
+               (change)="sendIsDeleteFlag()"/>
+      </label>
+    </th>
+  } <!-- if -->
+</tr>

@@ -1,0 +1,29 @@
+<tr>
+  <th class="p-1">&numero;<br>п&nbsp;<b>&frasl;</b>&nbsp;п</th>
+  <th class="p-1">ID</th>
+  <th class="p-1">Дата начала<br>пребывания</th>
+  <th class="p-1">Ф.И.О.<br>клиента</th>
+  <th class="p-1">Серия и номер<br>паспорта клиента</th>
+  <th class="p-1">Страна</th>
+  <th class="p-1">Цель</th>
+  <th class="p-1">Стоимость трансп.<br>услуг, руб.</th>
+  <th class="p-1">Стоимость оформл.<br>визы, руб.</th>
+  <th class="p-1">Стоимость дня<br>по стране, руб./день</th>
+  <th class="p-1">Стоимость дня<br>по цели, руб./день</th>
+  <th class="p-1">Суммарная стоимость<br>дня по маршруту, руб./день</th>
+  <th class="p-1">Кол-во дней<br>пребыв-я</th>
+  <th class="p-1">Стоимость<br>поездки, руб.</th>
+  <th class="p-1">НДС (3&percnt;),<br>руб.</th>
+  <th class="p-1">Полная стоимость<br>поездки (+НДС), руб.</th>
+  <th class="p-1">
+    изменить/<br>
+    <label for="isDelete" class="form-check-label">
+      удалить
+      <input class="form-check-input mt-5px"
+             id="isDelete"
+             [(ngModel)]="isDeleteFlag"
+             type="checkbox"
+             (change)="sendIsDeleteFlag()"/>
+    </label>
+  </th>
+</tr>

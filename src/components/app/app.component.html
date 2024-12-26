@@ -1,0 +1,447 @@
+
+<!-- разметка главного компонента -->
+
+<!-- заголовок страницы -->
+<header class="container-fluid py-2 header-height bg-back-color
+               border border-aside-color text-main-color"
+        id="id-top">
+  <h3 class="text-center" id="title" [innerHTML]="component.displayTitle"></h3>
+</header>
+
+<!-- панель навигации -->
+<nav class="navbar nav-height navbar-expand-lg sticky-top
+            bg-aside-color border border-back-color">
+  <div class="container-fluid px-1 px-sm-4 py-0">
+
+    <!-- логотип со ссылкой для перехода на главную страницу -->
+    <a class="navbar-brand m-0 p-0 h-40px rounded-1 {{brandActive.back}}"
+       routerLink="/{{component.routeHomeEmpty}}"
+       title="{{component.logoTitle}}">
+      <i class="fa fa-home fa-2x px-4 h-38px {{brandActive.icon}}"></i>
+    </a>
+
+    <!-- кнопка для отображения скрываемой части панели -->
+    <button class="navbar-toggler bg-main-color border-2
+                   border-back-color h-38px px-1 py-0"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#appNavbar"
+            title="{{component.butNavBarTitle}}">
+      <span class="m-0 p-0 text-back-color d-flex
+                   justify-content-center align-items-center">
+        {{component.butNavBarValue}}
+        <span class="navbar-toggler-icon"></span>
+      </span>
+    </button>
+
+    <!-- часть панели, скрываемая при малом экране -->
+    <div class="collapse navbar-collapse mt-1 mt-lg-0"
+         id="appNavbar">
+
+      <!-- ссылки на страницы -->
+      <ul class="navbar-nav me-auto mb-1 mb-lg-0">
+
+        <!-- выпадающий список с ссылками для вывода таблиц -->
+        <!--<li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-back-color p-2 fw-bold rounded-1" role="button"
+             [class.nav-active]="brandActive.routerLinkActive === 'tables'"
+             data-bs-toggle="dropdown"
+             title="Вывод всех сведений по каждой таблице">
+            Таблицы
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item text-back-color p-2 fw-bold nav-link"
+                 routerLink="/countries"
+                 data-bs-toggle="tooltip"
+                 data-bs-trigger="hover"
+                 data-bs-placement="right"
+                 title="Вывод всех записей таблицы &laquo;СТРАНЫ&raquo;">
+                &laquo;СТРАНЫ&raquo;
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item text-back-color p-2 fw-bold nav-link"
+                 routerLink="/purposes"
+                 data-bs-toggle="tooltip"
+                 data-bs-trigger="hover"
+                 data-bs-placement="right"
+                 title="Вывод всех записей таблицы &laquo;ЦЕЛИ&raquo;">
+                &laquo;ЦЕЛИ&raquo;
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item text-back-color p-2 fw-bold nav-link"
+                 routerLink="/people"
+                 data-bs-toggle="tooltip"
+                 data-bs-trigger="hover"
+                 data-bs-placement="right"
+                 title="Вывод всех записей таблицы &laquo;ПЕРСОНЫ&raquo;">
+                &laquo;ПЕРСОНЫ&raquo;
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item text-back-color p-2 fw-bold nav-link"
+                 routerLink="/clients"
+                 data-bs-toggle="tooltip"
+                 data-bs-trigger="hover"
+                 data-bs-placement="right"
+                 title="Вывод всех записей таблицы &laquo;КЛИЕНТЫ&raquo;">
+                &laquo;КЛИЕНТЫ&raquo;
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item text-back-color p-2 fw-bold nav-link"
+                 routerLink="/routes"
+                 data-bs-toggle="tooltip"
+                 data-bs-trigger="hover"
+                 data-bs-placement="right"
+                 title="Вывод всех записей таблицы &laquo;МАРШРУТЫ&raquo;">
+                &laquo;МАРШРУТЫ&raquo;
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item text-back-color p-2 fw-bold nav-link"
+                 routerLink="/trips"
+                 data-bs-toggle="tooltip"
+                 data-bs-trigger="hover"
+                 data-bs-placement="right"
+                 title="Вывод всех записей таблицы &laquo;ПОЕЗДКИ&raquo;">
+                &laquo;ПОЕЗДКИ&raquo;
+              </a>
+            </li>
+          </ul>
+        </li>-->
+
+        <!-- выпадающий список с кнопками, открывающими модальные
+             окна с формами для выбора параметров запросов -->
+        <!--<li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-back-color p-2 fw-bold rounded-1" role="button"
+             [class.nav-active]="brandActive.routerLinkActive === 'queries'"
+             data-bs-toggle="dropdown"
+             title="Вывод результатов запросов">
+            Запросы
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <button class="dropdown-item text-back-color p-2 fw-bold nav-link"
+                      id="btnQuery01" type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalQuery01Form"
+                      (click)="getQuery01Params()"
+                      data-bs-toggle-second="tooltip"
+                      data-bs-trigger="hover"
+                      data-bs-placement="right"
+                      title="&numero;1 - Выбрать информацию о маршрутах
+                             с заданной целью поездки">
+                &numero;1 - Маршруты по цели поездки
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item text-back-color p-2 fw-bold nav-link"
+                      id="btnQuery02" type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalQuery02Form"
+                      (click)="getQuery02Params()"
+                      data-bs-toggle-second="tooltip"
+                      data-bs-trigger="hover"
+                      data-bs-placement="right"
+                      title="&numero;2 - Выбрать информацию о маршрутах
+                             с заданной целью поездки и стоимостью
+                             транспортных услуг менее заданного значения">
+                &numero;2 - Маршруты по цели поездки и стоимости тр-х услуг
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item text-back-color p-2 fw-bold nav-link"
+                      id="btnQuery03" type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalQuery03Form"
+                      (click)="getQuery03Params()"
+                      data-bs-toggle-second="tooltip"
+                      data-bs-trigger="hover"
+                      data-bs-placement="right"
+                      title="&numero;3 - Выбрать информацию о клиентах,
+                             совершивших поездки с заданным количеством
+                             дней пребывания в стране">
+                &numero;3 - Клиенты по количеству дней пребывания
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item text-back-color p-2 fw-bold nav-link"
+                      id="btnQuery04" type="button"
+                      (click)="viewQuery04()"
+                      data-bs-toggle="tooltip"
+                      data-bs-trigger="hover"
+                      data-bs-placement="right"
+                      title="&numero;4 - Определить минимальную, среднюю
+                             и максимальную стоимость 1 дня пребывания">
+                &numero;4 - Группировка поездок по полю
+                &laquo;Цель поездки&raquo;
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item text-back-color p-2 fw-bold nav-link"
+                      id="btnQuery05" type="button"
+                      (click)="viewQuery05()"
+                      data-bs-toggle="tooltip"
+                      data-bs-trigger="hover"
+                      data-bs-placement="right"
+                      title="&numero;5 - Для проданных поездок вычислить
+                             среднюю стоимость транспортных услуг">
+                &numero;5 - Группировка поездок по полю
+                &laquo;Страна назначения&raquo;
+              </button>
+            </li>
+          </ul>
+        </li>-->
+
+        <!-- ссылка на страницу со сведениями о программе -->
+        <li class="nav-item">
+          <a class="nav-link text-back-color p-2 fw-bold rounded-1"
+             routerLink="/{{component.routeAbout}}"
+             [class.nav-active]="brandActive.routerLinkActive === component.routeAbout"
+             title="{{component.butAboutTitle}}">
+            {{component.butAboutValue}}
+          </a>
+        </li>
+
+      </ul>
+
+      <!-- форма на панели навигации -->
+      <!--<form class="d-flex justify-content-end align-items-center">
+
+        <label class="me-2">
+          <input class="form-control max-w-180px" type="text"
+                 id="id-search" placeholder="Search">
+        </label>
+        <button type="button"
+                class="btn px-1 w-100px bg-back-color text-main-color
+                       border border-main-color back-color-hover me-2
+                       fw-bold d-flex justify-content-center align-items-center"
+                data-bs-toggle="tooltip"
+                data-bs-trigger="hover"
+                data-bs-placement="bottom"
+                title="Поиск по сайту...">
+          <i class="fa fa-search me-1"></i>
+          Найти...
+        </button>
+
+        &lt;!&ndash; компонент выбора языка отображения данных &ndash;&gt;
+        <language-component class="align-self-stretch"
+                            [language]="language">
+        </language-component>
+
+      </form>-->
+
+      <!-- дополнительный контейнер -->
+      <div class="d-flex justify-content-end align-items-center">
+
+        <!-- ссылки на формы входа и регистрации -->
+        <div class="d-flex justify-content-end align-items-center mb-1 mb-lg-0">
+
+          <!-- ссылка на форму входа в аккаунт -->
+          <div class="nav-item me-1">
+            <a class="nav-link text-back-color p-2 fw-bold rounded-1"
+               routerLink="/{{component.routeLogin}}"
+               [class.nav-active]="brandActive.routerLinkActive === component.routeLogin"
+               title="{{component.butLoginTitle}}">
+              {{component.butLoginValue}}
+            </a>
+          </div>
+
+          <!-- ссылка на форму регистрации -->
+          <div class="nav-item me-1">
+            <a class="nav-link text-back-color p-2 fw-bold rounded-1"
+               routerLink="/{{component.routeRegistration}}"
+               [class.nav-active]="brandActive.routerLinkActive === component.routeRegistration"
+               title="{{component.butRegistrationTitle}}">
+              {{component.butRegistrationValue}}
+            </a>
+          </div>
+
+        </div>
+
+        <!-- компонент выбора языка отображения данных -->
+        <language-component class="align-self-stretch mb-1 mb-lg-0 py-1"
+                            [language]="component.language">
+        </language-component>
+
+      </div>
+
+    </div>
+
+    <!-- кнопка для перехода в начало страницы -->
+    <div id="id-up"
+         class="position-fixed bottom-1rem right-2rem opacity-60">
+      <a class="btn btn-secondary border-dark"
+         (click)="toStart()"
+         title="{{component.butStartTitle}}">
+        {{component.butStartValue}}
+      </a>
+    </div>
+
+  </div>
+</nav>
+
+
+<!-- модальный компонент формы ввода/выбора параметров запроса №1 -->
+<!--<query01-modal-form class="modal fade p-0"
+                    id="modalQuery01Form"
+                    data-bs-backdrop="static"
+                    [purposes]="purposes"
+                    [isWaitFlag]="isWaitFlag"
+                    (onSendQuery01Params)="sendQuery01ParamsHandler($event)">
+</query01-modal-form>-->
+
+
+<!-- модальный компонент формы ввода/выбора параметров запроса №2 -->
+<!--<query02-modal-form class="modal fade p-0"
+                    id="modalQuery02Form"
+                    data-bs-backdrop="static"
+                    [purposes]="purposes"
+                    [minTransportCost]="minTransportCost"
+                    [maxTransportCost]="maxTransportCost"
+                    [transportCost]="minTransportCost"
+                    [isWaitFlag]="isWaitFlag"
+                    (onSendQuery02Params)="sendQuery02ParamsHandler($event)">
+</query02-modal-form>-->
+
+
+<!-- модальный компонент формы ввода/выбора параметров запроса №3 -->
+<!--<query03-modal-form class="modal fade p-0"
+                    id="modalQuery03Form"
+                    data-bs-backdrop="static"
+                    [minAmountDays]="minAmountDays"
+                    [maxAmountDays]="maxAmountDays"
+                    [amountDays]="minAmountDays"
+                    [isWaitFlag]="isWaitFlag"
+                    (onSendQuery03Params)="sendQuery03ParamsHandler($event)">
+</query03-modal-form>-->
+
+
+<!-- место для загрузки других компонентов,
+     на них переходим по навигационным ссылкам -->
+<router-outlet (activate)="onActivateHandler($event)" />
+
+<!-- подвал страницы -->
+<footer class="container-fluid bg-back-color p-3 border
+               border-aside-color text-main-color">
+
+  <!-- сведения о разработчике -->
+  <div class="row m-0 p-0">
+
+    <h4 class="px-3">{{component.footerTitle}}</h4>
+
+    <div class="container bg-footer-gradient border
+                border-main-color rounded p-2">
+
+      <!-- 1я строка -->
+      <div class="row m-0 p-1">
+
+        <div class="col-sm-auto px-1">
+
+          <div class="row m-0 p-0">
+
+            <p class="m-0 p-0 w-70px">
+              <strong>{{component.footerStudentTitle}}</strong>
+            </p>
+
+            <p class="m-0 p-0 w-auto">:</p>
+
+          </div>
+
+        </div>
+
+        <div class="col-sm-auto px-1">
+
+          <p class="m-0">{{component.footerStudentValue}}</p>
+
+        </div>
+
+      </div>
+
+      <!-- 2я строка -->
+      <div class="row m-0 p-1">
+
+        <div class="col-sm-auto px-1">
+
+          <div class="row m-0 p-0">
+
+            <p class="m-0 p-0 w-70px">
+              <strong>{{component.footerGroupTitle}}</strong>
+            </p>
+
+            <p class="m-0 p-0 w-auto">:</p>
+
+          </div>
+
+        </div>
+
+        <div class="col-sm-auto px-1">
+
+          <p class="m-0">{{component.footerGroupValue}}</p>
+
+        </div>
+
+      </div>
+
+      <!-- 3я строка -->
+      <div class="row m-0 p-1">
+
+        <div class="col-sm-auto px-1">
+
+          <div class="row m-0 p-0">
+
+            <p class="m-0 p-0 w-70px">
+              <strong>{{component.footerCityTitle}}</strong>
+            </p>
+
+            <p class="m-0 p-0 w-auto">:</p>
+
+          </div>
+
+        </div>
+
+        <div class="col-sm-auto px-1">
+
+          <p class="m-0"><span [innerHTML]="component.footerCityValue"></span>
+            {{component.todayYear}}{{component.footerShortYearValue}}
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- 4я строка -->
+      <div class="row m-0 p-1">
+
+        <div class="col-sm-auto px-1">
+
+          <div class="row m-0 p-0">
+
+            <p class="m-0 p-0 w-70px">
+              <strong><span [innerHTML]="component.footerEMailTitle"></span></strong>
+            </p>
+
+            <p class="m-0 p-0 w-auto">:</p>
+
+          </div>
+
+        </div>
+
+        <div class="col-sm-auto px-1">
+
+          <p class="m-0">
+            <a href="{{component.footerEMailHref}}"
+               [innerHTML]="component.footerEMailValue"></a>.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</footer>

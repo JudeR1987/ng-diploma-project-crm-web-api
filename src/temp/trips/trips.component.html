@@ -1,0 +1,195 @@
+
+<!-- /trips -->
+
+<!-- компонент с отображением сведений таблицы "ПОЕЗДКИ" (Trips) -->
+
+<!-- разметка компонента TripsComponent -->
+<main class="row bg-main-color content-height mx-auto p-0
+             w-md-95 align-items-start align-items-lg-stretch">
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <!-- условие задачи (Offcanvas-элемент), кнопки -->
+  <div class="col-lg-3 col-xl-2 col-xxl-1 p-1 p-lg-2 pt-lg-5 bg-aside-color">
+
+    <div class="row m-0 p-0 justify-content-center">
+
+      <!-- 1-я кнопка: условие задачи (Offcanvas-элемент) -->
+      <task-button class="col-sm-11 col-md-6 col-lg-12 p-1 font-size-10pt">
+      </task-button>
+      <div class="w-100 mb-sm-3 mb-lg-4"></div>
+
+
+      <!-- блок кнопок для обработки данных -->
+
+      <!-- 2-я кнопка: "добавить поездку" -->
+      <div class="col-sm-11 col-md-6 col-lg-12 p-1">
+        <button id="btnAddTrip" type="button"
+                class="btn btn-primary border-2 w-100
+                       p-1 px-xxl-0 fw-bold font-size-12pt"
+                [class.disabled]="isWaitFlag"
+                (click)="addTrip()"
+                data-bs-toggle="modal"
+                data-bs-target="#modalTripForm"
+                data-bs-toggle-second="tooltip"
+                data-bs-trigger="hover"
+                data-bs-placement="right"
+                title="Добавить новую запись о поездке">
+          @if (isWaitFlag && isWaitAddTrip) {
+            <div class="row m-0 p-0 justify-content-center align-items-center">
+              <span class="col-11 w-auto font-size-9pt p-0">соединение...</span>
+              <span class="col-1 spinner-border spinner-border-sm m-0 p-0"></span>
+            </div>
+          } @else {
+            добавить поездку
+            <i class="fa fa-plus-circle"></i>
+          } <!-- if -->
+        </button>
+      </div>
+
+      <!-- модальный компонент формы добавления/изменения записи о поездке) -->
+      <trip-form class="modal fade p-0"
+                 id="modalTripForm"
+                 data-bs-backdrop="static"
+                 [trip]="trip"
+                 [tripCopy]="tripCopy"
+                 [tripFormParams]="tripFormParams"
+                 [isWaitFlag]="isWaitTripForm"
+                 [isDisabledFlag]="isDisabledFormButtonsFlag"
+                 [displayDate]="displayDate"
+                 (onSendTrip)="sendTripHandler($event)"
+                 (onSendMessage)="sendMessageHandler($event)">
+      </trip-form>
+
+    </div>
+
+  </div>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <!-- данные о поездках в табличном формате -->
+  <div class="col-lg-9 col-xl-10 col-xxl-11 p-1 p-lg-2 pt-lg-3">
+
+    <!-- контейнер для вывода сообщений результатов операции -->
+    <div class="position-fixed right-2rem"
+         *ngIf="message.length > 0">
+      <div class="alert alert-warning alert-dismissible
+                  fade show border-2 m-1 py-3">
+        <button class="btn-close bg-secondary m-1 p-1"
+                type="button" data-bs-dismiss="alert"></button>
+        <span id="message" [innerHTML]="message"></span>
+      </div>
+    </div>
+
+    <!-- заголовок -->
+    @if (isWaitFlag) {
+      <div class="d-flex justify-content-center align-items-center text-primary">
+        <h4 class="text-center">Соединение с сервером...</h4>
+        <span class="spinner-border spinner-border-sm m-1 p-2"></span>
+      </div>
+    } @else {
+      <h4 class="text-primary text-center" [innerHTML]="displayTitle"></h4>
+    } <!-- if -->
+
+    <!-- таблица для отображения сведений о поездках -->
+    <div class="container-fluid mb-3 p-1 bg-primary-subtle
+                border border-primary border-3 rounded"
+         *ngIf="displayTrips.length > 0">
+
+      <!-- таблица "ПОЕЗДКИ" -->
+      <div class="table-responsive p-1">
+        <table class="table table-bordered border-primary
+                      m-0 font-family-Tahoma table-hover font-size-9pt">
+
+          <!-- "шапка" таблицы -->
+          <thead table-header-trips
+                 class="table-success border-primary
+                        border-2 text-center align-middle"
+                 (onSendIsDeleteFlag)="sendIsDeleteFlagHandler($event)">
+          </thead>
+
+          <!-- "тело" таблицы для вывода результатов -->
+          <tbody class="text-end align-middle border-2">
+            @for (trip of displayTrips; track trip.id; let i = $index) {
+              <tr tr-trip id="trip-{{trip.id}}"
+                  class="border-primary border-2"
+                  [class.table-warning]="selectedTripId === trip.id"
+                  [row]="i + 1"
+                  [trip]="trip"
+                  [isWaitFlag]="isWaitFlag"
+                  [isDeleteFlag]="isDeleteFlag"
+                  (onSendTripId)="sendTripIdHandler($event)"
+              ></tr>
+            } <!-- for -->
+          </tbody>
+
+        </table>
+      </div>
+
+      <!-- навигация по страницам: простейший вариант, только вперед,
+           назад, на первую и на последнюю, один метод действия -->
+      <div class="row m-0 p-0 justify-content-center">
+        <div class="col-sm-8 col-md-6 col-xl-5 col-xxl-4 row m-0 p-0 justify-content-center">
+
+          <!-- кнопка "перейти на 1-ю" -->
+          @if (pageViewModel.pageNumber > 1 && pageViewModel.totalPages > 2) {
+            <div class="col-1 p-1">
+              <button class="btn btn-sm btn-secondary w-100 px-0" type="button"
+                      (click)="getByPageHandler(1)"
+                      title="Перейти на 1-ю страницу">
+                1
+              </button>
+            </div>
+          } <!-- if -->
+
+          <!-- кнопка "перейти на предыдущую" -->
+          @if (pageViewModel.hasPreviousPage) {
+            <div class="col-4 p-1">
+              <button class="btn btn-sm btn-secondary w-100 px-0" type="button"
+                      (click)="getByPageHandler(pageViewModel.pageNumber - 1)"
+                      title="Перейти на предыдущую страницу">
+                &lt;&lt; Назад
+              </button>
+            </div>
+          } <!-- if -->
+
+          <!-- номер текущей страницы -->
+          <div class="col-1 p-1">
+            <div class="bg-light text-secondary border border-2 border-secondary
+                        rounded rounded-1 h-100 px-0
+                        d-flex justify-content-center align-items-center"
+                 title="Текущая страница">
+              <span>{{pageViewModel.pageNumber}}</span>
+            </div>
+          </div>
+
+          <!-- кнопка "перейти на следующую" -->
+          @if (pageViewModel.hasNextPage) {
+            <div class="col-4 p-1">
+              <button class="btn btn-sm btn-secondary w-100 px-0" type="button"
+                      (click)="getByPageHandler(pageViewModel.pageNumber + 1)"
+                      title="Перейти на следующую страницу">
+                Вперед &gt;&gt;
+              </button>
+            </div>
+          } <!-- if -->
+
+          <!-- кнопка "перейти на последнюю" -->
+          @if (pageViewModel.pageNumber < pageViewModel.totalPages && pageViewModel.totalPages > 2) {
+            <div class="col-1 p-1">
+              <button class="btn btn-sm btn-secondary w-100 px-0" type="button"
+                      (click)="getByPageHandler(pageViewModel.totalPages)"
+                      title="Перейти на последнюю страницу">
+                {{pageViewModel.totalPages}}
+              </button>
+            </div>
+          } <!-- if -->
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+</main>
