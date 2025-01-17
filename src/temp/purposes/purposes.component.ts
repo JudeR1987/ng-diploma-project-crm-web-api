@@ -5,7 +5,7 @@ import {Purpose} from '../../temp/Purpose';
 import {PageViewModel} from '../../temp/PageViewModel';
 import {WebApiService} from '../../temp/web-api.service';
 import {Utils} from '../../infrastructure/Utils';
-import {Queries} from '../../temp/Queries';
+import {Config} from '../../infrastructure/Config';
 import {TaskButtonComponent} from '../../temp/shared/task-button/task-button.component';
 import {TableHeaderPurposesComponent} from './table-header-purposes/table-header-purposes.component';
 import {TrPurposeComponent} from './tr-purpose/tr-purpose.component';
@@ -66,7 +66,7 @@ export class PurposesComponent implements OnInit {
   private getAllByPage(page: number): void {
 
     // url для получения данных о целях поездок из БД от сервера
-    let url: string = Queries.urlGetAllPurposesByPage;
+    let url: string = Config.urlGetAllPurposesByPage;
 
     // включение спиннера ожидания данных
     this.isWaitFlag = true;

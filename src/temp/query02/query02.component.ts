@@ -4,7 +4,7 @@ import {NgIf} from '@angular/common';
 import {Route} from '../Route';
 import {WebApiService} from '../web-api.service';
 import {Utils} from '../../infrastructure/Utils';
-import {Queries} from '../Queries';
+import {Config} from '../../infrastructure/Config';
 import {TaskButtonComponent} from '../shared/task-button/task-button.component';
 import {TableHeaderRoutesComponent} from '../routes/table-header-routes/table-header-routes.component';
 import {TrRouteComponent} from '../routes/tr-route/tr-route.component';
@@ -68,7 +68,7 @@ export class Query02Component implements OnInit {
       this.transportCost = +params['transportCost'];
 
       // url для получения данных запроса №2 от сервера
-      let url: string = Queries.urlQuery02;
+      let url: string = Config.urlQuery02;
 
       // включение спиннера ожидания данных
       this.isWaitFlag = true;

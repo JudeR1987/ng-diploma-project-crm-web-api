@@ -58,7 +58,7 @@ export class Resources {
 
   // всплывающая подсказка на кнопке "Войти"
   public static readonly appButLoginTitle: Record<string, string> = {
-    'rus': 'войти в аккаунт',
+    'rus': 'войти в учётную запись',
     'eng': 'login to account' };
 
   // значение кнопки "Войти"
@@ -75,6 +75,16 @@ export class Resources {
   public static readonly appButRegistrationValue: Record<string, string> = {
     'rus': 'Зарегистрироваться',
     'eng': 'Registration' };
+
+  // всплывающая подсказка на кнопке "Выйти"
+  public static readonly appButLogOutTitle: Record<string, string> = {
+    'rus': 'выйти из учётной записи',
+    'eng': 'log out of account' };
+
+  // значение кнопки "Выйти"
+  public static readonly appButLogOutValue: Record<string, string> = {
+    'rus': 'Выйти',
+    'eng': 'Log out' };
 
   // всплывающая подсказка на кнопке "В начало"
   public static readonly appButStartTitle: Record<string, string> = {

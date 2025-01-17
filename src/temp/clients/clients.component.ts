@@ -5,7 +5,7 @@ import {Client} from '../../temp/Client';
 import {PageViewModel} from '../../temp/PageViewModel';
 import {WebApiService} from '../../temp/web-api.service';
 import {Utils} from '../../infrastructure/Utils';
-import {Queries} from '../../temp/Queries';
+import {Config} from '../../infrastructure/Config';
 import {TaskButtonComponent} from '../../temp/shared/task-button/task-button.component';
 import {TableHeaderClientsComponent} from './table-header-clients/table-header-clients.component';
 import {TrClientComponent} from './tr-client/tr-client.component';
@@ -105,7 +105,7 @@ export class ClientsComponent implements OnInit {
   private getAllByPage(page: number): void {
 
     // url для получения данных о клиентах из БД от сервера
-    let url: string = Queries.urlGetAllClientsByPage;
+    let url: string = Config.urlGetAllClientsByPage;
 
     // включение спиннеров ожидания данных
     this.isWaitFlag      = true;
@@ -185,7 +185,7 @@ export class ClientsComponent implements OnInit {
 
     // url для получения параметров формы добавления/изменения
     // сведений о клиенте из БД от сервера
-    let url: string = Queries.urlGetClientFormParams;
+    let url: string = Config.urlGetClientFormParams;
 
     // включение спиннера ожидания данных на форме
     this.isWaitClientForm = true;
@@ -271,7 +271,7 @@ export class ClientsComponent implements OnInit {
 
     // url для получения параметров формы добавления/изменения
     // сведений о клиенте из БД от сервера
-    let url: string = Queries.urlGetClientFormParams;
+    let url: string = Config.urlGetClientFormParams;
 
     // включение спиннера ожидания данных на форме
     this.isWaitClientForm = true;
@@ -327,7 +327,7 @@ export class ClientsComponent implements OnInit {
     this.removeSetTimeout();
 
     // url для удаления на сервере выбранной записи в таблице БД
-    let url: string = Queries.urlDeletingClient;
+    let url: string = Config.urlDeletingClient;
 
     // выделение записи
     this.selectedClientId = clientId;
@@ -411,7 +411,7 @@ export class ClientsComponent implements OnInit {
       // добавление
 
       // url для добавления на сервере новой записи в таблицу БД
-      let url: string = Queries.urlCreatingClient;
+      let url: string = Config.urlCreatingClient;
 
       // включение спиннеров ожидания данных
       this.isWaitFlag      = true;
@@ -489,7 +489,7 @@ export class ClientsComponent implements OnInit {
       // изменение
 
       // url для изменения на сервере выбранной записи в таблице БД
-      let url: string = Queries.urlEditingClient;
+      let url: string = Config.urlEditingClient;
 
       // выделение записи
       this.selectedClientId = client.id;

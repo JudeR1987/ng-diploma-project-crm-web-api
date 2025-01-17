@@ -9,6 +9,9 @@ import {Utils} from '../../infrastructure/Utils';
 import {Literals} from '../../infrastructure/Literals';
 import {Resources} from '../../infrastructure/Resources';
 import {IAboutComponent} from '../../models/interfaces/IAboutComponent';
+import {User} from '../../models/classes/User';
+import {WebApiService} from '../../services/web-api.service';
+import {Config} from '../../infrastructure/Config';
 
 @Component({
   selector: 'app-about',
@@ -36,7 +39,9 @@ export class AboutComponent implements OnInit, OnDestroy {
 
   // конструктор с DI для подключения к объекту маршрутизатора
   // для получения маршрута и подключения к сервису установки языка
-  constructor(private _router: Router, private _languageService: LanguageService) {
+  constructor(private _router: Router,
+              private _languageService: LanguageService,
+              private _webApiService: WebApiService) {
     Utils.helloComponent(Literals.about);
 
     console.log(`[-AboutComponent-constructor--`);
@@ -62,7 +67,7 @@ export class AboutComponent implements OnInit, OnDestroy {
     this.changeLanguageLiterals(this._languageService.language);
 
     // подписаться на изменение значения названия выбранного языка
-    this._languageSubscription = this._languageService.subject
+    this._languageSubscription = this._languageService.languageSubject
       .subscribe((language: string) => {
         console.log(`[-AboutComponent-subscribe--`);
         console.log(`*-subscribe-language='${language}'-*`);
@@ -74,6 +79,37 @@ export class AboutComponent implements OnInit, OnDestroy {
         console.log(`--AboutComponent-subscribe-]`);
 
       }); // subscribe
+
+    // пока не нужно, но не удалять!!!
+    /*// получить jwt-токен
+    let token: string | null = localStorage.getItem(Literals.jwt);
+    console.log(`--AboutComponent-ngOnInit-token: ${token}`);
+
+    // получить данные о пользователе
+    let user: User = User.loadUser();
+
+    // подписка на получение результата запроса
+    this._webApiService.refreshPOST(Config.urlAuthRefresh, user).subscribe({
+
+      // вызов метода при получении данных
+      next: (webResult: {token: string, user: User} ) => {
+
+        console.log(`[-AboutComponent-ngOnInit-subscribe-`);
+
+        console.dir(webResult);
+        console.dir(webResult.token);
+        console.dir(webResult.user);
+
+        console.log(`--AboutComponent-ngOnInit-subscribe-]`);
+
+      }, // next
+
+      // вызов метода при обнаружении ошибки в данных
+      error: (err: any) => {
+        console.dir(err);
+      } // error
+
+    }); // refreshPOST*/
 
     console.log(`--AboutComponent-ngOnInit-]`);
 

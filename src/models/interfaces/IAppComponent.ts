@@ -40,6 +40,12 @@ export interface IAppComponent {
   // значение кнопки "Зарегистрироваться"
   butRegistrationValue: string,
 
+  // всплывающая подсказка на кнопке "Выйти"
+  butLogOutTitle: string,
+
+  // значение кнопки "Выйти"
+  butLogOutValue: string,
+
   // всплывающая подсказка на кнопке "В начало"
   butStartTitle: string,
 
@@ -97,7 +103,16 @@ export interface IAppComponent {
   footerEMailHref: string,
 
   // ссылка для перехода на e-mail в "подвале" страницы
-  footerEMailValue: string
+  footerEMailValue: string,
+
+  // сообщение об ошибке
+  errorMessage: string,
+
+  // путь расположения фотографий в приложении
+  srcPhoto: string,
+
+  // имя файла с фотографией по умолчанию
+  fileNamePhotoDef: string
 
   //endregion
 

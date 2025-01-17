@@ -11,6 +11,7 @@ export class Literals {
   public static readonly footerEMailTitle: string = '&commat;-mail';
   public static readonly footerEMailHref: string = 'http://mail.ru';
   public static readonly footerEMailValue: string = 'j&lowbar;makarov&commat;mail.ru';
+  public static readonly fileNamePhotoDef: string = 'photo.ico';
 
   //endregion
 
@@ -64,6 +65,10 @@ export class Literals {
   public static readonly rus: string = 'rus';
   public static readonly eng: string = 'eng';
   public static readonly srcImage: string = 'assets/images/';
+  public static readonly srcPhoto: string = 'assets/photos/';
+  public static readonly jwt: string = 'jwt';
+  public static readonly user: string = 'user';
+  public static readonly Ok: string = 'Ok';
 
   //endregion
 

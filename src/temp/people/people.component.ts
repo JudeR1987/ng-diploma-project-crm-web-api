@@ -5,7 +5,7 @@ import {Person} from '../../temp/Person';
 import {PageViewModel} from '../../temp/PageViewModel';
 import {WebApiService} from '../../temp/web-api.service';
 import {Utils} from '../../infrastructure/Utils';
-import {Queries} from '../../temp/Queries';
+import {Config} from '../../infrastructure/Config';
 import {TaskButtonComponent} from '../../temp/shared/task-button/task-button.component';
 import {TableHeaderPeopleComponent} from './table-header-people/table-header-people.component';
 import {TrPersonComponent} from './tr-person/tr-person.component';
@@ -66,7 +66,7 @@ export class PeopleComponent implements OnInit {
   private getAllByPage(page: number): void {
 
     // url для получения данных о персональных данных из БД от сервера
-    let url: string = Queries.urlGetAllPeopleByPage;
+    let url: string = Config.urlGetAllPeopleByPage;
 
     // включение спиннера ожидания данных
     this.isWaitFlag = true;

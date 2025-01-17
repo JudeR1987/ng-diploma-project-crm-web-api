@@ -4,7 +4,7 @@ import {NgIf} from '@angular/common';
 import {Client} from '../Client';
 import {WebApiService} from '../web-api.service';
 import {Utils} from '../../infrastructure/Utils';
-import {Queries} from '../Queries';
+import {Config} from '../../infrastructure/Config';
 import {TaskButtonComponent} from '../shared/task-button/task-button.component';
 import {TableHeaderClientsComponent} from '../../components/clients/table-header-clients/table-header-clients.component';
 import {TrClientComponent} from '../../components/clients/tr-client/tr-client.component';
@@ -68,7 +68,7 @@ export class Query03Component implements OnInit {
       this.amountDays = +params['amountDays'];
 
       // url для получения данных запроса №3 от сервера
-      let url: string = Queries.urlQuery03;
+      let url: string = Config.urlQuery03;
 
       // включение спиннера ожидания данных
       this.isWaitFlag = true;

@@ -15,7 +15,7 @@ export class LanguageService {
   private _language: string = '';
 
   // объект для передачи строкового значения названия выбранного языка
-  public subject: Subject<string> = new Subject<string>();
+  public languageSubject: Subject<string> = new Subject<string>();
 
 
   constructor() {

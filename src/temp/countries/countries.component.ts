@@ -5,7 +5,7 @@ import {Country} from '../../temp/Country';
 import {PageViewModel} from '../../temp/PageViewModel';
 import {WebApiService} from '../../temp/web-api.service';
 import {Utils} from '../../infrastructure/Utils';
-import {Queries} from '../../temp/Queries';
+import {Config} from '../../infrastructure/Config';
 import {TaskButtonComponent} from '../../temp/shared/task-button/task-button.component';
 import {TableHeaderCountriesComponent} from './table-header-countries/table-header-countries.component';
 import {TrCountryComponent} from './tr-country/tr-country.component';
@@ -66,7 +66,7 @@ export class CountriesComponent implements OnInit {
   private getAllByPage(page: number): void {
 
     // url для получения данных о странах из БД от сервера
-    let url: string = Queries.urlGetAllCountriesByPage;
+    let url: string = Config.urlGetAllCountriesByPage;
 
     // включение спиннера ожидания данных
     this.isWaitFlag = true;

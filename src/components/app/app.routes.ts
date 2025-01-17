@@ -5,6 +5,7 @@ import {NotFoundComponent} from "../not-found/not-found.component";
 import {Literals} from '../../infrastructure/Literals';
 import {LoginComponent} from '../login/login.component';
 import {RegistrationComponent} from '../registration/registration.component';
+import {AuthGuardService} from '../../services/auth-guard.service';
 //import {CountriesComponent} from '../countries/countries.component';
 //import {PurposesComponent} from '../purposes/purposes.component';
 //import {PeopleComponent} from '../people/people.component';
@@ -20,7 +21,7 @@ import {RegistrationComponent} from '../registration/registration.component';
 export const routes: Routes = [
   {path: Literals.routeHomeEmpty,    component: HomeComponent},
   {path: Literals.routeHome,         component: HomeComponent},
-  {path: Literals.routeAbout,        component: AboutComponent},
+  {path: Literals.routeAbout,        component: AboutComponent, canActivate: [AuthGuardService]},
   {path: Literals.routeLogin,        component: LoginComponent},
   {path: Literals.routeRegistration, component: RegistrationComponent},
   //{path: 'countries',             component: CountriesComponent},

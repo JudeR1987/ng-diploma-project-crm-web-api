@@ -82,7 +82,7 @@ export class LanguageComponent implements OnInit {
     console.log(`*-language='${this.language}'-*`);
 
     // производим изменение языка, только если язык изменился
-    if (this.language != language) {
+    if (language != this.language) {
 
       // задать значение языка отображения
       this.language = language;
@@ -99,7 +99,7 @@ export class LanguageComponent implements OnInit {
 
       // передадим значение языка отображения через объект сервиса
       // другим компонентам, подписавшимся на изменение объекта
-      this._languageService.subject.next(this.language);
+      this._languageService.languageSubject.next(this.language);
 
     } // if
 

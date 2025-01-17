@@ -2,7 +2,7 @@
 // главный компонент приложения, в котором осуществляются переходы по страницам
 // ----------------------------------------------------------------------------
 import {Component, OnInit} from '@angular/core';
-import {RouterLink, RouterOutlet/*, Router*/} from '@angular/router';
+import {RouterLink, RouterOutlet, Router} from '@angular/router';
 import {LanguageService} from '../../services/language.service';
 import {Utils} from "../../infrastructure/Utils";
 import {IBrand} from "../../infrastructure/IBrand";
@@ -10,8 +10,13 @@ import {Literals} from '../../infrastructure/Literals';
 import {Resources} from '../../infrastructure/Resources';
 import {LanguageComponent} from '../language/language.component';
 import {IAppComponent} from '../../models/interfaces/IAppComponent';
-//import {WebApiService} from '../../temp/web-api.service';
-//import {Queries} from '../../temp/Queries';
+import {WebApiService} from '../../services/web-api.service';
+import {User} from '../../models/classes/User';
+import {AuthGuardService} from '../../services/auth-guard.service';
+import {LoginModel} from '../../models/classes/LoginModel';
+import {async} from 'rxjs';
+import {LoginComponent} from '../login/login.component';
+//import {Config} from '../../temp/Config';
 //import {Purpose} from '../../temp/Purpose';
 //import {Client} from '../../temp/Client';
 //import {Query01ModalFormComponent} from '../query01-modal-form/query01-modal-form.component';
@@ -22,7 +27,7 @@ import {IAppComponent} from '../../models/interfaces/IAppComponent';
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet, RouterLink, /*Query01ModalFormComponent,
+    RouterLink, RouterOutlet, /*Query01ModalFormComponent,
     Query02ModalFormComponent, Query03ModalFormComponent, */LanguageComponent
   ],
   templateUrl: './app.component.html',
@@ -44,6 +49,8 @@ export class AppComponent implements OnInit {
     butLoginValue:        Literals.empty,
     butRegistrationTitle: Literals.empty,
     butRegistrationValue: Literals.empty,
+    butLogOutTitle:       Literals.empty,
+    butLogOutValue:       Literals.empty,
     butStartTitle:        Literals.empty,
     butStartValue:        Literals.empty,
     footerTitle:          Literals.empty,
@@ -64,21 +71,11 @@ export class AppComponent implements OnInit {
     routeRegistration: Literals.routeRegistration,
     footerEMailTitle:  Literals.footerEMailTitle,
     footerEMailHref:   Literals.footerEMailHref,
-    footerEMailValue:  Literals.footerEMailValue
+    footerEMailValue:  Literals.footerEMailValue,
+    errorMessage:      Literals.empty,
+    srcPhoto:          Literals.srcPhoto,
+    fileNamePhotoDef:  Literals.fileNamePhotoDef
   };
-  // объект с параметрами компонента
-  /*public component: { route: string, button: { title: string, value: string } } =
-    { route: Literals.routeAbout, button: { title: Resources.titleAbout['eng'], value: Resources.valueAbout['eng'] } };*/
-
-  // параметр языка отображения
-  // public language: string = '';
-
-  // флаг включения спиннера при ожидании данных с сервера
-  //public isWaitFlag: boolean = false;
-
-  // заполнение заголовка текущей страницы
-  //public title: string = "Одностраничное приложение " +
-  //  "на <strong>&laquo;Angular&raquo;</strong>";
 
   // параметры активности ссылки "Home"
   public brandActive: IBrand = {
@@ -87,8 +84,14 @@ export class AppComponent implements OnInit {
     routerLinkActive: Literals.empty
   };
 
-  // заполнение поля с текущим годом в элементе <footer>
-  //public readonly todayYear: number = new Date().getFullYear();
+  // сведения о jwt-токене безопасности
+  public jwtToken: string | null = Literals.empty;
+
+  // сведения о пользователе
+  public user: User = new User();
+
+  // флаг включения спиннера при ожидании данных с сервера
+  //public isWaitFlag: boolean = false;
 
   // сведения о всех целях поездки для использования в запросах
   //public purposes: Purpose[] = [];
@@ -107,21 +110,13 @@ export class AppComponent implements OnInit {
   //public maxAmountDays: number = 0;
 
 
-  // конструктор с DI для подключения к WebApiService-сервису получения данных
-  // и подключения к объекту маршрутизатора для программного перехода к компоненту,
-  // подключение к сервису установки языка
-  constructor(/*private _webApiService: WebApiService,
-              private _router: Router,*/ private _languageService: LanguageService) {
+  // конструктор с DI для подключения к сервису установки языка
+  // и подключения к сервису аутентификации и авторизации пользователя
+  constructor(/*private _webApiService: WebApiService,*/
+              private _router: Router, private _languageService: LanguageService,
+              private _authGuardService: AuthGuardService) {
     Utils.hello();
     Utils.helloComponent(Literals.app);
-
-    // очистить старые данные хранилища с помощью сессии
-    // (если данные о сессии отсутствуют - очистить
-    // хранилище и установить новую сессию)
-    /*if (!sessionStorage.getItem('session')) {
-      localStorage.removeItem('language');
-      sessionStorage.setItem('session', 'true');
-    } // if*/
 
     console.log(`[-AppComponent-constructor--`);
     console.log(`*-this.component.language='${this.component.language}'-*`);
@@ -135,8 +130,8 @@ export class AppComponent implements OnInit {
   } // constructor
 
 
-  // 0. установка значений строковых переменных
-  // сразу после загрузки компонента
+  // 0. установка значений строковых переменных и получение данных
+  // о jwt-токене и пользователе сразу после загрузки компонента
   ngOnInit(): void {
 
     console.log(`[-AppComponent-ngOnInit--`);
@@ -151,7 +146,7 @@ export class AppComponent implements OnInit {
     this.changeLanguageLiterals(this.component.language);
 
     // подписаться на изменение значения названия выбранного языка
-    this._languageService.subject.subscribe((language: string) => {
+    this._languageService.languageSubject.subscribe((language: string) => {
       console.log(`[-AppComponent-subscribe--`);
       console.log(`*-subscribe-language='${language}'-*`);
 
@@ -162,6 +157,40 @@ export class AppComponent implements OnInit {
       console.log(`--AppComponent-subscribe-]`);
 
     }); // subscribe
+
+    // получить данные о jwt-токене
+    this.jwtToken = localStorage.getItem(Literals.jwt);
+
+    // получить данные о пользователе
+    this.user = User.loadUser();
+
+    // подписаться на изменение данных о пользователе
+    this._authGuardService.userSubject.subscribe((user: User) => {
+      console.log(`[-AppComponent-subscribe--`);
+      console.log(`*-subscribe-user:`);
+      console.dir(user);
+
+      console.log(`*-subscribe-this.user:`);
+      console.dir(this.user);
+
+      // изменить данные о пользователе
+      this.user = User.newUser(user);
+
+      console.log(`*-subscribe-this.user:`);
+      console.dir(this.user);
+
+      console.log(`--AppComponent-subscribe-]`);
+
+    }); // subscribe
+
+    // если данные о пользователе есть - отправить запрос на вход в систему
+    console.log(`--AppComponent-this.user.isLogin:${this.user.isLogin}`);
+    //if (this.user.isLogin) {
+    //  async () => {
+    //    await this._authGuardService.login(new LoginModel(this.user.login, this.user.password));
+    //  }
+    //  this._authGuardService.login(new LoginModel(this.user.login, this.user.password));
+    //} // if
 
     console.log(`--AppComponent-ngOnInit-]`);
 
@@ -192,6 +221,8 @@ export class AppComponent implements OnInit {
     this.component.butLoginValue =        Resources.appButLoginValue[this.component.language];
     this.component.butRegistrationTitle = Resources.appButRegistrationTitle[this.component.language];
     this.component.butRegistrationValue = Resources.appButRegistrationValue[this.component.language];
+    this.component.butLogOutTitle =       Resources.appButLogOutTitle[this.component.language];
+    this.component.butLogOutValue =       Resources.appButLogOutValue[this.component.language];
     this.component.butStartTitle =        Resources.appButStartTitle[this.component.language];
     this.component.butStartValue =        Resources.appButStartValue[this.component.language];
     this.component.footerTitle =          Resources.appFooterTitle[this.component.language];
@@ -268,60 +299,6 @@ export class AppComponent implements OnInit {
         routerLinkActive = 'tables';
         break;*/
 
-      /*case 'purposes':
-        title = 'Данные таблицы &laquo;ЦЕЛИ&raquo;';
-        icon = 'icon-dark';
-        routerLinkActive = 'tables';
-        break;*/
-
-      /*case 'people':
-        title = 'Данные таблицы &laquo;ПЕРСОНЫ&raquo;';
-        icon = 'icon-dark';
-        routerLinkActive = 'tables';
-        break;*/
-
-      /*case 'clients':
-        title = 'Данные таблицы &laquo;КЛИЕНТЫ&raquo;';
-        icon = 'icon-dark';
-        routerLinkActive = 'tables';
-        break;*/
-
-      /*case 'routes':
-        title = 'Данные таблицы &laquo;МАРШРУТЫ&raquo;';
-        icon = 'icon-dark';
-        routerLinkActive = 'tables';
-        break;*/
-
-      /*case 'trips':
-        title = 'Данные таблицы &laquo;ПОЕЗДКИ&raquo;';
-        icon = 'icon-dark';
-        routerLinkActive = 'tables';
-        break;*/
-
-      /*case 'query01':
-        title = 'Запрос &numero;1';
-        icon = 'icon-dark';
-        routerLinkActive = 'queries';
-        break;*/
-
-      /*case 'query02':
-        title = 'Запрос &numero;2';
-        icon = 'icon-dark';
-        routerLinkActive = 'queries';
-        break;*/
-
-      /*case 'query03':
-        title = 'Запрос &numero;3';
-        icon = 'icon-dark';
-        routerLinkActive = 'queries';
-        break;*/
-
-      /*case 'query04':
-        title = 'Запрос &numero;4';
-        icon = 'icon-dark';
-        routerLinkActive = 'queries';
-        break;*/
-
       /*case 'query05':
         title = 'Запрос &numero;5';
         icon = 'icon-dark';
@@ -367,6 +344,47 @@ export class AppComponent implements OnInit {
   } // onActivateHandler
 
 
+  // выход из системы - удаление данных из хранилища,
+  // перейти на главную
+  async logOut() {
+    console.log(`[-AppComponent-logOut--`);
+
+    // включение спиннера ожидания данных
+    this.component.isWaitFlag = true;
+
+    console.log(`--AppComponent-1-`);
+
+    // запрос на выход из системы
+    this.component.errorMessage = await this._authGuardService.logOut(this.user);
+    console.log(`--AppComponent-this.component.errorMessage-${this.component.errorMessage}`);
+
+    console.log(`--AppComponent-2-`);
+
+    // выключение спиннера ожидания данных
+    this.component.isWaitFlag = false;
+
+    // если сообщение с ошибкой - завершаем обработку,
+    // переходим к форме входа
+    if (this.component.errorMessage != Literals.Ok) {
+      // перейти к форме входа
+      this._router.navigateByUrl(Literals.routeLogin)
+        .then((e) => { console.dir(e); });
+
+      console.log(`--AppComponent-logOut-]`);
+      return;
+    } // if
+
+    // перейти на главную страницу приложения
+    this._router.navigateByUrl(Literals.routeHomeEmpty)
+      .then((e) => { console.dir(e); });
+
+    console.log(`--AppComponent-logOut-]`);
+  } // logOut
+
+
+
+
+
 
 
 
@@ -380,7 +398,7 @@ export class AppComponent implements OnInit {
     this.purposes = [];
 
     // url для получения данных о параметрах запроса №1 от сервера
-    let url: string = Queries.urlGetQuery01Params;
+    let url: string = Config.urlGetQuery01Params;
 
     // включение спиннера ожидания данных
     this.isWaitFlag = true;
@@ -420,7 +438,7 @@ export class AppComponent implements OnInit {
     this.minTransportCost = this.maxTransportCost = 0;
 
     // url для получения данных о параметрах запроса №2 от сервера
-    let url: string = Queries.urlGetQuery02Params;
+    let url: string = Config.urlGetQuery02Params;
 
     // включение спиннера ожидания данных
     this.isWaitFlag = true;
@@ -472,7 +490,7 @@ export class AppComponent implements OnInit {
     this.minAmountDays = this.maxAmountDays = 0;
 
     // url для получения данных о параметрах запроса №3 от сервера
-    let url: string = Queries.urlGetQuery03Params;
+    let url: string = Config.urlGetQuery03Params;
 
     // включение спиннера ожидания данных
     this.isWaitFlag = true;

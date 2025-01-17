@@ -13,6 +13,41 @@
     {{component.title}}
   </h4>
 
+  <form class="form-control" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+    <div class="container-fluid">
+      <h2 class="form-signin-heading">{{component.title}}</h2>
+      @if (!component.validLogin) {
+        <div class="alert alert-danger">
+          {{component.errorMessage}}
+        </div>
+      } <!-- if -->
+
+      <br>
+
+      <label for="username" class="sr-only">Email address</label>
+      <input type="email" id="username" name="username" ngModel class="form-control"
+             placeholder="User Name" required autofocus>
+      <br>
+
+      <label for="password" class="sr-only">Password</label>
+      <input type="password" id="password" name="password" ngModel class="form-control"
+             placeholder="Password" required>
+      <br>
+
+      <button class="btn btn-primary btn-block"
+              type="submit"
+              [class.disabled]="component.isWaitFlag">
+        @if (component.isWaitFlag) {
+          <div class="row m-0 p-0 justify-content-center align-items-center">
+            <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
+          </div>
+        } @else {
+          войти
+        } <!-- if -->
+      </button>
+    </div>
+  </form>
+
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 </main>

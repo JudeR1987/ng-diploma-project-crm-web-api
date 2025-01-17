@@ -11,7 +11,16 @@ export interface IRegistrationComponent {
 
   // параметр, передающий маршрут в родительский компонент для
   // выделения активной кнопки навигации после перезагрузки страницы
-  route: string
+  route: string,
+
+  // параметр валидности вводимых данных
+  validRegistration: boolean,
+
+  // сообщение об ошибке
+  errorMessage: string,
+
+  // флаг включения спиннера при ожидании данных с сервера
+  isWaitFlag: boolean
 
 } // interface IRegistrationComponent
 // ----------------------------------------------------------------------------

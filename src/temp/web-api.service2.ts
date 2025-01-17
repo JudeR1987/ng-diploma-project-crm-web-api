@@ -8,7 +8,7 @@ import {Utils} from '../infrastructure/Utils';
 @Injectable({
   providedIn: 'root'
 })
-export class WebApiService {
+export class WebApiService2 {
 
   // конструктор с DI для http-сервиса
   constructor(private _http: HttpClient) {
@@ -159,4 +159,4 @@ export class WebApiService {
     });
   } // deleteTripById
 
-} // class WebApiService
+} // class WebApiService2

@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.changeLanguageLiterals(this._languageService.language);
 
     // подписаться на изменение значения названия выбранного языка
-    this._languageSubscription = this._languageService.subject
+    this._languageSubscription = this._languageService.languageSubject
       .subscribe((language: string) => {
         console.log(`[-HomeComponent-subscribe--`);
         console.log(`*-subscribe-language='${language}'-*`);

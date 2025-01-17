@@ -5,7 +5,7 @@ import {Trip} from '../Trip';
 import {PageViewModel} from '../PageViewModel';
 import {WebApiService} from '../web-api.service';
 import {Utils} from '../../infrastructure/Utils';
-import {Queries} from '../Queries';
+import {Config} from '../../infrastructure/Config';
 import {TaskButtonComponent} from '../shared/task-button/task-button.component';
 import {TableHeaderTripsComponent} from './table-header-trips/table-header-trips.component';
 import {TrTripComponent} from './tr-trip/tr-trip.component';
@@ -110,7 +110,7 @@ export class TripsComponent implements OnInit {
   private getAllByPage(page: number): void {
 
     // url для получения данных о поездках из БД от сервера
-    let url: string = Queries.urlGetAllTripsByPage;
+    let url: string = Config.urlGetAllTripsByPage;
 
     // включение спиннеров ожидания данных
     this.isWaitFlag    = true;
@@ -192,7 +192,7 @@ export class TripsComponent implements OnInit {
 
     // url для получения параметров формы добавления/изменения
     // сведений о поездке из БД от сервера
-    let url: string = Queries.urlGetTripFormParams;
+    let url: string = Config.urlGetTripFormParams;
 
     // включение спиннера ожидания данных на форме
     this.isWaitTripForm = true;
@@ -292,7 +292,7 @@ export class TripsComponent implements OnInit {
 
     // url для получения параметров формы добавления/изменения
     // сведений о поездке из БД от сервера
-    let url: string = Queries.urlGetTripFormParams;
+    let url: string = Config.urlGetTripFormParams;
 
     // включение спиннера ожидания данных на форме
     this.isWaitTripForm = true;
@@ -360,7 +360,7 @@ export class TripsComponent implements OnInit {
     this.removeSetTimeout();
 
     // url для удаления на сервере выбранной записи в таблице БД
-    let url: string = Queries.urlDeletingTrip;
+    let url: string = Config.urlDeletingTrip;
 
     // выделение записи
     this.selectedTripId = tripId;
@@ -444,7 +444,7 @@ export class TripsComponent implements OnInit {
       // добавление
 
       // url для добавления на сервере новой записи в таблицу БД
-      let url: string = Queries.urlCreatingTrip;
+      let url: string = Config.urlCreatingTrip;
 
       // включение спиннеров ожидания данных
       this.isWaitFlag    = true;
@@ -522,7 +522,7 @@ export class TripsComponent implements OnInit {
       // изменение
 
       // url для изменения на сервере выбранной записи в таблице БД
-      let url: string = Queries.urlEditingTrip;
+      let url: string = Config.urlEditingTrip;
 
       // выделение записи
       this.selectedTripId = trip.id;

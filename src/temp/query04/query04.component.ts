@@ -4,7 +4,7 @@ import {DecimalPipe, NgIf} from '@angular/common';
 import {IQuery04} from '../../temp/IQuery04';
 import {WebApiService} from '../../temp/web-api.service';
 import {Utils} from '../../infrastructure/Utils';
-import {Queries} from '../../temp/Queries';
+import {Config} from '../../infrastructure/Config';
 import {TaskButtonComponent} from '../../temp/shared/task-button/task-button.component';
 import {TableHeaderQuery04Component} from './table-header-query04/table-header-query04.component';
 import {TrGroupQuery04Component} from './tr-group-query04/tr-group-query04.component';
@@ -58,7 +58,7 @@ export class Query04Component implements OnInit {
   ngOnInit() {
 
     // url для получения данных запроса №4 от сервера
-    let url: string = Queries.urlQuery04;
+    let url: string = Config.urlQuery04;
 
     // включение спиннера ожидания данных
     this.isWaitFlag = true;

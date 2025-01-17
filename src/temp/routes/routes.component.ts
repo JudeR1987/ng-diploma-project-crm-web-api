@@ -5,7 +5,7 @@ import {Route} from '../../temp/Route';
 import {PageViewModel} from '../../temp/PageViewModel';
 import {WebApiService} from '../../temp/web-api.service';
 import {Utils} from '../../infrastructure/Utils';
-import {Queries} from '../../temp/Queries';
+import {Config} from '../../infrastructure/Config';
 import {TaskButtonComponent} from '../../temp/shared/task-button/task-button.component';
 import {TableHeaderRoutesComponent} from './table-header-routes/table-header-routes.component';
 import {TrRouteComponent} from './tr-route/tr-route.component';
@@ -66,7 +66,7 @@ export class RoutesComponent implements OnInit {
   private getAllByPage(page: number): void {
 
     // url для получения данных о маршрутах из БД от сервера
-    let url: string = Queries.urlGetAllRoutesByPage;
+    let url: string = Config.urlGetAllRoutesByPage;
 
     // включение спиннера ожидания данных
     this.isWaitFlag = true;
