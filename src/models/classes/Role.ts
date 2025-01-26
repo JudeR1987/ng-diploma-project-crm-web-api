@@ -8,7 +8,7 @@ export class Role {
   // конструктор с параметрами по умолчанию
   constructor(
     // идентификатор роли пользователя
-    private _id: number = 0,
+    private _id: number = Literals.zero,
 
     // наименование роли пользователя
     private _name: string = Literals.empty

@@ -7,7 +7,7 @@ export class LoginModel {
 
   // конструктор с параметрами по умолчанию
   constructor(
-    // логин пользователя
+    // логин пользователя (логин=телефону)
     private _login: string = Literals.empty,
 
     // номер телефона пользователя

@@ -9,12 +9,12 @@ export class User {
   // конструктор с параметрами по умолчанию
   constructor(
     // идентификатор пользователя
-    private _id: number = 0,
+    private _id: number = Literals.zero,
 
     // имя пользователя
     private _userName: string = Literals.empty,
 
-    // логин пользователя
+    // логин пользователя (логин=телефону)
     private _login: string = Literals.empty,
 
     // номер телефона пользователя

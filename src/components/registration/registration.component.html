@@ -4,49 +4,157 @@
 <!-- компонент с формой регистрации в системе -->
 
 <!-- разметка компонента RegistrationComponent -->
-<main class="container bg-main-color content-main text-justify
-             font-family-Calibri font-size-14pt content-height mx-auto">
+<main class="row bg-main-color content-height mx-auto p-1 p-sm-2
+             w-md-95 justify-content-center align-items-start">
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <h4 class="text-primary font-family-CalibriLight font-size-16pt fw-bold">
-    {{component.title}}
-  </h4>
+  <div class="col-md-10 col-lg-8 col-xl-7 col-xxl-5 m-0 my-sm-2 p-0">
 
-  <form class="form-control" #registrationForm="ngForm" (ngSubmit)="registration(registrationForm)">
-    <div class="container-fluid">
-      <h2 class="form-signin-heading">{{component.title}}</h2>
-      @if (!component.validRegistration) {
-        <div class="alert alert-danger">
-          {{component.errorMessage}}
+    <!-- контейнер для вывода сообщений результатов операции -->
+    <div class="position-fixed right-2rem align-items-end"
+         [class.w-90]="component.errorMessage.length > 100"
+         *ngIf="!component.validRegistration">
+      <div class="alert alert-warning alert-dismissible
+                  fade show border-2 m-1 py-2">
+        <button class="btn-close bg-secondary m-1 p-1"
+                type="button" data-bs-dismiss="alert">
+        </button>
+        <div [class.h-50vh]="component.errorMessage.length > 100"
+             style="overflow: auto">
+          <span id="errorMessage" [innerHTML]="component.errorMessage"></span>
         </div>
-      } <!-- if -->
-
-      <br>
-
-      <label for="phone" class="sr-only">Phone</label>
-      <input type="number" id="phone" name="phone" ngModel class="form-control"
-             placeholder="User Phone" required autofocus>
-      <br>
-
-      <label for="email" class="sr-only">Email address</label>
-      <input type="email" id="email" name="email" ngModel class="form-control"
-             placeholder="Email" required>
-      <br>
-
-      <button class="btn btn-primary btn-block"
-              type="submit"
-              [class.disabled]="component.isWaitFlag">
-        @if (component.isWaitFlag) {
-          <div class="row m-0 p-0 justify-content-center align-items-center">
-            <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
-          </div>
-        } @else {
-          зарегистрироваться
-        } <!-- if -->
-      </button>
+      </div>
     </div>
-  </form>
+
+
+    <!-- форма регистрации -->
+    <form class="form-control p-2" novalidate
+          [formGroup]="registrationForm"
+          (ngSubmit)="onSubmit()">
+
+      <!-- заголовок -->
+      <div class="bg-primary p-1">
+        <h2 class="text-center text-light m-0">{{component.title}}</h2>
+      </div>
+
+      <!-- тело - основные параметры формы -->
+      <div class="row mx-0 my-1 p-2 bg-primary-subtle
+                  border border-primary justify-content-center">
+
+        <!-- ввод телефона пользователя -->
+        <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+          <label class="form-label col-sm-4 col-md-3 m-0 px-2" for="phone">
+            {{component.labelPhone}}:
+          </label>
+          <div class="col-sm-8 col-md-7 col-lg-6 p-0">
+            <input class="form-control px-2" type="text"
+                   id="phone" name="phone" formControlName="phone"
+                   placeholder="{{component.phonePlaceholder}}"
+                   maxlength="{{component.phoneLength}}">
+          </div>
+        </div>
+        <!-- строка с подсказками -->
+        <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+          <div class="col-sm-8 col-md-7 col-lg-6 offset-sm-4 offset-md-3 p-0">
+
+            @if ((phone.errors && (phone.dirty || phone['touched'])) ||
+                  component.errorRegisteredPhone.isRegistered) {
+              <div class="text-danger ps-2 fw-bold">
+                @if (component.errorRegisteredPhone.isRegistered) {
+                  <span>{{component.errorRegisteredPhone.message}}</span>
+                } @else {
+                  <span *ngIf="phone.errors![component.errorRequired]">
+                    {{component.errorRequiredTitle}}
+                  </span>
+                  <span *ngIf="phone.errors![component.errorPhoneValidator] &&
+                               !phone.errors![component.errorRequired]">
+                    {{component.errorPhoneValidatorTitle}}
+                  </span>
+                } <!-- if -->
+              </div>
+            } @else {
+              <span class="text-secondary ps-2 fw-bold">
+                {{component.phoneNoErrorsTitle}}
+              </span>
+            } <!-- if -->
+
+          </div>
+        </div>
+
+        <!-- ввод e-mail пользователя -->
+        <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+          <label class="form-label col-sm-4 col-md-3 m-0 px-2" for="email">
+            {{component.labelEmail}}:
+          </label>
+          <div class="col-sm-8 col-md-7 col-lg-6 p-0">
+            <input class="form-control px-2" type="text"
+                   id="email" name="email" formControlName="email"
+                   placeholder="{{component.emailPlaceholder}}"
+                   maxlength="{{component.emailLength + 1}}">
+          </div>
+        </div>
+        <!-- строка с подсказками -->
+        <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+          <div class="col-sm-8 col-md-7 col-lg-6 offset-sm-4 offset-md-3 p-0">
+
+            @if ((email.errors && (email.dirty || email['touched'])) ||
+                  component.errorRegisteredEmail.isRegistered) {
+              <div class="text-danger ps-2 fw-bold">
+                @if (component.errorRegisteredEmail.isRegistered) {
+                  <span>{{component.errorRegisteredEmail.message}}</span>
+                } @else {
+                  <span *ngIf="email.errors![component.errorRequired]">
+                    {{component.errorRequiredTitle}}
+                  </span>
+                  <span *ngIf="email.errors![component.errorMaxLength]">
+                    {{component.errorEmailMaxLengthTitle}}
+                  </span>
+                  <span *ngIf="email.errors![component.errorEmailValidator] &&
+                               !email.errors![component.errorRequired]">
+                    {{component.errorEmailValidatorTitle}}
+                  </span>
+                } <!-- if -->
+              </div>
+            } @else {
+              <span class="text-secondary ps-2 fw-bold">
+                {{component.emailNoErrorsTitle}}
+              </span>
+            } <!-- if -->
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- подвал - кнопки ввода/сброса -->
+      <div class="bg-primary d-flex justify-content-evenly p-0">
+
+        <button class="btn bg-success-subtle fw-bold text-success
+                       text-opacity-75 w-50 w-min-140-max-160 m-1
+                       border border-success border-2 border-opacity-50"
+                type="submit"
+                [class.disabled]="registrationForm.invalid ||
+                                  component.errorRegisteredPhone.isRegistered ||
+                                  component.errorRegisteredEmail.isRegistered ||
+                                  component.isWaitFlag"
+                title="{{component.butContinueTitle}}">
+          @if (component.isWaitFlag) {
+            <div class="row m-0 p-0 justify-content-center align-items-center">
+              <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
+            </div>
+          } @else {
+            {{component.butContinueValue}}
+          } <!-- if -->
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 

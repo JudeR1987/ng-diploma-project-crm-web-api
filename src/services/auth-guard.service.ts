@@ -68,12 +68,13 @@ export class AuthGuardService implements CanActivate {
 
 
   // запрос на вход в систему
-  async login(loginModel: LoginModel): Promise<string> {
+  async login(loginModel: LoginModel): Promise<{ message: any, token: string, user: User }> {
 
     console.log(`[-AuthGuardService-login--`);
 
     // ожидаем получения ответа на запрос
-    let webResult: {token: string, user: User} = { token: '', user: User.UserToDto(new User()) };
+   /* let webResult: {token: string, user: User} =
+      { token: Literals.empty, user: User.UserToDto(new User()) };
     try {
       webResult = await firstValueFrom(
         this._webApiService.loginPOST(Config.urlAuthLogin, loginModel)
@@ -86,19 +87,45 @@ export class AuthGuardService implements CanActivate {
 
     console.dir(webResult);
     console.dir(webResult.token);
-    console.dir(webResult.user);
+    console.dir(webResult.user);*/
+    let result: { message: any, token: string, user: User } =
+      { message: Literals.Ok, token: Literals.empty, user: User.UserToDto(new User()) };
+    try {
+      let webResult: any = await firstValueFrom(
+        this._webApiService.loginPOST(Config.urlAuthLogin, loginModel)
+      );
+      console.dir(webResult);
+
+      if (webResult != null) {
+        result.token = webResult.token;
+        result.user  = webResult.user;
+      } // if
+
+    } catch (e: any) {
+      console.dir(e);
+      console.dir(e.error);
+      result.message = e.error;
+
+      console.log(`--AuthGuardService-login-]`);
+      return result;
+    } // try-catch
+
+    console.dir(result);
+    console.dir(result.message);
+    console.dir(result.token);
+    console.dir(result.user);
 
     // записать данные в хранилище
-    localStorage.setItem(Literals.jwt, webResult.token);
-    localStorage.setItem(Literals.user, JSON.stringify(webResult.user));
+    localStorage.setItem(Literals.jwt, result.token);
+    localStorage.setItem(Literals.user, JSON.stringify(result.user));
 
     // передадим данные о пользователе через объект компонента
     // другим компонентам, подписавшимся на изменение объекта
-    this.userSubject.next(User.newUser(webResult.user));
+    this.userSubject.next(User.newUser(result.user));
 
     console.log(`--AuthGuardService-login-]`);
 
-    return Literals.Ok;
+    return result;
 
   } // login
 
@@ -136,25 +163,44 @@ export class AuthGuardService implements CanActivate {
 
 
   // запрос на регистрацию в системе
-  async registration(loginModel: LoginModel): Promise<string> {
+  async registration(loginModel: LoginModel): Promise<{ message: string, phone: string, email: string }> {
 
     console.log(`[-AuthGuardService-registration--`);
 
     // ожидаем получения ответа на запрос
-    let message: string = Literals.Ok;
+    let result: { message: string, phone: string, email: string } =
+      { message: Literals.Ok, phone: Literals.empty, email: Literals.empty };
     try {
-      await firstValueFrom(
+      let webResult: any = await firstValueFrom(
         this._webApiService.registrationPOST(Config.urlAuthRegistration, loginModel)
       );
+      console.dir(webResult);
+
+      if (webResult != null) {
+        result.message = Literals.empty;
+        result.phone = webResult.phone;
+        result.email = webResult.email;
+      } // if
+
     } catch (e: any) {
       console.dir(e);
+      console.dir(e.error);
+      result.message = e.error;
+
+      if (e.error.title) result.message = e.error.title;
+
       console.log(`--AuthGuardService-registration-]`);
-      message = e.error;
+      return result;
     } // try-catch
+
+    console.dir(result);
+    console.dir(result.message);
+    console.dir(result.phone);
+    console.dir(result.email);
 
     console.log(`--AuthGuardService-registration-]`);
 
-    return message;
+    return result;
 
   } // registration
 

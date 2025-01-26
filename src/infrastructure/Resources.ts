@@ -198,8 +198,86 @@ export class Resources {
 
   // заголовок
   public static readonly loginTitle: Record<string, string> = {
-    'rus': 'Форма входа',
-    'eng': 'Login form' };
+    'rus': 'Вход',
+    'eng': 'Login' };
+
+  // заголовок поля ввода логина пользователя
+  public static readonly loginLabelLogin: Record<string, string> = {
+    'rus': 'Логин',
+    'eng': 'Login' };
+
+  // заголовок поля ввода пароля пользователя
+  public static readonly loginLabelPassword: Record<string, string> = {
+    'rus': 'Пароль',
+    'eng': 'Password' };
+
+  // заголовок чек-бокса изменения отображения пароля при вводе
+  public static readonly loginLabelCheckboxPassword: Record<string, string> = {
+    'rus': 'показать пароль',
+    'eng': 'show password' };
+
+  // сообщения об ошибках
+  public static readonly loginErrorPasswordMinMaxLengthStart: Record<string, string> = {
+    'rus': 'длина пароля от',
+    'eng': 'the password length is from' };
+
+  public static readonly loginErrorPasswordMinMaxLengthMiddle: Record<string, string> = {
+    'rus': 'до',
+    'eng': 'to' };
+
+  public static readonly loginErrorPasswordMinMaxLengthEnd: Record<string, string> = {
+    'rus': 'символов',
+    'eng': 'characters' };
+
+  public static loginErrorPasswordMinMaxLength(language: string, minLength: number, maxLength: number): string {
+    return `${this.loginErrorPasswordMinMaxLengthStart[language]}
+      ${minLength} ${this.loginErrorPasswordMinMaxLengthMiddle[language]}
+      ${maxLength} ${this.loginErrorPasswordMinMaxLengthEnd[language]}`;
+  } // loginErrorPasswordMinMaxLength
+
+  public static readonly loginLoginNoErrors: Record<string, string> = {
+    'rus': 'номер телефона или Email',
+    'eng': 'phone number or Email address' };
+
+  public static readonly loginIncorrectPassword: Record<string, string> = {
+    'rus': 'неправильный пароль',
+    'eng': 'incorrect password' };
+
+  public static readonly loginUnauthorizedPhoneStart: Record<string, string> = {
+    'rus': 'пользователь с телефоном',
+    'eng': 'the user with the phone number' };
+
+  public static readonly loginUnauthorizedPhoneEnd: Record<string, string> = {
+    'rus': 'не зарегистрирован',
+    'eng': 'is not registered' };
+
+  public static loginUnauthorizedPhone(language: string, login: string): string {
+    return `${this.loginUnauthorizedPhoneStart[language]}
+      <strong>${login}</strong> ${this.loginUnauthorizedPhoneEnd[language]}`;
+  } // loginUnauthorizedPhone
+
+  public static readonly loginUnauthorizedEmailStart: Record<string, string> = {
+    'rus': 'пользователь с e-mail адресом',
+    'eng': 'the user with the e-mail address' };
+
+  public static readonly loginUnauthorizedEmailEnd: Record<string, string> = {
+    'rus': 'не зарегистрирован',
+    'eng': 'is not registered' };
+
+  public static loginUnauthorizedEmail(language: string, email: string): string {
+    return `${this.loginUnauthorizedEmailStart[language]}
+      <strong>${email}</strong> ${this.loginUnauthorizedEmailEnd[language]}`;
+  } // loginUnauthorizedEmail
+
+  // всплывающая подсказка на кнопке "войти"
+  public static readonly loginButLoginTitle: Record<string, string> = {
+    'rus': 'войти в учётную запись',
+    'eng': 'log in to your account' };
+
+  // значение кнопки "войти"
+  public static readonly loginButLoginValue: Record<string, string> = {
+    'rus': 'войти',
+    'eng': 'login' };
 
   //endregion
 
@@ -208,8 +286,58 @@ export class Resources {
 
   // заголовок
   public static readonly registrationTitle: Record<string, string> = {
-    'rus': 'Форма регистрации',
-    'eng': 'Registration form' };
+    'rus': 'Регистрация',
+    'eng': 'Registration' };
+
+  // заголовок поля ввода номера телефона пользователя
+  public static readonly registrationLabelPhone: Record<string, string> = {
+    'rus': 'Телефон',
+    'eng': 'Phone' };
+
+  // заголовок поля ввода e-mail пользователя
+  public static readonly registrationLabelEmail: Record<string, string> = {
+    'rus': 'Email адрес',
+    'eng': 'Email address' };
+
+  // сообщения об ошибках
+  public static readonly registeredPhone: Record<string, string> = {
+    'rus': 'такой телефон уже зарегистрирован',
+    'eng': 'this phone number is already registered' };
+
+  public static readonly registeredEmail: Record<string, string> = {
+    'rus': 'такой Email уже занят',
+    'eng': 'this Email address is already occupied' };
+
+  public static readonly registrationErrorEmailMaxLengthStart: Record<string, string> = {
+    'rus': 'максимальная длина почты',
+    'eng': 'the maximum length of the mail is' };
+
+  public static readonly registrationErrorEmailMaxLengthEnd: Record<string, string> = {
+    'rus': 'символов',
+    'eng': 'characters' };
+
+  public static registrationErrorEmailMaxLength(language: string, maxLength: number): string {
+    return `${this.registrationErrorEmailMaxLengthStart[language]}
+      ${maxLength} ${this.registrationErrorEmailMaxLengthEnd[language]}`;
+  } // registrationErrorEmailMaxLength
+
+  public static readonly registrationPhoneNoErrors: Record<string, string> = {
+    'rus': 'этот телефон станет вашим логином',
+    'eng': 'this phone number will become your username' };
+
+  public static readonly registrationEmailNoErrors: Record<string, string> = {
+    'rus': 'на этот email отправим пароль',
+    'eng': 'we will send the password to this email' };
+
+  // всплывающая подсказка на кнопке "продолжить"
+  public static readonly registrationButContinueTitle: Record<string, string> = {
+    'rus': 'продолжить регистрацию',
+    'eng': 'continue registration' };
+
+  // значение кнопки "продолжить"
+  public static readonly registrationButContinueValue: Record<string, string> = {
+    'rus': 'продолжить',
+    'eng': 'continue' };
 
   //endregion
 
@@ -220,6 +348,24 @@ export class Resources {
   public static readonly notFoundTitle: Record<string, string> = {
     'rus': 'Маршрут не найден / Страница не найдена',
     'eng': 'Route not found / Page not found' };
+
+  //endregion
+
+
+  //#region общее
+
+  // сообщения об ошибках
+  public static readonly errorRequired: Record<string, string> = {
+    'rus': 'поле обязательное для ввода',
+    'eng': 'required field' };
+
+  public static readonly errorPhoneValidator: Record<string, string> = {
+    'rus': 'неверный формат телефона',
+    'eng': 'incorrect phone format' };
+
+  public static readonly errorEmailValidator: Record<string, string> = {
+    'rus': 'неверный формат почты',
+    'eng': 'invalid mail format' };
 
   //endregion
 

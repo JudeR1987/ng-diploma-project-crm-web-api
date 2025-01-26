@@ -24,12 +24,22 @@ export class Literals {
 
   //#region LoginComponent
   public static readonly login: string = 'login';
+  public static readonly loginPlaceholder: string =
+    '+7(000)000-00-00 / abc@email.com';
+  public static readonly passwordPlaceholder: string = '***...';
+  public static readonly passwordMinLength: number = 4;
+  public static readonly passwordMaxLength: number = 50;
 
   //endregion
 
 
   //#region RegistrationComponent
   public static readonly registration: string = 'registration';
+  public static readonly plusSeven: string = '+7';
+  public static readonly phoneLength: number = 12;
+  public static readonly emailLength: number = 50;
+  public static readonly phonePlaceholder: string = '+7(000)000-00-00';
+  public static readonly emailPlaceholder: string = 'abc@email.com';
 
   //endregion
 
@@ -61,6 +71,10 @@ export class Literals {
 
   //#region разное
   public static readonly empty: string = '';
+  public static readonly space: string = ' ';
+  public static readonly comma: string = ',';
+  public static readonly plus: string = '+';
+  public static readonly break: string = '<br>';
   public static readonly language: string = 'language';
   public static readonly rus: string = 'rus';
   public static readonly eng: string = 'eng';
@@ -69,6 +83,16 @@ export class Literals {
   public static readonly jwt: string = 'jwt';
   public static readonly user: string = 'user';
   public static readonly Ok: string = 'Ok';
+  public static readonly required: string = 'required';
+  public static readonly phoneValidator: string = 'phoneValidator';
+  public static readonly minlength: string = 'minlength';
+  public static readonly maxlength: string = 'maxlength';
+  public static readonly emailValidator: string = 'emailValidator';
+  public static readonly zero: number = 0;
+  public static readonly one: number = 1;
+  public static readonly timeout: number = 5_000;
+  public static readonly timeStop: number = 20_000;
+  public static readonly string: string = 'string';
 
   //endregion
 

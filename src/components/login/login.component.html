@@ -1,26 +1,170 @@
 
 <!-- /login -->
 
-<!-- компонент с формой входа в аккаунт -->
+<!-- компонент с формой входа в учётную запись -->
 
 <!-- разметка компонента LoginComponent -->
-<main class="container bg-main-color content-main text-justify
-             font-family-Calibri font-size-14pt content-height mx-auto">
+<main class="row bg-main-color content-height mx-auto p-1 p-sm-2
+             w-md-95 justify-content-center align-items-start">
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <h4 class="text-primary font-family-CalibriLight font-size-16pt fw-bold">
-    {{component.title}}
-  </h4>
+  <div class="col-md-10 col-lg-8 col-xl-7 col-xxl-5 m-0 my-sm-2 p-0">
 
-  <form class="form-control" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+    <!-- контейнер для вывода сообщений результатов операции -->
+    <div class="position-fixed right-2rem align-items-end"
+         [class.w-90]="component.errorMessage.length > 100"
+         *ngIf="!component.validLogin">
+      <div class="alert alert-warning alert-dismissible
+                  fade show border-2 m-1 py-2">
+        <button class="btn-close bg-secondary m-1 p-1"
+                type="button" data-bs-dismiss="alert">
+        </button>
+        <div [class.h-50vh]="component.errorMessage.length > 100"
+             style="overflow: auto">
+          <span id="errorMessage" [innerHTML]="component.errorMessage"></span>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- форма входа в учётную запись -->
+    <form class="form-control p-2" novalidate
+          [formGroup]="loginForm"
+          (ngSubmit)="onSubmit()">
+
+      <!-- заголовок -->
+      <div class="bg-primary p-1">
+        <h2 class="text-center text-light m-0">{{component.title}}</h2>
+      </div>
+
+      <!-- тело - основные параметры формы -->
+      <div class="row mx-0 my-1 p-2 bg-primary-subtle
+                  border border-primary justify-content-center">
+
+        <!-- ввод логина пользователя -->
+        <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+          <label class="form-label col-sm-4 col-md-3 m-0 px-2" for="login">
+            {{component.labelLogin}}:
+          </label>
+          <div class="col-sm-8 col-md-7 col-lg-6 p-0">
+            <input class="form-control px-2" type="text"
+                   id="login" name="login" formControlName="login"
+                   placeholder="{{component.loginPlaceholder}}"
+                   maxlength="{{component.loginLength}}">
+          </div>
+        </div>
+        <!-- строка с подсказками -->
+        <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+          <div class="col-sm-8 col-md-7 col-lg-6 offset-sm-4 offset-md-3 p-0">
+
+            @if (login.errors && (login.dirty || login['touched'])) {
+              <div class="text-danger ps-2 fw-bold">
+                <span *ngIf="login.errors[component.errorRequired]">
+                  {{component.errorRequiredTitle}}
+                </span>
+                <span *ngIf="login.errors[component.errorPhoneValidator] &&
+                             !login.errors[component.errorRequired]">
+                  {{component.errorPhoneValidatorTitle}}
+                </span>
+                <span *ngIf="login.errors[component.errorEmailValidator] &&
+                             !login.errors[component.errorRequired]">
+                  {{component.errorEmailValidatorTitle}}
+                </span>
+              </div>
+            } @else {
+              <span class="text-secondary ps-2 fw-bold">
+                {{component.loginNoErrorsTitle}}
+              </span>
+            } <!-- if -->
+
+          </div>
+        </div>
+
+        <!-- ввод пароля пользователя -->
+        <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+          <label class="form-label col-sm-4 col-md-3 m-0 px-2" for="password">
+            {{component.labelPassword}}:
+          </label>
+          <div class="col-sm-8 col-md-7 col-lg-6 p-0">
+            <input class="form-control px-2" type="{{isDisplayPassword.value ? 'text' : 'password'}}"
+                   id="password" name="password" formControlName="password"
+                   placeholder="{{component.passwordPlaceholder}}"
+                   maxlength="{{component.passwordMaxLength + 1}}">
+          </div>
+        </div>
+        <!-- строка с подсказками -->
+        <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+
+          <div class="col-sm-8 col-md-7 col-lg-6 offset-sm-4 offset-md-3 p-0">
+
+            @if (password.errors && (password.dirty || password['touched'])) {
+              <div class="text-danger ps-2 fw-bold">
+                <span *ngIf="password.errors[component.errorRequired]">
+                  {{component.errorRequiredTitle}}
+                </span>
+                <span *ngIf="password.errors[component.errorMinLength] ||
+                             password.errors[component.errorMaxLength]">
+                  {{component.errorPasswordMinMaxLengthTitle}}
+                </span>
+              </div>
+            } @else {
+              <span class="text-secondary ps-2 fw-bold"></span>
+            } <!-- if -->
+
+          </div>
+
+          <!-- чек-бокс переключения видимости пароля -->
+          <div class="col-sm-8 col-md-7 col-lg-6 offset-sm-4 offset-md-3 p-0">
+
+            <label class="form-check-label" for="isDisplayPassword">
+              <input class="form-check-input m-1"
+                     id="isDisplayPassword"
+                     formControlName="isDisplayPassword"
+                     type="checkbox" />
+              {{component.labelCheckboxPassword}}
+            </label>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- подвал - кнопки ввода/сброса -->
+      <div class="bg-primary d-flex justify-content-evenly p-0">
+
+        <button class="btn bg-success-subtle fw-bold text-success
+                       text-opacity-75 w-50 w-min-140-max-160 m-1
+                       border border-success border-2 border-opacity-50"
+                type="submit"
+                [class.disabled]="loginForm.invalid || component.isWaitFlag"
+                title="{{component.butLoginTitle}}">
+          @if (component.isWaitFlag) {
+            <div class="row m-0 p-0 justify-content-center align-items-center">
+              <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
+            </div>
+          } @else {
+            {{component.butLoginValue}}
+          } <!-- if -->
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+  <!--<form class="form-control" #loginForm2="ngForm" (ngSubmit)="login(loginForm2)">
     <div class="container-fluid">
       <h2 class="form-signin-heading">{{component.title}}</h2>
       @if (!component.validLogin) {
         <div class="alert alert-danger">
           {{component.errorMessage}}
         </div>
-      } <!-- if -->
+      } &lt;!&ndash; if &ndash;&gt;
 
       <br>
 
@@ -43,10 +187,10 @@
           </div>
         } @else {
           войти
-        } <!-- if -->
+        } &lt;!&ndash; if &ndash;&gt;
       </button>
     </div>
-  </form>
+  </form>-->
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
