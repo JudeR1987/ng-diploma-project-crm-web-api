@@ -90,8 +90,8 @@ export class Literals {
   public static readonly emailValidator: string = 'emailValidator';
   public static readonly zero: number = 0;
   public static readonly one: number = 1;
-  public static readonly timeout: number = 5_000;
-  public static readonly timeStop: number = 20_000;
+  public static readonly timeout: number = 6_000;
+  public static readonly timeStop: number = 25_000;
   public static readonly string: string = 'string';
 
   //endregion

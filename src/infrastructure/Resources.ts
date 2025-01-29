@@ -269,6 +269,10 @@ export class Resources {
       <strong>${email}</strong> ${this.loginUnauthorizedEmailEnd[language]}`;
   } // loginUnauthorizedEmail
 
+  public static readonly loginIncorrectData: Record<string, string> = {
+    'rus': 'некорректные данные о пользователе',
+    'eng': 'incorrect user information' };
+
   // всплывающая подсказка на кнопке "войти"
   public static readonly loginButLoginTitle: Record<string, string> = {
     'rus': 'войти в учётную запись',
@@ -328,6 +332,10 @@ export class Resources {
   public static readonly registrationEmailNoErrors: Record<string, string> = {
     'rus': 'на этот email отправим пароль',
     'eng': 'we will send the password to this email' };
+
+  public static readonly registrationIncorrectData: Record<string, string> = {
+    'rus': 'некорректные данные для регистрации',
+    'eng': 'incorrect registration data' };
 
   // всплывающая подсказка на кнопке "продолжить"
   public static readonly registrationButContinueTitle: Record<string, string> = {

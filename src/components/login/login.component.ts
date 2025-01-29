@@ -15,6 +15,7 @@ import {AuthGuardService} from '../../services/auth-guard.service';
 import {UserValidators} from '../../validators/UserValidators';
 import {NgIf} from '@angular/common';
 import {User} from '../../models/classes/User';
+import {ErrorMessageService} from '../../services/error-message.service';
 
 @Component({
   selector: 'app-login',
@@ -43,8 +44,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     // параметры НЕ меняющиеся при смене языка
     language:            Literals.empty,
     route:               Literals.empty,
-    validLogin:          true,
-    errorMessage:        Literals.empty,
+    /*validLogin:          true,
+    errorMessage:        Literals.empty,*/
     isWaitFlag:          false,
     loginPlaceholder:    Literals.loginPlaceholder,
     passwordPlaceholder: Literals.passwordPlaceholder,
@@ -55,9 +56,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     errorPhoneValidator: Literals.phoneValidator,
     errorEmailValidator: Literals.emailValidator,
     errorMinLength:      Literals.minlength,
-    errorMaxLength:      Literals.maxlength,
+    errorMaxLength:      Literals.maxlength/*,
     timerId:             Literals.zero,
-    timeout:             Literals.timeout
+    timeout:             Literals.timeout*/
   };
 
   // объект подписки на изменение языка, для отмены подписки при уничтожении компонента
@@ -80,10 +81,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   // конструктор с DI для подключения к объекту маршрутизатора
-  // для получения маршрута, подключения к сервису установки языка
-  // и подключения к сервису аутентификации/авторизации пользователя
-  constructor(private _router: Router, private _languageService: LanguageService,
-              private _authGuardService: AuthGuardService) {
+  // для получения маршрута, подключения к сервису установки языка,
+  // подключения к сервису аутентификации/авторизации пользователя
+  // и подключения к сервису хранения сообщения об ошибке
+  constructor(private _router: Router,
+              private _languageService: LanguageService,
+              private _authGuardService: AuthGuardService,
+              private _errorMessageService: ErrorMessageService) {
     Utils.helloComponent(Literals.login);
 
     console.log(`[-LoginComponent-constructor--`);
@@ -164,7 +168,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   // отмена срабатывания таймера и удаление всплывающего сообщения
-  private removeSetTimeout(): void {
+  /*private removeSetTimeout(): void {
 
     // отменить ранее установленный setTimeout
     clearTimeout(this.component.timerId);
@@ -173,16 +177,16 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.component.validLogin = true;
     this.component.errorMessage = Literals.empty;
 
-  } // removeSetTimeout
+  } // removeSetTimeout*/
 
 
   // обработчик события передачи данных из формы на сервер
   async onSubmit() {
 
-    console.log(`[-LoginComponent-login--`);
+    console.log(`[-LoginComponent-onSubmit--`);
 
     // удаление всплывающего сообщения
-    this.removeSetTimeout();
+    //this.removeSetTimeout();
 
     console.log("Отправка данных на сервер");
     console.dir(this.loginForm.value);
@@ -218,8 +222,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     // запрос на вход в систему
     let result: { message: any, token: string, user: User } =
       await this._authGuardService.login(this.loginModel);
-    console.log(`--LoginComponent-this.component.errorMessage-${this.component.errorMessage}`);
-    console.log(`--RegistrationComponent-result-`);
+    //console.log(`--LoginComponent-this.component.errorMessage-${this.component.errorMessage}`);
+    console.log(`--LoginComponent-result-`);
     console.dir(result);
 
     console.log(`--LoginComponent-2-`);
@@ -234,6 +238,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
       let message: string = Literals.empty;
 
+      // для ошибок данных
+      if (result.message.loginModel) message =
+        Resources.loginIncorrectData[this.component.language];
 
       // для ошибок сервера
       if (result.message.title) message = result.message.title;
@@ -254,31 +261,35 @@ export class LoginComponent implements OnInit, OnDestroy {
       } // if
 
       // установить параметр валидности
-      this.component.validLogin = false;
-      this.component.errorMessage = message;
-      console.log(`--LoginComponent-login-]`);
+      //this.component.validLogin = false;
+      //this.component.errorMessage = message;
+
+      // передадим значение сообщения об ошибке для отображения через объект
+      // сервиса компоненту AppComponent, подписавшемуся на изменение объекта
+      this._errorMessageService.errorMessageSubject.next(message);
+      console.log(`--LoginComponent-onSubmit-]`);
 
       // сбросить сообщение об ошибке
-      this.component.timerId = setTimeout(() => {
+      /*this.component.timerId = setTimeout(() => {
         this.component.validLogin = true;
         this.component.errorMessage = Literals.empty;
       }, this.component.errorMessage.length < 100
         ? this.component.timeout
         : Literals.timeStop
-      ); // setTimeout
+      ); // setTimeout*/
 
       return;
     } // if
 
     // установить параметр валидности
-    this.component.validLogin = true;
-    this.component.errorMessage = Literals.empty;
+    //this.component.validLogin = true;
+    //this.component.errorMessage = Literals.empty;
 
     // перейти по маршруту на домашнюю страницу
     this._router.navigateByUrl(Literals.routeHomeEmpty)
       .then((e) => { console.dir(e); });
 
-    console.log(`--LoginComponent-login-]`);
+    console.log(`--LoginComponent-onSubmit-]`);
 
   } // onSubmit
 

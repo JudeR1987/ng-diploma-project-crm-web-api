@@ -245,8 +245,10 @@
             <div class="me-1 d-flex justify-content-end align-items-center">
               <div class="h-auto">
                 <img class="img-thumbnail rounded-5 border border-1 border-back-color"
-                     src="{{component.srcPhoto}}{{component.fileNamePhotoDef}}"
-                     width="38px" />
+                     src="{{user.isLogin ? user.avatar : component.srcPhoto + component.fileNamePhotoDef}}"
+                     alt="{{user.isLogin ? user.avatar : component.srcPhoto + component.fileNamePhotoDef}}"
+                     width="38px"
+                     title="{{user.userName}}" />
               </div>
               <div class="m-0 px-1 py-0 text-back-color fw-bold">
                 {{user.userName}}
@@ -354,6 +356,23 @@
                     [isWaitFlag]="isWaitFlag"
                     (onSendQuery03Params)="sendQuery03ParamsHandler($event)">
 </query03-modal-form>-->
+
+
+<!-- контейнер для вывода сообщений результатов операции -->
+<div class="position-fixed right-1rem-lg-2rem p-1 p-sm-4"
+     [class.w-90]="component.errorMessage.message.length > 100"
+     *ngIf="component.errorMessage.isVisible">
+  <div class="alert alert-warning alert-dismissible
+              fade show border-2 m-0 py-2">
+    <button class="btn-close bg-secondary m-1 p-1"
+            type="button" data-bs-dismiss="alert">
+    </button>
+    <div [class.h-50vh]="component.errorMessage.message.length > 100"
+         style="overflow: auto">
+      <span id="errorMessage" [innerHTML]="component.errorMessage.message"></span>
+    </div>
+  </div>
+</div>
 
 
 <!-- место для загрузки других компонентов,

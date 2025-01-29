@@ -106,13 +106,23 @@ export interface IAppComponent {
   footerEMailValue: string,
 
   // сообщение об ошибке
-  errorMessage: string,
+  errorMessage: {
+    message: string,
+    isVisible: boolean
+  },
 
   // путь расположения фотографий в приложении
   srcPhoto: string,
 
   // имя файла с фотографией по умолчанию
-  fileNamePhotoDef: string
+  fileNamePhotoDef: string,
+
+  // «идентификатор таймера», для отмены срабатывания setTimeout()
+  // при нажатии кнопок обработки быстрее длительности срабатывания таймера
+  timerId: number,
+
+  // длительность срабатывания setTimeout()
+  timeout: number
 
   //endregion
 

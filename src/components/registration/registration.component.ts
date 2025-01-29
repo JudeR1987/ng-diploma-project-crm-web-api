@@ -14,6 +14,7 @@ import {LoginModel} from '../../models/classes/LoginModel';
 import {AuthGuardService} from '../../services/auth-guard.service';
 import {UserValidators} from '../../validators/UserValidators';
 import {NgIf} from '@angular/common';
+import {ErrorMessageService} from '../../services/error-message.service';
 
 @Component({
   selector: 'app-registration',
@@ -44,8 +45,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     // параметры НЕ меняющиеся при смене языка
     language:            Literals.empty,
     route:               Literals.empty,
-    validRegistration:   true,
-    errorMessage:        Literals.empty,
+    /*validRegistration:   true,
+    errorMessage:        Literals.empty,*/
     isWaitFlag:          false,
     phonePlaceholder:    Literals.phonePlaceholder,
     emailPlaceholder:    Literals.emailPlaceholder,
@@ -54,9 +55,9 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     errorRequired:       Literals.required,
     errorPhoneValidator: Literals.phoneValidator,
     errorMaxLength:      Literals.maxlength,
-    errorEmailValidator: Literals.emailValidator,
+    errorEmailValidator: Literals.emailValidator/*,
     timerId:             Literals.zero,
-    timeout:             Literals.timeout
+    timeout:             Literals.timeout*/
   };
 
   // объект подписки на изменение языка, для отмены подписки при уничтожении компонента
@@ -74,9 +75,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   // поле ввода e-mail пользователя
   public email: FormControl = null!;
 
-  // объект зарегистрированного пользователя
-  //public registeredUsers: { login: string, email: string }[] = [];
-    //{ login: Literals.empty, email: Literals.empty }
   // коллекция зарегистрированных телефонов
   public registeredPhones: string[] = [];
 
@@ -85,10 +83,13 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
 
   // конструктор с DI для подключения к объекту маршрутизатора
-  // для получения маршрута, подключения к сервису установки языка
-  // и подключения к сервису аутентификации/авторизации пользователя
-  constructor(private _router: Router, private _languageService: LanguageService,
-              private _authGuardService: AuthGuardService) {
+  // для получения маршрута, подключения к сервису установки языка,
+  // подключения к сервису аутентификации/авторизации пользователя
+  // и подключения к сервису хранения сообщения об ошибке
+  constructor(private _router: Router,
+              private _languageService: LanguageService,
+              private _authGuardService: AuthGuardService,
+              private _errorMessageService: ErrorMessageService) {
     Utils.helloComponent(Literals.registration);
 
     console.log(`[-RegistrationComponent-constructor--`);
@@ -170,7 +171,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
 
   // отмена срабатывания таймера и удаление всплывающего сообщения
-  private removeSetTimeout(): void {
+  /*private removeSetTimeout(): void {
 
     // отменить ранее установленный setTimeout
     clearTimeout(this.component.timerId);
@@ -179,7 +180,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     this.component.validRegistration = true;
     this.component.errorMessage = Literals.empty;
 
-  } // removeSetTimeout
+  } // removeSetTimeout*/
 
 
   // обработчик события передачи данных из формы на сервер
@@ -188,7 +189,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     console.log(`[-RegistrationComponent-onSubmit--`);
 
     // удаление всплывающего сообщения
-    this.removeSetTimeout();
+    //this.removeSetTimeout();
 
     console.log("Отправка данных на сервер");
     console.dir(this.registrationForm.value);
@@ -206,9 +207,9 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     console.log(`--RegistrationComponent-1-`);
 
     // запрос на регистрацию в системе
-    let result: { message: string, phone: string, email: string } =
+    let result: { message: any, phone: string, email: string } =
       await this._authGuardService.registration(this.loginModel);
-    console.log(`--RegistrationComponent-this.component.errorMessage-${this.component.errorMessage}`);
+    //console.log(`--RegistrationComponent-this.component.errorMessage-${this.component.errorMessage}`);
     console.log(`--RegistrationComponent-result-`);
     console.dir(result);
 
@@ -222,6 +223,10 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     // остаёмся в форме регистрации
     console.dir(result.message);
     if (result.message != Literals.Ok) {
+
+      // для ошибок данных
+      if (result.message.loginModel) result.message =
+        Resources.registrationIncorrectData[this.component.language];
 
       // если получили параметры phone или email, то
       // установить соответствующее сообщение об ошибке
@@ -260,26 +265,30 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       } // if
 
       // установить параметр валидности
-      this.component.validRegistration = false;
-      this.component.errorMessage = result.message;
-      console.log(`--RegistrationComponent-registration-]`);
+      //this.component.validRegistration = false;
+      //this.component.errorMessage = result.message;
+
+      // передадим значение сообщения об ошибке для отображения через объект
+      // сервиса компоненту AppComponent, подписавшемуся на изменение объекта
+      this._errorMessageService.errorMessageSubject.next(result.message);
+      console.log(`--RegistrationComponent-onSubmit-]`);
 
       // сбросить сообщение об ошибке
-      this.component.timerId = setTimeout(() => {
+      /*this.component.timerId = setTimeout(() => {
         this.component.validRegistration = true;
         this.component.errorMessage = Literals.empty;
       }, this.component.errorMessage.length < 100
         ? this.component.timeout
         : Literals.timeStop
-      ); // setTimeout
+      ); // setTimeout*/
 
       return;
     } // if
 
 
     // установить параметр валидности и значение сообщения об ошибке
-    this.component.validRegistration = true;
-    this.component.errorMessage = Literals.empty;
+    //this.component.validRegistration = true;
+    //this.component.errorMessage = Literals.empty;
 
     // перейти по маршруту на форму входа
     this._router.navigateByUrl(Literals.routeLogin)

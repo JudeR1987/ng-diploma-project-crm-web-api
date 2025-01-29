@@ -16,6 +16,8 @@ import {AuthGuardService} from '../../services/auth-guard.service';
 import {LoginModel} from '../../models/classes/LoginModel';
 import {async} from 'rxjs';
 import {LoginComponent} from '../login/login.component';
+import {ErrorMessageService} from '../../services/error-message.service';
+import {NgIf} from '@angular/common';
 //import {Config} from '../../temp/Config';
 //import {Purpose} from '../../temp/Purpose';
 //import {Client} from '../../temp/Client';
@@ -26,10 +28,7 @@ import {LoginComponent} from '../login/login.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    RouterLink, RouterOutlet, /*Query01ModalFormComponent,
-    Query02ModalFormComponent, Query03ModalFormComponent, */LanguageComponent
-  ],
+  imports: [RouterLink, RouterOutlet, LanguageComponent, NgIf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -72,9 +71,11 @@ export class AppComponent implements OnInit {
     footerEMailTitle:  Literals.footerEMailTitle,
     footerEMailHref:   Literals.footerEMailHref,
     footerEMailValue:  Literals.footerEMailValue,
-    errorMessage:      Literals.empty,
+    errorMessage:      { message: Literals.empty, isVisible: false },
     srcPhoto:          Literals.srcPhoto,
-    fileNamePhotoDef:  Literals.fileNamePhotoDef
+    fileNamePhotoDef:  Literals.fileNamePhotoDef,
+    timerId:           Literals.zero,
+    timeout:           Literals.timeout
   };
 
   // параметры активности ссылки "Home"
@@ -110,11 +111,15 @@ export class AppComponent implements OnInit {
   //public maxAmountDays: number = 0;
 
 
-  // конструктор с DI для подключения к сервису установки языка
-  // и подключения к сервису аутентификации и авторизации пользователя
+  // конструктор с DI для подключения к объекту маршрутизатора
+  // для получения маршрута, подключения к сервису установки языка,
+  // подключения к сервису аутентификации/авторизации пользователя
+  // и подключения к сервису хранения сообщения об ошибке
   constructor(/*private _webApiService: WebApiService,*/
-              private _router: Router, private _languageService: LanguageService,
-              private _authGuardService: AuthGuardService) {
+              private _router: Router,
+              private _languageService: LanguageService,
+              private _authGuardService: AuthGuardService,
+              private _errorMessageService: ErrorMessageService) {
     Utils.hello();
     Utils.helloComponent(Literals.app);
 
@@ -183,6 +188,30 @@ export class AppComponent implements OnInit {
 
     }); // subscribe
 
+    // подписаться на изменение значения сообщения об ошибке
+    this._errorMessageService.errorMessageSubject.subscribe((message: string) => {
+      console.log(`[-AppComponent-subscribe--`);
+      console.log(`*-subscribe-message='${message}'-*`);
+
+      // удаление всплывающего сообщения
+      this.removeSetTimeout();
+
+      // задать значение сообщения об ошибке
+      this.component.errorMessage = { message: message, isVisible: true };
+
+      // сбросить сообщение об ошибке
+      this.component.timerId = setTimeout(() => {
+        this.component.errorMessage.message = Literals.empty;
+        this.component.errorMessage.isVisible = false;
+        }, this.component.errorMessage.message.length < 100
+          ? this.component.timeout
+          : Literals.timeStop
+      ); // setTimeout
+
+      console.log(`--AppComponent-subscribe-]`);
+
+    }); // subscribe
+
     // если данные о пользователе есть - отправить запрос на вход в систему
     console.log(`--AppComponent-this.user.isLogin:${this.user.isLogin}`);
     //if (this.user.isLogin) {
@@ -243,6 +272,19 @@ export class AppComponent implements OnInit {
   toStart(): void {
     window.scrollTo(0, 0);
   } // toStart
+
+
+  // отмена срабатывания таймера и удаление всплывающего сообщения
+  private removeSetTimeout(): void {
+
+    // отменить ранее установленный setTimeout
+    clearTimeout(this.component.timerId);
+
+    // удалить всплывающее сообщение
+    this.component.errorMessage.message = Literals.empty;
+    this.component.errorMessage.isVisible = false;
+
+  } // removeSetTimeout
 
 
   // метод, устанавливающий значение заголовка страницы
@@ -349,14 +391,17 @@ export class AppComponent implements OnInit {
   async logOut() {
     console.log(`[-AppComponent-logOut--`);
 
+    // удаление всплывающего сообщения
+    this.removeSetTimeout();
+
     // включение спиннера ожидания данных
     this.component.isWaitFlag = true;
 
     console.log(`--AppComponent-1-`);
 
     // запрос на выход из системы
-    this.component.errorMessage = await this._authGuardService.logOut(this.user);
-    console.log(`--AppComponent-this.component.errorMessage-${this.component.errorMessage}`);
+    let message: string = await this._authGuardService.logOut(this.user);
+    console.log(`--AppComponent-this.component.errorMessage-${this.component.errorMessage.message}`);
 
     console.log(`--AppComponent-2-`);
 
@@ -365,7 +410,21 @@ export class AppComponent implements OnInit {
 
     // если сообщение с ошибкой - завершаем обработку,
     // переходим к форме входа
-    if (this.component.errorMessage != Literals.Ok) {
+    if (message != Literals.Ok) {
+
+      // установить параметры сообщения
+      this.component.errorMessage.message = message;
+      this.component.errorMessage.isVisible = true;
+
+      // сбросить сообщение об ошибке
+      this.component.timerId = setTimeout(() => {
+          this.component.errorMessage.message = Literals.empty;
+          this.component.errorMessage.isVisible = false;
+        }, this.component.errorMessage.message.length < 100
+          ? this.component.timeout
+          : Literals.timeStop
+      ); // setTimeout
+
       // перейти к форме входа
       this._router.navigateByUrl(Literals.routeLogin)
         .then((e) => { console.dir(e); });

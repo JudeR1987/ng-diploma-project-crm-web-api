@@ -163,12 +163,12 @@ export class AuthGuardService implements CanActivate {
 
 
   // запрос на регистрацию в системе
-  async registration(loginModel: LoginModel): Promise<{ message: string, phone: string, email: string }> {
+  async registration(loginModel: LoginModel): Promise<{ message: any, phone: string, email: string }> {
 
     console.log(`[-AuthGuardService-registration--`);
 
     // ожидаем получения ответа на запрос
-    let result: { message: string, phone: string, email: string } =
+    let result: { message: any, phone: string, email: string } =
       { message: Literals.Ok, phone: Literals.empty, email: Literals.empty };
     try {
       let webResult: any = await firstValueFrom(

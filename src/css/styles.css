@@ -1,5 +1,5 @@
 
-/* собственные стили: v.22.01.25 */
+/* собственные стили: v.29.01.25 */
 
 /* область объявления глобальных переменных CSS */
 :root {
@@ -222,6 +222,9 @@
 .right-2rem {
     right: 2rem;
 }
+.right-1rem-lg-2rem {
+  right: 2rem;
+}
 .opacity-60 {
     opacity: 60%;
 }
@@ -354,6 +357,10 @@ input.valid {
 
     .w-lg-75 {
       width: 100%;
+    }
+
+    .right-1rem-lg-2rem {
+      right: 1rem;
     }
 }
 /*   // --- @media (<= 991px) --- //   */

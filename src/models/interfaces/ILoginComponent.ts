@@ -43,10 +43,10 @@ export interface ILoginComponent {
   route: string,
 
   // параметр валидности вводимых данных
-  validLogin: boolean,
+  /*validLogin: boolean,
 
   // сообщение об ошибке
-  errorMessage: string,
+  errorMessage: string,*/
 
   // флаг включения спиннера при ожидании данных с сервера
   isWaitFlag: boolean,
@@ -71,14 +71,14 @@ export interface ILoginComponent {
   errorPhoneValidator: string,
   errorEmailValidator: string,
   errorMinLength: string,
-  errorMaxLength: string,
+  errorMaxLength: string
 
   // «идентификатор таймера», для отмены срабатывания setTimeout()
   // при нажатии кнопок обработки быстрее длительности срабатывания таймера
-  timerId: number,
+  //timerId: number,
 
   // длительность срабатывания setTimeout()
-  timeout: number
+  //timeout: number
 
   //endregion
 

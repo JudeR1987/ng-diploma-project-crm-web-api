@@ -43,10 +43,10 @@ export interface IRegistrationComponent {
   route: string,
 
   // параметр валидности вводимых данных
-  validRegistration: boolean,
+  /*validRegistration: boolean,
 
   // сообщение об ошибке
-  errorMessage: string,
+  errorMessage: string,*/
 
   // флаг включения спиннера при ожидании данных с сервера
   isWaitFlag: boolean,
@@ -67,14 +67,14 @@ export interface IRegistrationComponent {
   errorRequired: string,
   errorPhoneValidator: string,
   errorMaxLength: string,
-  errorEmailValidator: string,
+  errorEmailValidator: string
 
   // «идентификатор таймера», для отмены срабатывания setTimeout()
   // при нажатии кнопок обработки быстрее длительности срабатывания таймера
-  timerId: number,
+  //timerId: number,
 
   // длительность срабатывания setTimeout()
-  timeout: number
+  //timeout: number
 
   //endregion
 
