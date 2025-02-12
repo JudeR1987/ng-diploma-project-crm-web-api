@@ -10,6 +10,8 @@ import {WebApiService} from './web-api.service';
 import {Config} from '../infrastructure/Config';
 import {LoginModel} from '../models/classes/LoginModel';
 import {firstValueFrom, Subject} from 'rxjs';
+import {UserService} from './user.service';
+import {Resources} from '../infrastructure/Resources';
 
 @Injectable({
   providedIn: 'root'
@@ -20,12 +22,15 @@ export class AuthGuardService implements CanActivate {
   private _jwtHelper: JwtHelperService;
 
   // объект для передачи данных о пользователе
-  public userSubject: Subject<User> = new Subject<User>();
+  //public userSubject: Subject<User> = new Subject<User>();
 
 
   // конструктор с DI для подключения к маршрутизатору для получения маршрута
   // и подключения к web-сервису
-  constructor(private _router: Router, private _webApiService: WebApiService) {
+  // и подключения к сервису хранения данных о пользователе
+  constructor(private _router: Router,
+              private _webApiService: WebApiService,
+              private _userService: UserService) {
 
     console.log(`[-AuthGuardService-constructor--`);
 
@@ -44,23 +49,28 @@ export class AuthGuardService implements CanActivate {
     console.log(`[-AuthGuardService-canActivate--`);
 
     // получить jwt-токен
-    let token: string | null = localStorage.getItem(Literals.jwt);
-    console.log(`--AuthGuardService-token: ${token}`);
+    /*let token: string | null = localStorage.getItem(Literals.jwt);
+    console.log(`--AuthGuardService-token: ${token}`);*/
 
     // получить данные о пользователе
-    let user: User = User.loadUser();
+    let user: User = this._userService.user;
+    console.log(`*- user.isLogin: '${user.isLogin}' -*`);
 
     // если токен есть и он действителен ИЛИ
     // данные о пользователе есть и произведён вход в систему, то
     // переход по маршруту разрешён
-    if ((token && !this._jwtHelper.isTokenExpired(token)) || user.isLogin) {
+    /*if ((token && !this._jwtHelper.isTokenExpired(token)) || user.isLogin) {
+      console.log(`--AuthGuardService-canActivate-TRUE-]`);
+      return true;
+    } // if*/
+    if (this.isTokenExists() || user.isLogin) {
       console.log(`--AuthGuardService-canActivate-TRUE-]`);
       return true;
     } // if
 
     // иначе перенаправляем пользователя на форму входа в систему
     this._router.navigateByUrl(Literals.routeLogin)
-      .then((e) => { console.dir(e); });
+      .then((e) => { console.log(`*- переход: ${e} -*`); /*console.dir(e);*/ });
 
     console.log(`--AuthGuardService-canActivate-FALSE-]`);
     return false;
@@ -73,21 +83,6 @@ export class AuthGuardService implements CanActivate {
     console.log(`[-AuthGuardService-login--`);
 
     // ожидаем получения ответа на запрос
-   /* let webResult: {token: string, user: User} =
-      { token: Literals.empty, user: User.UserToDto(new User()) };
-    try {
-      webResult = await firstValueFrom(
-        this._webApiService.loginPOST(Config.urlAuthLogin, loginModel)
-      );
-    } catch (e: any) {
-      console.dir(e);
-      console.log(`--AuthGuardService-login-]`);
-      return e.error;
-    } // try-catch
-
-    console.dir(webResult);
-    console.dir(webResult.token);
-    console.dir(webResult.user);*/
     let result: { message: any, token: string, user: User } =
       { message: Literals.Ok, token: Literals.empty, user: User.UserToDto(new User()) };
     try {
@@ -96,10 +91,12 @@ export class AuthGuardService implements CanActivate {
       );
       console.dir(webResult);
 
-      if (webResult != null) {
+      /*if (webResult != null) {
         result.token = webResult.token;
-        result.user  = webResult.user;
-      } // if
+        result.user  = User.newUser(webResult.user);
+      } // if*/
+      result.token = webResult.token;
+      result.user  = User.newUser(webResult.user);
 
     } catch (e: any) {
       console.dir(e);
@@ -116,12 +113,12 @@ export class AuthGuardService implements CanActivate {
     console.dir(result.user);
 
     // записать данные в хранилище
-    localStorage.setItem(Literals.jwt, result.token);
-    localStorage.setItem(Literals.user, JSON.stringify(result.user));
+    //localStorage.setItem(Literals.jwt, result.token);
+    //localStorage.setItem(Literals.user, JSON.stringify(result.user));
 
     // передадим данные о пользователе через объект компонента
     // другим компонентам, подписавшимся на изменение объекта
-    this.userSubject.next(User.newUser(result.user));
+    //this.userSubject.next(User.newUser(result.user));
 
     console.log(`--AuthGuardService-login-]`);
 
@@ -131,29 +128,35 @@ export class AuthGuardService implements CanActivate {
 
 
   // запрос на выход из системы
-  async logOut(user: User): Promise<string> {
+  async logOut(user: User): Promise<any> {
 
     console.log(`[-AuthGuardService-logOut--`);
 
     // ожидаем получения ответа на запрос
-    let message: string = Literals.Ok;
+    let message: any = Literals.Ok;
     try {
-      await firstValueFrom(
+
+      let webResult: any = await firstValueFrom(
         this._webApiService.logOutPOST(Config.urlAuthLogOut, user)
       );
+      console.dir(webResult);
+
     } catch (e: any) {
       console.dir(e);
-      console.log(`--AuthGuardService-logOut-]`);
+      console.dir(e.error);
       message = e.error;
+
+      console.log(`--AuthGuardService-logOut-]`);
+      return message;
     } // try-catch
 
     // удалить данные из хранилища
-    localStorage.removeItem(Literals.jwt);
-    localStorage.removeItem(Literals.user);
+    //localStorage.removeItem(Literals.jwt);
+    //localStorage.removeItem(Literals.user);
 
     // передадим данные о пользователе через объект компонента
     // другим компонентам, подписавшимся на изменение объекта
-    this.userSubject.next(new User());
+    //this.userSubject.next(new User());
 
     console.log(`--AuthGuardService-logOut-]`);
 
@@ -163,52 +166,274 @@ export class AuthGuardService implements CanActivate {
 
 
   // запрос на регистрацию в системе
-  async registration(loginModel: LoginModel): Promise<{ message: any, phone: string, email: string }> {
+  async registration(loginModel: LoginModel): Promise<any> {
 
     console.log(`[-AuthGuardService-registration--`);
 
     // ожидаем получения ответа на запрос
-    let result: { message: any, phone: string, email: string } =
-      { message: Literals.Ok, phone: Literals.empty, email: Literals.empty };
+    /*let result: { message: any, phone: string, email: string } =
+      { message: Literals.Ok, phone: Literals.empty, email: Literals.empty };*/
+    let message: any = Literals.Ok;
     try {
       let webResult: any = await firstValueFrom(
         this._webApiService.registrationPOST(Config.urlAuthRegistration, loginModel)
       );
       console.dir(webResult);
 
-      if (webResult != null) {
+     /* if (webResult != null) {
         result.message = Literals.empty;
         result.phone = webResult.phone;
         result.email = webResult.email;
-      } // if
+      } // if*/
+
+    } catch (e: any) {
+      console.dir(e);
+      console.dir(e.error);
+      //result.message = e.error;
+      message = e.error;
+
+      //if (e.error.title) result.message = e.error.title;
+
+      console.log(`--AuthGuardService-registration-]`);
+      return message;
+    } // try-catch
+
+    /*console.dir(result);
+    console.dir(result.message);
+    console.dir(result.phone);
+    console.dir(result.email);*/
+
+    console.log(`--AuthGuardService-registration-]`);
+
+    return message;
+
+  } // registration
+
+
+  // запрос на обновление jwt-токена
+  async refreshToken(): Promise<[boolean, string]> {
+    console.log(`[-AuthGuardService-refreshToken--`);
+
+    // получить данные о пользователе из сервиса-хранилища
+    let user: User = this._userService.user;
+
+    console.log(`--AuthGuardService-1-`);
+
+    // ожидаем получения ответа на запрос
+    let result: { message: any, token: string, user: User } =
+      { message: Literals.Ok, token: Literals.empty, user: User.UserToDto(new User()) };
+    try {
+      let webResult: any = await firstValueFrom(
+        this._webApiService.refreshPOST(Config.urlAuthRefresh, user)
+      );
+      console.dir(webResult);
+
+      result.token = webResult.token;
+      result.user  = User.newUser(webResult.user);
 
     } catch (e: any) {
       console.dir(e);
       console.dir(e.error);
       result.message = e.error;
 
-      if (e.error.title) result.message = e.error.title;
+      //console.log(`--AuthGuardService-refreshToken-]`);
+      //return result;
+    } // try-catch
 
-      console.log(`--AuthGuardService-registration-]`);
+    //console.dir(result);
+    //console.dir(result.message);
+    //console.dir(result.token);
+    //console.dir(result.user);
+
+    console.log(`--AuthGuardService-result:`);
+    console.dir(result);
+
+    console.log(`--AuthGuardService-2-`);
+
+    // если сообщение с ошибкой - завершаем обработку,
+    // из локального хранилища удаляем данные о токене и пользователе,
+    // переходим в форму входа
+    console.dir(result.message);
+    let status: boolean;
+    if (result.message != Literals.Ok) {
+
+      // условие НЕудачной операции
+      status = false;
+
+      // установить данные о пользователе в сервисе-хранилище в значение
+      // по умолчанию и передать изменённые данные всем подписчикам
+      this._userService.user = new User();
+
+      // удалить данные из хранилища
+      localStorage.removeItem(Literals.jwt);
+      localStorage.removeItem(Literals.user);
+
+      // перейти к форме входа
+      this._router.navigateByUrl(Literals.routeLogin)
+        .then((e) => { console.log(`*- переход: ${e} -*`); });
+
+      console.log(`--AuthGuardService-refreshToken-FALSE-]`);
+
+    } else {
+
+      // условие удачной операции
+      status = true;
+
+      // сохраним данные о пользователе в сервисе-хранилище
+      // и передадим изменённые данные всем подписчикам
+      this._userService.user = result.user;
+
+      // запишем данные в хранилище
+      this.saveTokenToLocalStorage(result.token)
+      this._userService.saveUserToLocalStorage();
+
+      console.log(`--PasswordFormComponent-refreshToken-TRUE-]`);
+    } // if
+
+    return [status, result.message];
+  } // refreshToken
+
+  /*async refreshToken2(): Promise<[boolean, any]> {
+    console.log(`[-PasswordFormComponent-refreshToken--`);
+
+    // получить данные о пользователе из сервиса-хранилища
+    let user: User = this._userService.user;
+
+    console.log(`--PasswordFormComponent-0.1-`);
+
+    // запрос на обновление токена
+    let result: { message: any, token: string, user: User } =
+      await this._authGuardService.refreshToken(user);
+    console.log(`--PasswordFormComponent-result:`);
+    console.dir(result);
+
+    console.log(`--PasswordFormComponent-0.2-`);
+
+    // если сообщение с ошибкой - завершаем обработку,
+    // из локального хранилища удаляем данные о токене и пользователе,
+    // переходим в форму входа
+    console.dir(result.message);
+    if (result.message != Literals.Ok) {
+
+      // выключение спиннера ожидания данных
+      this.component.isWaitFlag = false;
+
+      // сформируем соответствующее сообщение об ошибке
+      //let message: string = Literals.empty;
+      let message: string = Literals.empty;
+
+      // ошибки данных
+      if (result.message.refreshModel) message =
+        Resources.incorrectUserIdData[this.component.language];
+
+      // изменим результат на сообщение для вывода
+      //result.message = message;
+
+      // установить данные о пользователе в сервисе-хранилище в значение
+      // по умолчанию и передать изменённые данные всем подписчикам
+      this._userService.user = new User();
+
+      // удалить данные из хранилища
+      localStorage.removeItem(Literals.jwt);
+      localStorage.removeItem(Literals.user);
+
+      // перейти к форме входа
+      this._router.navigateByUrl(Literals.routeLogin)
+        .then((e) => { console.log(`*- переход: ${e} -*`); });
+
+      console.log(`--PasswordFormComponent-refreshToken-FALSE-]`);
+      //return [false, result.message];
+      return [false, message];
+    } // if
+
+    // иначе - сообщение об успехе
+    result.message = Resources.refreshTokenOk[this.component.language];
+
+    // сохраним данные о пользователе в сервисе-хранилище
+    // и передадим изменённые данные всем подписчикам
+    this._userService.user = result.user;
+
+    // запишем данные в хранилище
+    this._authGuardService.saveTokenToLocalStorage(result.token)
+    this._userService.saveUserToLocalStorage();
+
+    console.log(`--PasswordFormComponent-refreshToken-TRUE-]`);
+    return [true, result.message];
+  } // refreshToken*/
+
+
+  /*async refreshToken(user: User): Promise<{ message: any, token: string, user: User }> {
+    console.log(`[-AuthGuardService-refreshToken--`);
+
+    // ожидаем получения ответа на запрос
+    let result: { message: any, token: string, user: User } =
+      { message: Literals.Ok, token: Literals.empty, user: User.UserToDto(new User()) };
+    try {
+      let webResult: any = await firstValueFrom(
+        this._webApiService.refreshPOST(Config.urlAuthRefresh, user)
+      );
+      console.dir(webResult);
+
+      result.token = webResult.token;
+      result.user  = User.newUser(webResult.user);
+
+    } catch (e: any) {
+      console.dir(e);
+      console.dir(e.error);
+      result.message = e.error;
+
+      console.log(`--AuthGuardService-refreshToken-]`);
       return result;
     } // try-catch
 
     console.dir(result);
     console.dir(result.message);
-    console.dir(result.phone);
-    console.dir(result.email);
+    console.dir(result.token);
+    console.dir(result.user);
 
-    console.log(`--AuthGuardService-registration-]`);
+    console.log(`--AuthGuardService-refreshToken-]`);
 
     return result;
-
-  } // registration
-
-
-  // запрос на обновление jwt-токена
-  /*refreshToken(): Promise<string> {
-
   } // refreshToken*/
+
+
+  // метод, проверяющий наличие и срок действия токена безопасности
+  isTokenExists(): boolean {
+    console.log(`[-AuthGuardService-isTokenExists--`);
+
+    // получить jwt-токен
+    //let token: string | null = localStorage.getItem(Literals.jwt);
+    let token: string | null = this.loadTokenFromLocalStorage();
+    console.log(`*- token: '${token}' -*`);
+
+    console.log(`*- (token && !this._jwtHelper.isTokenExpired(token): '${(token && !this._jwtHelper.isTokenExpired(token))}' -*`);
+
+    console.log(`--AuthGuardService-isTokenExists-]`);
+    //return (token && !this._jwtHelper.isTokenExpired(token)) ? true : false;
+    return !!(token && !this._jwtHelper.isTokenExpired(token));
+  } // isTokenExists
+
+
+  // чтение данных о токене из локального хранилища
+  loadTokenFromLocalStorage(): string | null {
+    console.log(`[-AuthGuardService-loadTokenFromLocalStorage--`);
+
+    // получить jwt-токен из хранилища, если запись есть
+    let token: string | null = localStorage.getItem(Literals.jwt);
+
+    console.log(`--AuthGuardService-loadTokenFromLocalStorage-]`);
+    return token;
+  } // loadTokenFromLocalStorage
+
+
+  // запись данных о токене в локальное хранилище
+  saveTokenToLocalStorage(token: string): void {
+    console.log(`[-AuthGuardService-saveTokenToLocalStorage--`);
+
+    localStorage.setItem(Literals.jwt, token);
+
+    console.log(`--AuthGuardService-saveTokenToLocalStorage-]`);
+  } // saveTokenToLocalStorage
 
 
   /*login(loginModel: LoginModel): string {
@@ -259,28 +484,6 @@ export class AuthGuardService implements CanActivate {
 
     return '123';
   } // login*/
-
-
-  // GET-запрос без параметров на удалённый сервер для получения данных
-  /*get(url: string): Observable<any> {
-    return this._http.get<any>(url);
-  } // get*/
-
-
-  // POST-запрос на удалённый сервер
-  /*loginPOST(url: string, credentials: any): Observable<any> {
-    return this._http.post<any>(url, credentials
-      /!*new HttpParams()
-        .set('username', credentials.username)
-        .set('password', credentials.password)*!/
-    );
-  } // editClient*/
-
-
-  // открытые аксессоры свойств
-  //get language(): string { return this._language; }
-
-  //set language(value: string) { this._language = value; }
 
 } // class AuthGuardService
 // ----------------------------------------------------------------------------

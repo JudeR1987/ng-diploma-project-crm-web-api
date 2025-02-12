@@ -242,9 +242,14 @@
 
           <!-- данные о пользователе -->
           @if (user.isLogin) {
-            <div class="me-1 d-flex justify-content-end align-items-center">
+            <!--<div class="me-1 d-flex justify-content-end align-items-center">
               <div class="h-auto">
-                <img class="img-thumbnail rounded-5 border border-1 border-back-color"
+                <img class="img-thumbnail rounded-2 border border-1 border-back-color p-0"
+                     src="{{user.isLogin ? user.avatar : component.srcPhoto + component.fileNamePhotoDef}}"
+                     alt="{{user.isLogin ? user.avatar : component.srcPhoto + component.fileNamePhotoDef}}"
+                     width="38px"
+                     title="{{user.userName}}" />
+                <img class="rounded-circle border border-1 border-back-color m-0 p-0"
                      src="{{user.isLogin ? user.avatar : component.srcPhoto + component.fileNamePhotoDef}}"
                      alt="{{user.isLogin ? user.avatar : component.srcPhoto + component.fileNamePhotoDef}}"
                      width="38px"
@@ -253,13 +258,58 @@
               <div class="m-0 px-1 py-0 text-back-color fw-bold">
                 {{user.userName}}
               </div>
+            </div>-->
+
+            <div class="dropdown me-1 p-0">
+              <button class="dropdown-toggle btn bg-back-color m-0 p-0 pe-1"
+                      type="button"
+                      data-bs-toggle="dropdown">
+                <img class="img-thumbnail rounded-2 border border-1 border-back-color p-0"
+                     src="{{user.isLogin && user.avatar ? user.avatar : component.srcPhotoPath + component.fileNamePhotoDef}}"
+                     alt="{{user.isLogin ? user.avatar : component.srcPhotoPath + component.fileNamePhotoDef}}"
+                     width="38px"
+                     title="{{user.userName}}" />
+              </button>
+              <ul class="dropdown-menu dropdown-menu-start dropdown-menu-user
+                         m-0 mt-2px px-0 py-1 border border-1 border-back-color">
+                <li>
+                  <button class="dropdown-item px-2 py-1 fw-bold text-back-color"
+                          type="button" (click)="routingToUserForm()"
+                          title="{{component.butUserFormTitle}}">
+                    {{component.butUserFormValue}}
+                  </button>
+                </li>
+                <li>
+                  <button class="dropdown-item px-2 py-1 fw-bold text-back-color"
+                          type="button" (click)="routingToPasswordForm()"
+                          title="{{component.butPasswordFormTitle}}">
+                    {{component.butPasswordFormValue}}
+                  </button>
+                </li>
+                <li><hr class="dropdown-divider my-1"></li>
+                <li>
+                  <button class="dropdown-item px-2 py-1 fw-bold text-back-color"
+                          type="button"
+                          [class.disabled]="component.isWaitFlag"
+                          (click)="logOut()"
+                          title="{{component.butLogOutTitle}}">
+                    @if (component.isWaitFlag) {
+                      <div class="row m-0 p-0 justify-content-center align-items-center">
+                        <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
+                      </div>
+                    } @else {
+                      {{component.butLogOutValue}}
+                    } <!-- if -->
+                  </button>
+                </li>
+              </ul>
             </div>
           } <!-- if -->
 
           <!-- ссылка на форму входа в аккаунт -->
           @if (brandActive.routerLinkActive != component.routeLogin && !user.isLogin) {
             <div class="nav-item me-1">
-              <a class="nav-link text-back-color p-2 fw-bold rounded-1"
+              <a class="nav-link text-back-color p-2 fw-bold rounded-1 w-75px"
                  routerLink="/{{component.routeLogin}}"
                  [class.nav-active]="brandActive.routerLinkActive === component.routeLogin"
                  title="{{component.butLoginTitle}}">
@@ -281,9 +331,9 @@
           } <!-- if -->
 
           <!-- ссылка для выхода из учётной записи -->
-          @if (user.isLogin) {
+          <!--@if (user.isLogin) {
             <div class="nav-item text-back-color me-1">
-              <button class="nav-link p-2 fw-bold rounded-1"
+              <button class="nav-link p-2 fw-bold rounded-1 w-75px"
                       [class.disabled]="component.isWaitFlag"
                       (click)="logOut()"
                       title="{{component.butLogOutTitle}}">
@@ -293,17 +343,18 @@
                   </div>
                 } @else {
                   {{component.butLogOutValue}}
-                } <!-- if -->
+                } &lt;!&ndash; if &ndash;&gt;
               </button>
             </div>
-          } <!-- if -->
+          }--> <!-- if -->
 
         </div>
 
         <!-- компонент выбора языка отображения данных -->
-        <language-component class="align-self-stretch mb-1 mb-lg-0 py-1"
+        <!--<language-component class="mb-1 mb-lg-0 py-1 h-40px"
                             [language]="component.language">
-        </language-component>
+        </language-component>-->
+        <language-component class="mb-1 mb-lg-0 py-1 h-40px"></language-component>
 
       </div>
 
@@ -359,7 +410,7 @@
 
 
 <!-- контейнер для вывода сообщений результатов операции -->
-<div class="position-fixed right-1rem-lg-2rem p-1 p-sm-4"
+<div class="position-fixed right-1rem-lg-2rem p-1 p-sm-4 z-1"
      [class.w-90]="component.errorMessage.message.length > 100"
      *ngIf="component.errorMessage.isVisible">
   <div class="alert alert-warning alert-dismissible

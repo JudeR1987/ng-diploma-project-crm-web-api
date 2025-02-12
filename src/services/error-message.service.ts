@@ -1,5 +1,5 @@
 // ----------------------------------------------------------------------------
-// сервис хранения значения сообщения об ошибке для отображения в AppComponent
+// сервис передачи значения сообщения об ошибке для отображения в AppComponent
 // ----------------------------------------------------------------------------
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
@@ -13,7 +13,8 @@ export class ErrorMessageService {
   public errorMessageSubject: Subject<string> = new Subject<string>();
 
   constructor() {
-    console.log(`[-ErrorMessageService-constructor-]`);
+    console.log(`[-ErrorMessageService-constructor--`);
+    console.log(`--ErrorMessageService-constructor-]`);
   } // constructor
 
 } // class ErrorMessageService

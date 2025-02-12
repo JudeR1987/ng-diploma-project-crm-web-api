@@ -22,6 +22,14 @@ export class Config {
   public static readonly urlAuthRegistration: string =
     `${this.urlHost}/api/auth/registration`;
 
+  // 5. url для изменения данных о пользователе
+  public static readonly urlEditUser: string =
+    `${this.urlHost}/profile/editUser`;
+
+  // 6. url для изменения пароля пользователя
+  public static readonly urlEditPassword: string =
+    `${this.urlHost}/profile/editPassword`;
+
 
 
   // адрес хоста

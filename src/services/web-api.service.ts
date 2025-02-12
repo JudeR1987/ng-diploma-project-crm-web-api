@@ -6,6 +6,7 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {LoginModel} from '../models/classes/LoginModel';
 import {User} from '../models/classes/User';
+import {Literals} from '../infrastructure/Literals';
 
 @Injectable({
   providedIn: 'root'
@@ -68,8 +69,7 @@ export class WebApiService {
     console.log(`--WebApiService-refreshPOST-]`);
 
     return this._http.post<any>(
-      url,
-      { userId: user.id, userToken: user.userToken }
+      url, { userId: user.id, userToken: user.userToken }
     );
   } // refreshPOST
 
@@ -85,6 +85,45 @@ export class WebApiService {
 
     return this._http.post<any>(url, LoginModel.LoginModelToDto(loginModel));
   } // registrationPOST
+
+
+  // POST-запрос на удалённый сервер для изменения данных о пользователе
+  editUserPOST(url: string, user: User): Observable<any> {
+
+    console.log(`[-WebApiService-editUserPOST--`);
+    console.log(`[-WebApiService-user: -*`);
+    console.dir(user);
+
+    console.log(`--WebApiService-editUserPOST-]`);
+
+    return this._http.post<any>(url, User.UserToDto(user));
+  } // editUserPOST
+
+
+  // POST-запрос на удалённый сервер для смены пароля пользователя
+  editPasswordPOST(url: string, userId: number, newPassword: string, token: string): Observable<any> {
+
+    console.log(`[-WebApiService-editPasswordPOST--`);
+    console.log(`[-WebApiService-userId: '${userId}' -*`);
+    console.log(`[-WebApiService-newPassword: '${newPassword}' -*`);
+    console.log(`[-WebApiService-token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = new HttpHeaders()
+      .set('Accept', 'application/json')
+      // передача токена в заголовке
+      .set('Authorization', `Bearer ${token}`);
+
+    console.log(`--WebApiService-editPasswordPOST-]`);
+
+    return this._http.post<any>(
+      url,
+      new HttpParams()
+        .set(Literals.userId, userId)
+        .set(Literals.newPassword, newPassword),
+      { headers: httpHeaders }
+    );
+  } // editPasswordPOST
 
 } // class WebApiService
 // ----------------------------------------------------------------------------

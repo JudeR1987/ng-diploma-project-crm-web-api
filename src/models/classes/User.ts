@@ -124,7 +124,7 @@ export class User {
 
 
   // получить сведения о пользователе из локального хранилища
-  public static loadUser(): User {
+  /*public static loadUser(): User {
 
     // получить запись из хранилища, если она есть
     let userString: string | null = localStorage.getItem(Literals.user);
@@ -146,7 +146,7 @@ export class User {
     //return this.newUser(userDto);
     return user;
 
-  } // loadUser
+  } // loadUser*/
 
 } // class User
 // ----------------------------------------------------------------------------

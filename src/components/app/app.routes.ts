@@ -6,6 +6,8 @@ import {Literals} from '../../infrastructure/Literals';
 import {LoginComponent} from '../login/login.component';
 import {RegistrationComponent} from '../registration/registration.component';
 import {AuthGuardService} from '../../services/auth-guard.service';
+import {UserFormComponent} from '../user-form/user-form.component';
+import {PasswordFormComponent} from '../password-form/password-form.component';
 //import {CountriesComponent} from '../countries/countries.component';
 //import {PurposesComponent} from '../purposes/purposes.component';
 //import {PeopleComponent} from '../people/people.component';
@@ -24,6 +26,8 @@ export const routes: Routes = [
   {path: Literals.routeAbout,        component: AboutComponent, canActivate: [AuthGuardService]},
   {path: Literals.routeLogin,        component: LoginComponent},
   {path: Literals.routeRegistration, component: RegistrationComponent},
+  {path: `${Literals.routeUserForm}/:${Literals.id}`,     component: UserFormComponent},
+  {path: `${Literals.routePasswordForm}/:${Literals.id}`, component: PasswordFormComponent},
   //{path: 'countries',             component: CountriesComponent},
   //{path: 'purposes',              component: PurposesComponent},
   //{path: 'people',                component: PeopleComponent},

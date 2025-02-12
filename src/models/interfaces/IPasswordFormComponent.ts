@@ -1,34 +1,36 @@
 // ----------------------------------------------------------------------------
-// интерфейс объекта с параметрами компонента LoginComponent
+// интерфейс объекта с параметрами компонента PasswordFormComponent
 // ----------------------------------------------------------------------------
-export interface ILoginComponent {
+export interface IPasswordFormComponent {
 
   //#region параметры меняющиеся при смене языка
 
   // заголовок
   title: string,
 
-  // заголовок поля ввода логина пользователя
-  labelLogin: string,
+  // заголовок поля ввода старого пароля пользователя
+  labelOldPassword: string,
 
-  // заголовок поля ввода пароля пользователя
-  labelPassword: string,
+  // заголовок поля ввода нового пароля пользователя
+  labelNewPassword: string,
+
+  // заголовок поля подтверждения нового пароля пользователя
+  labelNewPasswordConfirmation: string,
 
   // заголовок чек-бокса изменения отображения пароля при вводе
   labelCheckboxPassword: string,
 
   // значения сообщений об ошибках
   errorRequiredTitle:             string,
-  errorPhoneValidatorTitle:       string,
-  errorEmailValidatorTitle:       string,
+  errorPasswordValidatorTitle:    string,
   errorPasswordMinMaxLengthTitle: string,
-  loginNoErrorsTitle:             string,
+  errorMatchValidatorTitle:       string,
 
-  // всплывающая подсказка на кнопке "войти"
-  butLoginTitle: string,
+  // всплывающая подсказка на кнопке "изменить"
+  butPasswordEditTitle: string,
 
-  // значение кнопки "войти"
-  butLoginValue: string,
+  // значение кнопки "изменить"
+  butPasswordEditValue: string,
 
   //endregion
 
@@ -42,23 +44,11 @@ export interface ILoginComponent {
   // выделения активной кнопки навигации после перезагрузки страницы
   route: string,
 
-  // параметр валидности вводимых данных
-  /*validLogin: boolean,
-
-  // сообщение об ошибке
-  errorMessage: string,*/
-
   // флаг включения спиннера при ожидании данных с сервера
   isWaitFlag: boolean,
 
-  // шаблон поля ввода логина пользователя
-  loginPlaceholder: string,
-
   // шаблон поля ввода пароля пользователя
   passwordPlaceholder: string,
-
-  // длина логина пользователя
-  loginLength: number,
 
   // минимальная длина пароля пользователя
   passwordMinLength: number,
@@ -67,23 +57,16 @@ export interface ILoginComponent {
   passwordMaxLength: number,
 
   // типы ошибок
-  errorRequired: string,
-  errorPhoneValidator: string,
-  errorEmailValidator: string,
-  errorMinLength: string,
-  errorMaxLength: string,
-
-  // «идентификатор таймера», для отмены срабатывания setTimeout()
-  // при нажатии кнопок обработки быстрее длительности срабатывания таймера
-  //timerId: number,
-
-  // длительность срабатывания setTimeout()
-  //timeout: number
+  errorRequired:          string,
+  errorMinLength:         string,
+  errorMaxLength:         string,
+  errorPasswordValidator: string,
+  errorMatchValidator:    string,
 
   // объект с типами поля ввода пароля
   passwordInputTypes: { text: string, password: string }
 
   //endregion
 
-} // interface ILoginComponent
+} // interface IPasswordFormComponent
 // ----------------------------------------------------------------------------

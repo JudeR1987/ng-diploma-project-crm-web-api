@@ -1,9 +1,9 @@
 
-<!-- /registration -->
+<!-- /user-form/:id -->
 
-<!-- компонент с формой регистрации в системе -->
+<!-- компонент с формой изменения данных о пользователе -->
 
-<!-- разметка компонента RegistrationComponent -->
+<!-- разметка компонента UserFormComponent -->
 <main class="row bg-main-color content-height mx-auto p-1 p-sm-2
              w-md-95 justify-content-center align-items-start">
 
@@ -11,26 +11,9 @@
 
   <div class="col-md-10 col-lg-8 col-xl-7 col-xxl-5 m-0 my-sm-2 p-0">
 
-    <!-- контейнер для вывода сообщений результатов операции -->
-    <!--<div class="position-fixed right-2rem align-items-end"
-         [class.w-90]="component.errorMessage.length > 100"
-         *ngIf="!component.validRegistration">
-      <div class="alert alert-warning alert-dismissible
-                  fade show border-2 m-1 py-2">
-        <button class="btn-close bg-secondary m-1 p-1"
-                type="button" data-bs-dismiss="alert">
-        </button>
-        <div [class.h-50vh]="component.errorMessage.length > 100"
-             style="overflow: auto">
-          <span id="errorMessage" [innerHTML]="component.errorMessage"></span>
-        </div>
-      </div>
-    </div>-->
-
-
-    <!-- форма регистрации -->
+    <!-- форма изменения данных о пользователе -->
     <form class="form-control p-2" novalidate
-          [formGroup]="registrationForm"
+          [formGroup]="userForm"
           (ngSubmit)="onSubmit()">
 
       <!-- заголовок -->
@@ -41,6 +24,39 @@
       <!-- тело - основные параметры формы -->
       <div class="row mx-0 my-1 p-2 bg-primary-subtle
                   border border-primary justify-content-center">
+
+        <!-- ввод имени пользователя -->
+        <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+          <label class="form-label col-sm-4 col-md-3 m-0 px-2" for="userName">
+            {{component.labelUserName}}:
+          </label>
+          <div class="col-sm-8 col-md-7 col-lg-6 p-0">
+            <input class="form-control px-2" type="text"
+                   id="userName" name="userName" formControlName="userName"
+                   placeholder="{{component.userNamePlaceholder}}"
+                   maxlength="{{component.userNameLength + 1}}">
+          </div>
+        </div>
+        <!-- строка с подсказками -->
+        <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+          <div class="col-sm-8 col-md-7 col-lg-6 offset-sm-4 offset-md-3 p-0">
+
+            @if (userName.errors && (userName.dirty || userName['touched'])) {
+              <div class="text-danger ps-2 fw-bold">
+                <span *ngIf="userName.errors[component.errorRequired]">
+                  {{component.errorRequiredTitle}}
+                </span>
+                <span *ngIf="userName.errors[component.errorMaxLength]">
+                  {{component.errorUserNameMaxLengthTitle}}
+                </span>
+              </div>
+            } @else {
+              <span class="text-secondary ps-2 fw-bold"></span>
+            } <!-- if -->
+
+          </div>
+        </div>
 
         <!-- ввод телефона пользователя -->
         <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
@@ -120,9 +136,7 @@
                 } <!-- if -->
               </div>
             } @else {
-              <span class="text-secondary ps-2 fw-bold">
-                {{component.emailNoErrorsTitle}}
-              </span>
+              <span class="text-secondary ps-2 fw-bold"></span>
             } <!-- if -->
 
           </div>
@@ -137,17 +151,14 @@
                        text-opacity-75 w-50 w-min-140-max-160 m-1
                        border border-success border-2 border-opacity-50"
                 type="submit"
-                [class.disabled]="registrationForm.invalid ||
-                                  component.errorRegisteredPhone.isRegistered ||
-                                  component.errorRegisteredEmail.isRegistered ||
-                                  component.isWaitFlag"
-                title="{{component.butContinueTitle}}">
+                [class.disabled]="userForm.invalid || component.isWaitFlag"
+                title="{{component.butUserEditTitle}}">
           @if (component.isWaitFlag) {
             <div class="row m-0 p-0 justify-content-center align-items-center">
               <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
             </div>
           } @else {
-            {{component.butContinueValue}}
+            {{component.butUserEditValue}}
           } <!-- if -->
         </button>
 

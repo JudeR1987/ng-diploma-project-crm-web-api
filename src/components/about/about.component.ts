@@ -30,8 +30,13 @@ export class AboutComponent implements OnInit, OnDestroy {
   //public language: string = Literals.empty;
 
   // объект с параметрами компонента
-  public component: IAboutComponent =
-    { title: Literals.empty, language: Literals.empty, route: Literals.empty };
+  public component: IAboutComponent = {
+    // параметры меняющиеся при смене языка
+    title:    Literals.empty,
+    // параметры НЕ меняющиеся при смене языка
+    language: Literals.empty,
+    route:    Literals.empty
+  };
 
   // объект подписки на изменение языка, для отмены подписки при уничтожении компонента
   private _languageSubscription: Subscription = new Subscription();
@@ -45,7 +50,9 @@ export class AboutComponent implements OnInit, OnDestroy {
     Utils.helloComponent(Literals.about);
 
     console.log(`[-AboutComponent-constructor--`);
+
     console.log(`*-this.component.language='${this.component.language}'-*`);
+    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
 
     // получить маршрут
     this.component.route = this._router.url.slice(1);
@@ -64,6 +71,8 @@ export class AboutComponent implements OnInit, OnDestroy {
 
     // задать значение языка отображения и установить
     // значения строковых переменных
+    console.log(`*-this.component.language='${this.component.language}'-*`);
+    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
     this.changeLanguageLiterals(this._languageService.language);
 
     // подписаться на изменение значения названия выбранного языка

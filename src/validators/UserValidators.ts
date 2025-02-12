@@ -2,7 +2,7 @@
 // класс, представляющий набор пользовательских валидаторов
 // ----------------------------------------------------------------------------
 
-import {AbstractControl} from '@angular/forms';
+import {AbstractControl, FormControl, ValidatorFn} from '@angular/forms';
 import {Literals} from '../infrastructure/Literals';
 
 export class UserValidators {
@@ -21,9 +21,7 @@ export class UserValidators {
     let value = control.value;
 
     // проверка поля по регулярному выражению
-    return phoneRegex.test(value)
-      ? null!
-      : {'phoneValidator': {value}};
+    return phoneRegex.test(value) ? null! : {'phoneValidator': {value}};
 
   } // phone
 
@@ -39,11 +37,24 @@ export class UserValidators {
     let value = control.value;
 
     // проверка поля по регулярному выражению
-    return emailRegex.test(value)
-      ? null!
-      : {'emailValidator': {value}};
+    return emailRegex.test(value) ? null! : {'emailValidator': {value}};
 
   } // email
+
+
+  // статический метод - пользовательский валидатор с параметрами,
+  // валидация ввода пароля пользователя
+  public static password(password: string): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } => {
+
+      // значение поля из формы
+      let value = control.value;
+
+      // проверка вводимого пароля
+      return value === password ? null! : {'passwordValidator': {value}};
+
+    };// return
+  } // password
 
 
   // статический метод - пользовательский валидатор без параметров,
@@ -135,6 +146,34 @@ export class UserValidators {
     return numberRegex.test(numbers);
 
   } // isNumbers
+
+
+  // статический метод - пользовательский валидатор с параметрами,
+  // валидация совпадения паролей в двух полях ввода
+  public static match(passControl1: FormControl, passControl2: FormControl): ValidatorFn {
+    return (): { [key: string]: any } => {
+
+      console.log(`[-UserValidators-match--`);
+
+      console.log(`* passControl1.value: *`);
+      console.dir(passControl1.value);
+      console.log(`* passControl2.value: *`);
+      console.dir(passControl2.value);
+
+      // если значения в полях отсутствуют, вернуть НЕ null, т.е. - НЕ валидно
+      if (!passControl1.value || !passControl2.value) {
+        console.log(`--UserValidators-match-]`);
+        return {'matchValidator': true};
+      } // if
+
+      console.log(`--UserValidators-match-]`);
+
+      // проверка совпадения паролей
+      return (passControl1.value === passControl2.value)
+        ? null! : {'matchValidator': true};
+
+    };// return
+  } // match
 
 } // UserValidators
 

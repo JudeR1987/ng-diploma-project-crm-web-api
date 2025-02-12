@@ -15,6 +15,7 @@ import {AuthGuardService} from '../../services/auth-guard.service';
 import {UserValidators} from '../../validators/UserValidators';
 import {NgIf} from '@angular/common';
 import {ErrorMessageService} from '../../services/error-message.service';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-registration',
@@ -86,14 +87,18 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   // для получения маршрута, подключения к сервису установки языка,
   // подключения к сервису аутентификации/авторизации пользователя
   // и подключения к сервису хранения сообщения об ошибке
+  // и подключения к сервису хранения данных о пользователе
   constructor(private _router: Router,
               private _languageService: LanguageService,
               private _authGuardService: AuthGuardService,
-              private _errorMessageService: ErrorMessageService) {
+              private _errorMessageService: ErrorMessageService,
+              private _userService: UserService) {
     Utils.helloComponent(Literals.registration);
 
     console.log(`[-RegistrationComponent-constructor--`);
+
     console.log(`*-this.component.language='${this.component.language}'-*`);
+    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
 
     // получить маршрут
     this.component.route = this._router.url.slice(1);
@@ -112,6 +117,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
     // задать значение языка отображения и установить
     // значения строковых переменных
+    console.log(`*-this.component.language='${this.component.language}'-*`);
+    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
     this.changeLanguageLiterals(this._languageService.language);
 
     // подписаться на изменение значения названия выбранного языка
@@ -152,15 +159,15 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
     // установить значения строковых переменных
     this.component.title                        = Resources.registrationTitle[this.component.language];
-    this.component.labelPhone                   = Resources.registrationLabelPhone[this.component.language];
-    this.component.labelEmail                   = Resources.registrationLabelEmail[this.component.language];
+    this.component.labelPhone                   = Resources.labelPhone[this.component.language];
+    this.component.labelEmail                   = Resources.labelEmail[this.component.language];
     this.component.errorRegisteredPhone.message = Resources.registeredPhone[this.component.language];
     this.component.errorRegisteredEmail.message = Resources.registeredEmail[this.component.language];
     this.component.errorRequiredTitle           = Resources.errorRequired[this.component.language];
     this.component.errorPhoneValidatorTitle     = Resources.errorPhoneValidator[this.component.language];
-    this.component.errorEmailMaxLengthTitle     = Resources.registrationErrorEmailMaxLength(this.component.language, this.component.emailLength);
+    this.component.errorEmailMaxLengthTitle     = Resources.errorEmailMaxLength(this.component.language, this.component.emailLength);
     this.component.errorEmailValidatorTitle     = Resources.errorEmailValidator[this.component.language];
-    this.component.phoneNoErrorsTitle           = Resources.registrationPhoneNoErrors[this.component.language];
+    this.component.phoneNoErrorsTitle           = Resources.phoneNoErrors[this.component.language];
     this.component.emailNoErrorsTitle           = Resources.registrationEmailNoErrors[this.component.language];
     this.component.butContinueTitle             = Resources.registrationButContinueTitle[this.component.language];
     this.component.butContinueValue             = Resources.registrationButContinueValue[this.component.language];
@@ -188,6 +195,9 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
     console.log(`[-RegistrationComponent-onSubmit--`);
 
+    console.log(`*- this._userService.user -*`);
+    console.dir(this._userService.user);
+
     // удаление всплывающего сообщения
     //this.removeSetTimeout();
 
@@ -207,10 +217,9 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     console.log(`--RegistrationComponent-1-`);
 
     // запрос на регистрацию в системе
-    let result: { message: any, phone: string, email: string } =
-      await this._authGuardService.registration(this.loginModel);
-    //console.log(`--RegistrationComponent-this.component.errorMessage-${this.component.errorMessage}`);
-    console.log(`--RegistrationComponent-result-`);
+    //let result: { message: any, phone: string, email: string } =
+    let result: any = await this._authGuardService.registration(this.loginModel);
+    console.log(`--RegistrationComponent-result:`);
     console.dir(result);
 
     console.log(`--RegistrationComponent-2-`);
@@ -218,18 +227,20 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     // выключение спиннера ожидания данных
     this.component.isWaitFlag = false;
 
-
     // если сообщение с ошибкой - завершаем обработку,
     // остаёмся в форме регистрации
-    console.dir(result.message);
-    if (result.message != Literals.Ok) {
+    //console.dir(result.message);
+    if (result != Literals.Ok) {
 
-      // для ошибок данных
-      if (result.message.loginModel) result.message =
+      // ошибки данных
+      if (result.loginModel) result =
         Resources.registrationIncorrectData[this.component.language];
 
-      // если получили параметры phone или email, то
-      // установить соответствующее сообщение об ошибке
+      // ошибки сервера
+      if (result.title) result = result.title;
+      //if ((typeof result) === Literals.string) result = result;
+
+      // ошибки регистрации по номеру телефона
       if (result.phone) {
         console.dir(result.phone);
         console.log('телефон есть');
@@ -242,11 +253,13 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         this.checkingExisting(this.registrationForm.value);
 
         // формирование сообщения об ошибке
-        result.message += `${result.message.length > 0 ? Literals.comma + Literals.break : Literals.empty}\
-          ${Resources.registeredPhone[this.component.language]}`;
+        /*result.message += `${result.message.length > 0 ? Literals.comma + Literals.break : Literals.empty}\
+          ${Resources.registeredPhone[this.component.language]}`;*/
+        result = Resources.registeredPhone[this.component.language];
 
       } // if
 
+      // ошибки регистрации по email
       if (result.email) {
         console.dir(result.email);
         console.log('email есть');
@@ -259,40 +272,27 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         this.checkingExisting(this.registrationForm.value);
 
         // формирование сообщения об ошибке
-        result.message += `${result.message.length > 0 ? Literals.comma + Literals.break : Literals.empty}\
-          ${Resources.registeredEmail[this.component.language]}`;
+        /*result.message += `${result.message.length > 0 ? Literals.comma + Literals.break : Literals.empty}\
+          ${Resources.registeredEmail[this.component.language]}`;*/
+        result = Resources.registeredEmail[this.component.language];
 
       } // if
 
-      // установить параметр валидности
-      //this.component.validRegistration = false;
-      //this.component.errorMessage = result.message;
+      //return;
+    } else {
 
-      // передадим значение сообщения об ошибке для отображения через объект
-      // сервиса компоненту AppComponent, подписавшемуся на изменение объекта
-      this._errorMessageService.errorMessageSubject.next(result.message);
-      console.log(`--RegistrationComponent-onSubmit-]`);
+      // иначе - сообщение об успехе
+      result = Resources.registrationWelcomeOk[this.component.language];
 
-      // сбросить сообщение об ошибке
-      /*this.component.timerId = setTimeout(() => {
-        this.component.validRegistration = true;
-        this.component.errorMessage = Literals.empty;
-      }, this.component.errorMessage.length < 100
-        ? this.component.timeout
-        : Literals.timeStop
-      ); // setTimeout*/
+      // перейти по маршруту на форму входа
+      this._router.navigateByUrl(Literals.routeLogin)
+        .then((e) => { console.log(`*- переход: ${e} -*`); });
 
-      return;
     } // if
 
-
-    // установить параметр валидности и значение сообщения об ошибке
-    //this.component.validRegistration = true;
-    //this.component.errorMessage = Literals.empty;
-
-    // перейти по маршруту на форму входа
-    this._router.navigateByUrl(Literals.routeLogin)
-      .then((e) => { console.dir(e); });
+    // передадим значение сообщения об ошибке для отображения через объект
+    // сервиса компоненту AppComponent, подписавшемуся на изменение объекта
+    this._errorMessageService.errorMessageSubject.next(result);
 
     console.log(`--RegistrationComponent-onSubmit-]`);
 

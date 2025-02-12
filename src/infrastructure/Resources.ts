@@ -30,6 +30,16 @@ export class Resources {
     'rus': 'Регистрация',
     'eng': 'Registration' };
 
+  // заголовок на странице "Редактировать профиль"
+  public static readonly appUserFormTitle: Record<string, string> = {
+    'rus': 'Редактировать профиль',
+    'eng': 'Edit Profile' };
+
+  // заголовок на странице "Изменить пароль"
+  public static readonly appPasswordFormTitle: Record<string, string> = {
+    'rus': 'Смена пароля',
+    'eng': 'Edit Password' };
+
   // всплывающая подсказка на логотипе "Home"
   public static readonly appLogoTitle: Record<string, string> = {
     'rus': 'На главную',
@@ -76,6 +86,26 @@ export class Resources {
     'rus': 'Зарегистрироваться',
     'eng': 'Registration' };
 
+  // всплывающая подсказка на кнопке "Редактировать профиль"
+  public static readonly appButUserFormTitle: Record<string, string> = {
+    'rus': 'редактировать профиль',
+    'eng': 'edit profile' };
+
+  // значение кнопки "Редактировать профиль"
+  public static readonly appButUserFormValue: Record<string, string> = {
+    'rus': 'профиль',
+    'eng': 'profile' };
+
+  // всплывающая подсказка на кнопке "Изменить пароль"
+  public static readonly appButPasswordFormTitle: Record<string, string> = {
+    'rus': 'редактировать пароль',
+    'eng': 'edit password' };
+
+  // значение кнопки "Изменить пароль"
+  public static readonly appButPasswordFormValue: Record<string, string> = {
+    'rus': 'смена пароля',
+    'eng': 'password change' };
+
   // всплывающая подсказка на кнопке "Выйти"
   public static readonly appButLogOutTitle: Record<string, string> = {
     'rus': 'выйти из учётной записи',
@@ -83,8 +113,8 @@ export class Resources {
 
   // значение кнопки "Выйти"
   public static readonly appButLogOutValue: Record<string, string> = {
-    'rus': 'Выйти',
-    'eng': 'Log out' };
+    'rus': 'выйти',
+    'eng': 'log out' };
 
   // всплывающая подсказка на кнопке "В начало"
   public static readonly appButStartTitle: Record<string, string> = {
@@ -206,42 +236,10 @@ export class Resources {
     'rus': 'Логин',
     'eng': 'Login' };
 
-  // заголовок поля ввода пароля пользователя
-  public static readonly loginLabelPassword: Record<string, string> = {
-    'rus': 'Пароль',
-    'eng': 'Password' };
-
-  // заголовок чек-бокса изменения отображения пароля при вводе
-  public static readonly loginLabelCheckboxPassword: Record<string, string> = {
-    'rus': 'показать пароль',
-    'eng': 'show password' };
-
   // сообщения об ошибках
-  public static readonly loginErrorPasswordMinMaxLengthStart: Record<string, string> = {
-    'rus': 'длина пароля от',
-    'eng': 'the password length is from' };
-
-  public static readonly loginErrorPasswordMinMaxLengthMiddle: Record<string, string> = {
-    'rus': 'до',
-    'eng': 'to' };
-
-  public static readonly loginErrorPasswordMinMaxLengthEnd: Record<string, string> = {
-    'rus': 'символов',
-    'eng': 'characters' };
-
-  public static loginErrorPasswordMinMaxLength(language: string, minLength: number, maxLength: number): string {
-    return `${this.loginErrorPasswordMinMaxLengthStart[language]}
-      ${minLength} ${this.loginErrorPasswordMinMaxLengthMiddle[language]}
-      ${maxLength} ${this.loginErrorPasswordMinMaxLengthEnd[language]}`;
-  } // loginErrorPasswordMinMaxLength
-
   public static readonly loginLoginNoErrors: Record<string, string> = {
     'rus': 'номер телефона или Email',
     'eng': 'phone number or Email address' };
-
-  public static readonly loginIncorrectPassword: Record<string, string> = {
-    'rus': 'неправильный пароль',
-    'eng': 'incorrect password' };
 
   public static readonly loginUnauthorizedPhoneStart: Record<string, string> = {
     'rus': 'пользователь с телефоном',
@@ -273,6 +271,14 @@ export class Resources {
     'rus': 'некорректные данные о пользователе',
     'eng': 'incorrect user information' };
 
+  public static readonly loginWelcome: Record<string, string> = {
+    'rus': 'Добро пожаловать',
+    'eng': 'Welcome' };
+
+  public static loginWelcomeOk(language: string, userName: string): string {
+    return `${this.loginWelcome[language]}, ${userName}!`;
+  } // loginWelcomeOk
+
   // всплывающая подсказка на кнопке "войти"
   public static readonly loginButLoginTitle: Record<string, string> = {
     'rus': 'войти в учётную запись',
@@ -293,42 +299,7 @@ export class Resources {
     'rus': 'Регистрация',
     'eng': 'Registration' };
 
-  // заголовок поля ввода номера телефона пользователя
-  public static readonly registrationLabelPhone: Record<string, string> = {
-    'rus': 'Телефон',
-    'eng': 'Phone' };
-
-  // заголовок поля ввода e-mail пользователя
-  public static readonly registrationLabelEmail: Record<string, string> = {
-    'rus': 'Email адрес',
-    'eng': 'Email address' };
-
   // сообщения об ошибках
-  public static readonly registeredPhone: Record<string, string> = {
-    'rus': 'такой телефон уже зарегистрирован',
-    'eng': 'this phone number is already registered' };
-
-  public static readonly registeredEmail: Record<string, string> = {
-    'rus': 'такой Email уже занят',
-    'eng': 'this Email address is already occupied' };
-
-  public static readonly registrationErrorEmailMaxLengthStart: Record<string, string> = {
-    'rus': 'максимальная длина почты',
-    'eng': 'the maximum length of the mail is' };
-
-  public static readonly registrationErrorEmailMaxLengthEnd: Record<string, string> = {
-    'rus': 'символов',
-    'eng': 'characters' };
-
-  public static registrationErrorEmailMaxLength(language: string, maxLength: number): string {
-    return `${this.registrationErrorEmailMaxLengthStart[language]}
-      ${maxLength} ${this.registrationErrorEmailMaxLengthEnd[language]}`;
-  } // registrationErrorEmailMaxLength
-
-  public static readonly registrationPhoneNoErrors: Record<string, string> = {
-    'rus': 'этот телефон станет вашим логином',
-    'eng': 'this phone number will become your username' };
-
   public static readonly registrationEmailNoErrors: Record<string, string> = {
     'rus': 'на этот email отправим пароль',
     'eng': 'we will send the password to this email' };
@@ -336,6 +307,10 @@ export class Resources {
   public static readonly registrationIncorrectData: Record<string, string> = {
     'rus': 'некорректные данные для регистрации',
     'eng': 'incorrect registration data' };
+
+  public static readonly registrationWelcomeOk: Record<string, string> = {
+    'rus': 'Поздравляем! Вы зарегистрировались!',
+    'eng': 'Congratulations! You have registered!' };
 
   // всплывающая подсказка на кнопке "продолжить"
   public static readonly registrationButContinueTitle: Record<string, string> = {
@@ -346,6 +321,106 @@ export class Resources {
   public static readonly registrationButContinueValue: Record<string, string> = {
     'rus': 'продолжить',
     'eng': 'continue' };
+
+  //endregion
+
+
+  //#region UserFormComponent
+
+  // заголовок
+  public static readonly userFormTitle: Record<string, string> = {
+    'rus': 'Ваши данные',
+    'eng': 'Your details' };
+
+  // заголовок поля ввода имени пользователя
+  public static readonly userFormLabelUserName: Record<string, string> = {
+    'rus': 'Имя',
+    'eng': 'Name' };
+
+  // шаблон поля ввода имени пользователя
+  public static readonly userFormUserNamePlaceholder: Record<string, string> = {
+    'rus': 'Ваше имя',
+    'eng': 'Your name' };
+
+  // сообщения об ошибках
+  public static readonly userFormMissingData: Record<string, string> = {
+    'rus': 'данные о пользователе отсутствуют',
+    'eng': 'user data is missing' };
+
+  public static readonly userFormErrorUserNameMaxLengthStart: Record<string, string> = {
+    'rus': 'максимальная длина имени',
+    'eng': 'the maximum length of the name is' };
+
+  public static readonly userFormErrorUserNameMaxLengthEnd: Record<string, string> = {
+    'rus': 'символов',
+    'eng': 'characters' };
+
+  public static userFormErrorUserNameMaxLength(language: string, maxLength: number): string {
+    return `${this.userFormErrorUserNameMaxLengthStart[language]}
+      ${maxLength} ${this.userFormErrorUserNameMaxLengthEnd[language]}`;
+  } // userFormErrorUserNameMaxLength
+
+  // всплывающая подсказка на кнопке "изменить"
+  public static readonly userFormButUserEditTitle: Record<string, string> = {
+    'rus': 'редактировать данные',
+    'eng': 'edit the data' };
+
+  // значение кнопки "изменить"
+  public static readonly userFormButUserEditValue: Record<string, string> = {
+    'rus': 'изменить',
+    'eng': 'edit' };
+
+  //endregion
+
+
+  //#region PasswordFormComponent
+
+  // заголовок
+  public static readonly passwordFormTitle: Record<string, string> = {
+    'rus': 'Смена пароля',
+    'eng': 'Password change' };
+
+  // заголовок поля ввода старого пароля пользователя
+  public static readonly passwordFormLabelOldPassword: Record<string, string> = {
+    'rus': 'Старый пароль',
+    'eng': 'Old password' };
+
+  // заголовок поля ввода нового пароля пользователя
+  public static readonly passwordFormLabelNewPassword: Record<string, string> = {
+    'rus': 'Новый пароль',
+    'eng': 'New password' };
+
+  // заголовок поля подтверждения нового пароля пользователя
+  public static readonly passwordFormLabelNewPasswordConfirmation: Record<string, string> = {
+    'rus': 'Подтв. пароля',
+    'eng': 'Password conf.' };
+
+  // сообщения об ошибках
+  public static readonly passwordFormIncorrectData: Record<string, string> = {
+    'rus': 'некорректные данные о пароле',
+    'eng': 'incorrect password data' };
+
+  public static readonly passwordFormErrorMatchValidator: Record<string, string> = {
+    'rus': 'пароли должны совпадать',
+    'eng': 'passwords must match' };
+
+  public static readonly passwordFormIncorrectNewPasswordData: Record<string, string> = {
+    'rus': 'некорректные данные о новом пароле',
+    'eng': 'incorrect information about the new password' };
+
+  public static readonly passwordFormOkData: Record<string, string> = {
+    'rus': 'пароль успешно изменён',
+    'eng': 'password changed successfully' };
+
+  // всплывающая подсказка на кнопке "изменить"
+  public static readonly passwordFormButPasswordEditTitle: Record<string, string> = {
+    'rus': 'изменить пароль',
+    'eng': 'edit the password' };
+
+  // значение кнопки "изменить"
+  public static readonly passwordFormButPasswordEditValue: Record<string, string> = {
+    'rus': 'изменить',
+    'eng': 'edit' };
 
   //endregion
 
@@ -374,6 +449,101 @@ export class Resources {
   public static readonly errorEmailValidator: Record<string, string> = {
     'rus': 'неверный формат почты',
     'eng': 'invalid mail format' };
+
+  public static readonly phoneNoErrors: Record<string, string> = {
+    'rus': 'этот телефон станет вашим логином',
+    'eng': 'this phone number will become your username' };
+
+  public static readonly registeredPhone: Record<string, string> = {
+    'rus': 'такой телефон уже зарегистрирован',
+    'eng': 'this phone number is already registered' };
+
+  public static readonly registeredEmail: Record<string, string> = {
+    'rus': 'такой Email уже занят',
+    'eng': 'this Email address is already occupied' };
+
+  public static readonly errorEmailMaxLengthStart: Record<string, string> = {
+    'rus': 'максимальная длина почты',
+    'eng': 'the maximum length of the mail is' };
+
+  public static readonly errorEmailMaxLengthEnd: Record<string, string> = {
+    'rus': 'символов',
+    'eng': 'characters' };
+
+  public static errorEmailMaxLength(language: string, maxLength: number): string {
+    return `${this.errorEmailMaxLengthStart[language]}
+      ${maxLength} ${this.errorEmailMaxLengthEnd[language]}`;
+  } // errorEmailMaxLength
+
+  public static readonly errorPasswordMinMaxLengthStart: Record<string, string> = {
+    'rus': 'длина пароля от',
+    'eng': 'the password length is from' };
+
+  public static readonly errorPasswordMinMaxLengthMiddle: Record<string, string> = {
+    'rus': 'до',
+    'eng': 'to' };
+
+  public static readonly errorPasswordMinMaxLengthEnd: Record<string, string> = {
+    'rus': 'символов',
+    'eng': 'characters' };
+
+  public static errorPasswordMinMaxLength(language: string, minLength: number, maxLength: number): string {
+    return `${this.errorPasswordMinMaxLengthStart[language]}
+      ${minLength} ${this.errorPasswordMinMaxLengthMiddle[language]}
+      ${maxLength} ${this.errorPasswordMinMaxLengthEnd[language]}`;
+  } // errorPasswordMinMaxLength
+
+  public static readonly incorrectPassword: Record<string, string> = {
+    'rus': 'неправильный пароль',
+    'eng': 'incorrect password' };
+
+  public static readonly incorrectUserIdData: Record<string, string> = {
+    'rus': 'некорректные данные о пользователе',
+    'eng': 'incorrect user information' };
+
+  public static readonly notRegisteredUserIdData: Record<string, string> = {
+    'rus': 'пользователь не зарегистрирован',
+    'eng': 'the user is not registered' };
+
+  public static readonly unauthorizedUserIdData: Record<string, string> = {
+    'rus': 'пользователь не авторизован',
+    'eng': 'the user is not logged in' };
+
+  public static readonly appLogOutOk: Record<string, string> = {
+    'rus': 'Всего доброго!',
+    'eng': 'All the best!' };
+
+  public static readonly refreshTokenOk: Record<string, string> = {
+    'rus': 'токен обновлён',
+    'eng': 'the token has been updated' };
+
+
+  // для форм
+
+  // заголовок поля ввода номера телефона пользователя
+  public static readonly labelPhone: Record<string, string> = {
+    'rus': 'Телефон',
+    'eng': 'Phone' };
+
+  // заголовок поля ввода e-mail пользователя
+  public static readonly labelEmail: Record<string, string> = {
+    'rus': 'Email адрес',
+    'eng': 'Email address' };
+
+  // заголовок поля ввода пароля пользователя
+  public static readonly labelPassword: Record<string, string> = {
+    'rus': 'Пароль',
+    'eng': 'Password' };
+
+  // заголовок поля ввода подтверждения пароля пользователя
+  public static readonly labelPasswordConfirmation: Record<string, string> = {
+    'rus': 'Подтв. пароля',
+    'eng': 'Password conf.' };
+
+  // заголовок чек-бокса изменения отображения пароля при вводе
+  public static readonly labelCheckboxPassword: Record<string, string> = {
+    'rus': 'показать пароль',
+    'eng': 'show password' };
 
   //endregion
 

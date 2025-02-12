@@ -95,6 +95,9 @@
 .w-70px {
     width: 70px;
 }
+.w-75px {
+  width: 75px;
+}
 .w-5 {
     width: 5% !important;
 }
@@ -129,6 +132,9 @@
 }
 .w-16px {
     width: 16px;
+}
+.w-65px {
+    width: 65px;
 }
 .w-100px {
     width: 100px;
@@ -267,6 +273,9 @@
     border-color: var(--main-color) !important;
 }
 /* отступы */
+.mt-2px {
+  margin-top: 2px !important;
+}
 .mt-5px {
   margin-top: 5px;
 }
@@ -323,6 +332,11 @@
 }
 .dropdown-item:hover {
     background-color: lightskyblue;
+    color: var(--back-color);
+}
+.dropdown-menu-user {
+    min-width: 120px !important;
+    margin-top: 2px !important;
 }
 
 /* для валидации
@@ -351,7 +365,7 @@ input.valid {
     }
 
     .content-height {
-      min-height: auto;
+      /*min-height: auto;*/
       width: calc(100% - 2px);
     }
 

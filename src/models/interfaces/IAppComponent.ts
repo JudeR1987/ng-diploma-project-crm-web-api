@@ -40,6 +40,18 @@ export interface IAppComponent {
   // значение кнопки "Зарегистрироваться"
   butRegistrationValue: string,
 
+  // всплывающая подсказка на кнопке "Редактировать профиль"
+  butUserFormTitle: string,
+
+  // значение кнопки "Редактировать профиль"
+  butUserFormValue: string,
+
+  // всплывающая подсказка на кнопке "Изменить пароль"
+  butPasswordFormTitle: string,
+
+  // значение кнопки "Изменить пароль"
+  butPasswordFormValue: string,
+
   // всплывающая подсказка на кнопке "Выйти"
   butLogOutTitle: string,
 
@@ -95,6 +107,7 @@ export interface IAppComponent {
   routeAbout: string,
   routeLogin: string,
   routeRegistration: string,
+  routeUserForm: string,
 
   // заголовок строки со сведениями об e-mail в "подвале" страницы
   footerEMailTitle: string,
@@ -112,7 +125,7 @@ export interface IAppComponent {
   },
 
   // путь расположения фотографий в приложении
-  srcPhoto: string,
+  srcPhotoPath: string,
 
   // имя файла с фотографией по умолчанию
   fileNamePhotoDef: string,

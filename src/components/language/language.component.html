@@ -1,20 +1,20 @@
 <div class="dropdown m-0 p-0 h-100">
   <button class="dropdown-toggle btn bg-main-color border-2
-                 border-back-color rounded-1 px-2 py-0 h-100"
+                 border-back-color rounded-1 px-2 py-0 h-100 w-65px"
           type="button"
           data-bs-toggle="dropdown"
           title="{{component.dropdownTitle}}">
-    {{language}}
+    {{component.language}}
   </button>
   <ul class="dropdown-menu dropdown-menu-end
              dropdown-menu-language m-0 p-0">
     <li>
       <button class="dropdown-item px-0 py-1px"
               type="button"
-              (click)="changeLanguage(component.languageRus)">
+              (click)="changeLanguageLiterals(component.languageRus)">
         <div class="d-flex justify-content-center">
           <img class="border"
-               src="{{component.srcImage}}{{component.fileNameImageRus}}"
+               src="{{component.srcImagePath}}{{component.fileNameImageRus}}"
                alt="{{component.fileNameImageRus}}"
                title="{{component.imageTitleRus}}" />
         </div>
@@ -23,10 +23,10 @@
     <li>
       <button class="dropdown-item px-0 py-1px"
               type="button"
-              (click)="changeLanguage(component.languageEng)">
+              (click)="changeLanguageLiterals(component.languageEng)">
         <div class="d-flex justify-content-center">
           <img class="border"
-               src="{{component.srcImage}}{{component.fileNameImageEng}}"
+               src="{{component.srcImagePath}}{{component.fileNameImageEng}}"
                alt="{{component.fileNameImageEng}}"
                title="{{component.imageTitleEng}}" />
         </div>

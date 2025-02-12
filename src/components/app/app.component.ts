@@ -18,6 +18,7 @@ import {async} from 'rxjs';
 import {LoginComponent} from '../login/login.component';
 import {ErrorMessageService} from '../../services/error-message.service';
 import {NgIf} from '@angular/common';
+import {UserService} from '../../services/user.service';
 //import {Config} from '../../temp/Config';
 //import {Purpose} from '../../temp/Purpose';
 //import {Client} from '../../temp/Client';
@@ -37,7 +38,8 @@ export class AppComponent implements OnInit {
   // объект с параметрами компонента
   public component: IAppComponent = {
     // параметры меняющиеся при смене языка
-    title: { 'rus': Literals.empty, 'eng': Literals.empty },
+    //title: { 'rus': Literals.empty, 'eng': Literals.empty },
+    title:                Resources.appTitleDefault,
     displayTitle:         Literals.empty,
     logoTitle:            Literals.empty,
     butNavBarTitle:       Literals.empty,
@@ -48,6 +50,10 @@ export class AppComponent implements OnInit {
     butLoginValue:        Literals.empty,
     butRegistrationTitle: Literals.empty,
     butRegistrationValue: Literals.empty,
+    butUserFormTitle:     Literals.empty,
+    butUserFormValue:     Literals.empty,
+    butPasswordFormTitle: Literals.empty,
+    butPasswordFormValue: Literals.empty,
     butLogOutTitle:       Literals.empty,
     butLogOutValue:       Literals.empty,
     butStartTitle:        Literals.empty,
@@ -68,11 +74,12 @@ export class AppComponent implements OnInit {
     routeAbout:        Literals.routeAbout,
     routeLogin:        Literals.routeLogin,
     routeRegistration: Literals.routeRegistration,
+    routeUserForm:     Literals.routeUserForm,
     footerEMailTitle:  Literals.footerEMailTitle,
     footerEMailHref:   Literals.footerEMailHref,
     footerEMailValue:  Literals.footerEMailValue,
     errorMessage:      { message: Literals.empty, isVisible: false },
-    srcPhoto:          Literals.srcPhoto,
+    srcPhotoPath:      Literals.srcPhotoPath,
     fileNamePhotoDef:  Literals.fileNamePhotoDef,
     timerId:           Literals.zero,
     timeout:           Literals.timeout
@@ -86,49 +93,47 @@ export class AppComponent implements OnInit {
   };
 
   // сведения о jwt-токене безопасности
-  public jwtToken: string | null = Literals.empty;
+  //public jwtToken: string | null = Literals.empty;
 
   // сведения о пользователе
   public user: User = new User();
 
-  // флаг включения спиннера при ожидании данных с сервера
-  //public isWaitFlag: boolean = false;
-
-  // сведения о всех целях поездки для использования в запросах
-  //public purposes: Purpose[] = [];
-
-  // сведения о минимальной и максимальной стоимости
-  // транспортных услуг для использования в запросах
-  //public minTransportCost: number = 0;
-  //public maxTransportCost: number = 0;
-
-  // сведения о всех клиентах для использования в запросах
-  //public clients: Client[] = [];
-
-  // сведения о минимальном и максимальном количестве дней
-  // пребывания клиентов в стране для использования в запросах
-  //public minAmountDays: number = 0;
-  //public maxAmountDays: number = 0;
-
 
   // конструктор с DI для подключения к объекту маршрутизатора
   // для получения маршрута, подключения к сервису установки языка,
-  // подключения к сервису аутентификации/авторизации пользователя
-  // и подключения к сервису хранения сообщения об ошибке
+  // подключения к сервису аутентификации/авторизации пользователя,
+  // подключения к сервису хранения сообщения об ошибке
+  // и подключения к сервису хранения данных о пользователе
   constructor(/*private _webApiService: WebApiService,*/
               private _router: Router,
               private _languageService: LanguageService,
               private _authGuardService: AuthGuardService,
-              private _errorMessageService: ErrorMessageService) {
+              private _errorMessageService: ErrorMessageService,
+              private _userService: UserService) {
     Utils.hello();
     Utils.helloComponent(Literals.app);
 
     console.log(`[-AppComponent-constructor--`);
-    console.log(`*-this.component.language='${this.component.language}'-*`);
 
     // получить значение языка отображения из хранилища
+    /*console.log(`*-this.component.language='${this.component.language}'-*`);
     this.component.language = localStorage.getItem(Literals.language) ?? Literals.rus;
+    console.log(`*-this.component.language='${this.component.language}'-*`);*/
+
+    // получить значение языка отображения из сервиса-хранилища
     console.log(`*-this.component.language='${this.component.language}'-*`);
+    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
+    //this.component.language = this._languageService.language;
+    //console.log(`*-this.component.language='${this.component.language}'-*`);
+
+    // получить данные о пользователе из сервиса-хранилища
+    console.log(`*-this.user: -*`);
+    console.dir(this.user);
+    console.log(`*-this._userService.user: -*`);
+    console.dir(this._userService.user);
+    //this.user = this._userService.user;
+    //console.log(`*-this.user: -*`);
+    //console.dir(this.user);
 
     console.log(`--AppComponent-constructor-]`);
 
@@ -140,20 +145,20 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
 
     console.log(`[-AppComponent-ngOnInit--`);
-    console.log(`*-this.component.language='${this.component.language}'-*`);
-    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
 
     // задать параметры заголовка по умолчанию
-    this.component.title = Resources.appTitleDefault;
+    //this.component.title = Resources.appTitleDefault;
 
     // задать значение языка отображения и установить
     // значения строковых переменных
-    this.changeLanguageLiterals(this.component.language);
+    console.log(`*-this.component.language='${this.component.language}'-*`);
+    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
+    this.changeLanguageLiterals(this._languageService.language);
 
     // подписаться на изменение значения названия выбранного языка
     this._languageService.languageSubject.subscribe((language: string) => {
       console.log(`[-AppComponent-subscribe--`);
-      console.log(`*-subscribe-language='${language}'-*`);
+      console.log(`*-subscribe(пришло)-language='${language}'-*`);
 
       // задать значение языка отображения и установить
       // значения строковых переменных
@@ -164,13 +169,14 @@ export class AppComponent implements OnInit {
     }); // subscribe
 
     // получить данные о jwt-токене
-    this.jwtToken = localStorage.getItem(Literals.jwt);
+    //this.jwtToken = localStorage.getItem(Literals.jwt);
 
     // получить данные о пользователе
-    this.user = User.loadUser();
+    //this.user = User.loadUser();
+
 
     // подписаться на изменение данных о пользователе
-    this._authGuardService.userSubject.subscribe((user: User) => {
+    /*this._authGuardService.userSubject.subscribe((user: User) => {
       console.log(`[-AppComponent-subscribe--`);
       console.log(`*-subscribe-user:`);
       console.dir(user);
@@ -186,34 +192,49 @@ export class AppComponent implements OnInit {
 
       console.log(`--AppComponent-subscribe-]`);
 
-    }); // subscribe
+    }); // subscribe*/
 
-    // подписаться на изменение значения сообщения об ошибке
-    this._errorMessageService.errorMessageSubject.subscribe((message: string) => {
+    // получить данные о пользователе из сервиса-хранилища
+    console.log(`*-(было)-this.user: -*`);
+    console.dir(this.user);
+    this.user = this._userService.user;
+    console.log(`*-(стало)-this.user: -*`);
+    console.dir(this.user);
+
+    // подписаться на изменение данных о пользователе
+    this._userService.userSubject.subscribe((user: User) => {
       console.log(`[-AppComponent-subscribe--`);
-      console.log(`*-subscribe-message='${message}'-*`);
+      console.log(`*-subscribe(пришло)-user:`);
+      console.dir(user);
 
-      // удаление всплывающего сообщения
-      this.removeSetTimeout();
+      console.log(`*-subscribe-(было)-this.user:`);
+      console.dir(this.user);
 
-      // задать значение сообщения об ошибке
-      this.component.errorMessage = { message: message, isVisible: true };
+      // изменить данные о пользователе
+      this.user = User.newUser(user);
 
-      // сбросить сообщение об ошибке
-      this.component.timerId = setTimeout(() => {
-        this.component.errorMessage.message = Literals.empty;
-        this.component.errorMessage.isVisible = false;
-        }, this.component.errorMessage.message.length < 100
-          ? this.component.timeout
-          : Literals.timeStop
-      ); // setTimeout
+      console.log(`*-subscribe-(стало)-this.user:`);
+      console.dir(this.user);
 
       console.log(`--AppComponent-subscribe-]`);
 
     }); // subscribe
 
+    // подписаться на изменение значения сообщения об ошибке
+    this._errorMessageService.errorMessageSubject
+      .subscribe((message: string) => {
+        console.log(`[-AppComponent-subscribe--`);
+        console.log(`*-subscribe(пришло)-message='${message}'-*`);
+
+        // вывод сообщения
+        this.displayMessage(message);
+
+        console.log(`--AppComponent-subscribe-]`);
+
+    }); // subscribe
+
     // если данные о пользователе есть - отправить запрос на вход в систему
-    console.log(`--AppComponent-this.user.isLogin:${this.user.isLogin}`);
+    //console.log(`--AppComponent-this.user.isLogin:${this.user.isLogin}`);
     //if (this.user.isLogin) {
     //  async () => {
     //    await this._authGuardService.login(new LoginModel(this.user.login, this.user.password));
@@ -232,12 +253,12 @@ export class AppComponent implements OnInit {
 
     console.log(`[-AppComponent-changeLanguageLiterals--`);
 
-    console.log(`*-input-language='${language}'-*`);
-    console.log(`*-this.component.language='${this.component.language}'-*`);
+    console.log(`*-input(пришло)-language='${language}'-*`);
+    console.log(`*-(было)-this.component.language='${this.component.language}'-*`);
 
     // задать значение языка отображения
     this.component.language = language;
-    console.log(`*-this.component.language='${this.component.language}'-*`);
+    console.log(`*-(стало)-this.component.language='${this.component.language}'-*`);
 
     // установить значения строковых переменных
     this.component.displayTitle =         this.component.title[this.component.language];
@@ -250,6 +271,10 @@ export class AppComponent implements OnInit {
     this.component.butLoginValue =        Resources.appButLoginValue[this.component.language];
     this.component.butRegistrationTitle = Resources.appButRegistrationTitle[this.component.language];
     this.component.butRegistrationValue = Resources.appButRegistrationValue[this.component.language];
+    this.component.butUserFormTitle =     Resources.appButUserFormTitle[this.component.language];
+    this.component.butUserFormValue =     Resources.appButUserFormValue[this.component.language];
+    this.component.butPasswordFormTitle = Resources.appButPasswordFormTitle[this.component.language];
+    this.component.butPasswordFormValue = Resources.appButPasswordFormValue[this.component.language];
     this.component.butLogOutTitle =       Resources.appButLogOutTitle[this.component.language];
     this.component.butLogOutValue =       Resources.appButLogOutValue[this.component.language];
     this.component.butStartTitle =        Resources.appButStartTitle[this.component.language];
@@ -281,8 +306,7 @@ export class AppComponent implements OnInit {
     clearTimeout(this.component.timerId);
 
     // удалить всплывающее сообщение
-    this.component.errorMessage.message = Literals.empty;
-    this.component.errorMessage.isVisible = false;
+    this.component.errorMessage = { message: Literals.empty, isVisible: false };
 
   } // removeSetTimeout
 
@@ -365,6 +389,20 @@ export class AppComponent implements OnInit {
         routerLinkActive = Literals.routeRegistration;
         break;
 
+      case Literals.routeUserForm:
+        this.component.title = Resources.appUserFormTitle;
+        back = Literals.navbarBrandActive;
+        icon = Literals.iconLight;
+        routerLinkActive = Literals.routeUserForm;
+        break;
+
+      case Literals.routePasswordForm:
+        this.component.title = Resources.appPasswordFormTitle;
+        back = Literals.navbarBrandActive;
+        icon = Literals.iconLight;
+        routerLinkActive = Literals.routePasswordForm;
+        break;
+
       // маршрут перехода на страницу NotFound
       default:
         this.component.title = Resources.appTitleDefault;
@@ -400,8 +438,9 @@ export class AppComponent implements OnInit {
     console.log(`--AppComponent-1-`);
 
     // запрос на выход из системы
-    let message: string = await this._authGuardService.logOut(this.user);
-    console.log(`--AppComponent-this.component.errorMessage-${this.component.errorMessage.message}`);
+    let message: any = await this._authGuardService.logOut(this.user);
+    console.log(`--AppComponent-message:`);
+    console.dir(message);
 
     console.log(`--AppComponent-2-`);
 
@@ -412,33 +451,131 @@ export class AppComponent implements OnInit {
     // переходим к форме входа
     if (message != Literals.Ok) {
 
-      // установить параметры сообщения
-      this.component.errorMessage.message = message;
-      this.component.errorMessage.isVisible = true;
+      // ошибки данных
+      if (message.logOutModel) message =
+        Resources.incorrectUserIdData[this.component.language];
 
-      // сбросить сообщение об ошибке
-      this.component.timerId = setTimeout(() => {
-          this.component.errorMessage.message = Literals.empty;
-          this.component.errorMessage.isVisible = false;
-        }, this.component.errorMessage.message.length < 100
-          ? this.component.timeout
-          : Literals.timeStop
-      ); // setTimeout
+      // ошибки данных о пользователе
+      console.log(`--message.userId: '${message.userId}'`);
+      if (message.userId != undefined) message =
+        Resources.notRegisteredUserIdData[this.component.language];
+
+      // ошибки входа пользователя
+      console.log(`--message.isLogin: '${message.isLogin}'`);
+      console.log(`--message.userToken: '${message.userToken}'`);
+      if (message.isLogin != undefined && message.userToken != undefined)
+        message = Resources.unauthorizedUserIdData[this.component.language];
+
+      // ошибки сервера
+      console.log(`--message.title: '${message.title}'`);
+      console.log(`--message: '${message}'`);
+      if (message.title != undefined) message = message.title;
 
       // перейти к форме входа
       this._router.navigateByUrl(Literals.routeLogin)
-        .then((e) => { console.dir(e); });
+        .then((e) => { console.log(`*- переход: ${e} -*`); });
 
-      console.log(`--AppComponent-logOut-]`);
-      return;
+      //console.log(`--AppComponent-logOut-]`);
+      //return;
+    } else {
+      // иначе - сообщение об успехе
+      message = Resources.appLogOutOk[this.component.language];
+
+      // перейти на главную страницу приложения
+      this._router.navigateByUrl(Literals.routeHomeEmpty)
+        .then((e) => { console.log(`*- переход: ${e} -*`); });
+
     } // if
 
-    // перейти на главную страницу приложения
-    this._router.navigateByUrl(Literals.routeHomeEmpty)
-      .then((e) => { console.dir(e); });
+    // вывод сообщения
+    this.displayMessage(message);
+
+    // установить данные о пользователе в сервисе-хранилище в значение
+    // по умолчанию и передать изменённые данные всем подписчикам
+    this._userService.user = new User();
+
+    // удалить данные из хранилища
+    localStorage.removeItem(Literals.jwt);
+    localStorage.removeItem(Literals.user);
 
     console.log(`--AppComponent-logOut-]`);
   } // logOut
+
+
+  // программный переход к форме изменения данных о пользователе
+  routingToUserForm(): void {
+
+    console.log(`[-AppComponent-routingToUserForm--`);
+
+    // маршрут
+    let routerLink: string = Literals.routeUserForm;
+
+    // параметр
+    let userId: number = this.user.id;
+
+    // переход по маршруту
+    this._router.navigate([routerLink, userId], {
+      state: { user: User.UserToDto(this.user) }
+    }).then((e) => { console.log(`*- переход: ${e} -*`); });
+
+    console.log(`--AppComponent-routingToUserForm-]`);
+
+  } // routingToUserForm
+
+
+  // программный переход к форме изменения пароля пользователя
+  routingToPasswordForm(): void {
+
+    console.log(`[-AppComponent-routingToPasswordForm--`);
+
+    // маршрут
+    let routerLink: string = Literals.routePasswordForm;
+
+    // параметр
+    let userId: number = this.user.id;
+
+    // переход по маршруту
+    /*this._router.navigate([routerLink, userId], {
+      state: {
+        userId: this.user.id,
+        password: this.user.password
+      }
+    }).then((e) => { console.log(`*- переход: ${e} -*`); });*/
+    /*this._router.navigate([routerLink, userId], {
+      state: {
+        userId: this.user.id,
+        password: this.user.password
+      }
+    }).then((e) => { console.log(`*- переход: ${e} -*`); });*/
+    this._router.navigateByUrl(`${routerLink}/${userId}`)
+      .then((e) => { console.log(`*- переход: ${e} -*`); });
+
+    console.log(`--AppComponent-routingToPasswordForm-]`);
+
+  } // routingToPasswordForm
+
+
+  // метод вывода сообщения
+  displayMessage(message: string): void {
+
+    // удаление всплывающего сообщения
+    this.removeSetTimeout();
+
+    // установить параметры сообщения
+    this.component.errorMessage = { message: message, isVisible: true };
+
+    console.log(`*-this.component.errorMessage-*`);
+    console.log(`*- '${this.component.errorMessage.message}' -*`);
+
+    // сбросить сообщение об ошибке
+    this.component.timerId = setTimeout(() => {
+        this.component.errorMessage = { message: Literals.empty, isVisible: false };
+      }, this.component.errorMessage.message.length < 100
+        ? this.component.timeout
+        : Literals.timeStop
+    ); // setTimeout
+
+  } // displayMessage
 
 
 

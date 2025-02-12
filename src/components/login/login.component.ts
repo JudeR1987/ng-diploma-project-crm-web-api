@@ -16,6 +16,7 @@ import {UserValidators} from '../../validators/UserValidators';
 import {NgIf} from '@angular/common';
 import {User} from '../../models/classes/User';
 import {ErrorMessageService} from '../../services/error-message.service';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -56,7 +57,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     errorPhoneValidator: Literals.phoneValidator,
     errorEmailValidator: Literals.emailValidator,
     errorMinLength:      Literals.minlength,
-    errorMaxLength:      Literals.maxlength/*,
+    errorMaxLength:      Literals.maxlength,
+    passwordInputTypes:  Literals.passwordInputTypes/*,
     timerId:             Literals.zero,
     timeout:             Literals.timeout*/
   };
@@ -84,14 +86,17 @@ export class LoginComponent implements OnInit, OnDestroy {
   // для получения маршрута, подключения к сервису установки языка,
   // подключения к сервису аутентификации/авторизации пользователя
   // и подключения к сервису хранения сообщения об ошибке
+  // и подключения к сервису хранения данных о пользователе
   constructor(private _router: Router,
               private _languageService: LanguageService,
               private _authGuardService: AuthGuardService,
-              private _errorMessageService: ErrorMessageService) {
+              private _errorMessageService: ErrorMessageService,
+              private _userService: UserService) {
     Utils.helloComponent(Literals.login);
 
     console.log(`[-LoginComponent-constructor--`);
     console.log(`*-this.component.language='${this.component.language}'-*`);
+    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
 
     // получить маршрут
     this.component.route = this._router.url.slice(1);
@@ -110,6 +115,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     // задать значение языка отображения и установить
     // значения строковых переменных
+    console.log(`*-this.component.language='${this.component.language}'-*`);
+    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
     this.changeLanguageLiterals(this._languageService.language);
 
     // подписаться на изменение значения названия выбранного языка
@@ -151,12 +158,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     // установить значения строковых переменных
     this.component.title                          = Resources.loginTitle[this.component.language];
     this.component.labelLogin                     = Resources.loginLabelLogin[this.component.language];
-    this.component.labelPassword                  = Resources.loginLabelPassword[this.component.language];
-    this.component.labelCheckboxPassword          = Resources.loginLabelCheckboxPassword[this.component.language];
+    this.component.labelPassword                  = Resources.labelPassword[this.component.language];
+    this.component.labelCheckboxPassword          = Resources.labelCheckboxPassword[this.component.language];
     this.component.errorRequiredTitle             = Resources.errorRequired[this.component.language];
     this.component.errorPhoneValidatorTitle       = Resources.errorPhoneValidator[this.component.language];
     this.component.errorEmailValidatorTitle       = Resources.errorEmailValidator[this.component.language];
-    this.component.errorPasswordMinMaxLengthTitle = Resources.loginErrorPasswordMinMaxLength(
+    this.component.errorPasswordMinMaxLengthTitle = Resources.errorPasswordMinMaxLength(
       this.component.language, this.component.passwordMinLength, this.component.passwordMaxLength);
     this.component.loginNoErrorsTitle             = Resources.loginLoginNoErrors[this.component.language];
     this.component.butLoginTitle                  = Resources.loginButLoginTitle[this.component.language];
@@ -181,7 +188,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   // обработчик события передачи данных из формы на сервер
-  async onSubmit() {
+  async onSubmit(): Promise<void> {
 
     console.log(`[-LoginComponent-onSubmit--`);
 
@@ -222,8 +229,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     // запрос на вход в систему
     let result: { message: any, token: string, user: User } =
       await this._authGuardService.login(this.loginModel);
-    //console.log(`--LoginComponent-this.component.errorMessage-${this.component.errorMessage}`);
-    console.log(`--LoginComponent-result-`);
+    console.log(`--LoginComponent-result:`);
     console.dir(result);
 
     console.log(`--LoginComponent-2-`);
@@ -236,58 +242,56 @@ export class LoginComponent implements OnInit, OnDestroy {
     console.dir(result.message);
     if (result.message != Literals.Ok) {
 
+      // сформируем соответствующее сообщение об ошибке
       let message: string = Literals.empty;
 
-      // для ошибок данных
+      // ошибки данных
       if (result.message.loginModel) message =
         Resources.loginIncorrectData[this.component.language];
 
-      // для ошибок сервера
+      // ошибки сервера
       if (result.message.title) message = result.message.title;
       if ((typeof result.message) === Literals.string) message = result.message;
 
-      // для ошибок авторизации по номеру телефона
+      // ошибки авторизации по номеру телефона
       if (result.message.login) {
         message = result.message.password
-          ? Resources.loginIncorrectPassword[this.component.language]
+          ? Resources.incorrectPassword[this.component.language]
           : Resources.loginUnauthorizedPhone(this.component.language, result.message.login);
       } // if
 
-      // для ошибок авторизации по email
+      // ошибки авторизации по email
       if (result.message.email) {
         message = result.message.password
-          ? Resources.loginIncorrectPassword[this.component.language]
+          ? Resources.incorrectPassword[this.component.language]
           : Resources.loginUnauthorizedEmail(this.component.language, result.message.email);
       } // if
 
-      // установить параметр валидности
-      //this.component.validLogin = false;
-      //this.component.errorMessage = message;
+      // изменим результат на сообщение для вывода
+      result.message = message;
 
-      // передадим значение сообщения об ошибке для отображения через объект
-      // сервиса компоненту AppComponent, подписавшемуся на изменение объекта
-      this._errorMessageService.errorMessageSubject.next(message);
-      console.log(`--LoginComponent-onSubmit-]`);
+      //return;
+    } else {
+      // иначе - сообщение об успехе
+      result.message = Resources.loginWelcomeOk(this.component.language, result.user.userName);
 
-      // сбросить сообщение об ошибке
-      /*this.component.timerId = setTimeout(() => {
-        this.component.validLogin = true;
-        this.component.errorMessage = Literals.empty;
-      }, this.component.errorMessage.length < 100
-        ? this.component.timeout
-        : Literals.timeStop
-      ); // setTimeout*/
+      // сохраним данные о пользователе в сервисе-хранилище
+      // и передадим изменённые данные всем подписчикам
+      this._userService.user = result.user;
 
-      return;
+      // запишем данные в хранилище
+      this._authGuardService.saveTokenToLocalStorage(result.token)
+      this._userService.saveUserToLocalStorage();
+
+      // перейти по маршруту на домашнюю страницу
+      this._router.navigateByUrl(Literals.routeHomeEmpty)
+        .then((e) => { console.log(`*- переход: ${e} -*`); });
+
     } // if
 
-    // установить параметр валидности
-    //this.component.validLogin = true;
-    //this.component.errorMessage = Literals.empty;
-
-    // перейти по маршруту на домашнюю страницу
-    this._router.navigateByUrl(Literals.routeHomeEmpty)
-      .then((e) => { console.dir(e); });
+    // передадим значение сообщения об ошибке для отображения через объект
+    // сервиса компоненту AppComponent, подписавшемуся на изменение объекта
+    this._errorMessageService.errorMessageSubject.next(result.message);
 
     console.log(`--LoginComponent-onSubmit-]`);
 
