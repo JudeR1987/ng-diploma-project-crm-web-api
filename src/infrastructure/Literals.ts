@@ -94,6 +94,7 @@ export class Literals {
   public static readonly Ok: string = 'Ok';
   public static readonly zero: number = 0;
   public static readonly one: number = 1;
+  public static readonly hundred: number = 100;
   public static readonly timeout: number = 6_000;
   public static readonly timeout10: number = 10;
   public static readonly timeStop: number = 25_000;

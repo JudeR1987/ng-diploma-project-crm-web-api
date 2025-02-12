@@ -18,6 +18,7 @@ import {Config} from '../../infrastructure/Config';
 import {User} from '../../models/classes/User';
 import {UserService} from '../../services/user.service';
 import {AuthGuardService} from '../../services/auth-guard.service';
+import {TokenService} from '../../services/token.service';
 
 @Component({
   selector: 'app-password-form',
@@ -86,8 +87,8 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
   // конструктор с DI для подключения к объекту маршрутизатора
   // для получения маршрута, подключения объекта активного маршрута для
   // получения параметров маршрута, подключения к сервису установки языка,
-  // подключения к сервису хранения сообщения об ошибке, подключения к web-сервису
-  // и подключения к сервису хранения данных о пользователе
+  // подключения к сервису хранения сообщения об ошибке, подключения к web-сервису,
+  // подключения к сервисам хранения данных о пользователе и jwt-токене
   // и подключения к сервису аутентификации/авторизации пользователя
   constructor(private _router: Router,
               private _activatedRoute: ActivatedRoute,
@@ -95,6 +96,7 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
               private _errorMessageService: ErrorMessageService,
               private _webApiService: WebApiService,
               private _userService: UserService,
+              private _tokenService: TokenService,
               private _authGuardService: AuthGuardService) {
     Utils.helloComponent(Literals.passwordForm);
 
@@ -160,6 +162,11 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
     console.log(`*-this._password: '${this._password}' -*`);
 
 
+    // создание объектов полей ввода и формы изменения пароля пользователя
+    this.createFormControls();
+    this.createForm();
+
+
     // проверка на возможность перехода по маршруту
     // (если вводить маршрут в командной строке браузера)
     console.dir(this._activatedRoute);
@@ -170,21 +177,15 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
 
       // параметр об Id пользователя, полученный из маршрута
       userId = +params[Literals.id];
-      console.dir(userId);
+      console.log(`*-userId: '${userId}' -*`);
       console.dir(typeof userId);
 
     }); // subscribe
 
-
-    // создание объектов полей ввода и формы изменения пароля пользователя
-    this.createFormControls();
-    this.createForm();
-
-
-    console.dir(userId);
-
     // если параметр не совпадает с параметром пользователя,
     // требуется перейти на страницу "NotFound"
+    console.log(`*-userId: '${userId}' -*`);
+    console.log(`*-this._userId: '${this._userId}' -*`);
     if (userId != this._userId) {
       console.log(`*- Переход на "NotFound" -*`);
 
@@ -203,8 +204,8 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
     } // if
 
 
-    // если данные не получены, требуется перейти
-    // на домашнюю страницу и вывести сообщение об ошибке
+    // если данные не получены, перейти на домашнюю
+    // страницу и вывести сообщение об ошибке
     if (this._userId === Literals.zero || this._password === Literals.empty) {
       console.log(`*- Переход на "Home" -*`);
 
@@ -273,7 +274,7 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
     //console.log(`*- oldPassword: |${oldPassword}| -*`);
 
     let newPassword: string = this.newPasswordConfirmation.value;
-    console.log(`*- newPassword: |${newPassword}| -*`);
+    console.log(`*- newPassword: '${newPassword}' -*`);
 
     // включение спиннера ожидания данных
     this.component.isWaitFlag = true;
@@ -282,7 +283,7 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
 
     // если токена нет ИЛИ время его действия закончилось -
     // выполнить запрос на обновление токена
-    if (!this._authGuardService.isTokenExists()) {
+    if (!this._tokenService.isTokenExists()) {
       console.log(`Обновляем токен!`);
 
       // запрос на обновление токена
@@ -330,41 +331,20 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
 
       // иначе - переходим к последующему запросу
     } // if
-    /*if (!this._authGuardService.isTokenExists()) {
-      console.log(`Обновляем токен!`);
-
-      // запрос на обновление токена
-      let result: boolean;
-      let message: string;
-      [result, message] = await this.refreshToken();
-
-      // передадим значение сообщения об ошибке для отображения через объект
-      // сервиса компоненту AppComponent, подписавшемуся на изменение объекта
-      this._errorMessageService.errorMessageSubject.next(message);
-
-      // при завершении с ошибкой - закончить обработку
-      if (!result) {
-        console.log(`--PasswordFormComponent-onSubmit-КОНЕЦ-]`);
-        return;
-      } // if
-
-    } // if*/
 
     console.log(`--PasswordFormComponent-1-`);
+
     // запрос на изменение пароля
-    /*let result: { message: any, userId: number, password: string } =
-      { message: Literals.Ok, userId: Literals.zero, password: Literals.empty };*/
     let result: any = Literals.Ok;
-    //let result: { message: any, user: User } = { message: Literals.Ok, user: };
     try {
       // получить jwt-токен
-      let token: string = this._authGuardService.loadTokenFromLocalStorage() ?? Literals.empty;
+      let token: string = this._tokenService.token;
       console.log(`*-token: '${token}' -*`);
 
       // запрос на изменение пароля
-      let webResult: any = await firstValueFrom(
-          this._webApiService.editPasswordPOST(Config.urlEditPassword, this._userId, newPassword, token)
-      );
+      let webResult: any = await firstValueFrom(this._webApiService.editPasswordPOST(
+        Config.urlEditPassword, this._userId, newPassword, token
+      ));
       console.dir(webResult);
 
     } catch (e: any) {
@@ -374,7 +354,7 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
 
       // ошибка авторизации ([Authorize])
       if (e.status === Literals.error401 && e.error === null)
-        result = Resources.unauthorizedUserIdData[this.component.language]+'123456'
+        result = Resources.unauthorizedUserIdData[this.component.language]
       // другие ошибки
       else
         result = e.error;
@@ -390,11 +370,10 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
     this.component.isWaitFlag = false;
 
 
-    // если сообщение с ошибкой - завершаем обработку,
-    // остаёмся в форме входа
+    // если сообщение с ошибкой - завершаем обработку, остаёмся в форме
     if (result != Literals.Ok) {
 
-      //let message: string = 'ошибка';
+      // сформируем соответствующее сообщение об ошибке
       let message: string = Literals.empty;
 
       // ошибки данных
@@ -414,11 +393,6 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
 
       // если результат уже содержит строку с сообщением
       if ((typeof result) === Literals.string) message = result;
-
-      // передадим значение сообщения об ошибке для отображения через объект
-      // сервиса компоненту AppComponent, подписавшемуся на изменение объекта
-      //this._errorMessageService.errorMessageSubject.next(message);
-      //console.log(`--PasswordFormComponent-onSubmit-]`);
 
       // изменим результат на сообщение для вывода
       result = message;

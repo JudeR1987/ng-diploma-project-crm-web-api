@@ -11,7 +11,7 @@ import {Config} from '../infrastructure/Config';
 import {LoginModel} from '../models/classes/LoginModel';
 import {firstValueFrom, Subject} from 'rxjs';
 import {UserService} from './user.service';
-import {Resources} from '../infrastructure/Resources';
+import {TokenService} from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ import {Resources} from '../infrastructure/Resources';
 export class AuthGuardService implements CanActivate {
 
   // объект сервиса-помощника при работе с jwt-токеном
-  private _jwtHelper: JwtHelperService;
+  //private _jwtHelper: JwtHelperService;
 
   // объект для передачи данных о пользователе
   //public userSubject: Subject<User> = new Subject<User>();
@@ -27,15 +27,16 @@ export class AuthGuardService implements CanActivate {
 
   // конструктор с DI для подключения к маршрутизатору для получения маршрута
   // и подключения к web-сервису
-  // и подключения к сервису хранения данных о пользователе
+  // и подключения к сервисам хранения данных о пользователе и jwt-токене
   constructor(private _router: Router,
               private _webApiService: WebApiService,
-              private _userService: UserService) {
+              private _userService: UserService,
+              private _tokenService: TokenService) {
 
     console.log(`[-AuthGuardService-constructor--`);
 
     // создание нового объекта jwt-помощника
-    this._jwtHelper = new JwtHelperService();
+    //this._jwtHelper = new JwtHelperService();
 
     console.log(`--AuthGuardService-constructor-]`);
 
@@ -63,7 +64,7 @@ export class AuthGuardService implements CanActivate {
       console.log(`--AuthGuardService-canActivate-TRUE-]`);
       return true;
     } // if*/
-    if (this.isTokenExists() || user.isLogin) {
+    if (this._tokenService.isTokenExists() || user.isLogin) {
       console.log(`--AuthGuardService-canActivate-TRUE-]`);
       return true;
     } // if
@@ -262,6 +263,7 @@ export class AuthGuardService implements CanActivate {
 
       // установить данные о пользователе в сервисе-хранилище в значение
       // по умолчанию и передать изменённые данные всем подписчикам
+      this._tokenService.token = Literals.empty;
       this._userService.user = new User();
 
       // удалить данные из хранилища
@@ -279,12 +281,13 @@ export class AuthGuardService implements CanActivate {
       // условие удачной операции
       status = true;
 
-      // сохраним данные о пользователе в сервисе-хранилище
+      // сохраним данные о jwt-токене и пользователе в сервисах
       // и передадим изменённые данные всем подписчикам
+      this._tokenService.token = result.token;
       this._userService.user = result.user;
 
       // запишем данные в хранилище
-      this.saveTokenToLocalStorage(result.token)
+      this._tokenService.saveTokenToLocalStorage()
       this._userService.saveUserToLocalStorage();
 
       console.log(`--PasswordFormComponent-refreshToken-TRUE-]`);
@@ -398,7 +401,7 @@ export class AuthGuardService implements CanActivate {
 
 
   // метод, проверяющий наличие и срок действия токена безопасности
-  isTokenExists(): boolean {
+  /*isTokenExists(): boolean {
     console.log(`[-AuthGuardService-isTokenExists--`);
 
     // получить jwt-токен
@@ -411,11 +414,11 @@ export class AuthGuardService implements CanActivate {
     console.log(`--AuthGuardService-isTokenExists-]`);
     //return (token && !this._jwtHelper.isTokenExpired(token)) ? true : false;
     return !!(token && !this._jwtHelper.isTokenExpired(token));
-  } // isTokenExists
+  } // isTokenExists*/
 
 
   // чтение данных о токене из локального хранилища
-  loadTokenFromLocalStorage(): string | null {
+  /*loadTokenFromLocalStorage(): string | null {
     console.log(`[-AuthGuardService-loadTokenFromLocalStorage--`);
 
     // получить jwt-токен из хранилища, если запись есть
@@ -423,17 +426,17 @@ export class AuthGuardService implements CanActivate {
 
     console.log(`--AuthGuardService-loadTokenFromLocalStorage-]`);
     return token;
-  } // loadTokenFromLocalStorage
+  } // loadTokenFromLocalStorage*/
 
 
   // запись данных о токене в локальное хранилище
-  saveTokenToLocalStorage(token: string): void {
+  /*saveTokenToLocalStorage(token: string): void {
     console.log(`[-AuthGuardService-saveTokenToLocalStorage--`);
 
     localStorage.setItem(Literals.jwt, token);
 
     console.log(`--AuthGuardService-saveTokenToLocalStorage-]`);
-  } // saveTokenToLocalStorage
+  } // saveTokenToLocalStorage*/
 
 
   /*login(loginModel: LoginModel): string {

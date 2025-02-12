@@ -17,6 +17,7 @@ import {NgIf} from '@angular/common';
 import {User} from '../../models/classes/User';
 import {ErrorMessageService} from '../../services/error-message.service';
 import {UserService} from '../../services/user.service';
+import {TokenService} from '../../services/token.service';
 
 @Component({
   selector: 'app-login',
@@ -86,12 +87,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   // для получения маршрута, подключения к сервису установки языка,
   // подключения к сервису аутентификации/авторизации пользователя
   // и подключения к сервису хранения сообщения об ошибке
-  // и подключения к сервису хранения данных о пользователе
+  // и подключения к сервисам хранения данных о пользователе и jwt-токене
   constructor(private _router: Router,
               private _languageService: LanguageService,
               private _authGuardService: AuthGuardService,
               private _errorMessageService: ErrorMessageService,
-              private _userService: UserService) {
+              private _userService: UserService,
+              private _tokenService: TokenService) {
     Utils.helloComponent(Literals.login);
 
     console.log(`[-LoginComponent-constructor--`);
@@ -275,12 +277,13 @@ export class LoginComponent implements OnInit, OnDestroy {
       // иначе - сообщение об успехе
       result.message = Resources.loginWelcomeOk(this.component.language, result.user.userName);
 
-      // сохраним данные о пользователе в сервисе-хранилище
+      // сохраним данные о jwt-токене и пользователе в сервисах
       // и передадим изменённые данные всем подписчикам
+      this._tokenService.token = result.token;
       this._userService.user = result.user;
 
       // запишем данные в хранилище
-      this._authGuardService.saveTokenToLocalStorage(result.token)
+      this._tokenService.saveTokenToLocalStorage()
       this._userService.saveUserToLocalStorage();
 
       // перейти по маршруту на домашнюю страницу

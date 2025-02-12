@@ -88,15 +88,26 @@ export class WebApiService {
 
 
   // POST-запрос на удалённый сервер для изменения данных о пользователе
-  editUserPOST(url: string, user: User): Observable<any> {
+  editUserPOST(url: string, user: User, token: string): Observable<any> {
 
     console.log(`[-WebApiService-editUserPOST--`);
     console.log(`[-WebApiService-user: -*`);
     console.dir(user);
+    console.log(`[-WebApiService-token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = new HttpHeaders()
+      .set('Accept', 'application/json')
+      // передача токена в заголовке
+      .set('Authorization', `Bearer ${token}`);
 
     console.log(`--WebApiService-editUserPOST-]`);
 
-    return this._http.post<any>(url, User.UserToDto(user));
+    return this._http.post<any>(
+      url,
+      User.UserToDto(user),
+      { headers: httpHeaders }
+    );
   } // editUserPOST
 
 

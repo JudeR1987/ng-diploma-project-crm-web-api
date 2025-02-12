@@ -217,7 +217,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     console.log(`--RegistrationComponent-1-`);
 
     // запрос на регистрацию в системе
-    //let result: { message: any, phone: string, email: string } =
     let result: any = await this._authGuardService.registration(this.loginModel);
     console.log(`--RegistrationComponent-result:`);
     console.dir(result);
@@ -229,7 +228,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
     // если сообщение с ошибкой - завершаем обработку,
     // остаёмся в форме регистрации
-    //console.dir(result.message);
     if (result != Literals.Ok) {
 
       // ошибки данных

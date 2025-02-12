@@ -10,15 +10,12 @@ import {Literals} from '../../infrastructure/Literals';
 import {Resources} from '../../infrastructure/Resources';
 import {LanguageComponent} from '../language/language.component';
 import {IAppComponent} from '../../models/interfaces/IAppComponent';
-import {WebApiService} from '../../services/web-api.service';
 import {User} from '../../models/classes/User';
 import {AuthGuardService} from '../../services/auth-guard.service';
-import {LoginModel} from '../../models/classes/LoginModel';
-import {async} from 'rxjs';
-import {LoginComponent} from '../login/login.component';
 import {ErrorMessageService} from '../../services/error-message.service';
 import {NgIf} from '@angular/common';
 import {UserService} from '../../services/user.service';
+import {TokenService} from '../../services/token.service';
 //import {Config} from '../../temp/Config';
 //import {Purpose} from '../../temp/Purpose';
 //import {Client} from '../../temp/Client';
@@ -98,18 +95,22 @@ export class AppComponent implements OnInit {
   // сведения о пользователе
   public user: User = new User();
 
+  // свойство для ограничения длины сообщения об ошибке при выводе
+  protected readonly hundred: number = Literals.hundred
+
 
   // конструктор с DI для подключения к объекту маршрутизатора
   // для получения маршрута, подключения к сервису установки языка,
   // подключения к сервису аутентификации/авторизации пользователя,
   // подключения к сервису хранения сообщения об ошибке
-  // и подключения к сервису хранения данных о пользователе
+  // и подключения к сервисам хранения данных о пользователе и jwt-токене
   constructor(/*private _webApiService: WebApiService,*/
               private _router: Router,
               private _languageService: LanguageService,
               private _authGuardService: AuthGuardService,
               private _errorMessageService: ErrorMessageService,
-              private _userService: UserService) {
+              private _userService: UserService,
+              private _tokenService: TokenService) {
     Utils.hello();
     Utils.helloComponent(Literals.app);
 
@@ -167,32 +168,6 @@ export class AppComponent implements OnInit {
       console.log(`--AppComponent-subscribe-]`);
 
     }); // subscribe
-
-    // получить данные о jwt-токене
-    //this.jwtToken = localStorage.getItem(Literals.jwt);
-
-    // получить данные о пользователе
-    //this.user = User.loadUser();
-
-
-    // подписаться на изменение данных о пользователе
-    /*this._authGuardService.userSubject.subscribe((user: User) => {
-      console.log(`[-AppComponent-subscribe--`);
-      console.log(`*-subscribe-user:`);
-      console.dir(user);
-
-      console.log(`*-subscribe-this.user:`);
-      console.dir(this.user);
-
-      // изменить данные о пользователе
-      this.user = User.newUser(user);
-
-      console.log(`*-subscribe-this.user:`);
-      console.dir(this.user);
-
-      console.log(`--AppComponent-subscribe-]`);
-
-    }); // subscribe*/
 
     // получить данные о пользователе из сервиса-хранилища
     console.log(`*-(было)-this.user: -*`);
@@ -295,7 +270,7 @@ export class AppComponent implements OnInit {
 
   // метод перехода в начало страницы
   toStart(): void {
-    window.scrollTo(0, 0);
+    window.scrollTo(Literals.zero, Literals.zero);
   } // toStart
 
 
@@ -332,7 +307,6 @@ export class AppComponent implements OnInit {
   onActivateHandler(elementRef: any): void {
 
     console.log(`[-AppComponent-onActivateHandler--`);
-    console.log(`*-this.component.language='${this.component.language}'-*`);
 
     console.log(`*-elementRef-*`);
     console.dir(elementRef);
@@ -468,8 +442,8 @@ export class AppComponent implements OnInit {
 
       // ошибки сервера
       console.log(`--message.title: '${message.title}'`);
-      console.log(`--message: '${message}'`);
       if (message.title != undefined) message = message.title;
+      console.log(`--message: '${message}'`);
 
       // перейти к форме входа
       this._router.navigateByUrl(Literals.routeLogin)
@@ -490,8 +464,9 @@ export class AppComponent implements OnInit {
     // вывод сообщения
     this.displayMessage(message);
 
-    // установить данные о пользователе в сервисе-хранилище в значение
+    // установить данные о jwt-токене и пользователе в сервисах в значение
     // по умолчанию и передать изменённые данные всем подписчикам
+    this._tokenService.token = Literals.empty;
     this._userService.user = new User();
 
     // удалить данные из хранилища
@@ -541,12 +516,6 @@ export class AppComponent implements OnInit {
         password: this.user.password
       }
     }).then((e) => { console.log(`*- переход: ${e} -*`); });*/
-    /*this._router.navigate([routerLink, userId], {
-      state: {
-        userId: this.user.id,
-        password: this.user.password
-      }
-    }).then((e) => { console.log(`*- переход: ${e} -*`); });*/
     this._router.navigateByUrl(`${routerLink}/${userId}`)
       .then((e) => { console.log(`*- переход: ${e} -*`); });
 
@@ -570,7 +539,7 @@ export class AppComponent implements OnInit {
     // сбросить сообщение об ошибке
     this.component.timerId = setTimeout(() => {
         this.component.errorMessage = { message: Literals.empty, isVisible: false };
-      }, this.component.errorMessage.message.length < 100
+      }, this.component.errorMessage.message.length < this.hundred
         ? this.component.timeout
         : Literals.timeStop
     ); // setTimeout

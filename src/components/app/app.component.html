@@ -411,14 +411,14 @@
 
 <!-- контейнер для вывода сообщений результатов операции -->
 <div class="position-fixed right-1rem-lg-2rem p-1 p-sm-4 z-1"
-     [class.w-90]="component.errorMessage.message.length > 100"
+     [class.w-90]="component.errorMessage.message.length > hundred"
      *ngIf="component.errorMessage.isVisible">
   <div class="alert alert-warning alert-dismissible
               fade show border-2 m-0 py-2">
     <button class="btn-close bg-secondary m-1 p-1"
             type="button" data-bs-dismiss="alert">
     </button>
-    <div [class.h-50vh]="component.errorMessage.message.length > 100"
+    <div [class.h-50vh]="component.errorMessage.message.length > hundred"
          style="overflow: auto">
       <span id="errorMessage" [innerHTML]="component.errorMessage.message"></span>
     </div>

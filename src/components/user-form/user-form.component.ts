@@ -17,6 +17,8 @@ import {UserValidators} from '../../validators/UserValidators';
 import {WebApiService} from '../../services/web-api.service';
 import {UserService} from '../../services/user.service';
 import {Config} from '../../infrastructure/Config';
+import {AuthGuardService} from '../../services/auth-guard.service';
+import {TokenService} from '../../services/token.service';
 
 @Component({
   selector: 'app-user-form',
@@ -109,14 +111,17 @@ export class UserFormComponent implements OnInit, OnDestroy {
   // конструктор с DI для подключения к объекту маршрутизатора
   // для получения маршрута, подключения объекта активного маршрута для
   // получения параметров маршрута, подключения к сервису установки языка,
-  // подключения к сервису хранения сообщения об ошибке, подключения к web-сервису
-  // и подключения к сервису хранения данных о пользователе
+  // подключения к сервису хранения сообщения об ошибке, подключения к web-сервису,
+  // подключения к сервисам хранения данных о пользователе и jwt-токене
+  // и подключения к сервису аутентификации/авторизации пользователя
   constructor(private _router: Router,
               private _activatedRoute: ActivatedRoute,
               private _languageService: LanguageService,
               private _errorMessageService: ErrorMessageService,
               private _webApiService: WebApiService,
-              private _userService: UserService) {
+              private _userService: UserService,
+              private _tokenService: TokenService,
+              private _authGuardService: AuthGuardService) {
     Utils.helloComponent(Literals.userForm);
 
     console.log(`[-UserFormComponent-constructor--`);
@@ -177,9 +182,13 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.user = this._userService.user;
 
     //this.user = new User();
-
     console.log(`*-this.user-*`);
     console.dir(this.user);
+
+
+    // создание объектов полей ввода и формы изменения данных о пользователе
+    this.createFormControls();
+    this.createForm();
 
 
     // проверка на возможность перехода по маршруту
@@ -192,21 +201,15 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
       // параметр об Id пользователя, полученный из маршрута
       userId = +params[Literals.id];
-      console.dir(userId);
+      console.log(`*-userId: '${userId}' -*`);
       console.dir(typeof userId);
 
     }); // subscribe
 
-
-    // создание объектов полей ввода и формы изменения данных о пользователе
-    this.createFormControls();
-    this.createForm();
-
-
-    console.dir(userId);
-
     // если параметр не совпадает с параметром пользователя,
     // требуется перейти на страницу "NotFound"
+    console.log(`*-userId: '${userId}' -*`);
+    console.log(`*-this.user.id: '${this.user.id}' -*`);
     if (userId != this.user.id) {
       console.log(`*- Переход на "NotFound" -*`);
 
@@ -227,7 +230,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
     // если данные о пользователе не получены(т.е. User.id = 0),
     // перейти на домашнюю страницу и вывести сообщение об ошибке
-    if (this.user.id === 0) {
+    if (this.user.id === Literals.zero) {
       console.log(`*- Переход на "Home" -*`);
 
       // перейти по маршруту на домашнюю страницу
@@ -286,7 +289,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
 
   // обработчик события передачи данных из формы на сервер
-  async onSubmit() {
+  async onSubmit(): Promise<void> {
 
     console.log(`[-UserFormComponent-onSubmit--`);
 
@@ -308,34 +311,150 @@ export class UserFormComponent implements OnInit, OnDestroy {
     // включение спиннера ожидания данных
     this.component.isWaitFlag = true;
 
+    console.log(`--UserFormComponent-0-`);
+
+    // если токена нет ИЛИ время его действия закончилось -
+    // выполнить запрос на обновление токена
+    /*if (!this._tokenService.isTokenExists()) {
+      console.log(`Обновляем токен!`);
+
+      // запрос на обновление токена
+      let result: boolean;
+      let message: any;
+      [result, message] = await this._authGuardService.refreshToken();
+
+      console.log(`--message: '${message}'`);
+
+      // сообщение об успехе
+      if (message === Literals.Ok)
+        message = Resources.refreshTokenOk[this.component.language];
+
+      // ошибки данных
+      if (message.refreshModel) message =
+        Resources.incorrectUserIdData[this.component.language];
+
+      // ошибки данных о пользователе
+      console.log(`--message.userId: '${message.userId}'`);
+      console.log(`--message.userToken: '${message.userToken}'`);
+      if (message.userId != undefined && message.userToken === undefined)
+        message = Resources.notRegisteredUserIdData[this.component.language];
+
+      // ошибки входа пользователя
+      if (message.userId != undefined && message.userToken != undefined)
+        message = Resources.unauthorizedUserIdData[this.component.language];
+
+      // ошибки сервера
+      console.log(`--message.title: '${message.title}'`);
+      if (message.title != undefined) message = message.title;
+
+      // передадим значение сообщения об ошибке для отображения через объект
+      // сервиса компоненту AppComponent, подписавшемуся на изменение объекта
+      this._errorMessageService.errorMessageSubject.next(message);
+
+      // при завершении с ошибкой - закончить обработку
+      if (!result) {
+
+        // выключение спиннера ожидания данных
+        this.component.isWaitFlag = false;
+
+        console.log(`--UserFormComponent-onSubmit-КОНЕЦ-]`);
+        return;
+      } // if
+
+      // иначе - переходим к последующему запросу
+    } // if*/
+
     console.log(`--UserFormComponent-1-`);
 
     // запрос на изменение данных о пользователе
-    //let result: any = Literals.Ok;
     let result: { message: any, user: User } =
       { message: Literals.Ok, user: User.UserToDto(new User()) };
     try {
+      // получить jwt-токен
+      let token: string = this._tokenService.token;
+      console.log(`*-token: '${token}' -*`);
 
-      let webResult: any = await firstValueFrom(
-        this._webApiService.editUserPOST(Config.urlEditUser, this.user)
-      );
+      let webResult: any = await firstValueFrom(this._webApiService.editUserPOST(
+        Config.urlEditUser, this.user, token
+      ));
       console.dir(webResult);
 
-      if (webResult != null) {
-        result.user  = User.newUser(webResult.user);
-      } // if
+      result.user  = User.newUser(webResult.user);
 
     } catch (e: any) {
 
       console.dir(e);
       console.dir(e.error);
-      result.message = e.error;
+
+      // ошибка авторизации ([Authorize])
+      if (e.status === Literals.error401 && e.error === null)
+        result.message = Resources.unauthorizedUserIdData[this.component.language]
+      // другие ошибки
+      else
+        result.message = e.error;
 
     } // try-catch
 
+    console.log(`--UserFormComponent-result:`);
     console.dir(result);
     console.dir(result.message);
     console.dir(result.user);
+
+    console.log(`--UserFormComponent-2-`);
+
+    // выключение спиннера ожидания данных
+    this.component.isWaitFlag = false;
+
+
+    // если сообщение с ошибкой - завершаем обработку, остаёмся в форме
+    if (result.message != Literals.Ok) {
+
+      // сформируем соответствующее сообщение об ошибке
+      let message: string = Literals.empty;
+
+      // ошибки данных
+      /*console.log(`--result.userId: '${result.userId}'`);
+      if (result.userId != undefined)
+        message = result.userId === 0
+          ? Resources.incorrectUserIdData[this.component.language]
+          : Resources.notRegisteredUserIdData[this.component.language];*/
+
+      /*console.log(`--result.newPassword: '${result.newPassword}'`);
+      if (result.newPassword != undefined)
+        message = Resources.passwordFormIncorrectNewPasswordData[this.component.language];*/
+
+      // ошибки сервера
+      /*console.log(`--result.title: '${result.title}'`);
+      if (result.title != undefined) message = result.title;*/
+
+      // если результат уже содержит строку с сообщением
+      /*if ((typeof result) === Literals.string) message = result;*/
+
+      // изменим результат на сообщение для вывода
+      result.message = message;
+
+      //return;
+    } else {
+      // иначе - сообщение об успехе
+      result.message = Resources.passwordFormOkData[this.component.language];
+
+      // обновим данные о пользователе в сервисе-хранилище
+      // и передадим изменённые данные всем подписчикам
+      this._userService.user = result.user;
+
+      // перезаписать данные в хранилище
+      this._userService.saveUserToLocalStorage();
+
+      // перейти по маршруту на домашнюю страницу
+      this._router.navigateByUrl(Literals.routeHomeEmpty)
+        .then((e) => { console.log(`*- переход: ${e} -*`); });
+
+    } // if
+
+
+    // передадим значение сообщения об ошибке для отображения через объект
+    // сервиса компоненту AppComponent, подписавшемуся на изменение объекта
+    this._errorMessageService.errorMessageSubject.next(result.message);
 
     console.log(`--UserFormComponent-onSubmit-]`);
 
