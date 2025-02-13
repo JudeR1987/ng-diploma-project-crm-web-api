@@ -105,7 +105,12 @@ export class WebApiService {
 
     return this._http.post<any>(
       url,
-      User.UserToDto(user),
+      //User.UserToDto(user),
+      new HttpParams()
+        .set(Literals.userId,   user.id)
+        .set(Literals.userName, user.userName)
+        .set(Literals.phone,    user.phone)
+        .set(Literals.email,    user.email),
       { headers: httpHeaders }
     );
   } // editUserPOST

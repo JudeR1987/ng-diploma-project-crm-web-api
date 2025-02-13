@@ -175,14 +175,14 @@ export class UserFormComponent implements OnInit, OnDestroy {
       ? User.newUser(history.state.user)
       : new User();*/
 
-    console.log(`*-this.user-*`);
+    console.log(`*-(было)-this.user-*`);
     console.dir(this.user);
 
     // получим данные о пользователе из сервиса-хранилища
     this.user = this._userService.user;
 
     //this.user = new User();
-    console.log(`*-this.user-*`);
+    console.log(`*-(стало)-this.user-*`);
     console.dir(this.user);
 
 
@@ -258,12 +258,12 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
     console.log(`[-UserFormComponent-changeLanguageLiterals--`);
 
-    console.log(`*-input-language='${language}'-*`);
-    console.log(`*-this.component.language='${this.component.language}'-*`);
+    console.log(`*-input(пришло)-language='${language}'-*`);
+    console.log(`*-(было)-this.component.language='${this.component.language}'-*`);
 
     // задать значение языка отображения
     this.component.language = language;
-    console.log(`*-this.component.language='${this.component.language}'-*`);
+    console.log(`*-(стало)-this.component.language='${this.component.language}'-*`);
 
     // установить значения строковых переменных
     this.component.title                          = Resources.userFormTitle[this.component.language];
@@ -298,15 +298,17 @@ export class UserFormComponent implements OnInit, OnDestroy {
     console.log(this.userForm.valid);
 
     // задать значения параметров запроса
-    console.log(`*-this.user-*`);
-    console.dir(this.user);
-
+    console.log(`*-(было)-this.user.userName = '${this.user.userName}' -*`);
     this.user.userName = this.userName.value;
-    this.user.phone = this.phone.value;
-    this.user.email = this.email.value;
+    console.log(`*-(стало)-this.user.userName = '${this.user.userName}' -*`);
 
-    console.log(`*-this.user-*`);
-    console.dir(this.user);
+    console.log(`*-(было)-this.user.phone = '${this.user.phone}' -*`);
+    this.user.phone = this.phone.value;
+    console.log(`*-(стало)-this.user.phone = '${this.user.phone}' -*`);
+
+    console.log(`*-(было)-this.user.email = '${this.user.email}' -*`);
+    this.user.email = this.email.value;
+    console.log(`*-(стало)-this.user.email = '${this.user.email}' -*`);
 
     // включение спиннера ожидания данных
     this.component.isWaitFlag = true;
@@ -315,7 +317,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
     // если токена нет ИЛИ время его действия закончилось -
     // выполнить запрос на обновление токена
-    /*if (!this._tokenService.isTokenExists()) {
+    if (!this._tokenService.isTokenExists()) {
       console.log(`Обновляем токен!`);
 
       // запрос на обновление токена
@@ -362,7 +364,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       } // if
 
       // иначе - переходим к последующему запросу
-    } // if*/
+    } // if
 
     console.log(`--UserFormComponent-1-`);
 
@@ -413,22 +415,64 @@ export class UserFormComponent implements OnInit, OnDestroy {
       let message: string = Literals.empty;
 
       // ошибки данных
-      /*console.log(`--result.userId: '${result.userId}'`);
-      if (result.userId != undefined)
-        message = result.userId === 0
+      console.log(`--result.message.userId: '${result.message.userId}'`);
+      if (result.message.userId != undefined)
+        message = result.message.userId === 0
           ? Resources.incorrectUserIdData[this.component.language]
-          : Resources.notRegisteredUserIdData[this.component.language];*/
+          : Resources.notRegisteredUserIdData[this.component.language];
 
-      /*console.log(`--result.newPassword: '${result.newPassword}'`);
-      if (result.newPassword != undefined)
-        message = Resources.passwordFormIncorrectNewPasswordData[this.component.language];*/
+      console.log(`--result.message.userName: '${result.message.userName}'`);
+      if (result.message.userName != undefined)
+        message = Resources.userFormIncorrectNewUserName[this.component.language];
+
+      console.log(`--result.message.phone: '${result.message.phone}'`);
+      if (result.message.phone === Literals.empty)
+        message = Resources.userFormIncorrectNewPhone[this.component.language];
+
+      console.log(`--result.message.email: '${result.message.email}'`);
+      if (result.message.email === Literals.empty)
+        message = Resources.userFormIncorrectNewEmail[this.component.language];
+
+      // ошибки изменения номера телефона
+      if (result.message.phone) {
+        console.dir(result.message.phone);
+        console.log('телефон есть');
+
+        // добавить телефон в список зарегистрированных
+        this.registeredPhones.push(result.message.phone);
+        console.dir(this.registeredPhones);
+
+        // проверка номера телефона и email на совпадение с зарегистрированными
+        this.checkingExisting({ phone: this.phone.value, email: this.email.value });
+
+        // сообщение об ошибке
+        message = Resources.registeredPhone[this.component.language];
+
+      } // if
+
+      // ошибки изменения email
+      if (result.message.email) {
+        console.dir(result.message.email);
+        console.log('email есть');
+
+        // добавить email в список зарегистрированных
+        this.registeredEmails.push(result.message.email);
+        console.dir(this.registeredEmails);
+
+        // проверка номера телефона и email на совпадение с зарегистрированными
+        this.checkingExisting({ phone: this.phone.value, email: this.email.value });
+
+        // сообщение об ошибке
+        message = Resources.registeredEmail[this.component.language];
+
+      } // if
 
       // ошибки сервера
-      /*console.log(`--result.title: '${result.title}'`);
-      if (result.title != undefined) message = result.title;*/
+      console.log(`--result.message.title: '${result.message.title}'`);
+      if (result.message.title != undefined) message = result.message.title;
 
       // если результат уже содержит строку с сообщением
-      /*if ((typeof result) === Literals.string) message = result;*/
+      if ((typeof result.message) === Literals.string) message = result.message;
 
       // изменим результат на сообщение для вывода
       result.message = message;
@@ -436,7 +480,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       //return;
     } else {
       // иначе - сообщение об успехе
-      result.message = Resources.passwordFormOkData[this.component.language];
+      result.message = Resources.userFormOkData[this.component.language];
 
       // обновим данные о пользователе в сервисе-хранилище
       // и передадим изменённые данные всем подписчикам
@@ -560,18 +604,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
         console.log(`[-UserFormComponent-valueChanges.subscribe--`);
         console.dir(data);
 
-        // в зависимости от логина (телефон или почта),
-        // требуется установить длину логина
-        /*console.log(`--this.component.loginLength: ${this.component.loginLength}`);
-
-        // установить длину логина как у номера телефона
-        if (this.login.errors && this.login.errors[this.component.errorPhoneValidator])
-          this.component.loginLength = Literals.phoneLength;
-
-        // установить длину логина как у e-mail
-        if (this.login.errors && this.login.errors[this.component.errorEmailValidator])
-          this.component.loginLength = Literals.emailLength;
-        console.log(`--this.component.loginLength: ${this.component.loginLength}`);*/
+        // проверка номера телефона и email на совпадение с зарегистрированными
+        this.checkingExisting({ phone: data.phone, email: data.email });
 
         console.log(`--UserFormComponent-valueChanges.subscribe-]`);
       }
@@ -580,6 +614,24 @@ export class UserFormComponent implements OnInit, OnDestroy {
     console.log(`--UserFormComponent-createForm-]`);
 
   } // createForm
+
+
+  // проверка номера телефона и email на совпадение с зарегистрированными
+  checkingExisting(data: { phone: string, email: string }): void {
+
+    console.log(`[-UserFormComponent-checkingExisting--`);
+
+    this.component.errorRegisteredPhone.isRegistered =
+      this.registeredPhones.some((phone: string) => phone === data.phone);
+    console.dir(this.component.errorRegisteredPhone.isRegistered);
+
+    this.component.errorRegisteredEmail.isRegistered =
+      this.registeredEmails.some((email: string) => email === data.email);
+    console.dir(this.component.errorRegisteredEmail.isRegistered);
+
+    console.log(`--UserFormComponent-checkingExisting-]`);
+
+  } // checkingExisting
 
 
   // отмена подписки на изменение значения языка

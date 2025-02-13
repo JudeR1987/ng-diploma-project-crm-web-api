@@ -27,6 +27,8 @@ export class LanguageService {
     // прочитать значение языка отображения из локального хранилища
     this.loadLanguageFromLocalStorage();
 
+    console.log(`*-(стало)-this._language: '${this._language}' -*`);
+
     console.log(`--LanguageService-constructor-]`);
   } // constructor
 

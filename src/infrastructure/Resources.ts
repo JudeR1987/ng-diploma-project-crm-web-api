@@ -360,6 +360,22 @@ export class Resources {
       ${maxLength} ${this.userFormErrorUserNameMaxLengthEnd[language]}`;
   } // userFormErrorUserNameMaxLength
 
+  public static readonly userFormIncorrectNewUserName: Record<string, string> = {
+    'rus': 'некорректные данные о новом имени пользователя',
+    'eng': 'incorrect information about the new username' };
+
+  public static readonly userFormIncorrectNewPhone: Record<string, string> = {
+    'rus': 'некорректные данные о новом номере телефона',
+    'eng': 'incorrect information about the new phone number' };
+
+  public static readonly userFormIncorrectNewEmail: Record<string, string> = {
+    'rus': 'некорректные данные о новой почте',
+    'eng': 'incorrect information about the new mail' };
+
+  public static readonly userFormOkData: Record<string, string> = {
+    'rus': 'данные успешно изменены',
+    'eng': 'data changed successfully' };
+
   // всплывающая подсказка на кнопке "изменить"
   public static readonly userFormButUserEditTitle: Record<string, string> = {
     'rus': 'редактировать данные',

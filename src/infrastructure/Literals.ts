@@ -124,6 +124,9 @@ export class Literals {
   public static readonly password: string = 'password';
   public static readonly newPassword: string = 'newPassword';
   public static readonly userId: string = 'userId';
+  public static readonly userName: string = 'userName';
+  public static readonly phone: string = 'phone';
+  public static readonly email: string = 'email';
   public static readonly passwordInputTypes: { text: string, password: string } =
     { text: this.text, password: this.password };
   public static readonly error401: number = 401;

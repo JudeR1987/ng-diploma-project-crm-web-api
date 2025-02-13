@@ -247,7 +247,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         this.registeredPhones.push(result.phone);
         console.dir(this.registeredPhones);
 
-        // проверка на существование логина и пароля нового пользователя
+        // проверка номера телефона и email на совпадение с зарегистрированными
         this.checkingExisting(this.registrationForm.value);
 
         // формирование сообщения об ошибке
@@ -266,7 +266,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         this.registeredEmails.push(result.email);
         console.dir(this.registeredEmails);
 
-        // проверка на существование логина и пароля нового пользователя
+        // проверка номера телефона и email на совпадение с зарегистрированными
         this.checkingExisting(this.registrationForm.value);
 
         // формирование сообщения об ошибке
@@ -348,7 +348,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         console.log(`[-RegistrationComponent-valueChanges.subscribe--`);
         console.dir(data);
 
-        // проверка на существование логина и пароля нового пользователя
+        // проверка номера телефона и email на совпадение с зарегистрированными
         this.checkingExisting(data);
 
         console.log(`--RegistrationComponent-valueChanges.subscribe-]`);
@@ -360,7 +360,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   } // createForm
 
 
-  // проверка на существование логина и пароля нового пользователя
+  // проверка номера телефона и email на совпадение с зарегистрированными
   checkingExisting(data: { phone: string, email: string }): void {
 
     console.log(`[-RegistrationComponent-checkingExisting--`);

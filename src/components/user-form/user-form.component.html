@@ -151,7 +151,10 @@
                        text-opacity-75 w-50 w-min-140-max-160 m-1
                        border border-success border-2 border-opacity-50"
                 type="submit"
-                [class.disabled]="userForm.invalid || component.isWaitFlag"
+                [class.disabled]="userForm.invalid ||
+                                  component.errorRegisteredPhone.isRegistered ||
+                                  component.errorRegisteredEmail.isRegistered ||
+                                  component.isWaitFlag"
                 title="{{component.butUserEditTitle}}">
           @if (component.isWaitFlag) {
             <div class="row m-0 p-0 justify-content-center align-items-center">
