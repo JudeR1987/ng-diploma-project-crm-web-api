@@ -68,20 +68,25 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
   // сведения о пароле пользователя для изменения
   private _password: string = Literals.empty;
 
-  // объект формы изменения пароля пользователя
-  public passwordForm: FormGroup = null!;
-
   // поле ввода старого пароля пользователя
-  public oldPassword: FormControl = null!;
+  public oldPassword: FormControl = new FormControl();
 
   // поле ввода нового пароля пользователя
-  public newPassword: FormControl = null!;
+  public newPassword: FormControl = new FormControl();
 
   // поле подтверждения нового пароля пользователя
-  public newPasswordConfirmation: FormControl = null!;
+  public newPasswordConfirmation: FormControl = new FormControl();
 
   // поле изменения видимости пароля при вводе
-  public isDisplayPassword: FormControl = null!;
+  public isDisplayPassword: FormControl = new FormControl();
+
+  // объект формы изменения пароля пользователя
+  public passwordForm: FormGroup = new FormGroup<any>({
+    oldPassword:             this.oldPassword,
+    newPassword:             this.newPassword,
+    newPasswordConfirmation: this.newPasswordConfirmation,
+    isDisplayPassword:       this.isDisplayPassword
+  });
 
 
   // конструктор с DI для подключения к объекту маршрутизатора
@@ -117,8 +122,8 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
   } // constructor
 
 
-  // 0. установка языка отображения и значений строковых
-  // переменных сразу после загрузки компонента
+  // 0. установка начальных значений и подписок
+  // сразу после загрузки компонента
   ngOnInit(): void {
 
     console.log(`[-PasswordFormComponent-ngOnInit--`);
@@ -143,28 +148,15 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
 
       }); // subscribe
 
-
-    // получим результат перехода по маршруту через состояние
-    // из истории браузера (объект не отображается в url)
-    //console.dir(history.state.userId);
-    //console.dir(history.state.password);
-    //this._userId = history.state.userId ?? Literals.zero;
-    //this._password = history.state.password ?? Literals.empty;
-
-    console.log(`*-this._userId: '${this._userId}'-*`);
-    console.log(`*-this._password: '${this._password}'-*`);
+    console.log(`*-(было)-this._userId: '${this._userId}'-*`);
+    console.log(`*-(было)-this._password: '${this._password}'-*`);
 
     // получить данные о пользователе из сервиса-хранилища
     let user: User = this._userService.user;
     this._userId = user.id;
     this._password = user.password;
-    console.log(`*-this._userId: '${this._userId}' -*`);
-    console.log(`*-this._password: '${this._password}' -*`);
-
-
-    // создание объектов полей ввода и формы изменения пароля пользователя
-    this.createFormControls();
-    this.createForm();
+    console.log(`*-(стало)-this._userId: '${this._userId}' -*`);
+    console.log(`*-(стало)-this._password: '${this._password}' -*`);
 
 
     // проверка на возможность перехода по маршруту
@@ -197,9 +189,10 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
         this._errorMessageService.errorMessageSubject
           .next(Resources.incorrectUserIdData[this.component.language]);
 
+        console.log(`--PasswordFormComponent-ngOnInit-]`);
+
       }); // navigateByUrl
 
-      console.log(`--PasswordFormComponent-ngOnInit-]`);
       return;
     } // if
 
@@ -217,11 +210,17 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
         this._errorMessageService.errorMessageSubject
           .next(Resources.passwordFormIncorrectData[this.component.language]);
 
+        console.log(`--PasswordFormComponent-ngOnInit-]`);
+
       }); // navigateByUrl
 
-      console.log(`--PasswordFormComponent-ngOnInit-]`);
       return;
     } // if
+
+
+    // создание объектов полей ввода и формы изменения пароля пользователя
+    this.createFormControls();
+    this.createForm();
 
     console.log(`--PasswordFormComponent-ngOnInit-]`);
 
@@ -269,55 +268,20 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
     console.dir(this.passwordForm.value);
     console.log(this.passwordForm.valid);
 
-    // задать значения параметров запроса
-    //let oldPassword: string = this.oldPassword.value;
-    //console.log(`*- oldPassword: |${oldPassword}| -*`);
-
     let newPassword: string = this.newPasswordConfirmation.value;
     console.log(`*- newPassword: '${newPassword}' -*`);
 
     // включение спиннера ожидания данных
     this.component.isWaitFlag = true;
 
-    console.log(`--PasswordFormComponent-0-`);
+    console.log(`--PasswordFormComponent-0-(обновление токена)-`);
 
     // если токена нет ИЛИ время его действия закончилось -
     // выполнить запрос на обновление токена
     if (!this._tokenService.isTokenExists()) {
-      console.log(`Обновляем токен!`);
 
-      // запрос на обновление токена
-      let result: boolean;
-      let message: any;
-      [result, message] = await this._authGuardService.refreshToken();
-
-      console.log(`--message: '${message}'`);
-
-      // сообщение об успехе
-      if (message === Literals.Ok)
-        message = Resources.refreshTokenOk[this.component.language];
-
-      // ошибки данных
-      if (message.refreshModel) message =
-        Resources.incorrectUserIdData[this.component.language];
-
-      // ошибки данных о пользователе
-      console.log(`--message.userId: '${message.userId}'`);
-      console.log(`--message.userToken: '${message.userToken}'`);
-      if (message.userId != undefined && message.userToken === undefined)
-        message = Resources.notRegisteredUserIdData[this.component.language];
-
-      // ошибки входа пользователя
-      if (message.userId != undefined && message.userToken != undefined)
-        message = Resources.unauthorizedUserIdData[this.component.language];
-
-      // ошибки сервера
-      console.log(`--message.title: '${message.title}'`);
-      if (message.title != undefined) message = message.title;
-
-      // передадим значение сообщения об ошибке для отображения через объект
-      // сервиса компоненту AppComponent, подписавшемуся на изменение объекта
-      this._errorMessageService.errorMessageSubject.next(message);
+      // получим результат операции обновления токена
+      let result: boolean = await this.isRefreshToken();
 
       // при завершении с ошибкой - закончить обработку
       if (!result) {
@@ -332,7 +296,7 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
       // иначе - переходим к последующему запросу
     } // if
 
-    console.log(`--PasswordFormComponent-1-`);
+    console.log(`--PasswordFormComponent-1-(запрос на изменение)-`);
 
     // запрос на изменение пароля
     let result: any = Literals.Ok;
@@ -353,8 +317,10 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
       console.dir(e.error);
 
       // ошибка авторизации ([Authorize])
-      if (e.status === Literals.error401 && e.error === null)
+      if (e.status === Literals.error401 && e.error === null) {
+        console.log(`*- отработал [Authorize] -*`);
         result = Resources.unauthorizedUserIdData[this.component.language]
+      }
       // другие ошибки
       else
         result = e.error;
@@ -364,7 +330,7 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
     console.log(`--PasswordFormComponent-result:`);
     console.dir(result);
 
-    console.log(`--PasswordFormComponent-2-`);
+    console.log(`--PasswordFormComponent-2-(ответ на запрос получен)-`);
 
     // выключение спиннера ожидания данных
     this.component.isWaitFlag = false;
@@ -394,20 +360,19 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
       // если результат уже содержит строку с сообщением
       if ((typeof result) === Literals.string) message = result;
 
-      // изменим результат на сообщение для вывода
+      // изменить результат на сообщение для вывода
       result = message;
 
-      //return;
     } else {
       // иначе - сообщение об успехе
       result = Resources.passwordFormOkData[this.component.language];
 
-      // обновим данные о пользователе в сервисе-хранилище
-      // и передадим изменённые данные всем подписчикам
+      // обновить данные о пользователе в сервисе-хранилище
+      // и передать изменённые данные всем подписчикам
       let user: User = this._userService.user;
-      console.log(`*-user.password: '${user.password}'-*`);
+      console.log(`*-(было)-user.password: '${user.password}'-*`);
       user.password = newPassword;
-      console.log(`*-user.password: '${user.password}'-*`);
+      console.log(`*-(стало)-user.password: '${user.password}'-*`);
       this._userService.user = user;
 
       // перезаписать данные в хранилище
@@ -420,8 +385,7 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
     } // if
 
 
-    // передадим значение сообщения об ошибке для отображения через объект
-    // сервиса компоненту AppComponent, подписавшемуся на изменение объекта
+    // передать сообщение об ошибке в AppComponent для отображения
     this._errorMessageService.errorMessageSubject.next(result);
 
     console.log(`--PasswordFormComponent-onSubmit-]`);
@@ -429,75 +393,47 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
   } // onSubmit
 
 
-  // запрос на обновление токена возвращает показатель успешного или
-  // НЕ успешного обновления токена и сообщение об успехе/неудаче
-  /*async refreshToken(): Promise<[boolean, string]> {
-    console.log(`[-PasswordFormComponent-refreshToken--`);
+  // метод выполнения/НЕ выполнения обновления токена
+  private async isRefreshToken(): Promise<boolean> {
 
-    // получить данные о пользователе из сервиса-хранилища
-    let user: User = this._userService.user;
-
-    console.log(`--PasswordFormComponent-0.1-`);
+    console.log(`Обновляем токен!`);
 
     // запрос на обновление токена
-    let result: { message: any, token: string, user: User } =
-      await this._authGuardService.refreshToken(user);
-    console.log(`--PasswordFormComponent-result:`);
-    console.dir(result);
+    let result: boolean;
+    let message: any;
+    [result, message] = await this._authGuardService.refreshToken();
 
-    console.log(`--PasswordFormComponent-0.2-`);
+    console.log(`--message: '${message}'`);
 
-    // если сообщение с ошибкой - завершаем обработку,
-    // из локального хранилища удаляем данные о токене и пользователе,
-    // переходим в форму входа
-    console.dir(result.message);
-    if (result.message != Literals.Ok) {
+    // сообщение об успехе
+    if (message === Literals.Ok)
+      message = Resources.refreshTokenOk[this.component.language];
 
-      // выключение спиннера ожидания данных
-      this.component.isWaitFlag = false;
+    // ошибки данных
+    if (message.refreshModel) message =
+      Resources.incorrectUserIdData[this.component.language];
 
-      // сформируем соответствующее сообщение об ошибке
-      //let message: string = Literals.empty;
-      let message: string = Literals.empty;
+    // ошибки данных о пользователе
+    console.log(`--message.userId: '${message.userId}'`);
+    console.log(`--message.userToken: '${message.userToken}'`);
+    if (message.userId != undefined && message.userToken === undefined)
+      message = Resources.notRegisteredUserIdData[this.component.language];
 
-      // ошибки данных
-      if (result.message.refreshModel) message =
-        Resources.incorrectUserIdData[this.component.language];
+    // ошибки входа пользователя
+    if (message.userId != undefined && message.userToken != undefined)
+      message = Resources.unauthorizedUserIdData[this.component.language];
 
-      // изменим результат на сообщение для вывода
-      //result.message = message;
+    // ошибки сервера
+    console.log(`--message.title: '${message.title}'`);
+    if (message.title != undefined) message = message.title;
 
-      // установить данные о пользователе в сервисе-хранилище в значение
-      // по умолчанию и передать изменённые данные всем подписчикам
-      this._userService.user = new User();
+    // передать сообщение об ошибке в AppComponent для отображения
+    this._errorMessageService.errorMessageSubject.next(message);
 
-      // удалить данные из хранилища
-      localStorage.removeItem(Literals.jwt);
-      localStorage.removeItem(Literals.user);
+    // вернуть логический результат операции
+    return result;
 
-      // перейти к форме входа
-      this._router.navigateByUrl(Literals.routeLogin)
-        .then((e) => { console.log(`*- переход: ${e} -*`); });
-
-      console.log(`--PasswordFormComponent-refreshToken-FALSE-]`);
-      //return [false, result.message];
-      return [false, message];
-    } // if
-
-    // иначе - сообщение об успехе
-    result.message = Resources.refreshTokenOk[this.component.language];
-
-    // сохраним данные о пользователе в сервисе-хранилище
-    // и передадим изменённые данные всем подписчикам
-    this._userService.user = result.user;
-
-    // запишем данные в хранилище
-    this._authGuardService.saveTokenToLocalStorage(result.token)
-    this._userService.saveUserToLocalStorage();
-
-    console.log(`--PasswordFormComponent-refreshToken-TRUE-]`);
-    return [true, result.message];
-  } // refreshToken*/
+  } // isRefreshToken
 
 
   // создание объектов полей ввода формы изменения пароля пользователя
@@ -569,20 +505,6 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
       }) => {
         console.log(`[-PasswordFormComponent-valueChanges.subscribe--`);
         console.dir(data);
-
-        // в зависимости от логина (телефон или почта),
-        // требуется установить длину логина
-        /*console.log(`--this.component.loginLength: ${this.component.loginLength}`);
-
-        // установить длину логина как у номера телефона
-        if (this.login.errors && this.login.errors[this.component.errorPhoneValidator])
-          this.component.loginLength = Literals.phoneLength;
-
-        // установить длину логина как у e-mail
-        if (this.login.errors && this.login.errors[this.component.errorEmailValidator])
-          this.component.loginLength = Literals.emailLength;
-        console.log(`--this.component.loginLength: ${this.component.loginLength}`);*/
-
         console.log(`--PasswordFormComponent-valueChanges.subscribe-]`);
       }
     ); // subscribe
@@ -592,8 +514,7 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
   } // createForm
 
 
-  // отмена подписки на изменение значения языка
-  // отображения при уничтожении компонента
+  // отмены подписок и необходимые методы при уничтожении компонента
   ngOnDestroy(): void {
 
     console.log(`[-PasswordFormComponent-ngOnDestroy--`);
@@ -604,36 +525,5 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
 
   } // ngOnDestroy
 
-
-  /*ngAfterContentInit() {
-    console.log(`[-PasswordFormComponent-ngAfterContentInit--`);
-
-    console.log(`--PasswordFormComponent-ngAfterContentInit-]`);
-  } // ngAfterContentInit()*/
-
-
-  /*ngAfterContentChecked() {
-    console.log(`[-PasswordFormComponent-ngAfterContentChecked--`);
-
-    console.log(`--PasswordFormComponent-ngAfterContentChecked-]`);
-  } // ngAfterContentChecked*/
-
-
-  /*ngAfterViewInit() {
-    console.log(`[-PasswordFormComponent-ngAfterViewInit--`);
-
-    console.log(`--PasswordFormComponent-ngAfterViewInit-]`);
-  } // ngAfterViewInit*/
-
-  /*ngAfterViewChecked() {
-    console.log(`[-PasswordFormComponent-ngAfterViewChecked--`);
-
-    /!*this._errorMessageService.errorMessageSubject.next(
-      Resources.passwordFormIncorrectData[this.component.language]
-    );*!/
-
-    console.log(`--PasswordFormComponent-ngAfterViewChecked-]`);
-  } // ngAfterViewChecked*/
-
-} // PasswordFormComponent
+} // class PasswordFormComponent
 // ----------------------------------------------------------------------------

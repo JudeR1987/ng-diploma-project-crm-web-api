@@ -1,6 +1,8 @@
 // ----------------------------------------------------------------------------
 // класс с набором константных строковых значений
 // ----------------------------------------------------------------------------
+import {WebApiService} from '../services/web-api.service';
+
 export class Literals {
 
   //#region AppComponent
@@ -60,6 +62,16 @@ export class Literals {
 
   //#region NotFoundComponent
   public static readonly notFound: string = 'not-found';
+
+  //endregion
+
+
+  //#region WebApiService
+  public static readonly accept: string = 'Accept';
+  public static readonly applicationJson: string = 'application/json';
+  public static readonly authorization: string = 'Authorization';
+  public static readonly bearer: string = 'Bearer';
+  public static readonly tempPhoto: string = 'tempPhoto';
 
   //endregion
 
@@ -127,6 +139,7 @@ export class Literals {
   public static readonly userName: string = 'userName';
   public static readonly phone: string = 'phone';
   public static readonly email: string = 'email';
+  public static readonly avatar: string = 'avatar';
   public static readonly passwordInputTypes: { text: string, password: string } =
     { text: this.text, password: this.password };
   public static readonly error401: number = 401;

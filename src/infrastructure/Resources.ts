@@ -276,7 +276,7 @@ export class Resources {
     'eng': 'Welcome' };
 
   public static loginWelcomeOk(language: string, userName: string): string {
-    return `${this.loginWelcome[language]}, ${userName}!`;
+    return `${this.loginWelcome[language]}, <b>${userName}!</b>`;
   } // loginWelcomeOk
 
   // всплывающая подсказка на кнопке "войти"
@@ -372,9 +372,25 @@ export class Resources {
     'rus': 'некорректные данные о новой почте',
     'eng': 'incorrect information about the new mail' };
 
+  public static readonly userFormIncorrectNewAvatar: Record<string, string> = {
+    'rus': 'некорректные данные о новой фотографии',
+    'eng': 'incorrect information about the new photo' };
+
+  public static readonly userFormIncorrectTempDirectory: Record<string, string> = {
+    'rus': 'папка с временными фотографиями отсутствует',
+    'eng': 'the folder with temporary photos is missing' };
+
   public static readonly userFormOkData: Record<string, string> = {
     'rus': 'данные успешно изменены',
     'eng': 'data changed successfully' };
+
+  public static readonly userFormUploadImageOkData: Record<string, string> = {
+    'rus': 'изображение успешно загружено',
+    'eng': 'image uploaded successfully' };
+
+  public static readonly userFormDeleteTempDirectoryOk: Record<string, string> = {
+    'rus': 'папка с временными фотографиями удалена',
+    'eng': 'folder with temporary photos deleted' };
 
   // всплывающая подсказка на кнопке "изменить"
   public static readonly userFormButUserEditTitle: Record<string, string> = {
@@ -385,6 +401,36 @@ export class Resources {
   public static readonly userFormButUserEditValue: Record<string, string> = {
     'rus': 'изменить',
     'eng': 'edit' };
+
+  /*// всплывающая подсказка на изображении в компоненте выбора изображения
+  public static readonly userFormImageTitle: Record<string, string> = {
+    'rus': 'изменить',
+    'eng': 'edit' };*/
+
+  // заголовок поля выбора фотографии пользователя
+  public static readonly userFormLabelInputImage: Record<string, string> = {
+    'rus': 'выберите фотографию',
+    'eng': 'select a photo' };
+
+  // заголовок поля вывода имени файла выбранной фотографии пользователя
+  public static readonly userFormLabelNewFileName: Record<string, string> = {
+    'rus': 'выбран файл',
+    'eng': 'selected file' };
+
+  // заголовок поля вывода имени файла при невыбранной фотографии пользователя
+  public static readonly userFormLabelFileNotSelected: Record<string, string> = {
+    'rus': 'файл не выбран',
+    'eng': 'the file is not selected' };
+
+  // всплывающая подсказка на кнопке "выбрать фотографию"
+  public static readonly userFormButNewFileNameTitle: Record<string, string> = {
+    'rus': 'выбрать файл с фотографией',
+    'eng': 'select a photo file' };
+
+  // значение кнопки "выбрать фотографию"
+  public static readonly userFormButNewFileNameValue: Record<string, string> = {
+    'rus': 'выбрать',
+    'eng': 'selected' };
 
   //endregion
 
@@ -532,6 +578,10 @@ export class Resources {
   public static readonly refreshTokenOk: Record<string, string> = {
     'rus': 'токен обновлён',
     'eng': 'the token has been updated' };
+
+  public static readonly incorrectFileData: Record<string, string> = {
+    'rus': 'файл данных отсутствует',
+    'eng': 'the data file is missing' };
 
 
   // для форм

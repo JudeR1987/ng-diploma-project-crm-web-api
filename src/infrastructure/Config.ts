@@ -30,6 +30,15 @@ export class Config {
   public static readonly urlEditPassword: string =
     `${this.urlHost}/profile/editPassword`;
 
+  // 7. url для загрузки изображения
+  public static readonly urlUploadTempUserPhoto: string =
+    `${this.urlHost}/upload/tempUserPhoto`;
+
+  // 8. url для удаления временной папки
+  // со всеми временными фотографиями пользователя
+  public static readonly urlDeleteTempUserPhotos: string =
+    `${this.urlHost}/profile/deleteTempUserPhotos`;
+
 
 
   // адрес хоста

@@ -27,10 +27,7 @@ export class WebApiService {
   get(url: string, token: string): Observable<any> {
 
     // заголовок запроса с jwt-токеном
-    let httpHeaders: HttpHeaders = new HttpHeaders()
-      .set('Accept', 'application/json')
-      // передача токена в заголовке
-      .set('Authorization', `Bearer ${token}`);
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
 
     return this._http.get<any>(url, { headers: httpHeaders });
   } // get
@@ -96,10 +93,7 @@ export class WebApiService {
     console.log(`[-WebApiService-token: '${token}' -*`);
 
     // заголовок запроса с jwt-токеном
-    let httpHeaders: HttpHeaders = new HttpHeaders()
-      .set('Accept', 'application/json')
-      // передача токена в заголовке
-      .set('Authorization', `Bearer ${token}`);
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
 
     console.log(`--WebApiService-editUserPOST-]`);
 
@@ -110,7 +104,8 @@ export class WebApiService {
         .set(Literals.userId,   user.id)
         .set(Literals.userName, user.userName)
         .set(Literals.phone,    user.phone)
-        .set(Literals.email,    user.email),
+        .set(Literals.email,    user.email)
+        .set(Literals.avatar,   user.avatar),
       { headers: httpHeaders }
     );
   } // editUserPOST
@@ -125,10 +120,7 @@ export class WebApiService {
     console.log(`[-WebApiService-token: '${token}' -*`);
 
     // заголовок запроса с jwt-токеном
-    let httpHeaders: HttpHeaders = new HttpHeaders()
-      .set('Accept', 'application/json')
-      // передача токена в заголовке
-      .set('Authorization', `Bearer ${token}`);
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
 
     console.log(`--WebApiService-editPasswordPOST-]`);
 
@@ -140,6 +132,69 @@ export class WebApiService {
       { headers: httpHeaders }
     );
   } // editPasswordPOST
+
+
+  // POST-запрос на удалённый сервер для загрузки файла с изображением
+  uploadImagePOST(url: string, file: File, userId: number, token: string): Observable<any> {
+
+    console.log(`[-WebApiService-uploadImagePOST--`);
+    console.log(`[-WebApiService-file: -*`);
+    console.dir(file);
+    console.log(`[-WebApiService-userId: '${userId}' -*`);
+    console.log(`[-WebApiService-token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    // полезная нагрузка формы
+    let formData: FormData = new FormData();
+
+    // добавим в форму данные
+    formData.append(Literals.tempPhoto, file);
+    //formData.append(Literals.userId, userId);
+
+    console.log(`--WebApiService-uploadImagePOST-]`);
+
+    return this._http.post<any>(
+      url,
+      formData,
+      {
+        headers: httpHeaders,
+        params: new HttpParams().set(Literals.userId, userId)
+      }
+    );
+  } // uploadImagePOST
+
+
+  // DELETE-запрос на удалённый сервер для удаления временной
+  // папки со всеми временными фотографиями пользователя
+  deleteTempUserPhotos(url: string, userId: number, token: string): Observable<any> {
+
+    console.log(`[-WebApiService-deleteTempUserPhotos--`);
+    console.log(`[-WebApiService-userId: '${userId}' -*`);
+    console.log(`[-WebApiService-token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-deleteTempUserPhotos-]`);
+
+    return this._http.delete<any>(url, {
+      headers: httpHeaders,
+      params: new HttpParams().set(Literals.userId, userId)
+    });
+  } // deleteClientById
+
+
+  // метод формирования нового заголовка запроса с jwt-токеном
+  private authNewHttpHeaders(token: string): HttpHeaders {
+
+    return new HttpHeaders()
+      .set(Literals.accept, Literals.applicationJson)
+      // передача токена в заголовке
+      .set(Literals.authorization, `${Literals.bearer}${Literals.space}${token}`);
+
+  } // authNewHttpHeaders
 
 } // class WebApiService
 // ----------------------------------------------------------------------------

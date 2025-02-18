@@ -109,8 +109,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   } // constructor
 
 
-  // 0. установка языка отображения и значений строковых
-  // переменных сразу после загрузки компонента
+  // 0. установка начальных значений и подписок
+  // сразу после загрузки компонента
   ngOnInit(): void {
 
     console.log(`[-RegistrationComponent-ngOnInit--`);
@@ -288,8 +288,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
     } // if
 
-    // передадим значение сообщения об ошибке для отображения через объект
-    // сервиса компоненту AppComponent, подписавшемуся на изменение объекта
+    // передать сообщение об ошибке в AppComponent для отображения
     this._errorMessageService.errorMessageSubject.next(result);
 
     console.log(`--RegistrationComponent-onSubmit-]`);
@@ -378,8 +377,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   } // checkingExisting
 
 
-  // отмена подписки на изменение значения языка
-  // отображения при уничтожении компонента
+  // отмены подписок и необходимые методы при уничтожении компонента
   ngOnDestroy(): void {
 
     console.log(`[-RegistrationComponent-ngOnDestroy--`);

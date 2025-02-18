@@ -282,7 +282,7 @@ export class AuthGuardService implements CanActivate {
       status = true;
 
       // сохраним данные о jwt-токене и пользователе в сервисах
-      // и передадим изменённые данные всем подписчикам
+      // и передать изменённые данные всем подписчикам
       this._tokenService.token = result.token;
       this._userService.user = result.user;
 
@@ -290,7 +290,7 @@ export class AuthGuardService implements CanActivate {
       this._tokenService.saveTokenToLocalStorage()
       this._userService.saveUserToLocalStorage();
 
-      console.log(`--PasswordFormComponent-refreshToken-TRUE-]`);
+      console.log(`--AuthGuardService-refreshToken-TRUE-]`);
     } // if
 
     return [status, result.message];
@@ -329,7 +329,7 @@ export class AuthGuardService implements CanActivate {
       if (result.message.refreshModel) message =
         Resources.incorrectUserIdData[this.component.language];
 
-      // изменим результат на сообщение для вывода
+      // изменить результат на сообщение для вывода
       //result.message = message;
 
       // установить данные о пользователе в сервисе-хранилище в значение
@@ -353,7 +353,7 @@ export class AuthGuardService implements CanActivate {
     result.message = Resources.refreshTokenOk[this.component.language];
 
     // сохраним данные о пользователе в сервисе-хранилище
-    // и передадим изменённые данные всем подписчикам
+    // и передать изменённые данные всем подписчикам
     this._userService.user = result.user;
 
     // запишем данные в хранилище

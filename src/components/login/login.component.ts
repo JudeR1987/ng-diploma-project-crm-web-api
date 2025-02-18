@@ -109,8 +109,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   } // constructor
 
 
-  // 0. установка языка отображения и значений строковых
-  // переменных сразу после загрузки компонента
+  // 0. установка начальных значений и подписок
+  // сразу после загрузки компонента
   ngOnInit(): void {
 
     console.log(`[-LoginComponent-ngOnInit--`);
@@ -269,7 +269,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           : Resources.loginUnauthorizedEmail(this.component.language, result.message.email);
       } // if
 
-      // изменим результат на сообщение для вывода
+      // изменить результат на сообщение для вывода
       result.message = message;
 
       //return;
@@ -278,7 +278,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       result.message = Resources.loginWelcomeOk(this.component.language, result.user.userName);
 
       // сохраним данные о jwt-токене и пользователе в сервисах
-      // и передадим изменённые данные всем подписчикам
+      // и передать изменённые данные всем подписчикам
       this._tokenService.token = result.token;
       this._userService.user = result.user;
 
@@ -292,8 +292,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     } // if
 
-    // передадим значение сообщения об ошибке для отображения через объект
-    // сервиса компоненту AppComponent, подписавшемуся на изменение объекта
+    // передать сообщение об ошибке в AppComponent для отображения
     this._errorMessageService.errorMessageSubject.next(result.message);
 
     console.log(`--LoginComponent-onSubmit-]`);
@@ -376,8 +375,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   } // createForm
 
 
-  // отмена подписки на изменение значения языка
-  // отображения при уничтожении компонента
+  // отмены подписок и необходимые методы при уничтожении компонента
   ngOnDestroy(): void {
 
     console.log(`[-LoginComponent-ngOnDestroy--`);

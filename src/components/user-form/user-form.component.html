@@ -25,6 +25,23 @@
       <div class="row mx-0 my-1 p-2 bg-primary-subtle
                   border border-primary justify-content-center">
 
+        <!-- компонент выбора фотографии пользователя -->
+        <div class="row mx-0 my-1 p-0 justify-content-center align-items-center">
+          <file-upload class="col-md-10 col-lg-9 m-0 p-0"
+                       [imagePath]="user.avatar"
+                       [fileName]="user.fileName"
+                       [imageTitle]="user.userName"
+                       [labelInputImage]="component.labelInputImage"
+                       [labelNewFileName]="component.labelNewFileName"
+                       [labelFileNotSelected]="component.labelFileNotSelected"
+                       [butNewFileNameTitle]="component.butNewFileNameTitle"
+                       [butNewFileNameValue]="component.butNewFileNameValue"
+                       [isWaitFlag]="component.isWaitFlag"
+                       [newFileName]="component.newFileName"
+                       (onSendFile)="sendFileHandler($event)" >
+          </file-upload>
+        </div>
+
         <!-- ввод имени пользователя -->
         <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
           <label class="form-label col-sm-4 col-md-3 m-0 px-2" for="userName">

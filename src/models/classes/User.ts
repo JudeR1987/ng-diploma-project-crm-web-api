@@ -74,6 +74,13 @@ export class User {
   get roles(): Role[] { return this._roles; }
   set roles(value: Role[]) { this._roles = Role.parseRoles(value); }
 
+  // вычисляемое свойство
+  // имя файла фотографии пользователя
+  get fileName(): string {
+    let items: string[] = this._avatar.split(Literals.slash);
+    return items[items.length - 1];
+  } // get
+
   //#endregion
 
 

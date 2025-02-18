@@ -1,0 +1,60 @@
+
+<!-- компонент выбора файла изображения -->
+
+<div class="row justify-content-center align-items-center m-0 p-0">
+
+  <!-- изображение -->
+  <div class="col-sm-6 m-0 p-0 d-flex
+              justify-content-center justify-content-md-start">
+    <div class="m-0 p-0 input-image-w-180-200px-h-224px">
+      <div class="bg-main-color rounded-2 border border-1
+                  border-back-color p-1 w-100 h-100 d-flex">
+        <img class="img-thumbnail rounded-2 p-0 w-100 h-100"
+             src="{{imagePath}}"
+             alt="{{fileName}}"
+             title="{{imageTitle}}" />
+      </div>
+    </div>
+  </div>
+
+  <!-- элемент выбора файла изображения (скрытый) -->
+  <input #fileUpload
+         class="d-none"
+         type="file" name="images" accept="*.jpg;*.png"
+         (change)="onFileSelected($event)" />
+
+  <!-- пользовательский интерфейс отображения
+       элемента выбора файла изображения -->
+  <div class="col-sm-6 m-0 px-2 py-1 d-flex flex-column
+              justify-content-center align-items-center">
+
+    <label class="form-label text-center" for="id-btnImages">
+      {{labelInputImage}}:
+    </label>
+
+    <button class="btn btn-primary w-100px"
+            type="button" id="id-btnImages"
+            [class.disabled]="isWaitFlag"
+            title="{{butNewFileNameTitle}}"
+            (click)="fileUpload.click()" >
+      @if (isWaitFlag) {
+        <div class="row m-0 p-0 justify-content-center align-items-center">
+          <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
+        </div>
+      } @else {
+        {{butNewFileNameValue}}
+      } <!-- if -->
+    </button>
+
+    @if (newFileName) {
+      <label class="form-label text-center m-0 mt-3" for="id-newFileName">
+        {{labelNewFileName}}:
+        <span class="fw-bold" id="id-newFileName">{{newFileName}}</span>
+      </label>
+    } @else {
+      <span class="fw-bold text-center m-0 mt-3">{{labelFileNotSelected}}</span>
+    } <!-- if -->
+
+  </div>
+
+</div>

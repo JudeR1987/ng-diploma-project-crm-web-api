@@ -112,7 +112,7 @@ export class LanguageComponent implements OnInit {
     this.changeLiterals();
 
     // сохраним значение языка отображения в сервисе-хранилище
-    // и передадим изменённые данные всем подписчикам
+    // и передать изменённые данные всем подписчикам
     this._languageService.language = this.component.language;
 
     // запишем данные в хранилище

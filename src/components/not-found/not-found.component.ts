@@ -59,8 +59,8 @@ export class NotFoundComponent implements OnInit, OnDestroy {
   } // constructor
 
 
-  // 0. установка языка отображения и значений строковых
-  // переменных сразу после загрузки компонента
+  // 0. установка начальных значений и подписок
+  // сразу после загрузки компонента
   ngOnInit(): void {
 
     console.log(`[-NotFoundComponent-ngOnInit--`);
@@ -111,8 +111,7 @@ export class NotFoundComponent implements OnInit, OnDestroy {
   } // changeLanguageLiterals
 
 
-  // отмена подписки на изменение значения языка
-  // отображения при уничтожении компонента
+  // отмены подписок и необходимые методы при уничтожении компонента
   ngOnDestroy(): void {
 
     console.log(`[-NotFoundComponent-ngOnDestroy--`);

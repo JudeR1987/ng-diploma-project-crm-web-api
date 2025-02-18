@@ -17,17 +17,8 @@ export interface IUserFormComponent {
   // заголовок поля ввода e-mail пользователя
   labelEmail: string,
 
-  // заголовок поля ввода пароля пользователя
-  //labelPassword: string,
-
-  // заголовок поля ввода подтверждения пароля пользователя
-  //labelPasswordConfirmation: string,
-
   // шаблон поля ввода имени пользователя
   userNamePlaceholder: string,
-
-  // заголовок чек-бокса изменения отображения пароля при вводе
-  //labelCheckboxPassword: string,
 
   // значения сообщений об ошибках
   errorRequiredTitle:             string,
@@ -37,15 +28,28 @@ export interface IUserFormComponent {
   errorPhoneValidatorTitle:       string,
   errorEmailMaxLengthTitle:       string,
   errorEmailValidatorTitle:       string,
-  //errorPasswordValidatorTitle:    string,
   phoneNoErrorsTitle:             string,
-  //errorPasswordMinMaxLengthTitle: string,
 
   // всплывающая подсказка на кнопке "изменить"
   butUserEditTitle: string,
 
   // значение кнопки "изменить"
   butUserEditValue: string,
+
+  // заголовок поля выбора фотографии пользователя
+  labelInputImage: string,
+
+  // заголовок поля вывода имени файла выбранной фотографии пользователя
+  labelNewFileName: string,
+
+  // заголовок поля вывода имени файла при невыбранной фотографии пользователя
+  labelFileNotSelected: string,
+
+  // всплывающая подсказка на кнопке "выбрать фотографию"
+  butNewFileNameTitle: string,
+
+  // значение кнопки "выбрать фотографию"
+  butNewFileNameValue: string,
 
   //endregion
 
@@ -62,14 +66,15 @@ export interface IUserFormComponent {
   // флаг включения спиннера при ожидании данных с сервера
   isWaitFlag: boolean,
 
+  // флаг состояния изменений в данных о пользователе
+  // false - изменений нет, true - изменения есть (true после onSubmit)
+  isChangedFlag: boolean,
+
   // шаблон поля ввода номера телефона пользователя
   phonePlaceholder: string,
 
   // шаблон поля ввода e-mail пользователя
   emailPlaceholder: string,
-
-  // шаблон поля ввода пароля пользователя
-  //passwordPlaceholder: string,
 
   // длина имени пользователя
   userNameLength: number,
@@ -80,22 +85,14 @@ export interface IUserFormComponent {
   // длина e-mail пользователя
   emailLength: number,
 
-  // минимальная длина пароля пользователя
-  //passwordMinLength: number,
-
-  // максимальная длина пароля пользователя
-  //passwordMaxLength: number,
-
   // типы ошибок
   errorRequired:          string,
-  //errorMinLength:         string,
   errorMaxLength:         string,
   errorPhoneValidator:    string,
   errorEmailValidator:    string,
-  //errorPasswordValidator: string,
 
-  // объект с типами поля ввода пароля
-  //passwordInputTypes: { text: string, password: string }
+  // имя выбранного файла изображения
+  newFileName: string
 
   //endregion
 
