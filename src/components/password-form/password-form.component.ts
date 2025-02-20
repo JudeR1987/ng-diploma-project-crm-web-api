@@ -202,7 +202,7 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
     if (this._userId === Literals.zero || this._password === Literals.empty) {
       console.log(`*- Переход на "Home" -*`);
 
-      // перейти по маршруту на домашнюю страницу
+      // перейти по маршруту на главную страницу
       this._router.navigateByUrl(Literals.routeHomeEmpty).then((e) => {
         console.log(`*- переход: ${e} -*`);
 
@@ -244,7 +244,8 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
     this.component.title                          = Resources.passwordFormTitle[this.component.language];
     this.component.labelOldPassword               = Resources.passwordFormLabelOldPassword[this.component.language];
     this.component.labelNewPassword               = Resources.passwordFormLabelNewPassword[this.component.language];
-    this.component.labelNewPasswordConfirmation   = Resources.passwordFormLabelNewPasswordConfirmation[this.component.language];
+    //this.component.labelNewPasswordConfirmation   = Resources.passwordFormLabelNewPasswordConfirmation[this.component.language];
+    this.component.labelNewPasswordConfirmation   = Resources.labelPasswordConfirmation[this.component.language];
     this.component.labelCheckboxPassword          = Resources.labelCheckboxPassword[this.component.language];
     this.component.errorRequiredTitle             = Resources.errorRequired[this.component.language];
     this.component.errorPasswordValidatorTitle    = Resources.incorrectPassword[this.component.language];
@@ -378,7 +379,7 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
       // перезаписать данные в хранилище
       this._userService.saveUserToLocalStorage();
 
-      // перейти по маршруту на домашнюю страницу
+      // перейти по маршруту на главную страницу
       this._router.navigateByUrl(Literals.routeHomeEmpty)
         .then((e) => { console.log(`*- переход: ${e} -*`); });
 

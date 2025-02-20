@@ -21,7 +21,7 @@
   <input #fileUpload
          class="d-none"
          type="file" name="images" accept="*.jpg;*.png"
-         (change)="onFileSelected($event)" />
+         (change)="sendSelectedFile($event)" />
 
   <!-- пользовательский интерфейс отображения
        элемента выбора файла изображения -->
@@ -34,7 +34,7 @@
 
     <button class="btn btn-primary w-100px"
             type="button" id="id-btnImages"
-            [class.disabled]="isWaitFlag"
+            [class.disabled]="isWaitFlag || isDeletingFlag"
             title="{{butNewFileNameTitle}}"
             (click)="fileUpload.click()" >
       @if (isWaitFlag) {

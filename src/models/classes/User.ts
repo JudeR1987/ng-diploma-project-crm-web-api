@@ -36,6 +36,9 @@ export class User {
     // (true - вошёл, false - вышел)
     private _isLogin: boolean = false,
 
+    // дата и время удаления учётной записи
+    private _deleted: Date | null = null,
+
     // роли пользователя
     private _roles: Role[] = []
   ) {
@@ -71,6 +74,9 @@ export class User {
   get isLogin(): boolean { return this._isLogin; }
   set isLogin(value: boolean) { this._isLogin = value; }
 
+  get deleted(): Date | null { return this._deleted; }
+  set deleted(value: Date | null) { this._deleted = value; }
+
   get roles(): Role[] { return this._roles; }
   set roles(value: Role[]) { this._roles = Role.parseRoles(value); }
 
@@ -96,6 +102,7 @@ export class User {
       srcUser.avatar,
       srcUser.userToken,
       srcUser.isLogin,
+      srcUser.deleted,
       Role.parseRoles(srcUser.roles)
     ); // return
   } // newUser
@@ -119,6 +126,7 @@ export class User {
       avatar:    srcUser.avatar,
       userToken: srcUser.userToken,
       isLogin:   srcUser.isLogin,
+      deleted:   srcUser.deleted,
       roles:     Role.RolesToDto(srcUser.roles)
     };
   } // UserToDto
@@ -128,32 +136,6 @@ export class User {
   public static UsersToDto(srcUsers: User[]): any[] {
     return srcUsers.map((user: User) => this.UserToDto(user));
   } // UsersToDto
-
-
-  // получить сведения о пользователе из локального хранилища
-  /*public static loadUser(): User {
-
-    // получить запись из хранилища, если она есть
-    let userString: string | null = localStorage.getItem(Literals.user);
-    console.log(`--User-loadUser-userString: ${userString}`);
-
-    // если запись отсутствует, вернуть new User() с Id=0
-    if (!userString) return new User();
-
-    // получить объект Dto с данными о пользователе, если запись есть
-    let userDto: any = JSON.parse(userString);
-    console.log(`--User-loadUser-userDto-`);
-    console.dir(userDto);
-
-    let user: User = this.newUser(userDto);
-    console.log(`--User-loadUser-user-`);
-    console.dir(user);
-
-    // вернуть объект User
-    //return this.newUser(userDto);
-    return user;
-
-  } // loadUser*/
 
 } // class User
 // ----------------------------------------------------------------------------

@@ -39,6 +39,10 @@ export class Config {
   public static readonly urlDeleteTempUserPhotos: string =
     `${this.urlHost}/profile/deleteTempUserPhotos`;
 
+  // 9. url для удаления данных о пользователе
+  public static readonly urlDeleteUser: string =
+    `${this.urlHost}/profile/deleteUser`;
+
 
 
   // адрес хоста

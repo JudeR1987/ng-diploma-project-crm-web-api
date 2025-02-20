@@ -392,6 +392,10 @@ export class Resources {
     'rus': 'папка с временными фотографиями удалена',
     'eng': 'folder with temporary photos deleted' };
 
+  public static readonly userFormDeleteUserOk: Record<string, string> = {
+    'rus': 'данные о пользователе удалены',
+    'eng': 'user data has been deleted' };
+
   // всплывающая подсказка на кнопке "изменить"
   public static readonly userFormButUserEditTitle: Record<string, string> = {
     'rus': 'редактировать данные',
@@ -401,11 +405,6 @@ export class Resources {
   public static readonly userFormButUserEditValue: Record<string, string> = {
     'rus': 'изменить',
     'eng': 'edit' };
-
-  /*// всплывающая подсказка на изображении в компоненте выбора изображения
-  public static readonly userFormImageTitle: Record<string, string> = {
-    'rus': 'изменить',
-    'eng': 'edit' };*/
 
   // заголовок поля выбора фотографии пользователя
   public static readonly userFormLabelInputImage: Record<string, string> = {
@@ -431,6 +430,48 @@ export class Resources {
   public static readonly userFormButNewFileNameValue: Record<string, string> = {
     'rus': 'выбрать',
     'eng': 'selected' };
+
+  // заголовок чек-бокса изменения возможности удаления данных
+  public static readonly userFormLabelCheckboxDeletingFlag: Record<string, string> = {
+    'rus': 'удалить аккаунт',
+    'eng': 'delete an account' };
+
+  // всплывающая подсказка на кнопке "удалить аккаунт"
+  public static readonly userFormButDeleteUserTitle: Record<string, string> = {
+    'rus': 'удалить аккаунт',
+    'eng': 'delete an account' };
+
+  // значение кнопки "удалить аккаунт"
+  public static readonly userFormButDeleteUserValue: Record<string, string> = {
+    'rus': 'удалить',
+    'eng': 'delete' };
+
+  // сообщение подтверждения удаления данных о пользователе
+  public static readonly userFormMessageConfirmation: Record<string, string> = {
+    'rus': 'После удаления, восстановить данные будет невозможно!<br><br>' +
+      'Вы действительно хотите удалить учётную запись?',
+    'eng': 'After deletion, it will be impossible to restore the data!<br><br>' +
+      'Do you really want to delete your account?' };
+
+  // всплывающая подсказка на кнопке "подтвердить удаление"
+  public static readonly userFormButConfirmedOkTitle: Record<string, string> = {
+    'rus': 'подтвердить удаление',
+    'eng': 'confirm deletion' };
+
+  // значение кнопки "подтвердить удаление"
+  public static readonly userFormButConfirmedOkValue: Record<string, string> = {
+    'rus': 'удалить',
+    'eng': 'delete' };
+
+  // всплывающая подсказка на кнопке "отменить удаление"
+  public static readonly userFormButConfirmedCancelTitle: Record<string, string> = {
+    'rus': 'отменить удаление',
+    'eng': 'cancel deletion' };
+
+  // значение кнопки "отменить удаление"
+  public static readonly userFormButConfirmedCancelValue: Record<string, string> = {
+    'rus': 'отменить',
+    'eng': 'cancel' };
 
   //endregion
 
@@ -610,6 +651,11 @@ export class Resources {
   public static readonly labelCheckboxPassword: Record<string, string> = {
     'rus': 'показать пароль',
     'eng': 'show password' };
+
+  // заголовок "Внимание!"
+  public static readonly titleAttention: Record<string, string> = {
+    'rus': 'Внимание!',
+    'eng': 'Attention!' };
 
   //endregion
 

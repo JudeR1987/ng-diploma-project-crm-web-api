@@ -1,0 +1,11 @@
+
+<!-- компонент выбора возможности удаления данных -->
+
+<label class="form-check-label" for="isDeleting">
+  <input class="form-check-input m-1"
+         id="isDeleting"
+         [(ngModel)]="isDeletingFlag"
+         type="checkbox"
+         (change)="sendIsDeletingFlag()" />
+  {{labelCheckboxDeletingFlag}}
+</label>

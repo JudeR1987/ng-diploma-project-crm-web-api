@@ -20,11 +20,13 @@ import {Config} from '../../infrastructure/Config';
 import {AuthGuardService} from '../../services/auth-guard.service';
 import {TokenService} from '../../services/token.service';
 import {FileUploadComponent} from '../file-upload/file-upload.component';
+import {CheckboxDeletingComponent} from '../checkbox-deleting/checkbox-deleting.component';
+import {ModalConfirmationComponent} from '../modal-confirmation/modal-confirmation.component';
 
 @Component({
   selector: 'app-user-form',
   standalone: true,
-  imports: [NgIf, ReactiveFormsModule, FileUploadComponent],
+  imports: [NgIf, ReactiveFormsModule, FileUploadComponent, CheckboxDeletingComponent, ModalConfirmationComponent],
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.css'
 })
@@ -53,12 +55,23 @@ export class UserFormComponent implements OnInit, OnDestroy {
     labelFileNotSelected:           Literals.empty,
     butNewFileNameTitle:            Literals.empty,
     butNewFileNameValue:            Literals.empty,
+    labelCheckboxDeletingFlag:      Literals.empty,
+    butDeleteUserTitle:             Literals.empty,
+    butDeleteUserValue:             Literals.empty,
+    titleConfirmation:              Literals.empty,
+    messageConfirmation:            Literals.empty,
+    butConfirmedOkTitle:            Literals.empty,
+    butConfirmedOkValue:            Literals.empty,
+    butConfirmedCancelTitle:        Literals.empty,
+    butConfirmedCancelValue:        Literals.empty,
 
     // параметры НЕ меняющиеся при смене языка
     language:                Literals.empty,
     route:                   Literals.empty,
     isWaitFlag:              false,
     isChangedFlag:           false,
+    isDeletingFlag:          false,
+    isConfirmedFlag:         false,
     phonePlaceholder:        Literals.phonePlaceholder,
     emailPlaceholder:        Literals.emailPlaceholder,
     userNameLength:          Literals.userNameLength,
@@ -213,7 +226,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     if (this.user.id === Literals.zero) {
       console.log(`*- Переход на "Home" -*`);
 
-      // перейти по маршруту на домашнюю страницу
+      // перейти по маршруту на главную страницу
       this._router.navigateByUrl(Literals.routeHomeEmpty).then((e) => {
         console.log(`*- переход: ${e} -*`);
 
@@ -278,6 +291,15 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.component.labelFileNotSelected           = Resources.userFormLabelFileNotSelected[this.component.language];
     this.component.butNewFileNameTitle            = Resources.userFormButNewFileNameTitle[this.component.language];
     this.component.butNewFileNameValue            = Resources.userFormButNewFileNameValue[this.component.language];
+    this.component.labelCheckboxDeletingFlag      = Resources.userFormLabelCheckboxDeletingFlag[this.component.language];
+    this.component.butDeleteUserTitle             = Resources.userFormButDeleteUserTitle[this.component.language];
+    this.component.butDeleteUserValue             = Resources.userFormButDeleteUserValue[this.component.language];
+    this.component.titleConfirmation              = Resources.titleAttention[this.component.language];
+    this.component.messageConfirmation            = Resources.userFormMessageConfirmation[this.component.language];
+    this.component.butConfirmedOkTitle            = Resources.userFormButConfirmedOkTitle[this.component.language];
+    this.component.butConfirmedOkValue            = Resources.userFormButConfirmedOkValue[this.component.language];
+    this.component.butConfirmedCancelTitle        = Resources.userFormButConfirmedCancelTitle[this.component.language];
+    this.component.butConfirmedCancelValue        = Resources.userFormButConfirmedCancelValue[this.component.language];
 
     console.log(`--UserFormComponent-changeLanguageLiterals-]`);
 
@@ -468,7 +490,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       // установить флаг изменения данных о пользователе в true
       this.component.isChangedFlag = true;
 
-      // перейти по маршруту на домашнюю страницу
+      // перейти по маршруту на главную страницу
       this._router.navigateByUrl(Literals.routeHomeEmpty)
         .then((e) => { console.log(`*- переход: ${e} -*`); });
 
@@ -618,49 +640,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
     console.log(`--UserFormComponent-sendFileHandler-]`);
   } // sendFileHandler
-
-
-  // метод выполнения/НЕ выполнения обновления токена
-  private async isRefreshToken(): Promise<boolean> {
-
-    console.log(`Обновляем токен!`);
-
-    // запрос на обновление токена
-    let result: boolean;
-    let message: any;
-    [result, message] = await this._authGuardService.refreshToken();
-
-    console.log(`--message: '${message}'`);
-
-    // сообщение об успехе
-    if (message === Literals.Ok)
-      message = Resources.refreshTokenOk[this.component.language];
-
-    // ошибки данных
-    if (message.refreshModel) message =
-      Resources.incorrectUserIdData[this.component.language];
-
-    // ошибки данных о пользователе
-    console.log(`--message.userId: '${message.userId}'`);
-    console.log(`--message.userToken: '${message.userToken}'`);
-    if (message.userId != undefined && message.userToken === undefined)
-      message = Resources.notRegisteredUserIdData[this.component.language];
-
-    // ошибки входа пользователя
-    if (message.userId != undefined && message.userToken != undefined)
-      message = Resources.unauthorizedUserIdData[this.component.language];
-
-    // ошибки сервера
-    console.log(`--message.title: '${message.title}'`);
-    if (message.title != undefined) message = message.title;
-
-    // передать сообщение об ошибке в AppComponent для отображения
-    this._errorMessageService.errorMessageSubject.next(message);
-
-    // вернуть логический результат операции
-    return result;
-
-  } // isRefreshToken
 
 
   // создание объектов полей ввода формы изменения данных о пользователе
@@ -874,6 +853,222 @@ export class UserFormComponent implements OnInit, OnDestroy {
   } // requestDeleteTempUserPhotos
 
 
+  // обработчик события передачи данных о возможности удаления данных
+  sendIsDeletingFlagHandler(value: boolean): void {
+    console.log(`[-UserFormComponent-sendIsDeletingFlagHandler--`);
+
+    // запрет/разрешение возможности удаления данных
+    console.log(`-(было)-this.component.isDeletingFlag: '${this.component.isDeletingFlag}'`);
+    this.component.isDeletingFlag = value;
+    console.log(`-(стало)-this.component.isDeletingFlag: '${this.component.isDeletingFlag}'`);
+
+    console.log(`--UserFormComponent-sendIsDeletingFlagHandler-]`);
+  } // sendIsDeletingFlagHandler
+
+
+  // обработчик события передачи данных о подтверждении
+  // или НЕ_подтверждении удаления данных о пользователе
+  async sendIsConfirmedHandler(value: boolean): Promise<void> {
+    console.log(`[-UserFormComponent-sendIsConfirmedHandler--`);
+
+    // подтверждение/НЕ_подтверждение удаления данных
+    console.log(`-(было)-this.component.isConfirmedFlag: '${this.component.isConfirmedFlag}'`);
+    this.component.isConfirmedFlag = value;
+    console.log(`-(стало)-this.component.isConfirmedFlag: '${this.component.isConfirmedFlag}'`);
+
+    // если удаление подтверждено - отправить запрос
+    // на удаление данных о пользователе
+    if (this.component.isConfirmedFlag) {
+      console.log(`*- запрос на удаление -*`);
+
+      // запрос на удаление данных о пользователе
+      await this.requestDeleteUserData();
+
+    } else {
+      // иначе, если удаление НЕ подтверждено, отменяем удаление
+      console.log(`*- удаление ОТМЕНЕНО! -*`);
+
+      console.log(`-(было)-this.component.isDeletingFlag: '${this.component.isDeletingFlag}'`);
+      this.component.isDeletingFlag = this.component.isConfirmedFlag;
+      console.log(`-(стало)-this.component.isDeletingFlag: '${this.component.isDeletingFlag}'`);
+
+    }// if
+
+    console.log(`--UserFormComponent-sendIsConfirmedHandler-]`);
+  } // sendIsConfirmedHandler
+
+
+  // выполнение запроса на удаление данных о пользователе
+  async requestDeleteUserData(): Promise<void> {
+    console.log(`[-UserFormComponent-requestDeleteUserData--`);
+
+    console.log(`*-this.user-*`);
+    console.dir(this.user);
+
+    // включение спиннера ожидания данных
+    this.component.isWaitFlag = true;
+
+    console.log(`--UserFormComponent-0-(обновление токена)-`);
+
+    // если токена нет ИЛИ время его действия закончилось -
+    // выполнить запрос на обновление токена
+    if (!this._tokenService.isTokenExists()) {
+
+      // получим результат операции обновления токена
+      let result: boolean = await this.isRefreshToken();
+
+      // при завершении с ошибкой - закончить обработку
+      if (!result) {
+
+        // выключение спиннера ожидания данных
+        this.component.isWaitFlag = false;
+
+        console.log(`--UserFormComponent-requestDeleteUserData-КОНЕЦ-]`);
+        return;
+      } // if
+
+      // иначе - обновим данные о токене обновления пользователя
+      // и переходим к последующему запросу
+      console.log(`*-(было)-this.user.userToken: '${this.user.userToken}' -*`);
+      this.user.userToken = (this._userService.user).userToken;
+      console.log(`*-(стало)-this.user.userToken: '${this.user.userToken}' -*`);
+    } // if
+
+    console.log(`--UserFormComponent-1-(запрос на удаление)-`);
+
+    // запрос на удаление данных о пользователе
+    let result: any = Literals.Ok;
+    try {
+      // получить jwt-токен
+      let token: string = this._tokenService.token;
+      console.log(`*-token: '${token}' -*`);
+
+      let webResult: any = await firstValueFrom(this._webApiService.deleteUser(
+        Config.urlDeleteUser, this.user.id, token
+      ));
+      console.dir(webResult);
+
+    } catch (e: any) {
+
+      console.dir(e);
+      console.dir(e.error);
+
+      // ошибка авторизации ([Authorize])
+      if (e.status === Literals.error401 && e.error === null) {
+        console.log(`*- отработал [Authorize] -*`);
+        result = Resources.unauthorizedUserIdData[this.component.language]
+      }
+      // другие ошибки
+      else
+        result = e.error;
+
+    } // try-catch
+
+    console.log(`--UserFormComponent-result:`);
+    console.dir(result);
+
+    console.log(`--UserFormComponent-2-(ответ на запрос получен)-`);
+
+    // выключение спиннера ожидания данных
+    this.component.isWaitFlag = false;
+
+
+    // если сообщение с ошибкой - завершаем обработку,
+    // остаёмся в форме, отменяем удаление
+    if (result != Literals.Ok) {
+
+      // сформируем соответствующее сообщение об ошибке
+      let message: string = Literals.empty;
+
+      // ошибки данных
+      console.log(`--result.userId: '${result.userId}'`);
+      if (result.userId != undefined)
+        message = result.userId === 0
+          ? Resources.incorrectUserIdData[this.component.language]
+          : Resources.notRegisteredUserIdData[this.component.language];
+
+      // ошибки входа пользователя
+      console.log(`--result.isLogin: '${result.isLogin}'`);
+      if (!result.isLogin)
+        message = Resources.unauthorizedUserIdData[this.component.language];
+
+      // ошибки сервера
+      console.log(`--result.title: '${result.title}'`);
+      if (result.title != undefined) message = result.title;
+
+      // если результат уже содержит строку с сообщением
+      if ((typeof result) === Literals.string) message = result;
+
+      // изменить результат на сообщение для вывода
+      result = message;
+
+      // отменить удаление
+      console.log(`-(было)-this.component.isDeletingFlag: '${this.component.isDeletingFlag}'`);
+      console.log(`-(было)-this.component.isConfirmedFlag: '${this.component.isConfirmedFlag}'`);
+      this.component.isDeletingFlag = this.component.isConfirmedFlag = false;
+      console.log(`-(стало)-this.component.isDeletingFlag: '${this.component.isDeletingFlag}'`);
+      console.log(`-(стало)-this.component.isConfirmedFlag: '${this.component.isConfirmedFlag}'`);
+
+    } else {
+      // иначе - сообщение об успехе
+      result = Resources.userFormDeleteUserOk[this.component.language];
+
+      // перейти по маршруту на главную страницу
+      this._router.navigateByUrl(Literals.routeHomeEmpty)
+        .then((e) => { console.log(`*- переход: ${e} -*`); });
+
+    } // if
+
+    // передать сообщение об ошибке в AppComponent для отображения
+    this._errorMessageService.errorMessageSubject.next(result);
+
+    console.log(`--UserFormComponent-requestDeleteUserData-]`);
+  } // requestDeleteUserData
+
+
+  // метод выполнения/НЕ выполнения обновления токена
+  private async isRefreshToken(): Promise<boolean> {
+
+    console.log(`Обновляем токен!`);
+
+    // запрос на обновление токена
+    let result: boolean;
+    let message: any;
+    [result, message] = await this._authGuardService.refreshToken();
+
+    console.log(`--message: '${message}'`);
+
+    // сообщение об успехе
+    if (message === Literals.Ok)
+      message = Resources.refreshTokenOk[this.component.language];
+
+    // ошибки данных
+    if (message.refreshModel) message =
+      Resources.incorrectUserIdData[this.component.language];
+
+    // ошибки данных о пользователе
+    console.log(`--message.userId: '${message.userId}'`);
+    console.log(`--message.userToken: '${message.userToken}'`);
+    if (message.userId != undefined && message.userToken === undefined)
+      message = Resources.notRegisteredUserIdData[this.component.language];
+
+    // ошибки входа пользователя
+    if (message.userId != undefined && message.userToken != undefined)
+      message = Resources.unauthorizedUserIdData[this.component.language];
+
+    // ошибки сервера
+    console.log(`--message.title: '${message.title}'`);
+    if (message.title != undefined) message = message.title;
+
+    // передать сообщение об ошибке в AppComponent для отображения
+    this._errorMessageService.errorMessageSubject.next(message);
+
+    // вернуть логический результат операции
+    return result;
+
+  } // isRefreshToken
+
+
   // отмены подписок и необходимые методы при уничтожении компонента
   async ngOnDestroy(): Promise<void> {
 
@@ -884,8 +1079,29 @@ export class UserFormComponent implements OnInit, OnDestroy {
     // если компонент уничтожается НЕ после onSubmit(), то отправить запрос
     // на удаление временной папки со всеми временными фотографиями пользователя
     console.log(`*-this.component.isChangedFlag: '${this.component.isChangedFlag}' -*`);
-    if (!this.component.isChangedFlag)
+    if (!this.component.isChangedFlag) {
+
+      // запрос на удаление временной папки со всеми временными фотографиями пользователя
       await this.requestDeleteTempUserPhotos();
+
+      console.log(`-this.component.isConfirmedFlag: '${this.component.isConfirmedFlag}'`);
+
+      // ЕСЛИ БЫЛ запрос на удаление данных о пользователе, то после него
+      // установить исходные данные о пользователе в приложении
+      if (this.component.isConfirmedFlag) {
+
+        // установить данные о jwt-токене и пользователе в сервисах в значение
+        // по умолчанию и передать изменённые данные всем подписчикам
+        this._tokenService.token = Literals.empty;
+        this._userService.user = new User();
+
+        // удалить данные из хранилища
+        localStorage.removeItem(Literals.jwt);
+        localStorage.removeItem(Literals.user);
+
+      } // if
+
+    } // if
 
     console.log(`--UserFormComponent-ngOnDestroy-]`);
 

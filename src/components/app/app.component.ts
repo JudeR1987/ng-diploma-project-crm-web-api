@@ -96,7 +96,7 @@ export class AppComponent implements OnInit {
   public user: User = new User();
 
   // свойство для ограничения длины сообщения об ошибке при выводе
-  protected readonly hundred: number = Literals.hundred
+  protected readonly fiveHundred: number = Literals.fiveHundred
 
 
   // конструктор с DI для подключения к объекту маршрутизатора
@@ -275,7 +275,7 @@ export class AppComponent implements OnInit {
 
 
   // отмена срабатывания таймера и удаление всплывающего сообщения
-  private removeSetTimeout(): void {
+  /*private removeSetTimeout(): void {
 
     // отменить ранее установленный setTimeout
     clearTimeout(this.component.timerId);
@@ -283,7 +283,7 @@ export class AppComponent implements OnInit {
     // удалить всплывающее сообщение
     this.component.errorMessage = { message: Literals.empty, isVisible: false };
 
-  } // removeSetTimeout
+  } // removeSetTimeout*/
 
 
   // метод, устанавливающий значение заголовка страницы
@@ -332,18 +332,6 @@ export class AppComponent implements OnInit {
         icon = Literals.iconLight;
         routerLinkActive = Literals.empty;
         break;
-
-      /*case 'countries':
-        title = 'Данные таблицы &laquo;СТРАНЫ&raquo;';
-        icon = 'icon-dark';
-        routerLinkActive = 'tables';
-        break;*/
-
-      /*case 'query05':
-        title = 'Запрос &numero;5';
-        icon = 'icon-dark';
-        routerLinkActive = 'queries';
-        break;*/
 
       case Literals.routeAbout:
         this.component.title = Resources.appAboutTitle;
@@ -404,7 +392,7 @@ export class AppComponent implements OnInit {
     console.log(`[-AppComponent-logOut--`);
 
     // удаление всплывающего сообщения
-    this.removeSetTimeout();
+    //this.removeSetTimeout();
 
     // включение спиннера ожидания данных
     this.component.isWaitFlag = true;
@@ -449,13 +437,11 @@ export class AppComponent implements OnInit {
       this._router.navigateByUrl(Literals.routeLogin)
         .then((e) => { console.log(`*- переход: ${e} -*`); });
 
-      //console.log(`--AppComponent-logOut-]`);
-      //return;
     } else {
       // иначе - сообщение об успехе
       message = Resources.appLogOutOk[this.component.language];
 
-      // перейти на главную страницу приложения
+      // перейти по маршруту на главную страницу
       this._router.navigateByUrl(Literals.routeHomeEmpty)
         .then((e) => { console.log(`*- переход: ${e} -*`); });
 
@@ -528,18 +514,27 @@ export class AppComponent implements OnInit {
   displayMessage(message: string): void {
 
     // удаление всплывающего сообщения
-    this.removeSetTimeout();
+    //this.removeSetTimeout();
+
+    // отменить ранее установленный setTimeout
+    clearTimeout(this.component.timerId);
+
+    // если сообщение ещё не исчезло, новое сообщение добавляем к старому
+    console.log(`*-this.component.errorMessage.message-*`);
+    console.log(`*- '${this.component.errorMessage.message}' -*`);
+    if (this.component.errorMessage.message != Literals.empty)
+      message = this.component.errorMessage.message + Literals.break + message;
 
     // установить параметры сообщения
     this.component.errorMessage = { message: message, isVisible: true };
 
-    console.log(`*-this.component.errorMessage-*`);
+    console.log(`*-this.component.errorMessage.message-*`);
     console.log(`*- '${this.component.errorMessage.message}' -*`);
 
     // сбросить сообщение об ошибке
     this.component.timerId = setTimeout(() => {
         this.component.errorMessage = { message: Literals.empty, isVisible: false };
-      }, this.component.errorMessage.message.length < this.hundred
+      }, this.component.errorMessage.message.length < this.fiveHundred
         ? this.component.timeout
         : Literals.timeStop
     ); // setTimeout

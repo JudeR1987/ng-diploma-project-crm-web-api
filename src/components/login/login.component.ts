@@ -286,7 +286,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       this._tokenService.saveTokenToLocalStorage()
       this._userService.saveUserToLocalStorage();
 
-      // перейти по маршруту на домашнюю страницу
+      // перейти по маршруту на главную страницу
       this._router.navigateByUrl(Literals.routeHomeEmpty)
         .then((e) => { console.log(`*- переход: ${e} -*`); });
 
@@ -423,7 +423,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     // установить параметр валидности
     this.component.validLogin = true;
 
-    // перейти по маршруту на домашнюю страницу
+    // перейти по маршруту на главную страницу
     this._router.navigateByUrl(Literals.routeHomeEmpty)
       .then((e) => { console.dir(e); });
 
@@ -473,7 +473,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     // установить параметр валидности
     this.component.validLogin = true;
 
-    // перейти по маршруту на домашнюю страницу
+    // перейти по маршруту на главную страницу
     this._router.navigateByUrl(Literals.routeHomeEmpty)
       .then((e) => { console.dir(e); });
 

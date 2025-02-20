@@ -1,7 +1,8 @@
 // ----------------------------------------------------------------------------
 // пользовательский компонент загрузки файлов
 // ----------------------------------------------------------------------------
-import {Component, Input, EventEmitter, Output, OnInit, OnDestroy} from '@angular/core';
+import {Component, Input, EventEmitter, Output, OnInit, OnDestroy}
+  from '@angular/core';
 import {Literals} from '../../infrastructure/Literals';
 
 @Component({
@@ -41,18 +42,18 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   // флаг включения спиннера при ожидании данных с сервера
   @Input() isWaitFlag: boolean = false;
 
+  // флаг включения возможности удаления данных
+  @Input() isDeletingFlag: boolean = false;
+
   // имя выбранного файла изображения
   @Input() newFileName: string = Literals.empty;
 
-  // свойства для генерации событий выдачи данных из компонента
-  // выбранный файл с изображением
+  // свойство для генерации события передачи данных о выбранном файле с изображением
   @Output() onSendFile: EventEmitter<File> = new EventEmitter<File>();
 
 
-  // конструктор с DI для подключения к web-сервису
-  // и подключения к сервису хранения данных о jwt-токене
-  constructor(/*private _webApiService: WebApiService,
-              private _tokenService: TokenService*/) {
+  // конструктор
+  constructor() {
     console.log(`[-FileUploadComponent-constructor--`);
 
     console.log(`*-this.imagePath= '${this.imagePath}' -*`);
@@ -68,7 +69,8 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   } // constructor
 
 
-  // 0.
+  // 0. установка начальных значений и подписок
+  // сразу после загрузки компонента
   ngOnInit() {
     console.log(`[-FileUploadComponent-ngOnInit--`);
 
@@ -86,9 +88,9 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   } // ngOnInit
 
 
-  // обработчик события выбора изображения
-  onFileSelected(event: any): void {
-    console.log(`[-FileUploadComponent-onFileSelected--`);
+  // обработчик события передачи данных о выбранном файле с изображением
+  sendSelectedFile(event: any): void {
+    console.log(`[-FileUploadComponent-sendSelectedFile--`);
 
     console.log(`*-event.target-*`);
     console.dir(event.target);
@@ -101,23 +103,18 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     // если файл отсутствует, завершаем обработку
     if (!newFile) {
       console.log(`*- файл отсутствует -*`);
-      console.log(`--FileUploadComponent-onFileSelected-]`);
+      console.log(`--FileUploadComponent-sendSelectedFile-]`);
       return;
     } // if
-
-    // получим имя выбранного файла изображения
-    //console.log(`*-(было)-this.newFileName= '${this.newFileName}' -*`);
-    //this.newFileName = newFile.name;
-    //console.log(`*-(стало)-this.newFileName= '${this.newFileName}' -*`);
 
     // зажигаем событие передачи данных
     this.onSendFile.emit(newFile);
 
-    console.log(`--FileUploadComponent-onFileSelected-]`);
-  } // onFileSelected
+    console.log(`--FileUploadComponent-sendSelectedFile-]`);
+  } // sendSelectedFile
 
 
-  //
+  // отмены подписок и необходимые методы при уничтожении компонента
   ngOnDestroy() {
     console.log(`[-FileUploadComponent-ngOnDestroy--`);
     console.log(`--FileUploadComponent-ngOnDestroy-]`);

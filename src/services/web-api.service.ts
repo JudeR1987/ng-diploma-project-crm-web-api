@@ -183,7 +183,26 @@ export class WebApiService {
       headers: httpHeaders,
       params: new HttpParams().set(Literals.userId, userId)
     });
-  } // deleteClientById
+  } // deleteTempUserPhotos
+
+
+  // DELETE-запрос на удалённый сервер для удаления данных о пользователе
+  deleteUser(url: string, userId: number, token: string): Observable<any> {
+
+    console.log(`[-WebApiService-deleteUser--`);
+    console.log(`[-WebApiService-userId: '${userId}' -*`);
+    console.log(`[-WebApiService-token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-deleteUser-]`);
+
+    return this._http.delete<any>(url, {
+      headers: httpHeaders,
+      params: new HttpParams().set(Literals.userId, userId)
+    });
+  } // deleteUser
 
 
   // метод формирования нового заголовка запроса с jwt-токеном

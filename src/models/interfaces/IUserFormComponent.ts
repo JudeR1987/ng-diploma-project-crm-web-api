@@ -51,6 +51,33 @@ export interface IUserFormComponent {
   // значение кнопки "выбрать фотографию"
   butNewFileNameValue: string,
 
+  // заголовок чек-бокса изменения возможности удаления данных
+  labelCheckboxDeletingFlag: string,
+
+  // всплывающая подсказка на кнопке "удалить аккаунт"
+  butDeleteUserTitle: string,
+
+  // значение кнопки "удалить аккаунт"
+  butDeleteUserValue: string,
+
+  // заголовок сообщения подтверждения удаления данных о пользователе
+  titleConfirmation: string,
+
+  // сообщение подтверждения удаления данных о пользователе
+  messageConfirmation: string,
+
+  // всплывающая подсказка на кнопке "подтвердить удаление"
+  butConfirmedOkTitle: string,
+
+  // значение кнопки "подтвердить удаление"
+  butConfirmedOkValue: string,
+
+  // всплывающая подсказка на кнопке "отменить удаление"
+  butConfirmedCancelTitle: string,
+
+  // значение кнопки "отменить удаление"
+  butConfirmedCancelValue: string,
+
   //endregion
 
 
@@ -69,6 +96,14 @@ export interface IUserFormComponent {
   // флаг состояния изменений в данных о пользователе
   // false - изменений нет, true - изменения есть (true после onSubmit)
   isChangedFlag: boolean,
+
+  // флаг включения возможности удаления данных о пользователе
+  // false - запрещено удалять, true - разрешено удалять
+  isDeletingFlag: boolean,
+
+  // флаг состояния подтверждения об удалении данных о пользователе
+  // true - подтверждено, false - НЕ_подтверждено (true после onSubmit)
+  isConfirmedFlag: boolean,
 
   // шаблон поля ввода номера телефона пользователя
   phonePlaceholder: string,

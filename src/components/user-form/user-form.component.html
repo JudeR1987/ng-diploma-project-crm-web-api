@@ -37,6 +37,7 @@
                        [butNewFileNameTitle]="component.butNewFileNameTitle"
                        [butNewFileNameValue]="component.butNewFileNameValue"
                        [isWaitFlag]="component.isWaitFlag"
+                       [isDeletingFlag]="component.isDeletingFlag"
                        [newFileName]="component.newFileName"
                        (onSendFile)="sendFileHandler($event)" >
           </file-upload>
@@ -51,7 +52,9 @@
             <input class="form-control px-2" type="text"
                    id="userName" name="userName" formControlName="userName"
                    placeholder="{{component.userNamePlaceholder}}"
-                   maxlength="{{component.userNameLength + 1}}">
+                   maxlength="{{component.userNameLength + 1}}"
+                   [readOnly]="component.isWaitFlag || component.isDeletingFlag"
+                   [class.opacity-75]="component.isWaitFlag || component.isDeletingFlag" >
           </div>
         </div>
         <!-- строка с подсказками -->
@@ -84,7 +87,9 @@
             <input class="form-control px-2" type="text"
                    id="phone" name="phone" formControlName="phone"
                    placeholder="{{component.phonePlaceholder}}"
-                   maxlength="{{component.phoneLength}}">
+                   maxlength="{{component.phoneLength}}"
+                   [readOnly]="component.isWaitFlag || component.isDeletingFlag"
+                   [class.opacity-75]="component.isWaitFlag || component.isDeletingFlag" >
           </div>
         </div>
         <!-- строка с подсказками -->
@@ -125,7 +130,9 @@
             <input class="form-control px-2" type="text"
                    id="email" name="email" formControlName="email"
                    placeholder="{{component.emailPlaceholder}}"
-                   maxlength="{{component.emailLength + 1}}">
+                   maxlength="{{component.emailLength + 1}}"
+                   [readOnly]="component.isWaitFlag || component.isDeletingFlag"
+                   [class.opacity-75]="component.isWaitFlag || component.isDeletingFlag" >
           </div>
         </div>
         <!-- строка с подсказками -->
@@ -159,32 +166,82 @@
           </div>
         </div>
 
+        <!-- компонент выбора возможности удаления данных -->
+        <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+          <checkbox-deleting class="col-sm-8 col-md-7 col-lg-6 offset-sm-4 offset-md-3 p-0
+                                    d-flex justify-content-center justify-content-sm-start"
+                             [labelCheckboxDeletingFlag]="component.labelCheckboxDeletingFlag"
+                             [isDeletingFlag]="component.isDeletingFlag"
+                             (onSendIsDeletingFlag)="sendIsDeletingFlagHandler($event)">
+          </checkbox-deleting>
+        </div>
+
       </div>
 
-      <!-- подвал - кнопки ввода/сброса -->
+      <!-- подвал - кнопки изменить/удалить -->
       <div class="bg-primary d-flex justify-content-evenly p-0">
 
-        <button class="btn bg-success-subtle fw-bold text-success
-                       text-opacity-75 w-50 w-min-140-max-160 m-1
-                       border border-success border-2 border-opacity-50"
-                type="submit"
-                [class.disabled]="userForm.invalid ||
-                                  component.errorRegisteredPhone.isRegistered ||
-                                  component.errorRegisteredEmail.isRegistered ||
-                                  component.isWaitFlag"
-                title="{{component.butUserEditTitle}}">
-          @if (component.isWaitFlag) {
-            <div class="row m-0 p-0 justify-content-center align-items-center">
-              <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
-            </div>
-          } @else {
-            {{component.butUserEditValue}}
-          } <!-- if -->
-        </button>
+        <!-- при выборе удаления данных о пользователе, включаем кнопку "удалить" -->
+        @if (!component.isDeletingFlag) {
+
+          <button class="btn bg-success-subtle fw-bold text-success
+                         text-opacity-75 w-50 w-min-140-max-160 m-1
+                         border border-success border-2 border-opacity-50"
+                  type="submit"
+                  [class.disabled]="userForm.invalid ||
+                                    component.errorRegisteredPhone.isRegistered ||
+                                    component.errorRegisteredEmail.isRegistered ||
+                                    component.isWaitFlag"
+                  title="{{component.butUserEditTitle}}">
+            @if (component.isWaitFlag) {
+              <div class="row m-0 p-0 justify-content-center align-items-center">
+                <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
+              </div>
+            } @else {
+              {{component.butUserEditValue}}
+            } <!-- if -->
+          </button>
+
+        } @else {
+
+          <button class="btn bg-danger-subtle fw-bold text-danger
+                         text-opacity-75 w-50 w-min-140-max-160 m-1
+                         border border-danger border-2 border-opacity-50"
+                  type="button"
+                  [class.disabled]="component.isWaitFlag && component.isDeletingFlag"
+                  title="{{component.butDeleteUserTitle}}"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalDeletingUserConfirmation" >
+            @if (component.isWaitFlag) {
+              <div class="row m-0 p-0 justify-content-center align-items-center">
+                <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
+              </div>
+            } @else {
+              {{component.butDeleteUserValue}}
+            } <!-- if -->
+          </button>
+
+        } <!-- if -->
 
       </div>
 
     </form>
+
+
+    <!-- модальный компонент подтверждения удаления данных о пользователе -->
+    <modal-confirmation class="modal fade p-0"
+                        id="modalDeletingUserConfirmation"
+                        data-bs-backdrop="static"
+                        [title]="component.titleConfirmation"
+                        [messageConfirmation]="component.messageConfirmation"
+                        [butConfirmedOkTitle]="component.butConfirmedOkTitle"
+                        [butConfirmedOkValue]="component.butConfirmedOkValue"
+                        [butConfirmedCancelTitle]="component.butConfirmedCancelTitle"
+                        [butConfirmedCancelValue]="component.butConfirmedCancelValue"
+                        [isDeletingFlag]="component.isDeletingFlag"
+                        (onSendIsConfirmed)="sendIsConfirmedHandler($event)">
+    </modal-confirmation>
 
   </div>
 

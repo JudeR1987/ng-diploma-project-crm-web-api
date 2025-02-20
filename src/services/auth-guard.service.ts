@@ -92,10 +92,6 @@ export class AuthGuardService implements CanActivate {
       );
       console.dir(webResult);
 
-      /*if (webResult != null) {
-        result.token = webResult.token;
-        result.user  = User.newUser(webResult.user);
-      } // if*/
       result.token = webResult.token;
       result.user  = User.newUser(webResult.user);
 
@@ -112,14 +108,6 @@ export class AuthGuardService implements CanActivate {
     console.dir(result.message);
     console.dir(result.token);
     console.dir(result.user);
-
-    // записать данные в хранилище
-    //localStorage.setItem(Literals.jwt, result.token);
-    //localStorage.setItem(Literals.user, JSON.stringify(result.user));
-
-    // передадим данные о пользователе через объект компонента
-    // другим компонентам, подписавшимся на изменение объекта
-    //this.userSubject.next(User.newUser(result.user));
 
     console.log(`--AuthGuardService-login-]`);
 
@@ -151,14 +139,6 @@ export class AuthGuardService implements CanActivate {
       return message;
     } // try-catch
 
-    // удалить данные из хранилища
-    //localStorage.removeItem(Literals.jwt);
-    //localStorage.removeItem(Literals.user);
-
-    // передадим данные о пользователе через объект компонента
-    // другим компонентам, подписавшимся на изменение объекта
-    //this.userSubject.next(new User());
-
     console.log(`--AuthGuardService-logOut-]`);
 
     return message;
@@ -172,8 +152,6 @@ export class AuthGuardService implements CanActivate {
     console.log(`[-AuthGuardService-registration--`);
 
     // ожидаем получения ответа на запрос
-    /*let result: { message: any, phone: string, email: string } =
-      { message: Literals.Ok, phone: Literals.empty, email: Literals.empty };*/
     let message: any = Literals.Ok;
     try {
       let webResult: any = await firstValueFrom(
@@ -181,28 +159,14 @@ export class AuthGuardService implements CanActivate {
       );
       console.dir(webResult);
 
-     /* if (webResult != null) {
-        result.message = Literals.empty;
-        result.phone = webResult.phone;
-        result.email = webResult.email;
-      } // if*/
-
     } catch (e: any) {
       console.dir(e);
       console.dir(e.error);
-      //result.message = e.error;
       message = e.error;
-
-      //if (e.error.title) result.message = e.error.title;
 
       console.log(`--AuthGuardService-registration-]`);
       return message;
     } // try-catch
-
-    /*console.dir(result);
-    console.dir(result.message);
-    console.dir(result.phone);
-    console.dir(result.email);*/
 
     console.log(`--AuthGuardService-registration-]`);
 
@@ -237,14 +201,7 @@ export class AuthGuardService implements CanActivate {
       console.dir(e.error);
       result.message = e.error;
 
-      //console.log(`--AuthGuardService-refreshToken-]`);
-      //return result;
     } // try-catch
-
-    //console.dir(result);
-    //console.dir(result.message);
-    //console.dir(result.token);
-    //console.dir(result.user);
 
     console.log(`--AuthGuardService-result:`);
     console.dir(result);
@@ -398,45 +355,6 @@ export class AuthGuardService implements CanActivate {
 
     return result;
   } // refreshToken*/
-
-
-  // метод, проверяющий наличие и срок действия токена безопасности
-  /*isTokenExists(): boolean {
-    console.log(`[-AuthGuardService-isTokenExists--`);
-
-    // получить jwt-токен
-    //let token: string | null = localStorage.getItem(Literals.jwt);
-    let token: string | null = this.loadTokenFromLocalStorage();
-    console.log(`*- token: '${token}' -*`);
-
-    console.log(`*- (token && !this._jwtHelper.isTokenExpired(token): '${(token && !this._jwtHelper.isTokenExpired(token))}' -*`);
-
-    console.log(`--AuthGuardService-isTokenExists-]`);
-    //return (token && !this._jwtHelper.isTokenExpired(token)) ? true : false;
-    return !!(token && !this._jwtHelper.isTokenExpired(token));
-  } // isTokenExists*/
-
-
-  // чтение данных о токене из локального хранилища
-  /*loadTokenFromLocalStorage(): string | null {
-    console.log(`[-AuthGuardService-loadTokenFromLocalStorage--`);
-
-    // получить jwt-токен из хранилища, если запись есть
-    let token: string | null = localStorage.getItem(Literals.jwt);
-
-    console.log(`--AuthGuardService-loadTokenFromLocalStorage-]`);
-    return token;
-  } // loadTokenFromLocalStorage*/
-
-
-  // запись данных о токене в локальное хранилище
-  /*saveTokenToLocalStorage(token: string): void {
-    console.log(`[-AuthGuardService-saveTokenToLocalStorage--`);
-
-    localStorage.setItem(Literals.jwt, token);
-
-    console.log(`--AuthGuardService-saveTokenToLocalStorage-]`);
-  } // saveTokenToLocalStorage*/
 
 
   /*login(loginModel: LoginModel): string {
