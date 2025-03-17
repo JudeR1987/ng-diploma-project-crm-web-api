@@ -4,15 +4,18 @@
 <div class="row justify-content-center align-items-center m-0 p-0">
 
   <!-- изображение -->
-  <div class="col-sm-6 m-0 p-0 d-flex
-              justify-content-center justify-content-md-start">
-    <div class="m-0 p-0 input-image-w-180-200px-h-224px">
+  <div class="col-sm-6 m-0 p-0 d-flex justify-content-center
+              justify-content-md-start justify-content-xl-center">
+    <div class="m-0 p-0" [class]="sizeImage">
       <div class="bg-main-color rounded-2 border border-1
                   border-back-color p-1 w-100 h-100 d-flex">
-        <img class="img-thumbnail rounded-2 p-0 w-100 h-100"
+        <img #imageElement
+             class="img-thumbnail rounded-2 p-0 w-100 h-100"
              src="{{imagePath}}"
              alt="{{fileName}}"
-             title="{{imageTitle}}" />
+             title="{{toHtml(imageElement, htmlForImageElement)}}" />
+        <!-- элемент для передачи текста с html-разметкой в атрибут title -->
+        <span #htmlForImageElement class="d-none" [innerHTML]="imageTitle"></span>
       </div>
     </div>
   </div>

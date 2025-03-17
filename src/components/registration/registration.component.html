@@ -5,7 +5,7 @@
 
 <!-- разметка компонента RegistrationComponent -->
 <main class="row bg-main-color content-height mx-auto p-1 p-sm-2
-             w-md-95 justify-content-center align-items-start">
+             w-lg-95 justify-content-center align-items-start">
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
@@ -51,7 +51,9 @@
             <input class="form-control px-2" type="text"
                    id="phone" name="phone" formControlName="phone"
                    placeholder="{{component.phonePlaceholder}}"
-                   maxlength="{{component.phoneLength}}">
+                   maxlength="{{component.phoneLength}}"
+                   [readOnly]="component.isWaitFlag"
+                   [class.opacity-75]="component.isWaitFlag">
           </div>
         </div>
         <!-- строка с подсказками -->
@@ -92,7 +94,9 @@
             <input class="form-control px-2" type="text"
                    id="email" name="email" formControlName="email"
                    placeholder="{{component.emailPlaceholder}}"
-                   maxlength="{{component.emailLength + 1}}">
+                   maxlength="{{component.emailLength + 1}}"
+                   [readOnly]="component.isWaitFlag"
+                   [class.opacity-75]="component.isWaitFlag">
           </div>
         </div>
         <!-- строка с подсказками -->

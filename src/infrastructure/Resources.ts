@@ -12,8 +12,8 @@ export class Resources {
 
   // заголовок на странице "Home"
   public static readonly appHomeTitle: Record<string, string> = {
-    'rus': 'Задание на разработку',
-    'eng': 'Development Task' };
+    'rus': '&laquo;Платформа КРАСОТЫ&raquo;',
+    'eng': '&laquo;BEAUTY Platform&raquo;' };
 
   // заголовок на странице "О программе..."
   public static readonly appAboutTitle: Record<string, string> = {
@@ -39,6 +39,21 @@ export class Resources {
   public static readonly appPasswordFormTitle: Record<string, string> = {
     'rus': 'Смена пароля',
     'eng': 'Edit Password' };
+
+  // заголовок на странице "Ведение бизнеса"
+  public static readonly appBusinessTitle: Record<string, string> = {
+    'rus': 'Бизнес',
+    'eng': 'Business' };
+
+  // заголовок на странице "Создать пароль"
+  public static readonly appCreateCompanyFormTitle: Record<string, string> = {
+    'rus': 'Регистрация нового салона',
+    'eng': 'Registration of a new salon' };
+
+  // заголовок на странице "Изменить пароль"
+  public static readonly appEditCompanyFormTitle: Record<string, string> = {
+    'rus': 'Изменение данных о салоне',
+    'eng': 'Changing the information about the salon' };
 
   // всплывающая подсказка на логотипе "Home"
   public static readonly appLogoTitle: Record<string, string> = {
@@ -105,6 +120,16 @@ export class Resources {
   public static readonly appButPasswordFormValue: Record<string, string> = {
     'rus': 'смена пароля',
     'eng': 'password change' };
+
+  // всплывающая подсказка на кнопке "Ведение бизнеса"
+  public static readonly appButBusinessTitle: Record<string, string> = {
+    'rus': 'ведение бизнеса',
+    'eng': 'doing business' };
+
+  // значение кнопки "Ведение бизнеса"
+  public static readonly appButBusinessValue: Record<string, string> = {
+    'rus': 'бизнес',
+    'eng': 'business' };
 
   // всплывающая подсказка на кнопке "Выйти"
   public static readonly appButLogOutTitle: Record<string, string> = {
@@ -208,8 +233,22 @@ export class Resources {
 
   // заголовок
   public static readonly homeTitle: Record<string, string> = {
-    'rus': 'Какой-то контент',
-    'eng': 'Some content' };
+    'rus': 'Наши партнёры',
+    'eng': 'Our partners' };
+
+  // всплывающая подсказка на кнопке "записаться"
+  public static readonly homeButRecordTitle: Record<string, string> = {
+    'rus': 'записаться онлайн',
+    'eng': 'sign up online' };
+
+  // значение кнопки "записаться"
+  public static readonly homeButRecordValue: Record<string, string> = {
+    'rus': 'записаться',
+    'eng': 'sign up' };
+
+  // сообщения об ошибках
+
+
 
   //endregion
 
@@ -351,13 +390,9 @@ export class Resources {
     'rus': 'максимальная длина имени',
     'eng': 'the maximum length of the name is' };
 
-  public static readonly userFormErrorUserNameMaxLengthEnd: Record<string, string> = {
-    'rus': 'символов',
-    'eng': 'characters' };
-
   public static userFormErrorUserNameMaxLength(language: string, maxLength: number): string {
     return `${this.userFormErrorUserNameMaxLengthStart[language]}
-      ${maxLength} ${this.userFormErrorUserNameMaxLengthEnd[language]}`;
+      ${maxLength} ${this.errorForMaxLengthEnd[language]}`;
   } // userFormErrorUserNameMaxLength
 
   public static readonly userFormIncorrectNewUserName: Record<string, string> = {
@@ -381,8 +416,8 @@ export class Resources {
     'eng': 'the folder with temporary photos is missing' };
 
   public static readonly userFormOkData: Record<string, string> = {
-    'rus': 'данные успешно изменены',
-    'eng': 'data changed successfully' };
+    'rus': 'данные о пользователе успешно изменены',
+    'eng': 'user data changed successfully' };
 
   public static readonly userFormUploadImageOkData: Record<string, string> = {
     'rus': 'изображение успешно загружено',
@@ -398,38 +433,18 @@ export class Resources {
 
   // всплывающая подсказка на кнопке "изменить"
   public static readonly userFormButUserEditTitle: Record<string, string> = {
-    'rus': 'редактировать данные',
-    'eng': 'edit the data' };
-
-  // значение кнопки "изменить"
-  public static readonly userFormButUserEditValue: Record<string, string> = {
-    'rus': 'изменить',
-    'eng': 'edit' };
+    'rus': 'редактировать данные о пользователе',
+    'eng': 'edit user data' };
 
   // заголовок поля выбора фотографии пользователя
   public static readonly userFormLabelInputImage: Record<string, string> = {
     'rus': 'выберите фотографию',
     'eng': 'select a photo' };
 
-  // заголовок поля вывода имени файла выбранной фотографии пользователя
-  public static readonly userFormLabelNewFileName: Record<string, string> = {
-    'rus': 'выбран файл',
-    'eng': 'selected file' };
-
-  // заголовок поля вывода имени файла при невыбранной фотографии пользователя
-  public static readonly userFormLabelFileNotSelected: Record<string, string> = {
-    'rus': 'файл не выбран',
-    'eng': 'the file is not selected' };
-
   // всплывающая подсказка на кнопке "выбрать фотографию"
   public static readonly userFormButNewFileNameTitle: Record<string, string> = {
     'rus': 'выбрать файл с фотографией',
     'eng': 'select a photo file' };
-
-  // значение кнопки "выбрать фотографию"
-  public static readonly userFormButNewFileNameValue: Record<string, string> = {
-    'rus': 'выбрать',
-    'eng': 'selected' };
 
   // заголовок чек-бокса изменения возможности удаления данных
   public static readonly userFormLabelCheckboxDeletingFlag: Record<string, string> = {
@@ -457,11 +472,6 @@ export class Resources {
   public static readonly userFormButConfirmedOkTitle: Record<string, string> = {
     'rus': 'подтвердить удаление',
     'eng': 'confirm deletion' };
-
-  // значение кнопки "подтвердить удаление"
-  public static readonly userFormButConfirmedOkValue: Record<string, string> = {
-    'rus': 'удалить',
-    'eng': 'delete' };
 
   // всплывающая подсказка на кнопке "отменить удаление"
   public static readonly userFormButConfirmedCancelTitle: Record<string, string> = {
@@ -493,11 +503,6 @@ export class Resources {
     'rus': 'Новый пароль',
     'eng': 'New password' };
 
-  // заголовок поля подтверждения нового пароля пользователя
-  public static readonly passwordFormLabelNewPasswordConfirmation: Record<string, string> = {
-    'rus': 'Подтв. пароля',
-    'eng': 'Password conf.' };
-
   // сообщения об ошибках
   public static readonly passwordFormIncorrectData: Record<string, string> = {
     'rus': 'некорректные данные о пароле',
@@ -520,10 +525,274 @@ export class Resources {
     'rus': 'изменить пароль',
     'eng': 'edit the password' };
 
-  // значение кнопки "изменить"
-  public static readonly passwordFormButPasswordEditValue: Record<string, string> = {
-    'rus': 'изменить',
-    'eng': 'edit' };
+  //endregion
+
+
+  //#region BusinessComponent
+
+  // заголовок
+  public static readonly businessTitleDefault: Record<string, string> = {
+    'rus': 'Возможности',
+    'eng': 'Options' };
+
+  // заголовок области "компании"
+  public static readonly businessCompaniesTitle: Record<string, string> = {
+    'rus': 'Ваши салоны',
+    'eng': 'Your salons' };
+
+  // всплывающая подсказка на кнопке "создать салон"
+  public static readonly businessButCreateCompanyTitle: Record<string, string> = {
+    'rus': 'зарегистрировать новый салон',
+    'eng': 'register a new salon' };
+
+  // значение кнопки "создать салон"
+  public static readonly businessButCreateCompanyValue: Record<string, string> = {
+    'rus': 'новый салон',
+    'eng': 'new salon' };
+
+  // всплывающая подсказка на кнопке "изменить салон"
+  public static readonly businessButEditCompanyTitle: Record<string, string> = {
+    'rus': 'изменить сведения о салоне',
+    'eng': 'change the information about the salon' };
+
+  //endregion
+
+
+  //#region CompanyFormComponent
+
+  // заголовок формы (значение по умолчанию)
+  public static readonly companyFormTitleDefault: Record<string, string> = {
+    'rus': 'Данные салона',
+    'eng': 'Salon data' };
+
+  // заголовки
+  public static readonly companyFormCreateTitle: Record<string, string> = {
+    'rus': 'Новый салон',
+    'eng': 'New salon' };
+
+  public static readonly companyFormEditTitle: Record<string, string> = {
+    'rus': 'Салон',
+    'eng': 'Salon' };
+
+  public static companyFormEditTitleWithCompanyName(language: string, companyName: string): string {
+    return `${this.companyFormEditTitle[language]} &laquo;${companyName}&raquo;`;
+  } // companyFormEditTitleWithCompanyName
+
+  // шаблон поля ввода названия компании
+  public static readonly companyFormCompanyNamePlaceholder: Record<string, string> = {
+    'rus': 'название компании',
+    'eng': 'company name' };
+
+  // заголовок поля ввода названия нового города расположения компании
+  public static readonly companyFormLabelNewCityName: Record<string, string> = {
+    'rus': 'Новый город',
+    'eng': 'New city' };
+
+  // шаблон поля ввода названия нового города расположения компании
+  public static readonly companyFormNewCityNamePlaceholder: Record<string, string> = {
+    'rus': 'название города',
+    'eng': 'name of the city' };
+
+  // шаблон поля ввода названия улицы расположения компании
+  public static readonly companyFormStreetNamePlaceholder: Record<string, string> = {
+    'rus': 'ул. Ленина',
+    'eng': 'Lenin St.' };
+
+  // шаблон поля ввода номера дома/строения расположения компании
+  public static readonly companyFormBuildingPlaceholder: Record<string, string> = {
+    'rus': 'д. ххх',
+    'eng': 'h. xxx' };
+
+  // заголовок поля ввода текста описания компании
+  public static readonly companyFormLabelDescription: Record<string, string> = {
+    'rus': 'Краткое описание',
+    'eng': 'Short description' };
+
+  // шаблон поля ввода текста описания компании
+  public static readonly companyFormCompanyDescriptionPlaceholder: Record<string, string> = {
+    'rus': 'описание',
+    'eng': 'description' };
+
+  // заголовок поля ввода текста графика работы компании
+  public static readonly companyFormLabelSchedule: Record<string, string> = {
+    'rus': 'График работы',
+    'eng': 'Schedule' };
+
+  // заголовок поля ввода текста сайта компании
+  public static readonly companyFormLabelSite: Record<string, string> = {
+    'rus': 'Сайт',
+    'eng': 'Site' };
+
+  // сообщения об ошибках
+  public static readonly companyFormCreateCompanyIncorrectData: Record<string, string> = {
+    'rus': 'некорректные данные для создания салона',
+    'eng': 'incorrect data for creating salon data' };
+
+  public static readonly companyFormEditCompanyIncorrectData: Record<string, string> = {
+    'rus': 'некорректные данные для изменения салона',
+    'eng': 'incorrect data for changing salon data' };
+
+  public static readonly companyFormParamsOkData: Record<string, string> = {
+    'rus': 'данные формы получены',
+    'eng': 'form data has been received' };
+
+  public static readonly companyFormCreateOkData: Record<string, string> = {
+    'rus': 'Новый салон успешно зарегистрирован!',
+    'eng': 'The new salon has been successfully registered!' };
+
+  public static readonly companyFormEditOkData: Record<string, string> = {
+    'rus': 'данные салона успешно изменены',
+    'eng': 'salon data changed successfully' };
+
+  public static readonly companyFormErrorScheduleMaxLengthStart: Record<string, string> = {
+    'rus': 'максимальная длина расписания',
+    'eng': 'the maximum length of the schedule is' };
+
+  public static companyFormErrorScheduleMaxLength(language: string, maxLength: number): string {
+    return `${this.companyFormErrorScheduleMaxLengthStart[language]}
+      ${maxLength} ${this.errorForMaxLengthEnd[language]}`;
+  } // companyFormErrorScheduleMaxLength
+
+  public static readonly companyFormErrorSiteMaxLengthStart: Record<string, string> = {
+    'rus': 'максимальная длина сайта',
+    'eng': 'the maximum length of the site is' };
+
+  public static companyFormErrorSiteMaxLength(language: string, maxLength: number): string {
+    return `${this.companyFormErrorSiteMaxLengthStart[language]}
+      ${maxLength} ${this.errorForMaxLengthEnd[language]}`;
+  } // companyFormErrorSiteMaxLength
+
+  public static readonly companyFormErrorNewCityNameMaxLengthStart: Record<string, string> = {
+    'rus': 'максимальная длина названия города',
+    'eng': 'the maximum length of a city name is' };
+
+  public static companyFormErrorNewCityNameMaxLength(language: string, maxLength: number): string {
+    return `${this.companyFormErrorNewCityNameMaxLengthStart[language]}
+      ${maxLength} ${this.errorForMaxLengthEnd[language]}`;
+  } // companyFormErrorNewCityNameMaxLength
+
+  public static readonly companyFormErrorStreetNameMaxLengthStart: Record<string, string> = {
+    'rus': 'максимальная длина названия улицы',
+    'eng': 'the maximum length of a street name is' };
+
+  public static companyFormErrorStreetNameMaxLength(language: string, maxLength: number): string {
+    return `${this.companyFormErrorStreetNameMaxLengthStart[language]}
+      ${maxLength} ${this.errorForMaxLengthEnd[language]}`;
+  } // companyFormErrorStreetNameMaxLength
+
+  public static readonly companyFormErrorBuildingMaxLengthStart: Record<string, string> = {
+    'rus': 'максимальная длина номера дома',
+    'eng': 'the maximum length of a house number is' };
+
+  public static companyFormErrorBuildingMaxLength(language: string, maxLength: number): string {
+    return `${this.companyFormErrorBuildingMaxLengthStart[language]}
+      ${maxLength} ${this.errorForMaxLengthEnd[language]}`;
+  } // companyFormErrorBuildingMaxLength
+
+  public static readonly companyFormErrorCountrySelectedZeroValidator: Record<string, string> = {
+    'rus': 'страна не выбрана',
+    'eng': 'country not selected' };
+
+  public static readonly companyFormErrorCitySelectedZeroValidator: Record<string, string> = {
+    'rus': 'город не выбран',
+    'eng': 'city not selected' };
+
+  public static readonly companyFormErrorRegisteredCity: Record<string, string> = {
+    'rus': 'такой город уже зарегистрирован',
+    'eng': 'this city is already registered' };
+
+  public static readonly companyFormUploadLogoOkData: Record<string, string> = {
+    'rus': 'изображение логотипа успешно загружено',
+    'eng': 'the logo image uploaded successfully' };
+
+  public static readonly companyFormUploadImageOkData: Record<string, string> = {
+    'rus': 'изображение салона успешно загружено',
+    'eng': 'the salon image uploaded successfully' };
+
+  public static readonly companyFormIncorrectNewLogo: Record<string, string> = {
+    'rus': 'некорректные данные о новом логотипе',
+    'eng': 'incorrect information about the new logo' };
+
+  public static readonly companyFormIncorrectNewTitleImage: Record<string, string> = {
+    'rus': 'некорректные данные о новом изображении салона',
+    'eng': 'incorrect information about the new salon image' };
+
+  // всплывающая подсказка на кнопке "создать компанию"
+  public static readonly companyFormButCompanyCreateTitle: Record<string, string> = {
+    'rus': 'создать новый салон',
+    'eng': 'create a new salon' };
+
+  // всплывающая подсказка на кнопке "изменить компанию"
+  public static readonly companyFormButCompanyEditTitle: Record<string, string> = {
+    'rus': 'редактировать данные салона',
+    'eng': 'edit salon data' };
+
+  // всплывающие подсказки на логотипе компании
+  public static readonly companyFormCreateLogoTitle: Record<string, string> = {
+    'rus': 'Логотип нового салона',
+    'eng': 'The logo of the new salon' };
+
+  public static readonly companyFormEditLogoTitle: Record<string, string> = {
+    'rus': 'Логотип салона',
+    'eng': 'The logo of the salon' };
+
+  public static companyFormEditLogoTitleWithCompanyName(language: string, companyName: string): string {
+    return `${this.companyFormEditLogoTitle[language]} &laquo;${companyName}&raquo;`;
+  } // companyFormEditLogoTitleWithCompanyName
+
+  // всплывающие подсказки на основном изображении компании
+  public static readonly companyFormCreateTitleImageTitle: Record<string, string> = {
+    'rus': 'Изображение нового салона',
+    'eng': 'The image of the new salon' };
+
+  public static readonly companyFormEditTitleImageTitle: Record<string, string> = {
+    'rus': 'Изображение салона',
+    'eng': 'The image of the salon' };
+
+  public static companyFormEditTitleImageTitleWithCompanyName(language: string, companyName: string): string {
+    return `${this.companyFormEditTitleImageTitle[language]} &laquo;${companyName}&raquo;`;
+  } // companyFormEditTitleImageTitleWithCompanyName
+
+  public static readonly companyFormIncorrectTempLogoDirectory: Record<string, string> = {
+    'rus': 'папка с временными изображениями логотипов отсутствует',
+    'eng': 'the folder with temporary logo images is missing' };
+
+  public static readonly companyFormIncorrectTempTitleImageDirectory: Record<string, string> = {
+    'rus': 'папка с временными изображениями компании отсутствует',
+    'eng': 'the folder with temporary company images is missing' };
+
+  public static readonly companyFormDeleteTempDirectoryLogoOk: Record<string, string> = {
+    'rus': 'папка с временными логотипами удалена',
+    'eng': 'folder with temporary logos deleted' };
+
+  public static readonly companyFormDeleteTempDirectoryTitleImageOk: Record<string, string> = {
+    'rus': 'папка с временными изображениями компании удалена',
+    'eng': 'folder with temporary company images deleted' };
+
+  // заголовок поля выбора изображения логотипа компании
+  public static readonly companyFormLabelInputImageLogo: Record<string, string> = {
+    'rus': 'выберите логотип',
+    'eng': 'select a logo' };
+
+  // заголовок поля выбора основного изображения компании
+  public static readonly companyFormLabelInputImageTitleImage: Record<string, string> = {
+    'rus': 'выберите изображение салона',
+    'eng': 'select a salon image' };
+
+  // всплывающая подсказка на кнопке "выбрать логотип"
+  public static readonly companyFormButNewLogoFileNameTitle: Record<string, string> = {
+    'rus': 'выбрать файл с логотипом',
+    'eng': 'select a file with a logo' };
+
+  // всплывающая подсказка на кнопке "выбрать изображение салона"
+  public static readonly companyFormButNewTitleImageFileNameTitle: Record<string, string> = {
+    'rus': 'выбрать файл с изображением салона',
+    'eng': 'select a file with a salon image' };
+
+  // всплывающая подсказка на заголовке чек-бокса "новый город"
+  public static readonly companyFormLabelCheckboxIsNewCityTitle: Record<string, string> = {
+    'rus': 'добавить новый город',
+    'eng': 'add a new city' };
 
   //endregion
 
@@ -569,13 +838,9 @@ export class Resources {
     'rus': 'максимальная длина почты',
     'eng': 'the maximum length of the mail is' };
 
-  public static readonly errorEmailMaxLengthEnd: Record<string, string> = {
-    'rus': 'символов',
-    'eng': 'characters' };
-
   public static errorEmailMaxLength(language: string, maxLength: number): string {
     return `${this.errorEmailMaxLengthStart[language]}
-      ${maxLength} ${this.errorEmailMaxLengthEnd[language]}`;
+      ${maxLength} ${this.errorForMaxLengthEnd[language]}`;
   } // errorEmailMaxLength
 
   public static readonly errorPasswordMinMaxLengthStart: Record<string, string> = {
@@ -586,14 +851,10 @@ export class Resources {
     'rus': 'до',
     'eng': 'to' };
 
-  public static readonly errorPasswordMinMaxLengthEnd: Record<string, string> = {
-    'rus': 'символов',
-    'eng': 'characters' };
-
   public static errorPasswordMinMaxLength(language: string, minLength: number, maxLength: number): string {
     return `${this.errorPasswordMinMaxLengthStart[language]}
       ${minLength} ${this.errorPasswordMinMaxLengthMiddle[language]}
-      ${maxLength} ${this.errorPasswordMinMaxLengthEnd[language]}`;
+      ${maxLength} ${this.errorForMaxLengthEnd[language]}`;
   } // errorPasswordMinMaxLength
 
   public static readonly incorrectPassword: Record<string, string> = {
@@ -624,6 +885,64 @@ export class Resources {
     'rus': 'файл данных отсутствует',
     'eng': 'the data file is missing' };
 
+  public static readonly noConnection: Record<string, string> = {
+    'rus': 'соединение с сервером отсутствует',
+    'eng': 'there is no connection to the server' };
+
+  public static readonly requiredAuthorization: Record<string, string> = {
+    'rus': 'требуется авторизация',
+    'eng': 'authorization is required' };
+
+  public static readonly errorNameMaxLengthStart: Record<string, string> = {
+    'rus': 'максимальная длина названия',
+    'eng': 'the maximum length of the name is' };
+
+  public static errorNameMaxLength(language: string, maxLength: number): string {
+    return `${this.errorNameMaxLengthStart[language]}
+      ${maxLength} ${this.errorForMaxLengthEnd[language]}`;
+  } // errorNameMaxLength
+
+  public static readonly errorDescriptionMaxLengthStart: Record<string, string> = {
+    'rus': 'максимальная длина описания',
+    'eng': 'the maximum length of the description is' };
+
+  public static errorDescriptionMaxLength(language: string, maxLength: number): string {
+    return `${this.errorDescriptionMaxLengthStart[language]}
+      ${maxLength} ${this.errorForMaxLengthEnd[language]}`;
+  } // errorDescriptionMaxLength
+
+  public static readonly errorForMaxLengthEnd: Record<string, string> = {
+    'rus': 'символов',
+    'eng': 'characters' };
+
+  public static readonly incorrectCompanyIdData: Record<string, string> = {
+    'rus': 'некорректные данные о салоне',
+    'eng': 'incorrect salon information' };
+
+  public static readonly incorrectImageTypeData: Record<string, string> = {
+    'rus': 'некорректный тип изображения',
+    'eng': 'incorrect image type' };
+
+  public static readonly pageIncorrectData: Record<string, string> = {
+    'rus': 'некорректные данные о запрашиваемой странице',
+    'eng': 'incorrect information about the requested page' };
+
+  public static readonly notRegisteredCompanyIdData: Record<string, string> = {
+    'rus': 'салон не зарегистрирован',
+    'eng': 'the salon is not registered' };
+
+  public static readonly incorrectCountryIdData: Record<string, string> = {
+    'rus': 'некорректные данные о стране',
+    'eng': 'incorrect country information' };
+
+  public static readonly incorrectCityIdData: Record<string, string> = {
+    'rus': 'некорректные данные о городе',
+    'eng': 'incorrect city information' };
+
+  public static readonly incorrectStreetIdData: Record<string, string> = {
+    'rus': 'некорректные данные об улице',
+    'eng': 'incorrect street information' };
+
 
   // для форм
 
@@ -647,15 +966,135 @@ export class Resources {
     'rus': 'Подтв. пароля',
     'eng': 'Password conf.' };
 
+  // заголовок поля ввода названия чего-либо
+  public static readonly labelName: Record<string, string> = {
+    'rus': 'Название',
+    'eng': 'Name' };
+
   // заголовок чек-бокса изменения отображения пароля при вводе
   public static readonly labelCheckboxPassword: Record<string, string> = {
     'rus': 'показать пароль',
     'eng': 'show password' };
 
+  // заголовок списка выбора страны
+  public static readonly labelCountry: Record<string, string> = {
+    'rus': 'Страна',
+    'eng': 'Country' };
+
+  // заголовок списка выбора города
+  public static readonly labelCity: Record<string, string> = {
+    'rus': 'Город',
+    'eng': 'City' };
+
+  // первый элемент списка выбора страны
+  public static readonly firstOptionCountries: Record<string, string> = {
+    'rus': 'выберите страну...',
+    'eng': 'select a country...' };
+
+  // первый элемент списка выбора города
+  public static readonly firstOptionCities: Record<string, string> = {
+    'rus': 'выберите город...',
+    'eng': 'select a city...' };
+
+  // заголовок поля ввода названия улицы
+  public static readonly labelStreetName: Record<string, string> = {
+    'rus': 'Улица',
+    'eng': 'Street' };
+
+  // заголовок поля ввода номера дома/строения
+  public static readonly labelBuilding: Record<string, string> = {
+    'rus': 'дом',
+    'eng': 'house' };
+
+  // заголовок поля ввода номера квартиры/офиса
+  public static readonly labelFlat: Record<string, string> = {
+    'rus': 'квартира',
+    'eng': 'flat' };
+
   // заголовок "Внимание!"
   public static readonly titleAttention: Record<string, string> = {
     'rus': 'Внимание!',
     'eng': 'Attention!' };
+
+  // значение кнопки "создать"
+  public static readonly butCreateValue: Record<string, string> = {
+    'rus': 'создать',
+    'eng': 'create' };
+
+  // значение кнопки "изменить"
+  public static readonly butEditValue: Record<string, string> = {
+    'rus': 'изменить',
+    'eng': 'edit' };
+
+  // значение кнопки "удалить"
+  public static readonly butDeleteValue: Record<string, string> = {
+    'rus': 'удалить',
+    'eng': 'delete' };
+
+  // заголовок поля вывода имени файла выбранного изображения
+  public static readonly labelNewFileName: Record<string, string> = {
+    'rus': 'выбран файл',
+    'eng': 'selected file' };
+
+  // заголовок поля вывода имени файла при невыбранном изображении
+  public static readonly labelFileNotSelected: Record<string, string> = {
+    'rus': 'файл не выбран',
+    'eng': 'the file is not selected' };
+
+  // значение кнопки "выбрать изображение"
+  public static readonly butNewFileNameValue: Record<string, string> = {
+    'rus': 'выбрать',
+    'eng': 'selected' };
+
+  // заголовок поля ввода чего-либо нового
+  public static readonly labelNew: Record<string, string> = {
+    'rus': 'новый',
+    'eng': 'new' };
+
+  // заголовок поля отображения графика работы компании
+  public static readonly labelSchedule: Record<string, string> = {
+    'rus': 'График работы',
+    'eng': 'Work schedule' };
+
+  // заголовок поля отображения телефона компании
+  public static readonly displayLabelPhone: Record<string, string> = {
+    'rus': 'тел.',
+    'eng': 'phone' };
+
+  // всплывающая подсказка на кнопке "перейти на 1-ю"
+  public static readonly butToFirstPageTitle: Record<string, string> = {
+    'rus': 'перейти на 1-ю страницу',
+    'eng': 'go to the 1st page' };
+
+  // всплывающая подсказка на кнопке "перейти на предыдущую"
+  public static readonly butPreviousTitle: Record<string, string> = {
+    'rus': 'перейти на предыдущую страницу',
+    'eng': 'go to the previous page' };
+
+  // значение кнопки "перейти на предыдущую"
+  public static readonly butPreviousValue: Record<string, string> = {
+    'rus': 'назад',
+    'eng': 'previous' };
+
+  // всплывающая подсказка на кнопке "текущая страница"
+  public static readonly butCurrentPageTitle: Record<string, string> = {
+    'rus': 'текущая страница',
+    'eng': 'current page' };
+
+  // всплывающая подсказка на кнопке "перейти на следующую"
+  public static readonly butNextTitle: Record<string, string> = {
+    'rus': 'перейти на следующую страницу',
+    'eng': 'go to the next page' };
+
+  // значение кнопки "перейти на следующую"
+  public static readonly butNextValue: Record<string, string> = {
+    'rus': 'вперед',
+    'eng': 'next' };
+
+  // всплывающая подсказка на кнопке "перейти на последнюю"
+  public static readonly butToLastPageTitle: Record<string, string> = {
+    'rus': 'перейти на последнюю страницу',
+    'eng': 'go to the last page' };
 
   //endregion
 

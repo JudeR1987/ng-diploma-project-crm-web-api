@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------------
 
 // класс, представляющий сведения о записи в таблице "СТРАНЫ" (Countries)
-export class Country {
+export class CountryTemp {
 
   // конструктор с параметрами по умолчанию
   constructor(
@@ -61,6 +61,6 @@ export class Country {
     return srcCountries.map((country: Country | any) => this.newCountry(country));
   } // parseCountries
 
-} // class Country
+} // class CountryTemp
 
 // ----------------------------------------------------------------------------

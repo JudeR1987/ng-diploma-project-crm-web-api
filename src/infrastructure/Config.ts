@@ -30,7 +30,7 @@ export class Config {
   public static readonly urlEditPassword: string =
     `${this.urlHost}/profile/editPassword`;
 
-  // 7. url для загрузки изображения
+  // 7. url для загрузки изображения временной фотографии пользователя
   public static readonly urlUploadTempUserPhoto: string =
     `${this.urlHost}/upload/tempUserPhoto`;
 
@@ -42,6 +42,47 @@ export class Config {
   // 9. url для удаления данных о пользователе
   public static readonly urlDeleteUser: string =
     `${this.urlHost}/profile/deleteUser`;
+
+
+  // 10. url для получения данных из таблицы "КОМПАНИИ" (Companies) от сервера
+  /*public static readonly urlGetAllCountriesByPage: string =
+    `${this.urlHost}/api/countries/getAll`;*/
+  public static readonly urlGetAllCompanies: string =
+    `${this.urlHost}/api/companies/getAll`;
+
+  // 11. url для добавления на сервере новой записи в таблицу "КОМПАНИИ" БД
+  public static readonly urlCreateCompany: string =
+    `${this.urlHost}/api/companies/createCompany`;
+
+  // 12. url для изменения на сервере выбранной записи в таблице "КОМПАНИИ" БД
+  public static readonly urlEditCompany: string =
+    `${this.urlHost}/api/companies/editCompany`;
+
+  // 13. url для загрузки временного изображения компании
+  public static readonly urlUploadTempCompanyImage: string =
+    `${this.urlHost}/upload/tempCompanyImage`;
+
+  // 14. url для получения параметров формы создания/изменения сведений о компании
+  public static readonly urlGetCompanyFormParams: string =
+    `${this.urlHost}/api/companies/getCompanyFormParams`;
+
+  // 15. url для удаления временных папок со всеми временными изображениями компании
+  public static readonly urlDeleteTempCompanyImages: string =
+    `${this.urlHost}/api/companies/deleteTempCompanyImages`;
+
+  // 16. url для получения данных из таблицы "КОМПАНИИ" (Companies) от сервера,
+  // соответствующих параметру идентификатора пользователя
+  public static readonly urlGetAllCompaniesByUserId: string =
+    `${this.urlHost}/api/companies/getAllByUserId`;
+
+  // 17. url для получения данных о записи о компании по её идентификатору
+  // из таблицы "КОМПАНИИ" (Companies) от сервера
+  public static readonly urlGetCompanyById: string =
+    `${this.urlHost}/api/companies/getById`;
+
+
+
+
 
 
 

@@ -3,7 +3,6 @@
 // ----------------------------------------------------------------------------
 import {Injectable} from '@angular/core';
 import {Router, CanActivate} from '@angular/router';
-import {JwtHelperService} from '@auth0/angular-jwt';
 import {User} from '../models/classes/User';
 import {Literals} from '../infrastructure/Literals';
 import {WebApiService} from './web-api.service';
@@ -12,6 +11,9 @@ import {LoginModel} from '../models/classes/LoginModel';
 import {firstValueFrom, Subject} from 'rxjs';
 import {UserService} from './user.service';
 import {TokenService} from './token.service';
+import {ErrorMessageService} from './error-message.service';
+import {Resources} from '../infrastructure/Resources';
+import {LanguageService} from './language.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,10 +30,14 @@ export class AuthGuardService implements CanActivate {
   // конструктор с DI для подключения к маршрутизатору для получения маршрута
   // и подключения к web-сервису
   // и подключения к сервисам хранения данных о пользователе и jwt-токене
+  // подключения к сервису хранения сообщения об ошибке
+  // подключения к сервису установки языка
   constructor(private _router: Router,
               private _webApiService: WebApiService,
               private _userService: UserService,
-              private _tokenService: TokenService) {
+              private _tokenService: TokenService,
+              private _errorMessageService: ErrorMessageService,
+              private _languageService: LanguageService) {
 
     console.log(`[-AuthGuardService-constructor--`);
 
@@ -72,6 +78,12 @@ export class AuthGuardService implements CanActivate {
     // иначе перенаправляем пользователя на форму входа в систему
     this._router.navigateByUrl(Literals.routeLogin)
       .then((e) => { console.log(`*- переход: ${e} -*`); /*console.dir(e);*/ });
+
+    // сообщение об ошибке
+    let message: string = Resources.requiredAuthorization[this._languageService.language];
+
+    // передать сообщение об ошибке в AppComponent для отображения
+    this._errorMessageService.errorMessageSubject.next(message);
 
     console.log(`--AuthGuardService-canActivate-FALSE-]`);
     return false;
@@ -215,7 +227,7 @@ export class AuthGuardService implements CanActivate {
     let status: boolean;
     if (result.message != Literals.Ok) {
 
-      // условие НЕудачной операции
+      // условие НЕ_удачной операции
       status = false;
 
       // установить данные о пользователе в сервисе-хранилище в значение

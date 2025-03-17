@@ -7,6 +7,7 @@ import {Observable} from 'rxjs';
 import {LoginModel} from '../models/classes/LoginModel';
 import {User} from '../models/classes/User';
 import {Literals} from '../infrastructure/Literals';
+import {Company} from '../models/classes/Company';
 
 @Injectable({
   providedIn: 'root'
@@ -135,12 +136,17 @@ export class WebApiService {
 
 
   // POST-запрос на удалённый сервер для загрузки файла с изображением
-  uploadImagePOST(url: string, file: File, userId: number, token: string): Observable<any> {
+  uploadImagePOST(
+    url: string, file: File, userId: number, companyId: number,
+    tempDir: string, imageType: string, token: string): Observable<any> {
 
     console.log(`[-WebApiService-uploadImagePOST--`);
     console.log(`[-WebApiService-file: -*`);
     console.dir(file);
     console.log(`[-WebApiService-userId: '${userId}' -*`);
+    console.log(`[-WebApiService-companyId: '${companyId}' -*`);
+    console.log(`[-WebApiService-tempDir: '${tempDir}' -*`);
+    console.log(`[-WebApiService-imageType: '${imageType}' -*`);
     console.log(`[-WebApiService-token: '${token}' -*`);
 
     // заголовок запроса с jwt-токеном
@@ -150,8 +156,7 @@ export class WebApiService {
     let formData: FormData = new FormData();
 
     // добавим в форму данные
-    formData.append(Literals.tempPhoto, file);
-    //formData.append(Literals.userId, userId);
+    formData.append(Literals.tempImage, file);
 
     console.log(`--WebApiService-uploadImagePOST-]`);
 
@@ -160,30 +165,41 @@ export class WebApiService {
       formData,
       {
         headers: httpHeaders,
-        params: new HttpParams().set(Literals.userId, userId)
+        params: new HttpParams()
+          .set(Literals.userId, userId)
+          .set(Literals.companyId, companyId)
+          .set(Literals.tempDir, tempDir)
+          .set(Literals.imageType, imageType)
       }
     );
   } // uploadImagePOST
 
 
-  // DELETE-запрос на удалённый сервер для удаления временной
-  // папки со всеми временными фотографиями пользователя
-  deleteTempUserPhotos(url: string, userId: number, token: string): Observable<any> {
+  // DELETE-запрос на удалённый сервер для удаления
+  // папок со всеми временными изображениями
+  deleteTempImages(
+    url: string, userId: number, companyId: number,
+    imageType: string, token: string): Observable<any> {
 
-    console.log(`[-WebApiService-deleteTempUserPhotos--`);
+    console.log(`[-WebApiService-deleteTempImages--`);
     console.log(`[-WebApiService-userId: '${userId}' -*`);
+    console.log(`[-WebApiService-companyId: '${companyId}' -*`);
+    console.log(`[-WebApiService-imageType: '${imageType}' -*`);
     console.log(`[-WebApiService-token: '${token}' -*`);
 
     // заголовок запроса с jwt-токеном
     let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
 
-    console.log(`--WebApiService-deleteTempUserPhotos-]`);
+    console.log(`--WebApiService-deleteTempImages-]`);
 
     return this._http.delete<any>(url, {
       headers: httpHeaders,
-      params: new HttpParams().set(Literals.userId, userId)
+      params: new HttpParams()
+        .set(Literals.userId, userId)
+        .set(Literals.companyId, companyId)
+        .set(Literals.imageType, imageType)
     });
-  } // deleteTempUserPhotos
+  } // deleteTempImages
 
 
   // DELETE-запрос на удалённый сервер для удаления данных о пользователе
@@ -203,6 +219,116 @@ export class WebApiService {
       params: new HttpParams().set(Literals.userId, userId)
     });
   } // deleteUser
+
+
+  // GET-запрос на удалённый сервер для получения части коллекции
+  // записей заданной таблицы из БД на заданной странице
+  getAllByPage(url: string, page: number): Observable<any> {
+    return this._http.get<any>(url, {
+      params: new HttpParams().set(Literals.page, page)
+    });
+  } // getAllByPage
+
+
+  // GET-запрос на удалённый сервер для получения части коллекции
+  // записей таблицы "КОМПАНИИ" из БД на заданной странице,
+  // соответствующих параметру идентификатора пользователя
+  getAllCompaniesByUserIdByPage(
+    url: string, userId: number, page: number, token: string): Observable<any> {
+
+    console.log(`[-WebApiService-getAllCompaniesByUserIdByPage--`);
+    console.log(`[-WebApiService-userId: '${userId}' -*`);
+    console.log(`[-WebApiService-page: '${page}' -*`);
+    console.log(`[-WebApiService-token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-getAllCompaniesByUserIdByPage-]`);
+
+    return this._http.get<any>(url, {
+      headers: httpHeaders,
+      params: new HttpParams()
+        .set(Literals.userId, userId)
+        .set(Literals.page, page)
+    });
+  } // getAllCompaniesByUserIdByPage
+
+
+  // GET-запрос на удалённый сервер для получения записи из БД по идентификатору
+  getById(url: string, id: number, token: string): Observable<any> {
+    console.log(`[-WebApiService-getById--`);
+    console.log(`[-WebApiService-id: '${id}' -*`);
+    console.log(`[-WebApiService-token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-getById-]`);
+    return this._http.get<any>(url, {
+      headers: httpHeaders,
+      params: new HttpParams().set(Literals.id, id)
+    });
+  } // getCompanyFormParams
+
+
+  // GET-запрос на удалённый сервер для получения
+  // параметров формы создания/изменения данных о компании
+  getCompanyFormParams(url: string, token: string): Observable<any> {
+    console.log(`[-WebApiService-getCompanyFormParams--`);
+    console.log(`[-WebApiService-token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-getCompanyFormParams-]`);
+    return this._http.get<any>(url, {  headers: httpHeaders });
+  } // getCompanyFormParams
+
+
+  // PUT-запрос на удалённый сервер для создания новой записи в таблице "КОМПАНИИ" БД
+  createCompanyPUT(url: string, company: Company, token: string): Observable<any> {
+
+    console.log(`[-WebApiService-createCompanyPUT--`);
+    console.log(`[-WebApiService-company: -*`);
+    console.dir(company);
+    console.dir(Company.CompanyToDto(company));
+    console.log(`[-WebApiService-token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-createCompanyPUT-]`);
+
+    return this._http.put<any>(
+      url,
+      Company.CompanyToDto(company),
+      { headers: httpHeaders }
+    );
+  } // createCompanyPUT
+
+
+  // POST-запрос на удалённый сервер для изменения
+  // на сервере выбранной записи в таблице "КОМПАНИИ" БД
+  editCompanyPOST(url: string, company: Company, token: string): Observable<any> {
+
+    console.log(`[-WebApiService-editCompanyPOST--`);
+    console.log(`[-WebApiService-company: -*`);
+    console.dir(company);
+    console.dir(Company.CompanyToDto(company));
+    console.log(`[-WebApiService-token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-editCompanyPOST-]`);
+
+    return this._http.post<any>(
+      url,
+      Company.CompanyToDto(company),
+      { headers: httpHeaders }
+    );
+  } // editCompanyPOST
 
 
   // метод формирования нового заголовка запроса с jwt-токеном

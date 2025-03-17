@@ -1,0 +1,83 @@
+
+<!-- компонент отображения данных о компании в виде карточки -->
+
+<div class="card bg-main-color text-back-color border border-2
+            border-back-color border-opacity-75 h-100 m-0 p-0 justify-content-between">
+  <!-- заголовок -->
+  <div class="card-header m-0 px-2 py-1 row justify-content-start align-items-center">
+
+    <div class="m-0 p-0 w-auto">
+      <img class="img-thumbnail rounded-3 m-0 p-1"
+           src="{{company.logo ? company.logo : srcLogoPath + fileNameLogoDef}}"
+           alt="{{company.logo ? company.logoFileName : fileNameLogoDef}}"
+           width="48"
+           title="&laquo;{{company.name}}&raquo;">
+    </div>
+
+    <div class="m-0 p-0 w-auto">
+      <span class="font-size-14pt m-0 px-2 py-0 fw-bold align-items-center">
+        &laquo;{{company.name}}&raquo;
+      </span>
+    </div>
+
+    <div class="m-0 p-0 w-auto ms-auto">
+      <a class="m-0 p-0" href="{{company.site}}">
+        {{company.site
+          .replace('http://', '')
+          .replace('https://', '')}}
+      </a>
+    </div>
+
+  </div>
+
+  <!-- изображение отеля -->
+  <div class="d-flex justify-content-center align-items-center m-0 p-1">
+    <img class="card-img m-0 p-0 h-max-250px-w-max-400px"
+         src="{{company.titleImage ? company.titleImage : srcImagePath + fileNameCompanyTitleImageDef}}"
+         alt="{{company.titleImage ? company.titleImageFileName : fileNameCompanyTitleImageDef}}"
+         title="&laquo;{{company.name}}&raquo;{{
+                (company.description != null && company.description != ''
+                  ? ': ' + company.description : '')}}">
+  </div>
+
+  <!-- подвал -->
+  <div class="card-footer m-0 p-0 row justify-content-center align-items-center">
+
+    <div class="col-sm-8 col-md-12 col-lg-8 m-0 p-0 row">
+
+      <!-- график работы -->
+      <div class="col-12 m-0 px-2 py-1">
+        <label class="m-0 p-0">
+          {{labelSchedule}}:
+        </label>&nbsp;
+        <span class="fw-bold">{{company.schedule}}</span>
+      </div>
+
+      <!-- телефон -->
+      <div class="col-12 m-0 px-2 py-1">
+        <label class="m-0 p-0">
+          {{labelPhone}}:
+        </label>&nbsp;
+        <span class="fw-bold">{{company.phone}}</span>
+      </div>
+
+    </div>
+
+    <div class="col-sm-4 col-md-12 col-lg-4 m-0 p-0
+                d-flex justify-content-center">
+      <button class="btn btn-success m-1 p-1 w-100px"
+              type="button"
+              title="{{butSenderCompanyIdTitle}}"
+              (click)="sendCompanyId()">
+        {{butSenderCompanyIdValue}}
+      </button>
+      <!--<button class="btn btn-success m-1 p-1 w-100px"
+              type="button"
+              title="{{butRecordTitle}}"
+              (click)="sendCompanyId(company.id)">
+        {{butRecordValue}}
+      </button>-->
+    </div>
+
+  </div>
+</div>

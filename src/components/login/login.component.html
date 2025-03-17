@@ -5,28 +5,11 @@
 
 <!-- разметка компонента LoginComponent -->
 <main class="row bg-main-color content-height mx-auto p-1 p-sm-2
-             w-md-95 justify-content-center align-items-start">
+             w-lg-95 justify-content-center align-items-start">
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <div class="col-md-10 col-lg-8 col-xl-7 col-xxl-5 m-0 my-sm-2 p-0">
-
-    <!-- контейнер для вывода сообщений результатов операции -->
-    <!--<div class="position-fixed right-2rem align-items-end"
-         [class.w-90]="component.errorMessage.length > 100"
-         *ngIf="!component.validLogin">
-      <div class="alert alert-warning alert-dismissible
-                  fade show border-2 m-1 py-2">
-        <button class="btn-close bg-secondary m-1 p-1"
-                type="button" data-bs-dismiss="alert">
-        </button>
-        <div [class.h-50vh]="component.errorMessage.length > 100"
-             style="overflow: auto">
-          <span id="errorMessage" [innerHTML]="component.errorMessage"></span>
-        </div>
-      </div>
-    </div>-->
-
 
     <!-- форма входа в учётную запись -->
     <form class="form-control p-2" novalidate
@@ -51,7 +34,9 @@
             <input class="form-control px-2" type="text"
                    id="login" name="login" formControlName="login"
                    placeholder="{{component.loginPlaceholder}}"
-                   maxlength="{{component.loginLength}}">
+                   maxlength="{{component.loginLength}}"
+                   [readOnly]="component.isWaitFlag"
+                   [class.opacity-75]="component.isWaitFlag">
           </div>
         </div>
         <!-- строка с подсказками -->
@@ -94,7 +79,9 @@
                          : component.passwordInputTypes.password }}"
                    id="password" name="password" formControlName="password"
                    placeholder="{{component.passwordPlaceholder}}"
-                   maxlength="{{component.passwordMaxLength + 1}}">
+                   maxlength="{{component.passwordMaxLength + 1}}"
+                   [readOnly]="component.isWaitFlag"
+                   [class.opacity-75]="component.isWaitFlag">
           </div>
         </div>
         <!-- строка с подсказками -->
@@ -160,41 +147,6 @@
     </form>
 
   </div>
-
-  <!--<form class="form-control" #loginForm2="ngForm" (ngSubmit)="login(loginForm2)">
-    <div class="container-fluid">
-      <h2 class="form-signin-heading">{{component.title}}</h2>
-      @if (!component.validLogin) {
-        <div class="alert alert-danger">
-          {{component.errorMessage}}
-        </div>
-      } &lt;!&ndash; if &ndash;&gt;
-
-      <br>
-
-      <label for="username" class="sr-only">Email address</label>
-      <input type="email" id="username" name="username" ngModel class="form-control"
-             placeholder="User Name" required autofocus>
-      <br>
-
-      <label for="password" class="sr-only">Password</label>
-      <input type="password" id="password" name="password" ngModel class="form-control"
-             placeholder="Password" required>
-      <br>
-
-      <button class="btn btn-primary btn-block"
-              type="submit"
-              [class.disabled]="component.isWaitFlag">
-        @if (component.isWaitFlag) {
-          <div class="row m-0 p-0 justify-content-center align-items-center">
-            <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
-          </div>
-        } @else {
-          войти
-        } &lt;!&ndash; if &ndash;&gt;
-      </button>
-    </div>
-  </form>-->
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 

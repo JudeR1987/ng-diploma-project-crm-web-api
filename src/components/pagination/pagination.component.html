@@ -1,0 +1,70 @@
+
+<!-- компонент отображения данных о пагинации страницы -->
+
+<!-- кнопка "перейти на 1-ю" -->
+@if (pageViewModel.pageNumber > one && pageViewModel.totalPages > one) {
+  <div class="col-1 p-0 pe-1">
+    <button class="btn btn-sm btn-secondary w-100 px-0 py-1 min-width-20px"
+            type="button"
+            (click)="sendPage(one)"
+            title="{{butToFirstPageTitle}}">
+      {{one}}
+    </button>
+  </div>
+} <!-- if -->
+
+<!-- кнопка "перейти на предыдущую" -->
+@if (pageViewModel.hasPreviousPage && pageViewModel.pageNumber > two) {
+  <div class="col-4 col-sm-3 m-0 p-0 d-flex align-items-end">
+    <div class="p-0">
+      <span>{{ellipsis}}</span>
+    </div>
+    <div class="p-1 w-100">
+      <button class="btn btn-sm btn-secondary w-100 px-0 py-1"
+              type="button"
+              (click)="sendPage(pageViewModel.pageNumber - one)"
+              title="{{butPreviousTitle}}">
+        &lt;&lt; {{butPreviousValue}}
+      </button>
+    </div>
+  </div>
+} <!-- if -->
+
+<!-- номер текущей страницы -->
+<div class="col-1 py-1">
+  <div class="bg-light text-secondary border border-2 border-secondary
+              rounded rounded-1 h-100 p-0 min-width-20px
+              d-flex justify-content-center align-items-center"
+       title="{{butCurrentPageTitle}}">
+    <span class="pt-1px pb-2px fw-bold">{{pageViewModel.pageNumber}}</span>
+  </div>
+</div>
+
+<!-- кнопка "перейти на следующую" -->
+@if (pageViewModel.hasNextPage && pageViewModel.pageNumber < pageViewModel.totalPages - one) {
+  <div class="col-4 col-sm-3 m-0 p-0 d-flex align-items-end">
+    <div class="p-1 w-100">
+      <button class="btn btn-sm btn-secondary w-100 px-0 py-1"
+              type="button"
+              (click)="sendPage(pageViewModel.pageNumber + one)"
+              title="{{butNextTitle}}">
+        {{butNextValue}} &gt;&gt;
+      </button>
+    </div>
+    <div class="p-0">
+      <span>{{ellipsis}}</span>
+    </div>
+  </div>
+} <!-- if -->
+
+<!-- кнопка "перейти на последнюю" -->
+@if (pageViewModel.pageNumber < pageViewModel.totalPages && pageViewModel.totalPages > one) {
+  <div class="col-1 p-0 ps-1">
+    <button class="btn btn-sm btn-secondary w-100 px-0 py-1 min-width-20px"
+            type="button"
+            (click)="sendPage(pageViewModel.totalPages)"
+            title="{{butToLastPageTitle}}">
+      {{pageViewModel.totalPages}}
+    </button>
+  </div>
+} <!-- if -->

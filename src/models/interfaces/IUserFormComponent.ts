@@ -102,8 +102,12 @@ export interface IUserFormComponent {
   isDeletingFlag: boolean,
 
   // флаг состояния подтверждения об удалении данных о пользователе
-  // true - подтверждено, false - НЕ_подтверждено (true после onSubmit)
+  // true - подтверждено, false - НЕ_подтверждено
   isConfirmedFlag: boolean,
+
+  // флаг состояния изменений в форме
+  // false - изменений нет, true - изменения есть (true после this.userForm.valueChanges)
+  isChangedFormFlag: boolean,
 
   // шаблон поля ввода номера телефона пользователя
   phonePlaceholder: string,
@@ -127,7 +131,10 @@ export interface IUserFormComponent {
   errorEmailValidator:    string,
 
   // имя выбранного файла изображения
-  newFileName: string
+  newFileName: string,
+
+  // класс, определяющий допустимые размеры отображаемого изображения
+  sizeImage: string
 
   //endregion
 

@@ -5,8 +5,7 @@
 
 <!-- разметка компонента UserFormComponent -->
 <main class="row bg-main-color content-height mx-auto p-1 p-sm-2
-             w-md-95 justify-content-center align-items-start">
-
+             w-lg-95 justify-content-center align-items-start">
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
   <div class="col-md-10 col-lg-8 col-xl-7 col-xxl-5 m-0 my-sm-2 p-0">
@@ -39,6 +38,7 @@
                        [isWaitFlag]="component.isWaitFlag"
                        [isDeletingFlag]="component.isDeletingFlag"
                        [newFileName]="component.newFileName"
+                       [sizeImage]="component.sizeImage"
                        (onSendFile)="sendFileHandler($event)" >
           </file-upload>
         </div>
@@ -185,6 +185,7 @@
         <!-- при выборе удаления данных о пользователе, включаем кнопку "удалить" -->
         @if (!component.isDeletingFlag) {
 
+          <!-- кнопка "изменить" -->
           <button class="btn bg-success-subtle fw-bold text-success
                          text-opacity-75 w-50 w-min-140-max-160 m-1
                          border border-success border-2 border-opacity-50"
@@ -192,7 +193,8 @@
                   [class.disabled]="userForm.invalid ||
                                     component.errorRegisteredPhone.isRegistered ||
                                     component.errorRegisteredEmail.isRegistered ||
-                                    component.isWaitFlag"
+                                    component.isWaitFlag ||
+                                    !component.isChangedFormFlag"
                   title="{{component.butUserEditTitle}}">
             @if (component.isWaitFlag) {
               <div class="row m-0 p-0 justify-content-center align-items-center">
@@ -205,6 +207,7 @@
 
         } @else {
 
+          <!-- кнопка "удалить" -->
           <button class="btn bg-danger-subtle fw-bold text-danger
                          text-opacity-75 w-50 w-min-140-max-160 m-1
                          border border-danger border-2 border-opacity-50"
@@ -246,5 +249,4 @@
   </div>
 
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
 </main>

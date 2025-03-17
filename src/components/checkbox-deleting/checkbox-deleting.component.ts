@@ -1,8 +1,7 @@
 // ----------------------------------------------------------------------------
 // компонент выбора возможности удаления данных
 // ----------------------------------------------------------------------------
-import {Component, Input, EventEmitter, Output, OnInit, OnDestroy}
-  from '@angular/core';
+import {Component, Input, EventEmitter, Output, OnInit, OnDestroy} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Literals} from '../../infrastructure/Literals';
 

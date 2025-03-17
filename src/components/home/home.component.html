@@ -1,18 +1,86 @@
 
 <!-- /home -->
 
-<!-- компонент с разметкой домашней страницы -->
+<!-- компонент с разметкой главной страницы -->
 
 <!-- разметка компонента HomeComponent -->
-<main class="container bg-main-color content-main text-justify
-             font-family-Calibri font-size-14pt content-height mx-auto">
+<main class="row bg-main-color content-height mx-auto p-0 w-lg-95
+             justify-content-center align-items-lg-stretch">
 
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <div class="col-12 m-0 p-0 row justify-content-center align-items-stretch">
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-  <h4 class="text-primary font-family-CalibriLight font-size-16pt fw-bold">
-    {{component.title}}
-  </h4>
+    <div class="col-12 m-0 p-1 px-sm-2 py-sm-3 d-flex flex-column">
 
-  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+      <!-- заголовок -->
+      @if (component.isWaitFlag) {
+        <div class="d-flex justify-content-center align-items-end text-aside-color h-50">
+          <span class="spinner-border m-0 p-5 border-30px opacity-75 speed-600ms"></span>
+        </div>
+      } @else {
+        <h4 class="text-primary text-center" [innerHTML]="component.title"></h4>
+      } <!-- if -->
+
+
+      <!-- сведения о компаниях в виде карточек -->
+      @if (companies.length > zero) {
+
+        <!-- сведения о компаниях -->
+        <div class="row justify-content-center justify-content-md-start m-0 mb-2 p-0">
+
+          @for (company of companies; track company.id; let i = $index) {
+            <!-- компонент карточки со сведениями о компании -->
+            <card-company class="col-sm-11 col-md-6 col-xxl-4 m-0 p-1"
+                          [company]="company"
+                          [labelSchedule]="component.labelSchedule"
+                          [labelPhone]="component.labelPhone"
+                          [butSenderCompanyIdTitle]="component.butRecordTitle"
+                          [butSenderCompanyIdValue]="component.butRecordValue"
+                          (onSendCompanyId)="sendCompanyIdHandler($event)">
+            </card-company>
+            <!--<card-company class="col-sm-11 col-md-6 col-xxl-4 m-0 p-1"
+                          [company]="company"
+                          [labelSchedule]="component.labelSchedule"
+                          [labelPhone]="component.labelPhone"
+                          [butSenderCompanyIdTitle]="component.butRecordTitle"
+                          [butSenderCompanyIdValue]="component.butRecordValue"
+                          [srcLogoPath]="component.srcLogoPath"
+                          [fileNameLogoDef]="component.fileNameLogoDef"
+                          [srcImagePath]="component.srcImagePath"
+                          [fileNameCompanyTitleImageDef]="component.fileNameCompanyTitleImageDef"
+                          (onSendCompanyId)="sendCompanyIdHandler($event)">
+            </card-company>-->
+          } <!-- for -->
+
+        </div>
+
+      } <!-- if -->
+
+      <!-- компонент пагинации страницы -->
+      @if ((companies.length > zero || pageViewModel.pageNumber != zero) &&
+           pageViewModel.totalPages > one) {
+
+        <div class="m-0 mt-auto p-0 row justify-content-center align-items-center">
+          <pagination class="col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-4 m-0 p-0
+                             d-flex justify-content-evenly justify-content-sm-center
+                             align-items-center bg-aside-color"
+                      [pageViewModel]="pageViewModel"
+                      [butToFirstPageTitle]="component.butToFirstPageTitle"
+                      [butPreviousTitle]="component.butPreviousTitle"
+                      [butPreviousValue]="component.butPreviousValue"
+                      [butCurrentPageTitle]="component.butCurrentPageTitle"
+                      [butNextTitle]="component.butNextTitle"
+                      [butNextValue]="component.butNextValue"
+                      [butToLastPageTitle]="component.butToLastPageTitle"
+                      (onSendPage)="sendPageHandler($event)">
+          </pagination>
+        </div>
+
+      } <!-- if -->
+
+    </div>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  </div>
 
 </main>

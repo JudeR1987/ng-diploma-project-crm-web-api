@@ -8,7 +8,7 @@ export interface IAppComponent {
   // данные о заголовке текущей страницы для разных языков
   title: Record<string, string>,
 
-  // заголовок текущей страницы
+  // отображаемый заголовок текущей страницы
   displayTitle: string,
 
   // кнопки
@@ -51,6 +51,12 @@ export interface IAppComponent {
 
   // значение кнопки "Изменить пароль"
   butPasswordFormValue: string,
+
+  // всплывающая подсказка на кнопке "Ведение бизнеса"
+  butBusinessTitle: string,
+
+  // значение кнопки "Ведение бизнеса"
+  butBusinessValue: string,
 
   // всплывающая подсказка на кнопке "Выйти"
   butLogOutTitle: string,

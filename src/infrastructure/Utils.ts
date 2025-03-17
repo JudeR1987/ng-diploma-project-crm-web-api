@@ -73,6 +73,13 @@ export class Utils {
     return new Date(year, month - 1, day);
   } // stringToDate
 
+
+  // метод перехода в начало страницы
+  public static toStart(): void {
+    //window.scrollTo(0, 0); // при y=0 прокрутка не работает после перезагрузки страницы !?!?
+    window.scrollTo(0, 1);
+  } // toStart
+
 } // class Utils
 // ----------------------------------------------------------------------------
 

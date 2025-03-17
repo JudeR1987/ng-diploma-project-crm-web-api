@@ -70,23 +70,27 @@ export class LoginComponent implements OnInit, OnDestroy {
   // объект с данными для входа в систему
   public loginModel: LoginModel = new LoginModel();
 
-  // объект формы входа в учётную запись
-  public loginForm: FormGroup = null!;
-
   // поле ввода логина пользователя
-  public login: FormControl = null!;
+  public login: FormControl = new FormControl();
 
   // поле ввода пароля пользователя
-  public password: FormControl = null!;
+  public password: FormControl = new FormControl();
 
   // поле изменения видимости пароля при вводе
-  public isDisplayPassword: FormControl = null!;
+  public isDisplayPassword: FormControl = new FormControl();
+
+  // объект формы входа в учётную запись
+  public loginForm: FormGroup = new FormGroup<any>({
+    login:             this.login,
+    password:          this.password,
+    isDisplayPassword: this.isDisplayPassword
+  });
 
 
   // конструктор с DI для подключения к объекту маршрутизатора
   // для получения маршрута, подключения к сервису установки языка,
-  // подключения к сервису аутентификации/авторизации пользователя
-  // и подключения к сервису хранения сообщения об ошибке
+  // подключения к сервису аутентификации/авторизации пользователя,
+  // подключения к сервису хранения сообщения об ошибке
   // и подключения к сервисам хранения данных о пользователе и jwt-токене
   constructor(private _router: Router,
               private _languageService: LanguageService,
@@ -105,14 +109,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     console.log(`*-this.component.route='${this.component.route}'-*`);
 
     console.log(`--LoginComponent-constructor-]`);
-
   } // constructor
 
 
   // 0. установка начальных значений и подписок
   // сразу после загрузки компонента
   ngOnInit(): void {
-
     console.log(`[-LoginComponent-ngOnInit--`);
 
     // задать значение языка отображения и установить
@@ -132,7 +134,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.changeLanguageLiterals(language);
 
         console.log(`--LoginComponent-subscribe-]`);
-
       }); // subscribe
 
     // создание объектов полей ввода и формы входа
@@ -140,7 +141,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.createForm();
 
     console.log(`--LoginComponent-ngOnInit-]`);
-
   } // ngOnInit
 
 
@@ -172,7 +172,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.component.butLoginValue                  = Resources.loginButLoginValue[this.component.language];
 
     console.log(`--LoginComponent-changeLanguageLiterals-]`);
-
   } // changeLanguageLiterals
 
 
@@ -203,7 +202,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     // задать значения параметров входа
 
-    // если длина логина установлена как длина номера телефона,
+    /*// если длина логина установлена как длина номера телефона,
     // то в поле логина введён телефон, иначе - введена почта
     console.log(`--this.component.loginLength: ${this.component.loginLength}`);
     this.loginModel.login =
@@ -212,6 +211,21 @@ export class LoginComponent implements OnInit, OnDestroy {
         : Literals.empty;
 
     this.loginModel.phone = this.loginModel.login;
+
+    this.loginModel.email =
+      this.component.loginLength === Literals.emailLength
+        ? this.login.value
+        : Literals.empty;
+
+    this.loginModel.password = this.password.value;*/
+
+    // если длина логина установлена как длина номера телефона,
+    // то в качестве логина используем телефон, иначе - почту
+    console.log(`--this.component.loginLength: ${this.component.loginLength}`);
+    this.loginModel.phone =
+      this.component.loginLength === Literals.phoneLength
+        ? this.login.value
+        : Literals.empty;
 
     this.loginModel.email =
       this.component.loginLength === Literals.emailLength
@@ -256,10 +270,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       if ((typeof result.message) === Literals.string) message = result.message;
 
       // ошибки авторизации по номеру телефона
-      if (result.message.login) {
+      if (result.message.phone) {
         message = result.message.password
           ? Resources.incorrectPassword[this.component.language]
-          : Resources.loginUnauthorizedPhone(this.component.language, result.message.login);
+          : Resources.loginUnauthorizedPhone(this.component.language, result.message.phone);
       } // if
 
       // ошибки авторизации по email
@@ -380,6 +394,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     console.log(`[-LoginComponent-ngOnDestroy--`);
 
+    // отмена подписки
     this._languageSubscription.unsubscribe();
 
     console.log(`--LoginComponent-ngOnDestroy-]`);

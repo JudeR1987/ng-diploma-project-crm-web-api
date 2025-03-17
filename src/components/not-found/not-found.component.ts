@@ -116,6 +116,7 @@ export class NotFoundComponent implements OnInit, OnDestroy {
 
     console.log(`[-NotFoundComponent-ngOnDestroy--`);
 
+    // отмена подписки
     this._languageSubscription.unsubscribe();
 
     console.log(`--NotFoundComponent-ngOnDestroy-]`);

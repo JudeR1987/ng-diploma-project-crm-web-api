@@ -1,0 +1,606 @@
+
+<!-- /company-form/:mode/:id? -->
+
+<!-- компонент с формой создания/изменения компании -->
+
+<!-- разметка компонента CompanyFormComponent -->
+<main class="row bg-main-color content-height mx-auto p-1 p-sm-2
+             w-lg-95 justify-content-center align-items-start">
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <div class="col-md-10 col-lg-10 col-xl-9 col-xxl-8 m-0 my-sm-2 p-0">
+
+    <!-- форма создания/изменения данных о пользователе -->
+    <form class="form-control p-2" novalidate
+          [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+
+      <!-- заголовок -->
+      <div class="bg-primary p-1">
+        <h2 class="text-center text-light m-0" [innerHTML]="component.title"></h2>
+      </div>
+
+
+      <!-- тело - основные параметры формы -->
+      <div class="row mx-0 my-1 p-2 bg-primary-subtle
+                  border border-primary justify-content-center">
+
+        <!-- компоненты выбора изображений компании -->
+        <div class="col-xl-6 m-0 p-0">
+
+          <div class="row m-0 p-0 justify-content-center align-items-start">
+
+            <!-- компонент выбора логотипа компании -->
+            <file-upload class="col-md-10 col-lg-9 col-xl-12 m-0 mt-1 p-1
+                                border border-1 border-primary rounded"
+                         [imagePath]="company.logo"
+                         [fileName]="company.logoFileName"
+                         [imageTitle]="component.logoTitle"
+                         [labelInputImage]="component.labelInputImageLogo"
+                         [labelNewFileName]="component.labelNewLogoFileName"
+                         [labelFileNotSelected]="component.labelFileNotSelected"
+                         [butNewFileNameTitle]="component.butNewLogoFileNameTitle"
+                         [butNewFileNameValue]="component.butNewLogoFileNameValue"
+                         [isWaitFlag]="component.isWaitFlag"
+                         [isDeletingFlag]="component.isDeletingFlag"
+                         [newFileName]="component.newLogoFileName"
+                         [sizeImage]="component.logoSizeImage"
+                         (onSendFile)="sendFileHandler($event, logo)" >
+            </file-upload>
+
+            <!-- компонент выбора основного изображения компании -->
+            <file-upload class="col-md-10 col-lg-9 col-xl-12 m-0 mt-1 p-1
+                                border border-1 border-primary rounded"
+                         [imagePath]="company.titleImage"
+                         [fileName]="company.titleImageFileName"
+                         [imageTitle]="component.titleImageTitle"
+                         [labelInputImage]="component.labelInputImageTitleImage"
+                         [labelNewFileName]="component.labelNewTitleImageFileName"
+                         [labelFileNotSelected]="component.labelFileNotSelected"
+                         [butNewFileNameTitle]="component.butNewTitleImageFileNameTitle"
+                         [butNewFileNameValue]="component.butNewTitleImageFileNameValue"
+                         [isWaitFlag]="component.isWaitFlag"
+                         [isDeletingFlag]="component.isDeletingFlag"
+                         [newFileName]="component.newTitleImageFileName"
+                         [sizeImage]="component.titleImageSizeImage"
+                         (onSendFile)="sendFileHandler($event, image)" >
+            </file-upload>
+
+          </div>
+
+        </div>
+
+        <!-- ввод основных параметров компании -->
+        <div class="col-xl-6 row m-0 p-0">
+
+          <!-- ввод названия компании -->
+          <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+            <label class="form-label col-sm-4 col-md-3 col-xl-4 m-0 px-2" for="companyName">
+              {{component.labelCompanyName}}:
+            </label>
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 p-0">
+              <input class="form-control px-2" type="text"
+                     id="companyName" name="companyName" formControlName="companyName"
+                     placeholder="{{component.companyNamePlaceholder}}"
+                     maxlength="{{component.companyNameLength + one}}"
+                     [readOnly]="component.isWaitFlag || component.isDeletingFlag"
+                     [class.opacity-75]="component.isWaitFlag || component.isDeletingFlag" >
+            </div>
+          </div>
+          <!-- строка с подсказками -->
+          <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 offset-sm-4 offset-md-3 offset-xl-4 p-0">
+
+              @if (companyName.errors && (companyName.dirty || companyName['touched'])) {
+                <div class="text-danger ps-2 fw-bold">
+                <span *ngIf="companyName.errors[component.errorRequired]">
+                  {{component.errorRequiredTitle}}
+                </span>
+                  <span *ngIf="companyName.errors[component.errorMaxLength]">
+                    {{component.errorCompanyNameMaxLengthTitle}}
+                  </span>
+                </div>
+              } @else {
+                <span class="text-secondary ps-2 fw-bold"></span>
+              } <!-- if -->
+
+            </div>
+          </div>
+
+          <!-- выбор страны расположения компании     [disabled]="component.isWaitFlag || component.isDeletingFlag" -->
+          <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+            <label class="form-label col-sm-4 col-md-3 col-xl-4 m-0 px-2" for="countryId">
+              {{component.labelCountry}}:
+            </label>
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 p-0">
+              <select class="form-select px-2 pe-4"
+                      id="countryId" name="countryId" formControlName="countryId"
+                      [class.opacity-50]="component.isWaitFlag || component.isDeletingFlag">
+                <option value="0" disabled >{{component.firstOptionCountries}}</option>
+                @for (country of component.countriesList; track country.id) {
+                  <option [value]="country.id">{{country.name}}</option>
+                } <!-- for country -->
+              </select>
+            </div>
+          </div>
+          <!-- строка с подсказками -->
+          <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                      justify-content-center align-items-start">
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 offset-sm-4 offset-md-3 offset-xl-4 p-0">
+
+              @if (countryId.errors && (countryId.dirty || countryId['touched'])) {
+                <div class="text-danger ps-2 fw-bold">
+                  <!--<span *ngIf="countryId.errors[component.errorRequired]">
+                    {{component.errorRequiredTitle}}
+                  </span>-->
+                  <span *ngIf="countryId.errors[component.errorSelectedZeroValidator]">
+                    {{component.errorCountrySelectedZeroValidatorTitle}}
+                  </span>
+                </div>
+              } @else {
+                <span class="text-secondary ps-2 fw-bold"></span>
+              } <!-- if -->
+
+            </div>
+          </div>
+
+
+          <!-- выбор города / ввод названия нового города расположения компании -->
+          <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+            @if (!isNewCity.value) {
+
+              <label class="form-label col-sm-4 col-md-3 col-xl-4 m-0 px-2" for="cityId">
+                {{component.labelCity}}:
+              </label>
+
+            } @else {
+
+              <label class="form-label col-sm-4 col-md-3 col-xl-4 m-0 px-2" for="newCityName">
+                {{component.labelNewCityName}}:
+              </label>
+
+            } <!-- if -->
+
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 row m-0 p-0 align-items-center">
+
+              <div class="col-9 m-0 p-0">
+
+                @if (!isNewCity.value) {
+
+                  <!-- список выбора города, соответствующего выбранной стране
+                  [disabled]="component.isWaitFlag || component.isDeletingFlag ||
+                                      (countryId.errors && countryId.errors[component.errorSelectedZeroValidator])"-->
+                  <select class="form-select px-2 pe-4"
+                          id="cityId" name="cityId" formControlName="cityId"
+                          [class.opacity-50]="component.isWaitFlag ||
+                                              component.isDeletingFlag ||
+                                              (countryId.errors && countryId.errors[component.errorSelectedZeroValidator])">
+                    <option value="0" disabled >{{component.firstOptionCities}}</option>
+                    @for (city of component.citiesList; track city.id) {
+                      <option [value]="city.id">{{city.name}}</option>
+                    } <!-- for city -->
+                  </select>
+
+                } @else {
+
+                  <!-- поле ввода названия нового города       [readOnly]="component.isWaitFlag || component.isDeletingFlag" -->
+                  <input class="form-control px-2" type="text"
+                         id="newCityName" name="newCityName" formControlName="newCityName"
+                         placeholder="{{component.newCityNamePlaceholder}}"
+                         maxlength="{{component.newCityNameLength + one}}"
+                         [class.opacity-75]="component.isWaitFlag ||
+                                             component.isDeletingFlag ||
+                                             (countryId.errors && countryId.errors[component.errorSelectedZeroValidator])" >
+
+                } <!-- if -->
+
+              </div>
+
+              <!-- чек-бокс ввода нового города -->
+              <div class="col-3 m-0 p-0 d-flex justify-content-center align-items-center">
+                <label class="form-check-label text-center"
+                       for="isNewCity"
+                       title="{{component.labelCheckboxIsNewCityTitle}}"
+                       [class.opacity-60]="component.isWaitFlag ||
+                                           component.isDeletingFlag ||
+                                           (countryId.errors && countryId.errors[component.errorSelectedZeroValidator])">
+                  <input class="form-check-input m-1"
+                         id="isNewCity"
+                         formControlName="isNewCity"
+                         type="checkbox" />
+                  {{component.labelCheckboxIsNewCity}}
+                </label>
+              </div>
+
+            </div>
+          </div>
+          <!-- строка с подсказками -->
+          <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                      justify-content-center align-items-start">
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 offset-sm-4 offset-md-3 offset-xl-4 p-0">
+
+              @if (!isNewCity.value) {
+
+                <!-- ошибки для списка выбора города -->
+                <!-- @if (cityId.errors && (cityId.dirty || cityId['touched'])) { -->
+                @if (cityId.errors) {
+                  <div class="text-danger ps-2 fw-bold">
+                    <!--<span *ngIf="cityId.errors[component.errorRequired]">
+                      {{component.errorRequiredTitle}}
+                    </span>-->
+                    <span *ngIf="cityId.errors[component.errorSelectedZeroValidator]">
+                      {{component.errorCitySelectedZeroValidatorTitle}}
+                    </span>
+                  </div>
+                } @else {
+                  <span class="text-secondary ps-2 fw-bold"></span>
+                } <!-- if -->
+
+              } @else {
+
+                <!-- ошибки для поля ввода названия нового города -->
+                <!-- @if (newCityName.errors && (newCityName.dirty || newCityName['touched'])) { -->
+                @if (newCityName.errors || component.errorRegisteredCity.isRegistered) {
+                  <div class="text-danger ps-2 fw-bold">
+
+                    @if (component.errorRegisteredCity.isRegistered) {
+                      <span>{{component.errorRegisteredCity.message}}</span>
+                    } @else {
+                      <span *ngIf="newCityName.errors![component.errorRequired]">
+                        {{component.errorRequiredTitle}}
+                      </span>
+                      <span *ngIf="newCityName.errors![component.errorMaxLength]">
+                        {{component.errorNewCityNameMaxLengthTitle}}
+                      </span>
+                    }<!-- if -->
+
+                  </div>
+                } @else {
+                  <span class="text-secondary ps-2 fw-bold"></span>
+                } <!-- if -->
+
+              } <!-- if -->
+
+            </div>
+          </div>
+
+          <!-- ввод названия новой/существующей улицы расположения компании -->
+          <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+            <label class="form-label col-sm-4 col-md-3 col-xl-4 m-0 px-2" for="streetName">
+              {{component.labelStreetName}}:
+            </label>
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 p-0">
+              <input class="form-control px-2" type="text"
+                     id="streetName" name="streetName" list="allStreets"
+                     formControlName="streetName"
+                     placeholder="{{component.streetNamePlaceholder}}"
+                     maxlength="{{component.streetNameLength + one}}"
+                     [readOnly]="component.isWaitFlag || component.isDeletingFlag"
+                     [class.opacity-75]="component.isWaitFlag || component.isDeletingFlag ||
+                                         (countryId.errors && countryId.errors[component.errorSelectedZeroValidator])" >
+              <datalist id="allStreets">
+                @for (street of component.allStreets; track street.id) {
+                  <option [value]="street.name"></option>
+                } <!-- for -->
+              </datalist>
+            </div>
+          </div>
+          <!-- строка с подсказками -->
+          <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                      justify-content-center align-items-start">
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 offset-sm-4 offset-md-3 offset-xl-4 p-0">
+
+              @if (streetName.errors) {
+                <div class="text-danger ps-2 fw-bold">
+                  <span *ngIf="streetName.errors[component.errorRequired]">
+                    {{component.errorRequiredTitle}}
+                  </span>
+                  <span *ngIf="streetName.errors[component.errorMaxLength]">
+                    {{component.errorStreetNameMaxLengthTitle}}
+                  </span>
+                </div>
+              } @else {
+                <span class="text-secondary ps-2 fw-bold"></span>
+              } <!-- if -->
+
+            </div>
+          </div>
+
+          <!-- ввод номера дома/строения и квартиры/офиса расположения компании -->
+          <div class="row m-0 p-0 justify-content-center align-items-start">
+
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 offset-sm-4 offset-md-3 offset-xl-4 p-0">
+
+              <div class="row m-0 p-0 justify-content-center align-items-center">
+
+                <!-- ввод номера дома/строения расположения компании -->
+                <div class="col-5 col-xxl-6 m-0 p-0">
+
+                  <!-- ввод номера дома/строения расположения компании -->
+                  <div class="row m-0 mt-1 p-0 justify-content-start align-items-center">
+                    <label class="form-label w-auto m-0 px-2"
+                           for="building">
+                      {{component.labelBuilding}}:
+                    </label>
+                    <div class="col p-0">
+                      <input class="form-control px-2" type="text"
+                             id="building" name="building" formControlName="building"
+                             placeholder="{{component.buildingPlaceholder}}"
+                             maxlength="{{component.buildingLength + one}}"
+                             [readOnly]="component.isWaitFlag || component.isDeletingFlag"
+                             [class.opacity-75]="component.isWaitFlag || component.isDeletingFlag ||
+                                                 (countryId.errors && countryId.errors[component.errorSelectedZeroValidator])" >
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- ввод номера квартиры/офиса расположения компании -->
+                <div class="col-7 col-xxl-6 m-0 p-0">
+
+                  <!-- ввод номера квартиры/офиса расположения компании -->
+                  <div class="row m-0 mt-1 p-0 justify-content-start align-items-center">
+                    <label class="form-label w-auto m-0 px-2"
+                           for="flat">
+                      {{component.labelFlat}}:
+                    </label>
+                    <div class="col p-0">
+                      <input class="form-control text-end px-2" type="number"
+                             id="flat" name="flat" formControlName="flat"
+                             min="{{zero}}" max="{{flatMax}}" step="{{one}}"
+                             [readOnly]="component.isWaitFlag || component.isDeletingFlag"
+                             [class.opacity-75]="component.isWaitFlag || component.isDeletingFlag ||
+                                                 (countryId.errors && countryId.errors[component.errorSelectedZeroValidator])" >
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- строка с подсказками -->
+                <div class="col-12 m-0 p-0">
+                  <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                              justify-content-center align-items-start">
+                    <div class="col-12 p-0">
+
+                      @if (building.errors) {
+                        <div class="text-danger ps-2 fw-bold">
+                          <span *ngIf="building.errors[component.errorRequired]">
+                            {{component.errorRequiredTitle}}
+                          </span>
+                          <span *ngIf="building.errors[component.errorMaxLength]">
+                            {{component.errorBuildingMaxLengthTitle}}
+                          </span>
+                        </div>
+                      } @else {
+                        <span class="text-secondary ps-2 fw-bold"></span>
+                      } <!-- if -->
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- ввод телефона компании -->
+          <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+            <label class="form-label col-sm-4 col-md-3 col-xl-4 m-0 px-2" for="companyPhone">
+              {{component.labelPhone}}:
+            </label>
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 p-0">
+              <input class="form-control px-2" type="text"
+                     id="companyPhone" name="companyPhone" formControlName="companyPhone"
+                     placeholder="{{component.phonePlaceholder}}"
+                     maxlength="{{component.phoneLength}}"
+                     [readOnly]="component.isWaitFlag || component.isDeletingFlag"
+                     [class.opacity-75]="component.isWaitFlag || component.isDeletingFlag" >
+            </div>
+          </div>
+          <!-- строка с подсказками -->
+          <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                      justify-content-center align-items-start">
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 offset-sm-4 offset-md-3 offset-xl-4 p-0">
+
+              @if (companyPhone.errors && (companyPhone.dirty || companyPhone['touched'])) {
+                <div class="text-danger ps-2 fw-bold">
+                <span *ngIf="companyPhone.errors[component.errorRequired]">
+                    {{component.errorRequiredTitle}}
+                  </span>
+                  <span *ngIf="companyPhone.errors[component.errorPhoneValidator] &&
+                               !companyPhone.errors[component.errorRequired]">
+                    {{component.errorPhoneValidatorTitle}}
+                  </span>
+                </div>
+              } @else {
+                <span class="text-secondary ps-2 fw-bold"></span>
+              } <!-- if -->
+
+            </div>
+          </div>
+
+          <!-- ввод текста графика работы компании -->
+          <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+            <label class="form-label col-sm-4 col-md-3 col-xl-4 m-0 px-2" for="schedule">
+              {{component.labelSchedule}}:
+            </label>
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 p-0">
+              <input class="form-control px-2" type="text"
+                     id="schedule" name="schedule" formControlName="schedule"
+                     placeholder="{{component.schedulePlaceholder}}"
+                     maxlength="{{component.scheduleLength + one}}"
+                     [readOnly]="component.isWaitFlag || component.isDeletingFlag"
+                     [class.opacity-75]="component.isWaitFlag || component.isDeletingFlag" >
+            </div>
+          </div>
+          <!-- строка с подсказками -->
+          <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 offset-sm-4 offset-md-3 offset-xl-4 p-0">
+
+              @if (schedule.errors && (schedule.dirty || schedule['touched'])) {
+                <div class="text-danger ps-2 fw-bold">
+                <span *ngIf="schedule.errors[component.errorRequired]">
+                  {{component.errorRequiredTitle}}
+                </span>
+                  <span *ngIf="schedule.errors[component.errorMaxLength]">
+                  {{component.errorScheduleMaxLengthTitle}}
+                </span>
+                </div>
+              } @else {
+                <span class="text-secondary ps-2 fw-bold"></span>
+              } <!-- if -->
+
+            </div>
+          </div>
+
+          <!-- ввод текста сайта компании -->
+          <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+            <label class="form-label col-sm-4 col-md-3 col-xl-4 m-0 px-2" for="site">
+              {{component.labelSite}}:
+            </label>
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 p-0">
+              <input class="form-control px-2" type="text"
+                     id="site" name="site" formControlName="site"
+                     placeholder="{{component.sitePlaceholder}}"
+                     maxlength="{{component.siteLength + one}}"
+                     [readOnly]="component.isWaitFlag || component.isDeletingFlag"
+                     [class.opacity-75]="component.isWaitFlag || component.isDeletingFlag" >
+            </div>
+          </div>
+          <!-- строка с подсказками -->
+          <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                      justify-content-center align-items-start">
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 offset-sm-4 offset-md-3 offset-xl-4 p-0">
+
+              @if (site.errors && (site.dirty || site['touched'])) {
+                <div class="text-danger ps-2 fw-bold">
+                  <span *ngIf="site.errors[component.errorRequired]">
+                    {{component.errorRequiredTitle}}
+                  </span>
+                  <span *ngIf="site.errors[component.errorMaxLength]">
+                    {{component.errorSiteMaxLengthTitle}}
+                  </span>
+                </div>
+              } @else {
+                <span class="text-secondary ps-2 fw-bold"></span>
+              } <!-- if -->
+
+            </div>
+          </div>
+
+          <!-- ввод текста описания компании -->
+          <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+            <label class="form-label col-sm-4 col-md-3 col-xl-4 m-0 px-2 align-self-start"
+                   for="companyDescription">
+              {{component.labelDescription}}:
+            </label>
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 p-0">
+            <textarea class="form-control px-2" type="text"
+                      id="companyDescription" name="companyDescription"
+                      formControlName="companyDescription"
+                      placeholder="{{component.companyDescriptionPlaceholder}}"
+                      maxlength="{{component.companyDescriptionLength + one}}"
+                      [readOnly]="component.isWaitFlag || component.isDeletingFlag"
+                      [class.opacity-75]="component.isWaitFlag || component.isDeletingFlag" >
+            </textarea>
+            </div>
+          </div>
+          <!-- строка с подсказками -->
+          <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 offset-sm-4 offset-md-3 offset-xl-4 p-0">
+
+              @if (companyDescription.errors && (companyDescription.dirty || companyDescription['touched'])) {
+                <div class="text-danger ps-2 fw-bold">
+                  <span *ngIf="companyDescription.errors[component.errorMaxLength]">
+                    {{component.errorCompanyDescriptionMaxLengthTitle}}
+                  </span>
+                </div>
+              } @else {
+                <span class="text-secondary ps-2 fw-bold"></span>
+              } <!-- if -->
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- подвал - кнопки создать/изменить/удалить -->
+      <div class="bg-primary d-flex justify-content-evenly p-0">
+
+        <!-- при выборе удаления данных о компании, включаем кнопку "удалить" -->
+        <!--@if (!component.isDeletingFlag) {
+
+          <button class="btn bg-success-subtle fw-bold text-success
+                         text-opacity-75 w-50 w-min-140-max-160 m-1
+                         border border-success border-2 border-opacity-50"
+                  type="submit"
+                  [class.disabled]="userForm.invalid ||
+                                    component.errorRegisteredPhone.isRegistered ||
+                                    component.errorRegisteredEmail.isRegistered ||
+                                    component.isWaitFlag"
+                  title="{{component.butUserEditTitle}}">
+            @if (component.isWaitFlag) {
+              <div class="row m-0 p-0 justify-content-center align-items-center">
+                <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
+              </div>
+            } @else {
+              {{component.butUserEditValue}}
+            } &lt;!&ndash; if &ndash;&gt;
+          </button>
+
+        } @else {
+
+          <button class="btn bg-danger-subtle fw-bold text-danger
+                         text-opacity-75 w-50 w-min-140-max-160 m-1
+                         border border-danger border-2 border-opacity-50"
+                  type="button"
+                  [class.disabled]="component.isWaitFlag && component.isDeletingFlag"
+                  title="{{component.butDeleteUserTitle}}"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalDeletingUserConfirmation" >
+            @if (component.isWaitFlag) {
+              <div class="row m-0 p-0 justify-content-center align-items-center">
+                <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
+              </div>
+            } @else {
+              {{component.butDeleteUserValue}}
+            } &lt;!&ndash; if &ndash;&gt;
+          </button>
+
+        }--> <!-- if -->
+
+        <!-- кнопка "создать/изменить" -->
+        <button class="btn bg-success-subtle fw-bold text-success
+                       text-opacity-75 w-50 w-min-140-max-160 m-1
+                       border border-success border-2 border-opacity-50"
+                type="submit"
+                [class.disabled]="companyForm.invalid || component.isWaitFlag ||
+                                  component.errorRegisteredCity.isRegistered ||
+                                  !component.isChangedFormFlag"
+                title="{{company.id === zero
+                       ? component.butCompanyCreateTitle
+                       : component.butCompanyEditTitle}}">
+          @if (component.isWaitFlag) {
+            <div class="row m-0 p-0 justify-content-center align-items-center">
+              <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
+            </div>
+          } @else {
+            {{company.id === zero ? component.butCompanyCreateValue : component.butCompanyEditValue}}
+          } <!-- if -->
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+</main>

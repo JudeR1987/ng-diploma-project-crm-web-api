@@ -4,7 +4,6 @@
 import {Component, Input, EventEmitter, Output, OnInit, OnDestroy}
   from '@angular/core';
 import {Literals} from '../../infrastructure/Literals';
-import {Resources} from '../../infrastructure/Resources';
 
 @Component({
   selector: 'modal-confirmation',

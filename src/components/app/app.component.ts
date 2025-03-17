@@ -16,12 +16,6 @@ import {ErrorMessageService} from '../../services/error-message.service';
 import {NgIf} from '@angular/common';
 import {UserService} from '../../services/user.service';
 import {TokenService} from '../../services/token.service';
-//import {Config} from '../../temp/Config';
-//import {Purpose} from '../../temp/Purpose';
-//import {Client} from '../../temp/Client';
-//import {Query01ModalFormComponent} from '../query01-modal-form/query01-modal-form.component';
-//import {Query02ModalFormComponent} from '../../temp/query02-modal-form/query02-modal-form.component';
-//import {Query03ModalFormComponent} from '../../temp/query03-modal-form/query03-modal-form.component';
 
 @Component({
   selector: 'app-root',
@@ -51,6 +45,8 @@ export class AppComponent implements OnInit {
     butUserFormValue:     Literals.empty,
     butPasswordFormTitle: Literals.empty,
     butPasswordFormValue: Literals.empty,
+    butBusinessTitle:     Literals.empty,
+    butBusinessValue:     Literals.empty,
     butLogOutTitle:       Literals.empty,
     butLogOutValue:       Literals.empty,
     butStartTitle:        Literals.empty,
@@ -137,14 +133,12 @@ export class AppComponent implements OnInit {
     //console.dir(this.user);
 
     console.log(`--AppComponent-constructor-]`);
-
   } // constructor
 
 
   // 0. установка значений строковых переменных и получение данных
   // о jwt-токене и пользователе сразу после загрузки компонента
   ngOnInit(): void {
-
     console.log(`[-AppComponent-ngOnInit--`);
 
     // задать параметры заголовка по умолчанию
@@ -166,7 +160,6 @@ export class AppComponent implements OnInit {
       this.changeLanguageLiterals(language);
 
       console.log(`--AppComponent-subscribe-]`);
-
     }); // subscribe
 
     // получить данные о пользователе из сервиса-хранилища
@@ -218,14 +211,12 @@ export class AppComponent implements OnInit {
     //} // if
 
     console.log(`--AppComponent-ngOnInit-]`);
-
   } // ngOnInit
 
 
   // метод изменения значения языка отображения
   // и переназначения строковых переменных
   changeLanguageLiterals(language: string): void {
-
     console.log(`[-AppComponent-changeLanguageLiterals--`);
 
     console.log(`*-input(пришло)-language='${language}'-*`);
@@ -236,41 +227,43 @@ export class AppComponent implements OnInit {
     console.log(`*-(стало)-this.component.language='${this.component.language}'-*`);
 
     // установить значения строковых переменных
-    this.component.displayTitle =         this.component.title[this.component.language];
-    this.component.logoTitle =            Resources.appLogoTitle[this.component.language];
-    this.component.butNavBarTitle =       Resources.appButNavBarTitle[this.component.language];
-    this.component.butNavBarValue =       Resources.appButNavBarValue[this.component.language];
-    this.component.butAboutTitle =        Resources.appButAboutTitle[this.component.language];
-    this.component.butAboutValue =        Resources.appButAboutValue[this.component.language];
-    this.component.butLoginTitle =        Resources.appButLoginTitle[this.component.language];
-    this.component.butLoginValue =        Resources.appButLoginValue[this.component.language];
+    this.component.displayTitle         = this.component.title[this.component.language];
+    this.component.logoTitle            = Resources.appLogoTitle[this.component.language];
+    this.component.butNavBarTitle       = Resources.appButNavBarTitle[this.component.language];
+    this.component.butNavBarValue       = Resources.appButNavBarValue[this.component.language];
+    this.component.butAboutTitle        = Resources.appButAboutTitle[this.component.language];
+    this.component.butAboutValue        = Resources.appButAboutValue[this.component.language];
+    this.component.butLoginTitle        = Resources.appButLoginTitle[this.component.language];
+    this.component.butLoginValue        = Resources.appButLoginValue[this.component.language];
     this.component.butRegistrationTitle = Resources.appButRegistrationTitle[this.component.language];
     this.component.butRegistrationValue = Resources.appButRegistrationValue[this.component.language];
-    this.component.butUserFormTitle =     Resources.appButUserFormTitle[this.component.language];
-    this.component.butUserFormValue =     Resources.appButUserFormValue[this.component.language];
+    this.component.butUserFormTitle     = Resources.appButUserFormTitle[this.component.language];
+    this.component.butUserFormValue     = Resources.appButUserFormValue[this.component.language];
     this.component.butPasswordFormTitle = Resources.appButPasswordFormTitle[this.component.language];
     this.component.butPasswordFormValue = Resources.appButPasswordFormValue[this.component.language];
-    this.component.butLogOutTitle =       Resources.appButLogOutTitle[this.component.language];
-    this.component.butLogOutValue =       Resources.appButLogOutValue[this.component.language];
-    this.component.butStartTitle =        Resources.appButStartTitle[this.component.language];
-    this.component.butStartValue =        Resources.appButStartValue[this.component.language];
-    this.component.footerTitle =          Resources.appFooterTitle[this.component.language];
-    this.component.footerStudentTitle =   Resources.appFooterStudentTitle[this.component.language];
-    this.component.footerStudentValue =   Resources.appFooterStudentValue[this.component.language];
-    this.component.footerGroupTitle =     Resources.appFooterGroupTitle[this.component.language];
-    this.component.footerGroupValue =     Resources.appFooterGroupValue[this.component.language];
-    this.component.footerCityTitle =      Resources.appFooterCityTitle[this.component.language];
-    this.component.footerCityValue =      Resources.appFooterCityValue[this.component.language];
+    this.component.butBusinessTitle     = Resources.appButBusinessTitle[this.component.language];
+    this.component.butBusinessValue     = Resources.appButBusinessValue[this.component.language];
+    this.component.butLogOutTitle       = Resources.appButLogOutTitle[this.component.language];
+    this.component.butLogOutValue       = Resources.appButLogOutValue[this.component.language];
+    this.component.butStartTitle        = Resources.appButStartTitle[this.component.language];
+    this.component.butStartValue        = Resources.appButStartValue[this.component.language];
+    this.component.footerTitle          = Resources.appFooterTitle[this.component.language];
+    this.component.footerStudentTitle   = Resources.appFooterStudentTitle[this.component.language];
+    this.component.footerStudentValue   = Resources.appFooterStudentValue[this.component.language];
+    this.component.footerGroupTitle     = Resources.appFooterGroupTitle[this.component.language];
+    this.component.footerGroupValue     = Resources.appFooterGroupValue[this.component.language];
+    this.component.footerCityTitle      = Resources.appFooterCityTitle[this.component.language];
+    this.component.footerCityValue      = Resources.appFooterCityValue[this.component.language];
     this.component.footerShortYearValue = Resources.appFooterShortYearValue[this.component.language];
 
     console.log(`--AppComponent-changeLanguageLiterals-]`);
-
   } // changeLanguageLiterals
 
 
   // метод перехода в начало страницы
   toStart(): void {
-    window.scrollTo(Literals.zero, Literals.zero);
+    //window.scrollTo(Literals.zero, Literals.one);
+    Utils.toStart();
   } // toStart
 
 
@@ -310,7 +303,24 @@ export class AppComponent implements OnInit {
 
     console.log(`*-elementRef-*`);
     console.dir(elementRef);
-    console.log(`*-elementRef.route='${elementRef.component.route}'-*`);
+    //console.log(`*-elementRef.component = '${elementRef.component}' -*`);
+    // если свойство параметров компонента отсутствует - завершаем обработку
+    if (elementRef.component === undefined) return;
+    /*if (elementRef.component === undefined)
+      elementRef.component = { userId: 111, title: "ok" };
+    console.log(`*-elementRef.component: -*`);
+    console.dir(elementRef.component);*/
+
+    console.log(`*-elementRef.component.route = '${elementRef.component.route}' -*`);
+    // если маршрут неопределён, установим ему пустое значение
+    if (elementRef.component.route === undefined)
+      elementRef.component.route = Literals.empty;
+    /*if (elementRef.component.route === undefined) {
+      elementRef.component = { oldComponent: elementRef.component, route: Literals.empty };
+    }*/
+    /*console.log(`*-elementRef.component: -*`);
+    console.dir(elementRef.component);*/
+    console.log(`*-elementRef.component.route = '${elementRef.component.route}' -*`);
 
     // выбор значения заголовка и параметров активной страницы
     let back: string = '';
@@ -363,6 +373,21 @@ export class AppComponent implements OnInit {
         back = Literals.navbarBrandActive;
         icon = Literals.iconLight;
         routerLinkActive = Literals.routePasswordForm;
+        break;
+
+      case Literals.routeBusiness:
+        this.component.title = Resources.appBusinessTitle;
+        back = Literals.navbarBrandActive;
+        icon = Literals.iconLight;
+        routerLinkActive = Literals.routeBusiness;
+        break;
+
+      case Literals.routeCompanyForm:
+        this.component.title = elementRef.component.route_mode === Literals.editCompany
+          ? Resources.appEditCompanyFormTitle : Resources.appCreateCompanyFormTitle;
+        back = Literals.navbarBrandActive;
+        icon = Literals.iconLight;
+        routerLinkActive = Literals.routeCompanyForm;
         break;
 
       // маршрут перехода на страницу NotFound
@@ -465,7 +490,6 @@ export class AppComponent implements OnInit {
 
   // программный переход к форме изменения данных о пользователе
   routingToUserForm(): void {
-
     console.log(`[-AppComponent-routingToUserForm--`);
 
     // маршрут
@@ -475,11 +499,13 @@ export class AppComponent implements OnInit {
     let userId: number = this.user.id;
 
     // переход по маршруту
-    this._router.navigate([routerLink, userId], {
+    /*this._router.navigate([routerLink, userId], {
       state: { user: User.UserToDto(this.user) }
-    }).then((e) => { console.log(`*- переход: ${e} -*`); });
+    }).then((e) => { console.log(`*- переход: ${e} -*`); });*/
+    this._router.navigateByUrl(`${routerLink}/${userId}`)
+      .then((e) => { console.log(`*- переход: ${e} -*`); });
 
-    console.log(`--AppComponent-routingToUserForm-]`);
+    console.log(`--AppComponent-routingToUserForm-]`)
 
   } // routingToUserForm
 
@@ -508,6 +534,32 @@ export class AppComponent implements OnInit {
     console.log(`--AppComponent-routingToPasswordForm-]`);
 
   } // routingToPasswordForm
+
+
+  // программный переход на страницу ведения бизнеса
+  routingToBusiness(): void {
+
+    console.log(`[-AppComponent-routingToBusiness--`);
+
+    // маршрут
+    let routerLink: string = Literals.routeBusiness;
+
+    // параметр
+    //let userId: number = this.user.id;
+
+    // переход по маршруту
+    /*this._router.navigate([routerLink, userId], {
+      state: {
+        userId: this.user.id,
+        password: this.user.password
+      }
+    }).then((e) => { console.log(`*- переход: ${e} -*`); });*/
+    this._router.navigateByUrl(`${routerLink}`)
+      .then((e) => { console.log(`*- переход: ${e} -*`); });
+
+    console.log(`--AppComponent-routingToBusiness-]`);
+
+  } // routingToBusiness
 
 
   // метод вывода сообщения

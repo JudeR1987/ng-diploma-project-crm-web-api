@@ -1,5 +1,5 @@
 
-/* собственные стили: v.13.02.25 */
+/* собственные стили: v.05.03.25 */
 
 /* область объявления глобальных переменных CSS */
 :root {
@@ -59,6 +59,10 @@
   min-width: 80px;
 }
 
+.min-width-20px {
+  min-width: 20px;
+}
+
 /* для формы - определение ширины */
 .w-md-75 {
     width: 75%;
@@ -69,10 +73,13 @@
 
 /* ширина для главного контейнера */
 .w-md-90 {
-    width: 90%;
+  width: 90%;
 }
 .w-md-95 {
-    width: 95%;
+  width: 95%;
+}
+.w-lg-95 {
+  width: 95%;
 }
 
 /* для подписей в карусели изображений - определение ширины */
@@ -97,6 +104,16 @@
   min-width: 180px;
   max-width: 200px;
   height: 224px;
+}
+.input-image-w-160px-h-160px {
+  width: 160px;
+  height: 160px;
+}
+.input-image-w-180-250px-h-180px {
+  width: auto;
+  min-width: 180px;
+  max-width: 250px;
+  height: 180px;
 }
 
 /* задание ширины */
@@ -162,14 +179,21 @@
 .h-min-36px {
     min-height: 36px;
 }
+.h-21px {
+    height: 21px;
+}
 .h-38px {
-    height: 38px;
+  height: 38px;
 }
 .h-40px {
     height: 40px;
 }
 .h-80px {
     height: 80px;
+}
+.h-max-250px-w-max-400px {
+  max-height: 250px;
+  max-width: 400px;
 }
 
 /* для кнопки закрытия в модальном окне */
@@ -200,7 +224,7 @@
     text-decoration: underline double royalblue;
 }
 
-/* стили шрифтов */
+/*region стили шрифтов */
 .font-family-Tahoma {
     font-family: Tahoma, sans-serif;
 }
@@ -212,6 +236,60 @@
 }
 .font-family-JetBrains-Mono {
     font-family: "JetBrains Mono", sans-serif;
+}
+.font-family-Roboto-Light {
+  font-family: "Roboto Light", sans-serif;
+}
+.font-family-Cascadia-Code {
+  font-family: "Cascadia Code", sans-serif;
+}
+.font-family-Caslon {
+  font-family: caslon, sans-serif;
+}
+.font-family-Verdana {
+  font-family: Verdana, sans-serif;
+}
+.font-family-Times-New-Roman {
+  font-family: "Times New Roman", sans-serif;
+}
+.font-family-Arial {
+  font-family: Arial, sans-serif;
+}
+.font-family-Georgia {
+  font-family: Georgia, sans-serif;
+}
+.font-family-Courier-New {
+  font-family: "Courier New", sans-serif;
+}
+.font-family-Cambria {
+  font-family: Cambria, sans-serif;
+}
+.font-family-Candara {
+  font-family: Candara, sans-serif;
+}
+.font-family-Consolas {
+  font-family: Consolas, sans-serif;
+}
+.font-family-Daytona {
+  font-family: Daytona, sans-serif; /* == Arial */
+}
+.font-family-Biome {
+  font-family: Biome, sans-serif; /* == Arial */
+}
+.font-family-Dotum {
+  font-family: Dotum, sans-serif; /* == Arial */
+}
+.font-family-Ebrima {
+  font-family: Ebrima, sans-serif; /* == Arial */
+}
+.font-family-Malgun-Gothic {
+  font-family: "Malgun Gothic", sans-serif;
+}
+.font-family-Maiandra-GD {
+  font-family: "Maiandra GD", sans-serif; /* == Arial */
+}
+.font-family-Segoe-UI {
+  font-family: "Segoe UI", sans-serif;
 }
 .font-size-9pt {
     font-size: 9pt;
@@ -228,6 +306,7 @@
 .font-size-16pt {
     font-size: 16pt;
 }
+/*endregion*/
 
 /* стили для кнопки перехода в начало страницы */
 .bottom-1rem {
@@ -280,6 +359,18 @@
 .border-main-color {
     border-color: var(--main-color) !important;
 }
+.border-10px {
+  border-width: 10px !important;
+}
+.border-30px {
+  border-width: 30px !important;
+}
+
+/* скорость вращения спиннера */
+.speed-600ms {
+  animation-duration: 600ms;
+}
+
 /* отступы */
 .mt-2px {
   margin-top: 2px !important;
@@ -290,6 +381,16 @@
 .py-1px {
   padding-top: 1px;
   padding-bottom: 1px;
+}
+.pt-1px {
+  padding-top: 1px;
+}
+.pb-2px {
+  padding-bottom: 2px;
+}
+.py-2px {
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 /* для навигации */
 .nav-link:hover, .navbar-brand:hover {
@@ -372,12 +473,16 @@ input.valid {
         height: auto;
     }
 
-    .content-height {
-      /*min-height: auto;*/
+    /*.content-height {
+      !*min-height: auto;*!
       width: calc(100% - 2px);
-    }
+    }*/
 
     .w-lg-75 {
+      width: 100%;
+    }
+
+    .w-lg-95 {
       width: 100%;
     }
 

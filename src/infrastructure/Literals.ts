@@ -18,6 +18,13 @@ export class Literals {
   //endregion
 
 
+  //#region HomeComponent
+  public static readonly fileNameLogoDef: string = 'logo.ico';
+  public static readonly fileNameCompanyTitleImageDef: string = 'company.jpg';
+
+  //endregion
+
+
   //#region AboutComponent
   public static readonly about: string = 'about';
 
@@ -50,12 +57,39 @@ export class Literals {
   //#region UserFormComponent
   public static readonly userForm: string = 'user-form';
   public static readonly userNameLength: number = 50;
+  public static readonly userFormSizeImage: string = 'input-image-w-180-200px-h-224px';
 
   //endregion
 
 
   //#region PasswordFormComponent
   public static readonly passwordForm: string = 'password-form';
+
+  //endregion
+
+
+  //#region BusinessComponent
+  public static readonly business: string = 'business';
+
+  //endregion
+
+
+  //#region CompanyFormComponent
+  public static readonly companyForm: string = 'company-form';
+  public static readonly companyNameLength: number = 50;
+  public static readonly companyNewCityNameLength: number = 50;
+  public static readonly companyFormStreetLength: number = 80;
+  public static readonly companyFormBuildingLength: number = 10;
+  public static readonly companyFormFlatMax: number = 999;
+  public static readonly companyDescriptionLength: number = 500;
+  public static readonly companyScheduleLength: number = 50;
+  public static readonly companySiteLength: number = 30;
+  public static readonly companySchedulePlaceholder: string = 'Пн-Пт 9:00-18:00';
+  public static readonly companySitePlaceholder: string = 'www.site.com';
+  public static readonly companyFormLogoSizeImage: string =
+    'input-image-w-160px-h-160px';
+  public static readonly companyFormTitleImageSizeImage: string =
+    'input-image-w-180-250px-h-180px';
 
   //endregion
 
@@ -71,7 +105,8 @@ export class Literals {
   public static readonly applicationJson: string = 'application/json';
   public static readonly authorization: string = 'Authorization';
   public static readonly bearer: string = 'Bearer';
-  public static readonly tempPhoto: string = 'tempPhoto';
+  public static readonly tempImage: string = 'tempImage';
+  public static readonly tempDir: string = 'tempDir';
 
   //endregion
 
@@ -84,6 +119,8 @@ export class Literals {
   public static readonly routeRegistration: string = 'registration';
   public static readonly routeUserForm: string = 'user-form';
   public static readonly routePasswordForm: string = 'password-form';
+  public static readonly routeBusiness: string = 'business';
+  public static readonly routeCompanyForm: string = 'company-form';
   public static readonly routeNotFound: string = '404';
   public static readonly routeOther: string = '**';
 
@@ -101,19 +138,25 @@ export class Literals {
   public static readonly eng: string = 'eng';
   public static readonly srcImagePath: string = 'assets/images/';
   public static readonly srcPhotoPath: string = 'assets/photos/';
+  public static readonly srcLogoPath: string = 'assets/logos/';
   public static readonly jwt: string = 'jwt';
   public static readonly user: string = 'user';
   public static readonly Ok: string = 'Ok';
   public static readonly zero: number = 0;
   public static readonly one: number = 1;
+  public static readonly two: number = 2;
   public static readonly hundred: number = 100;
   public static readonly fiveHundred: number = 500;
   public static readonly timeout: number = 6_000;
   public static readonly timeout10: number = 10;
   public static readonly timeStop: number = 25_000;
   public static readonly string: string = 'string';
-  public static readonly id: string = 'id';
   public static readonly slash: string = '/';
+  public static readonly page: string = 'page';
+  public static readonly ellipsis: string = '...';
+  public static readonly mode: string = 'mode';
+  public static readonly createCompany: string = 'create-company';
+  public static readonly editCompany: string = 'edit-company';
 
   //endregion
 
@@ -129,21 +172,32 @@ export class Literals {
   public static readonly emailValidator: string = 'emailValidator';
   public static readonly passwordValidator: string = 'passwordValidator';
   public static readonly matchValidator: string = 'matchValidator';
+  public static readonly selectedZeroValidator: string = 'selectedZeroValidator';
   public static readonly phoneLength: number = 12;
   public static readonly emailLength: number = 50;
   public static readonly passwordMinLength: number = 4;
   public static readonly passwordMaxLength: number = 50;
   public static readonly text: string = 'text';
   public static readonly password: string = 'password';
+  public static readonly passwordInputTypes: { text: string, password: string } =
+    { text: this.text, password: this.password };
   public static readonly newPassword: string = 'newPassword';
+  public static readonly id: string = 'id';
   public static readonly userId: string = 'userId';
+  public static readonly companyId: string = 'companyId';
   public static readonly userName: string = 'userName';
   public static readonly phone: string = 'phone';
   public static readonly email: string = 'email';
   public static readonly avatar: string = 'avatar';
-  public static readonly passwordInputTypes: { text: string, password: string } =
-    { text: this.text, password: this.password };
   public static readonly error401: number = 401;
+  public static readonly pathLogoDef: string =
+    'http://localhost:5297/download/getimage/companies/logos/logo.ico';
+  public static readonly pathTitleImageDef: string =
+    'http://localhost:5297/download/getimage/companies/images/company.jpg';
+  public static readonly logo: string = 'logo';
+  public static readonly image: string = 'image';
+  public static readonly imageType: string = 'imageType';
+  public static readonly temp: string = 'temp';
 
   //endregion
 

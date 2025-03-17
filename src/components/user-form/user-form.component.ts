@@ -42,8 +42,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
     userNamePlaceholder:            Literals.empty,
     errorRequiredTitle:             Literals.empty,
     errorUserNameMaxLengthTitle:    Literals.empty,
-    errorRegisteredPhone:           { message: Literals.empty, isRegistered: false},
-    errorRegisteredEmail:           { message: Literals.empty, isRegistered: false},
+    errorRegisteredPhone:           {message: Literals.empty, isRegistered: false},
+    errorRegisteredEmail:           {message: Literals.empty, isRegistered: false},
     errorPhoneValidatorTitle:       Literals.empty,
     errorEmailMaxLengthTitle:       Literals.empty,
     errorEmailValidatorTitle:       Literals.empty,
@@ -72,6 +72,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     isChangedFlag:           false,
     isDeletingFlag:          false,
     isConfirmedFlag:         false,
+    isChangedFormFlag:       false,
     phonePlaceholder:        Literals.phonePlaceholder,
     emailPlaceholder:        Literals.emailPlaceholder,
     userNameLength:          Literals.userNameLength,
@@ -81,7 +82,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
     errorMaxLength:          Literals.maxlength,
     errorPhoneValidator:     Literals.phoneValidator,
     errorEmailValidator:     Literals.emailValidator,
-    newFileName:             Literals.empty
+    newFileName:             Literals.empty,
+    sizeImage:               Literals.userFormSizeImage
   };
 
   // объект подписки на изменение языка, для отмены подписки при уничтожении компонента
@@ -149,7 +151,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
   // 0. установка начальных значений и подписок
   // сразу после загрузки компонента
   async ngOnInit(): Promise<void> {
-
     console.log(`[-UserFormComponent-ngOnInit--`);
 
     // задать значение языка отображения и установить
@@ -169,7 +170,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
         this.changeLanguageLiterals(language);
 
         console.log(`--UserFormComponent-subscribe-]`);
-
       }); // subscribe
 
     console.log(`*-(было - начало)-this.user-*`);
@@ -213,8 +213,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
         this._errorMessageService.errorMessageSubject
           .next(Resources.incorrectUserIdData[this.component.language]);
 
-        console.log(`--PasswordFormComponent-ngOnInit-]`);
-
+        console.log(`--UserFormComponent-ngOnInit-]`);
       }); // navigateByUrl
 
       return;
@@ -235,7 +234,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
           .next(Resources.userFormMissingData[this.component.language]);
 
         console.log(`--UserFormComponent-ngOnInit-]`);
-
       }); // navigateByUrl
 
       return;
@@ -252,14 +250,12 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.createForm();
 
     console.log(`--UserFormComponent-ngOnInit-]`);
-
   } // ngOnInit
 
 
   // метод изменения значения языка отображения
   // и переназначения строковых переменных
   changeLanguageLiterals(language: string): void {
-
     console.log(`[-UserFormComponent-changeLanguageLiterals--`);
 
     console.log(`*-input(пришло)-language='${language}'-*`);
@@ -285,30 +281,28 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.component.errorEmailValidatorTitle       = Resources.errorEmailValidator[this.component.language];
     this.component.phoneNoErrorsTitle             = Resources.phoneNoErrors[this.component.language];
     this.component.butUserEditTitle               = Resources.userFormButUserEditTitle[this.component.language];
-    this.component.butUserEditValue               = Resources.userFormButUserEditValue[this.component.language];
+    this.component.butUserEditValue               = Resources.butEditValue[this.component.language];
     this.component.labelInputImage                = Resources.userFormLabelInputImage[this.component.language];
-    this.component.labelNewFileName               = Resources.userFormLabelNewFileName[this.component.language];
-    this.component.labelFileNotSelected           = Resources.userFormLabelFileNotSelected[this.component.language];
+    this.component.labelNewFileName               = Resources.labelNewFileName[this.component.language];
+    this.component.labelFileNotSelected           = Resources.labelFileNotSelected[this.component.language];
     this.component.butNewFileNameTitle            = Resources.userFormButNewFileNameTitle[this.component.language];
-    this.component.butNewFileNameValue            = Resources.userFormButNewFileNameValue[this.component.language];
+    this.component.butNewFileNameValue            = Resources.butNewFileNameValue[this.component.language];
     this.component.labelCheckboxDeletingFlag      = Resources.userFormLabelCheckboxDeletingFlag[this.component.language];
     this.component.butDeleteUserTitle             = Resources.userFormButDeleteUserTitle[this.component.language];
     this.component.butDeleteUserValue             = Resources.userFormButDeleteUserValue[this.component.language];
     this.component.titleConfirmation              = Resources.titleAttention[this.component.language];
     this.component.messageConfirmation            = Resources.userFormMessageConfirmation[this.component.language];
     this.component.butConfirmedOkTitle            = Resources.userFormButConfirmedOkTitle[this.component.language];
-    this.component.butConfirmedOkValue            = Resources.userFormButConfirmedOkValue[this.component.language];
+    this.component.butConfirmedOkValue            = Resources.butDeleteValue[this.component.language];
     this.component.butConfirmedCancelTitle        = Resources.userFormButConfirmedCancelTitle[this.component.language];
     this.component.butConfirmedCancelValue        = Resources.userFormButConfirmedCancelValue[this.component.language];
 
     console.log(`--UserFormComponent-changeLanguageLiterals-]`);
-
   } // changeLanguageLiterals
 
 
   // обработчик события передачи данных из формы на сервер
   async onSubmit(): Promise<void> {
-
     console.log(`[-UserFormComponent-onSubmit--`);
 
     console.log("Отправка данных на сервер");
@@ -363,7 +357,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
     // запрос на изменение данных о пользователе
     let result: { message: any, user: User } =
-      { message: Literals.Ok, user: User.UserToDto(new User()) };
+      //{ message: Literals.Ok, user: User.UserToDto(new User()) };
+      { message: Literals.Ok, user: new User() };
     try {
       // получить jwt-токен
       let token: string = this._tokenService.token;
@@ -476,6 +471,14 @@ export class UserFormComponent implements OnInit, OnDestroy {
       // изменить результат на сообщение для вывода
       result.message = message;
 
+      // сбросить флаг изменений данных в форме
+      console.log(`*-(было)-this.component.isChangedFormFlag: '${this.component.isChangedFormFlag}' -*`);
+      this.component.isChangedFormFlag = false;
+      console.log(`*-(стало)-this.component.isChangedFormFlag: '${this.component.isChangedFormFlag}' -*`);
+
+      // переход в начало страницы
+      Utils.toStart();
+
     } else {
       // иначе - сообщение об успехе
       result.message = Resources.userFormOkData[this.component.language];
@@ -501,11 +504,11 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this._errorMessageService.errorMessageSubject.next(result.message);
 
     console.log(`--UserFormComponent-onSubmit-]`);
-
   } // onSubmit
 
 
   // обработчик события получения данных о выбранном файле изображения
+  // (запрос на загрузку файла с изображением)
   async sendFileHandler(file: File): Promise<void> {
     console.log(`[-UserFormComponent-sendFileHandler--`);
 
@@ -557,9 +560,19 @@ export class UserFormComponent implements OnInit, OnDestroy {
       let token: string = this._tokenService.token;
       console.log(`*-token: '${token}' -*`);
 
+      // идентификатор компании (пока тут не нужен)
+      let companyId: number = Literals.zero;
+
+      // папка с временной фотографией пользователя (пока тут не нужна)
+      let tempDir: string = Literals.empty;
+
+      // тип изображения (пока тут не нужен)
+      let imageType: string = Literals.empty;
+
       // запрос на загрузку файла с изображением
       let webResult: any = await firstValueFrom(this._webApiService.uploadImagePOST(
-        Config.urlUploadTempUserPhoto, file, this.user.id, token
+        Config.urlUploadTempUserPhoto, file, this.user.id,
+        companyId, tempDir, imageType, token
       ));
       console.dir(webResult);
 
@@ -590,7 +603,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
     // выключение спиннера ожидания данных
     this.component.isWaitFlag = false;
-
 
     // если сообщение с ошибкой - завершаем обработку, остаёмся в форме
     if (result.message != Literals.Ok) {
@@ -632,8 +644,12 @@ export class UserFormComponent implements OnInit, OnDestroy {
       this.user.avatar = result.avatar;
       console.log(`-(стало)-this.user.avatar: '${this.user.avatar}'`);
 
-    } // if
+      // установить флаг изменений данных в форме в положение "изменения БЫЛИ"
+      console.log(`*-(было)-this.component.isChangedFormFlag: '${this.component.isChangedFormFlag}' -*`);
+      this.component.isChangedFormFlag = true;
+      console.log(`*-(стало)-this.component.isChangedFormFlag: '${this.component.isChangedFormFlag}' -*`);
 
+    } // if
 
     // передать сообщение об ошибке в AppComponent для отображения
     this._errorMessageService.errorMessageSubject.next(result.message);
@@ -644,7 +660,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   // создание объектов полей ввода формы изменения данных о пользователе
   createFormControls(): void {
-
     console.log(`[-UserFormComponent-createFormControls--`);
 
     // поле ввода имени пользователя
@@ -682,19 +697,17 @@ export class UserFormComponent implements OnInit, OnDestroy {
     );
 
     console.log(`--UserFormComponent-createFormControls-]`);
-
   } // createFormControls
 
 
   // создание объекта формы изменения данных о пользователе
   createForm(): void {
-
     console.log(`[-UserFormComponent-createForm--`);
 
     this.userForm = new FormGroup( {
-      userName:             this.userName,
-      phone:                this.phone,
-      email:                this.email
+      userName: this.userName,
+      phone:    this.phone,
+      email:    this.email
     });
 
     // подписка на изменения в форме
@@ -708,20 +721,29 @@ export class UserFormComponent implements OnInit, OnDestroy {
         // проверка номера телефона и email на совпадение с зарегистрированными
         this.checkingExisting({ phone: data.phone, email: data.email });
 
+        // установить флаг изменений данных в форме в положение "изменения БЫЛИ"
+        console.log(`*-(было)-this.component.isChangedFormFlag: '${this.component.isChangedFormFlag}' -*`);
+        this.component.isChangedFormFlag = true;
+        console.log(`*-(стало)-this.component.isChangedFormFlag: '${this.component.isChangedFormFlag}' -*`);
+
         console.log(`--UserFormComponent-valueChanges.subscribe-]`);
       }
     ); // subscribe
 
-    console.log(`--UserFormComponent-createForm-]`);
+    // сбросить флаг изменений данных в форме
+    console.log(`*-(было)-this.component.isChangedFormFlag: '${this.component.isChangedFormFlag}' -*`);
+    this.component.isChangedFormFlag = false;
+    console.log(`*-(стало)-this.component.isChangedFormFlag: '${this.component.isChangedFormFlag}' -*`);
 
+    console.log(`--UserFormComponent-createForm-]`);
   } // createForm
 
 
   // проверка номера телефона и email на совпадение с зарегистрированными
   checkingExisting(data: { phone: string, email: string }): void {
-
     console.log(`[-UserFormComponent-checkingExisting--`);
 
+    // проверить совпадение с хотя бы одним элементом списка уже зарегистрированных
     this.component.errorRegisteredPhone.isRegistered =
       this.registeredPhones.some((phone: string) => phone === data.phone);
     console.dir(this.component.errorRegisteredPhone.isRegistered);
@@ -731,14 +753,12 @@ export class UserFormComponent implements OnInit, OnDestroy {
     console.dir(this.component.errorRegisteredEmail.isRegistered);
 
     console.log(`--UserFormComponent-checkingExisting-]`);
-
   } // checkingExisting
 
 
   // выполнение запроса на удаление временной папки
   // со всеми временными фотографиями пользователя
   async requestDeleteTempUserPhotos(): Promise<void> {
-
     console.log(`[-UserFormComponent-requestDeleteTempUserPhotos--`);
 
     console.log(`*-this.user-*`);
@@ -782,8 +802,14 @@ export class UserFormComponent implements OnInit, OnDestroy {
       let token: string = this._tokenService.token;
       console.log(`*-token: '${token}' -*`);
 
-      let webResult: any = await firstValueFrom(this._webApiService.deleteTempUserPhotos(
-        Config.urlDeleteTempUserPhotos, this.user.id, token
+      // идентификатор компании (пока тут не нужен)
+      let companyId: number = Literals.zero;
+
+      // тип изображения (пока тут не нужен)
+      let imageType: string = Literals.empty;
+
+      let webResult: any = await firstValueFrom(this._webApiService.deleteTempImages(
+        Config.urlDeleteTempUserPhotos, this.user.id, companyId, imageType, token
       ));
       console.dir(webResult);
 
@@ -824,7 +850,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
       // ошибки существования папки
       console.log(`--result.directory: '${result.directory}'`);
-      if (!result.directory)
+      if (result.directory != undefined && !result.directory)
         message = Resources.userFormIncorrectTempDirectory[this.component.language];
 
       // ошибки сервера
@@ -849,7 +875,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this._errorMessageService.errorMessageSubject.next(result);
 
     console.log(`--UserFormComponent-requestDeleteTempUserPhotos-]`);
-
   } // requestDeleteTempUserPhotos
 
 
@@ -1026,7 +1051,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   } // requestDeleteUserData
 
 
-  // метод выполнения/НЕ выполнения обновления токена
+  // метод выполнения/НЕ_выполнения обновления токена
   private async isRefreshToken(): Promise<boolean> {
 
     console.log(`Обновляем токен!`);
@@ -1071,15 +1096,18 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   // отмены подписок и необходимые методы при уничтожении компонента
   async ngOnDestroy(): Promise<void> {
-
     console.log(`[-UserFormComponent-ngOnDestroy--`);
 
+    // отмена подписки
     this._languageSubscription.unsubscribe();
 
-    // если компонент уничтожается НЕ после onSubmit(), то отправить запрос
-    // на удаление временной папки со всеми временными фотографиями пользователя
+
+    // если компонент уничтожается НЕ после onSubmit()
+    // И пользователь БЫЛ ВОШЕДШИМ!!!, то отправить запрос на удаление
+    // временной папки со всеми временными фотографиями пользователя
     console.log(`*-this.component.isChangedFlag: '${this.component.isChangedFlag}' -*`);
-    if (!this.component.isChangedFlag) {
+    console.log(`*-this.user.isLogin: '${this.user.isLogin}' -*`);
+    if (!this.component.isChangedFlag && this.user.isLogin) {
 
       // запрос на удаление временной папки со всеми временными фотографиями пользователя
       await this.requestDeleteTempUserPhotos();
@@ -1104,7 +1132,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
     } // if
 
     console.log(`--UserFormComponent-ngOnDestroy-]`);
-
   } // ngOnDestroy
 
 } // class UserFormComponent

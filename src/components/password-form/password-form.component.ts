@@ -106,7 +106,6 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
     Utils.helloComponent(Literals.passwordForm);
 
     console.log(`[-PasswordFormComponent-constructor--`);
-
     console.log(`*-this.component.language='${this.component.language}'-*`);
     console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
 
@@ -118,14 +117,12 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
     console.log(`*-this._password: '${this._password}' -*`);
 
     console.log(`--PasswordFormComponent-constructor-]`);
-
   } // constructor
 
 
   // 0. установка начальных значений и подписок
   // сразу после загрузки компонента
   ngOnInit(): void {
-
     console.log(`[-PasswordFormComponent-ngOnInit--`);
 
     // задать значение языка отображения и установить
@@ -145,14 +142,12 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
         this.changeLanguageLiterals(language);
 
         console.log(`--PasswordFormComponent-subscribe-]`);
-
       }); // subscribe
-
-    console.log(`*-(было)-this._userId: '${this._userId}'-*`);
-    console.log(`*-(было)-this._password: '${this._password}'-*`);
 
     // получить данные о пользователе из сервиса-хранилища
     let user: User = this._userService.user;
+    console.log(`*-(было)-this._userId: '${this._userId}'-*`);
+    console.log(`*-(было)-this._password: '${this._password}'-*`);
     this._userId = user.id;
     this._password = user.password;
     console.log(`*-(стало)-this._userId: '${this._userId}' -*`);
@@ -211,7 +206,6 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
           .next(Resources.passwordFormIncorrectData[this.component.language]);
 
         console.log(`--PasswordFormComponent-ngOnInit-]`);
-
       }); // navigateByUrl
 
       return;
@@ -230,7 +224,6 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
   // метод изменения значения языка отображения
   // и переназначения строковых переменных
   changeLanguageLiterals(language: string): void {
-
     console.log(`[-PasswordFormComponent-changeLanguageLiterals--`);
 
     console.log(`*-input-language='${language}'-*`);
@@ -253,16 +246,14 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
       this.component.language, this.component.passwordMinLength, this.component.passwordMaxLength);
     this.component.errorMatchValidatorTitle       = Resources.passwordFormErrorMatchValidator[this.component.language];
     this.component.butPasswordEditTitle           = Resources.passwordFormButPasswordEditTitle[this.component.language];
-    this.component.butPasswordEditValue           = Resources.passwordFormButPasswordEditValue[this.component.language];
+    this.component.butPasswordEditValue           = Resources.butEditValue[this.component.language];
 
     console.log(`--PasswordFormComponent-changeLanguageLiterals-]`);
-
   } // changeLanguageLiterals
 
 
   // обработчик события передачи данных из формы на сервер
   async onSubmit(): Promise<void> {
-
     console.log(`[-PasswordFormComponent-onSubmit--`);
 
     console.log("Отправка данных на сервер");
@@ -390,7 +381,6 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
     this._errorMessageService.errorMessageSubject.next(result);
 
     console.log(`--PasswordFormComponent-onSubmit-]`);
-
   } // onSubmit
 
 
@@ -517,13 +507,12 @@ export class PasswordFormComponent implements OnInit, OnDestroy {
 
   // отмены подписок и необходимые методы при уничтожении компонента
   ngOnDestroy(): void {
-
     console.log(`[-PasswordFormComponent-ngOnDestroy--`);
 
+    // отмена подписки
     this._languageSubscription.unsubscribe();
 
     console.log(`--PasswordFormComponent-ngOnDestroy-]`);
-
   } // ngOnDestroy
 
 } // class PasswordFormComponent

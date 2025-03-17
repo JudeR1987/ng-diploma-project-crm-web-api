@@ -1,7 +1,6 @@
 // ----------------------------------------------------------------------------
 // класс, представляющий набор пользовательских валидаторов
 // ----------------------------------------------------------------------------
-
 import {AbstractControl, FormControl, ValidatorFn} from '@angular/forms';
 import {Literals} from '../infrastructure/Literals';
 
@@ -77,7 +76,8 @@ export class UserValidators {
 
       return UserValidators.phone(control);
 
-    } else { // иначе, проверяем значение как e-mail
+    } else {
+      // иначе, проверяем значение как e-mail
 
       console.log(`--UserValidators-login-]`);
 
@@ -174,6 +174,19 @@ export class UserValidators {
 
     };// return
   } // match
+
+
+  // статический метод - пользовательский валидатор без параметров,
+  // валидация выбора не нулевого значения списка
+  public static selectedZero(control: AbstractControl): { [key: string]: any } {
+
+    // значение поля из формы
+    let value: number = +control.value;
+
+    // проверка поля по регулярному выражению
+    return value != Literals.zero ? null! : {'selectedZeroValidator': {value}};
+
+  } // selectedZero
 
 } // UserValidators
 

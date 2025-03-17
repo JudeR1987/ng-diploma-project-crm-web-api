@@ -67,14 +67,17 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   // объект с данными для регистрации в системе
   public loginModel: LoginModel = new LoginModel();
 
-  // объект формы регистрации
-  public registrationForm: FormGroup = null!;
-
   // поле ввода телефона пользователя
-  public phone: FormControl = null!;
+  public phone: FormControl = new FormControl();
 
   // поле ввода e-mail пользователя
-  public email: FormControl = null!;
+  public email: FormControl = new FormControl();
+
+  // объект формы регистрации
+  public registrationForm: FormGroup = new FormGroup<any>({
+    phone: this.phone,
+    email: this.email
+  });
 
   // коллекция зарегистрированных телефонов
   public registeredPhones: string[] = [];
@@ -205,8 +208,14 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     console.dir(this.registrationForm.value);
     console.log(this.registrationForm.valid);
 
-    // задать значения параметров регистрации
+    /*// задать значения параметров регистрации
+    // (логин=телефону только при регистрации)
     this.loginModel.login    = this.phone.value;
+    this.loginModel.phone    = this.phone.value;
+    this.loginModel.email    = this.email.value;
+    this.loginModel.password = Literals.empty;*/
+
+    // задать значения параметров регистрации
     this.loginModel.phone    = this.phone.value;
     this.loginModel.email    = this.email.value;
     this.loginModel.password = Literals.empty;
@@ -364,6 +373,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
     console.log(`[-RegistrationComponent-checkingExisting--`);
 
+    // проверить совпадение с хотя бы одним элементом списка уже зарегистрированных
     this.component.errorRegisteredPhone.isRegistered =
       this.registeredPhones.some((phone: string) => phone === data.phone);
     console.dir(this.component.errorRegisteredPhone.isRegistered);
@@ -382,6 +392,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
     console.log(`[-RegistrationComponent-ngOnDestroy--`);
 
+    // отмена подписки
     this._languageSubscription.unsubscribe();
 
     console.log(`--RegistrationComponent-ngOnDestroy-]`);

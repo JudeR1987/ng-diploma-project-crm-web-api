@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {NgIf} from '@angular/common';
 import {Trip} from '../Trip';
-import {PageViewModel} from '../PageViewModel';
+import {PageViewModel} from '../../infrastructure/PageViewModel';
 import {WebApiService} from '../web-api.service';
 import {Utils} from '../../infrastructure/Utils';
 import {Config} from '../../infrastructure/Config';

@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------------
 
 // класс, представляющий сведения о записи в таблице "МАРШРУТЫ" (Routes)
-import {Country} from './Country';
+import {Country} from './CountryTemp';
 import {Purpose} from './Purpose';
 import {IRouteToSelect} from './IRouteToSelect';
 

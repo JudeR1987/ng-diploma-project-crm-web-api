@@ -2,10 +2,11 @@
 <!-- разметка главного компонента -->
 
 <!-- заголовок страницы -->
-<header class="container-fluid py-2 header-height bg-back-color
-               border border-aside-color text-main-color"
+<header class="container-fluid px-1 px-sm-4 py-2 header-height
+               bg-back-color border border-aside-color text-main-color"
         id="id-top">
-  <h3 class="text-start" id="title" [innerHTML]="component.displayTitle"></h3>
+  <h3 class="text-center text-sm-start" id="title"
+      [innerHTML]="component.displayTitle"></h3>
 </header>
 
 <!-- панель навигации -->
@@ -227,17 +228,12 @@
           Найти...
         </button>
 
-        &lt;!&ndash; компонент выбора языка отображения данных &ndash;&gt;
-        <language-component class="align-self-stretch"
-                            [language]="language">
-        </language-component>
-
       </form>-->
 
       <!-- дополнительный контейнер -->
       <div class="d-flex justify-content-end align-items-center">
 
-        <!-- ссылки на формы входа и регистрации -->
+        <!-- ссылки на данные о пользователе и формы входа и регистрации -->
         <div class="d-flex justify-content-end align-items-center mb-1 mb-lg-0">
 
           <!-- данные о пользователе -->
@@ -273,6 +269,7 @@
               <ul class="dropdown-menu dropdown-menu-start dropdown-menu-user
                          m-0 mt-2px px-0 py-1 border border-1 border-back-color">
                 <li>
+                  <!-- кнопка "Редактировать профиль" -->
                   <button class="dropdown-item px-2 py-1 fw-bold text-back-color"
                           type="button" (click)="routingToUserForm()"
                           title="{{component.butUserFormTitle}}">
@@ -280,14 +277,24 @@
                   </button>
                 </li>
                 <li>
+                  <!-- кнопка "Изменить пароль" -->
                   <button class="dropdown-item px-2 py-1 fw-bold text-back-color"
                           type="button" (click)="routingToPasswordForm()"
                           title="{{component.butPasswordFormTitle}}">
                     {{component.butPasswordFormValue}}
                   </button>
                 </li>
+                <li>
+                  <!-- кнопка "Ведение бизнеса" -->
+                  <button class="dropdown-item px-2 py-1 fw-bold text-back-color"
+                          type="button" (click)="routingToBusiness()"
+                          title="{{component.butBusinessTitle}}">
+                    {{component.butBusinessValue}}
+                  </button>
+                </li>
                 <li><hr class="dropdown-divider my-1"></li>
                 <li>
+                  <!-- кнопка "Выйти" -->
                   <button class="dropdown-item px-2 py-1 fw-bold text-back-color"
                           type="button"
                           [class.disabled]="component.isWaitFlag"
@@ -351,9 +358,6 @@
         </div>
 
         <!-- компонент выбора языка отображения данных -->
-        <!--<language-component class="mb-1 mb-lg-0 py-1 h-40px"
-                            [language]="component.language">
-        </language-component>-->
         <language-component class="mb-1 mb-lg-0 py-1 h-40px"></language-component>
 
       </div>

@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {NgIf} from '@angular/common';
-import {Country} from '../../temp/Country';
-import {PageViewModel} from '../../temp/PageViewModel';
+import {Country} from '../CountryTemp';
+import {PageViewModel} from '../../infrastructure/PageViewModel';
 import {WebApiService} from '../../temp/web-api.service';
 import {Utils} from '../../infrastructure/Utils';
 import {Config} from '../../infrastructure/Config';

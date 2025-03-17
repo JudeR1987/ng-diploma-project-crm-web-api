@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {DecimalPipe} from '@angular/common';
-import {Country} from '../../Country';
+import {Country} from '../../CountryTemp';
 
 @Component({
   selector: '[tr-country]',

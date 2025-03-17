@@ -8,6 +8,8 @@ import {RegistrationComponent} from '../registration/registration.component';
 import {AuthGuardService} from '../../services/auth-guard.service';
 import {UserFormComponent} from '../user-form/user-form.component';
 import {PasswordFormComponent} from '../password-form/password-form.component';
+import {BusinessComponent} from '../business/business.component';
+import {CompanyFormComponent} from '../company-form/company-form.component';
 //import {CountriesComponent} from '../countries/countries.component';
 //import {PurposesComponent} from '../purposes/purposes.component';
 //import {PeopleComponent} from '../people/people.component';
@@ -23,11 +25,14 @@ import {PasswordFormComponent} from '../password-form/password-form.component';
 export const routes: Routes = [
   {path: Literals.routeHomeEmpty,    component: HomeComponent},
   {path: Literals.routeHome,         component: HomeComponent},
-  {path: Literals.routeAbout,        component: AboutComponent, canActivate: [AuthGuardService]},
+  {path: Literals.routeAbout,        component: AboutComponent,    canActivate: [AuthGuardService]},
   {path: Literals.routeLogin,        component: LoginComponent},
   {path: Literals.routeRegistration, component: RegistrationComponent},
-  {path: `${Literals.routeUserForm}/:${Literals.id}`,     component: UserFormComponent},
-  {path: `${Literals.routePasswordForm}/:${Literals.id}`, component: PasswordFormComponent},
+  {path: `${Literals.routeUserForm}/:${Literals.id}`,                      component: UserFormComponent,     canActivate: [AuthGuardService]},
+  {path: `${Literals.routePasswordForm}/:${Literals.id}`,                  component: PasswordFormComponent, canActivate: [AuthGuardService]},
+  {path: Literals.routeBusiness,     component: BusinessComponent, canActivate: [AuthGuardService]},
+  {path: `${Literals.routeCompanyForm}/:${Literals.mode}`,                 component: CompanyFormComponent,  canActivate: [AuthGuardService]},
+  {path: `${Literals.routeCompanyForm}/:${Literals.mode}/:${Literals.id}`, component: CompanyFormComponent,  canActivate: [AuthGuardService]},
   //{path: 'countries',             component: CountriesComponent},
   //{path: 'purposes',              component: PurposesComponent},
   //{path: 'people',                component: PeopleComponent},

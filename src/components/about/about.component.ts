@@ -151,6 +151,7 @@ export class AboutComponent implements OnInit, OnDestroy {
 
     console.log(`[-AboutComponent-ngOnDestroy--`);
 
+    // отмена подписки
     this._languageSubscription.unsubscribe();
 
     console.log(`--AboutComponent-ngOnDestroy-]`);

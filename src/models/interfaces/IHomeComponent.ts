@@ -8,6 +8,39 @@ export interface IHomeComponent {
   // заголовок
   title: string,
 
+  // заголовок поля отображения графика работы компании
+  labelSchedule: string,
+
+  // заголовок поля отображения телефона компании
+  labelPhone: string,
+
+  // всплывающая подсказка на кнопке "записаться"
+  butRecordTitle: string,
+
+  // значение кнопки "записаться"
+  butRecordValue: string,
+
+  // всплывающая подсказка на кнопке "перейти на 1-ю"
+  butToFirstPageTitle: string,
+
+  // всплывающая подсказка на кнопке "перейти на предыдущую"
+  butPreviousTitle: string,
+
+  // значение кнопки "перейти на предыдущую"
+  butPreviousValue: string,
+
+  // всплывающая подсказка на кнопке "текущая страница"
+  butCurrentPageTitle: string,
+
+  // всплывающая подсказка на кнопке "перейти на следующую"
+  butNextTitle: string,
+
+  // значение кнопки "перейти на следующую"
+  butNextValue: string,
+
+  // всплывающая подсказка на кнопке "перейти на последнюю"
+  butToLastPageTitle: string,
+
   //endregion
 
 
@@ -18,7 +51,22 @@ export interface IHomeComponent {
 
   // параметр, передающий маршрут в родительский компонент для
   // выделения активной кнопки навигации после перезагрузки страницы
-  route: string
+  route: string,
+
+  // флаг включения спиннера при ожидании данных с сервера
+  isWaitFlag: boolean//,
+
+  // путь расположения изображений логотипов в приложении
+  //srcLogoPath: string,
+
+  // имя файла с изображением логотипа по умолчанию
+  //fileNameLogoDef: string,
+
+  // путь расположения изображений в приложении
+  //srcImagePath: string,
+
+  // имя файла с основным изображением компании по умолчанию
+  //fileNameCompanyTitleImageDef: string
 
   //endregion
 
