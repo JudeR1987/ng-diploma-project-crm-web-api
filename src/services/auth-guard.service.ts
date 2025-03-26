@@ -77,7 +77,7 @@ export class AuthGuardService implements CanActivate {
 
     // иначе перенаправляем пользователя на форму входа в систему
     this._router.navigateByUrl(Literals.routeLogin)
-      .then((e) => { console.log(`*- переход: ${e} -*`); /*console.dir(e);*/ });
+      .then((e) => { console.log(`*- переход: ${e} -*`); });
 
     // сообщение об ошибке
     let message: string = Resources.requiredAuthorization[this._languageService.language];

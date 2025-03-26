@@ -5,7 +5,7 @@
 
 <!-- разметка компонента HomeComponent -->
 <main class="row bg-main-color content-height mx-auto p-0 w-lg-95
-             justify-content-center align-items-lg-stretch">
+             justify-content-center align-items-stretch">
 
   <div class="col-12 m-0 p-0 row justify-content-center align-items-stretch">
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -14,10 +14,12 @@
 
       <!-- заголовок -->
       @if (component.isWaitFlag) {
+        <!-- загрузочный спиннер -->
         <div class="d-flex justify-content-center align-items-end text-aside-color h-50">
           <span class="spinner-border m-0 p-5 border-30px opacity-75 speed-600ms"></span>
         </div>
       } @else {
+        <!-- заголовок -->
         <h4 class="text-primary text-center" [innerHTML]="component.title"></h4>
       } <!-- if -->
 

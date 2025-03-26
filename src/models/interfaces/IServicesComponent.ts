@@ -1,87 +1,124 @@
 // ----------------------------------------------------------------------------
-// интерфейс объекта с параметрами компонента BusinessComponent
+// интерфейс объекта с параметрами компонента ServicesComponent
 // ----------------------------------------------------------------------------
-export interface IBusinessComponent {
+export interface IServicesComponent {
 
   //#region параметры меняющиеся при смене языка
 
   // данные о заголовке для разных языков
-  title: Record<string, string>,
+  //title: Record<string, string>,
 
   // отображаемый заголовок
   displayTitle: string,
 
   // заголовок области "компании"
-  companiesTitle: string,
+  //companiesTitle: string,
 
   // заголовок поля отображения графика работы компании
-  labelSchedule: string,
+  //labelSchedule: string,
 
   // заголовок поля отображения телефона компании
-  labelPhone: string,
+  //labelPhone: string,
 
-  // всплывающая подсказка на кнопке "создать салон"
-  butCreateCompanyTitle: string,
+  // начальный фрагмент всплывающей подсказки на поле отображения
+  // наименования категории услуг в дочернем компоненте
+  collapseServicesCategoryNameTitleStart: string,
 
-  // значение кнопки "создать салон"
-  butCreateCompanyValue: string,
+  // всплывающая подсказка на кнопке "создать услугу"
+  butCreateServiceTitle: string,
+
+  // значение кнопки "создать услугу"
+  butCreateServiceValue: string,
+
+  // начальный фрагмент всплывающей подсказки чек-бокса выбора услуги
+  labelIsSelectedServiceTitleStart: string,
+
+  // всплывающая подсказка на фрагменте отображения цены услуги
+  labelPriceTitle: string,
+
+  // значение фрагмента отображения цены услуги
+  labelPriceValue: string,
+
+  // всплывающая подсказка на фрагменте отображения минимальной цены услуги
+  labelMinPriceTitle: string,
+
+  // значение фрагмента отображения минимальной цены услуги
+  labelMinPriceValue: string,
+
+  // всплывающая подсказка на фрагменте отображения максимальной цены услуги
+  labelMaxPriceTitle: string,
+
+  // значение фрагмента отображения максимальной цены услуги
+  labelMaxPriceValue: string,
+
+  // всплывающая подсказка на фрагменте отображения длительности услуги
+  labelDurationTitle: string,
+
+  // значение фрагмента отображения длительности услуги
+  labelDurationValue: string,
+
+  // всплывающая подсказка на кнопке "изменить услугу"
+  butEditServiceTitle: string,
+
+  // значение кнопки "изменить услугу"
+  //butEditServiceValue: string,
+
+  // всплывающая подсказка на кнопке "удалить услугу"
+  butDeleteServiceTitle: string,
+
+  // значение кнопки "удалить услугу"
+  //butDeleteServiceValue: string,
 
   // всплывающая подсказка на кнопке "изменить салон"
-  butEditCompanyTitle: string,
+  //butEditCompanyTitle: string,
 
   // значение кнопки "изменить салон"
-  butEditCompanyValue: string,
+  //butEditCompanyValue: string,
 
   // всплывающая подсказка на кнопке "перейти на 1-ю"
-  butToFirstPageTitle: string,
+  //butToFirstPageTitle: string,
 
   // всплывающая подсказка на кнопке "перейти на предыдущую"
-  butPreviousTitle: string,
+  //butPreviousTitle: string,
 
   // значение кнопки "перейти на предыдущую"
-  butPreviousValue: string,
+  //butPreviousValue: string,
 
   // всплывающая подсказка на кнопке "текущая страница"
-  butCurrentPageTitle: string,
+  //butCurrentPageTitle: string,
 
   // всплывающая подсказка на кнопке "перейти на следующую"
-  butNextTitle: string,
+  //butNextTitle: string,
 
   // значение кнопки "перейти на следующую"
-  butNextValue: string,
+  //butNextValue: string,
 
   // всплывающая подсказка на кнопке "перейти на последнюю"
-  butToLastPageTitle: string,
+  //butToLastPageTitle: string,
 
   // всплывающая подсказка на кнопке "Управление салоном"
-  butSalonManagementTitle: string,
+  //butSalonManagementTitle: string,
 
   // значение кнопки "Управление салоном"
-  butSalonManagementValue: string,
-
-  // всплывающая подсказка на кнопке "Управление услугами"
-  butServicesManagementTitle: string,
-
-  // значение кнопки "Управление услугами"
-  butServicesManagementValue: string,
+  //butSalonManagementValue: string,
 
   // всплывающая подсказка на кнопке "Управление персоналом"
-  butEmployeesManagementTitle: string,
+  //butEmployeesManagementTitle: string,
 
   // значение кнопки "Управление персоналом"
-  butEmployeesManagementValue: string,
+  //butEmployeesManagementValue: string,
 
   // всплывающая подсказка на кнопке "Управление складом"
-  butWarehouseManagementTitle: string,
+  //butWarehouseManagementTitle: string,
 
   // значение кнопки "Управление складом"
-  butWarehouseManagementValue: string,
+  //butWarehouseManagementValue: string,
 
   // всплывающая подсказка на кнопке "Просмотр отчётов"
-  butReportsTitle: string,
+  //butReportsTitle: string,
 
   // значение кнопки "Просмотр отчётов"
-  butReportsValue: string,
+  //butReportsValue: string,
 
   //endregion
 
@@ -112,5 +149,5 @@ export interface IBusinessComponent {
 
   //endregion
 
-} // interface IBusinessComponent
+} // interface IServicesComponent
 // ----------------------------------------------------------------------------

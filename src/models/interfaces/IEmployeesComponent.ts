@@ -1,87 +1,81 @@
 // ----------------------------------------------------------------------------
-// интерфейс объекта с параметрами компонента BusinessComponent
+// интерфейс объекта с параметрами компонента EmployeesComponent
 // ----------------------------------------------------------------------------
-export interface IBusinessComponent {
+export interface IEmployeesComponent {
 
   //#region параметры меняющиеся при смене языка
 
   // данные о заголовке для разных языков
-  title: Record<string, string>,
+  //title: Record<string, string>,
 
   // отображаемый заголовок
   displayTitle: string,
 
   // заголовок области "компании"
-  companiesTitle: string,
+  //companiesTitle: string,
 
   // заголовок поля отображения графика работы компании
-  labelSchedule: string,
+  //labelSchedule: string,
 
   // заголовок поля отображения телефона компании
-  labelPhone: string,
+  //labelPhone: string,
 
   // всплывающая подсказка на кнопке "создать салон"
-  butCreateCompanyTitle: string,
+  //butCreateCompanyTitle: string,
 
   // значение кнопки "создать салон"
-  butCreateCompanyValue: string,
+  //butCreateCompanyValue: string,
 
   // всплывающая подсказка на кнопке "изменить салон"
-  butEditCompanyTitle: string,
+  //butEditCompanyTitle: string,
 
   // значение кнопки "изменить салон"
-  butEditCompanyValue: string,
+  //butEditCompanyValue: string,
 
   // всплывающая подсказка на кнопке "перейти на 1-ю"
-  butToFirstPageTitle: string,
+  //butToFirstPageTitle: string,
 
   // всплывающая подсказка на кнопке "перейти на предыдущую"
-  butPreviousTitle: string,
+  //butPreviousTitle: string,
 
   // значение кнопки "перейти на предыдущую"
-  butPreviousValue: string,
+  //butPreviousValue: string,
 
   // всплывающая подсказка на кнопке "текущая страница"
-  butCurrentPageTitle: string,
+  //butCurrentPageTitle: string,
 
   // всплывающая подсказка на кнопке "перейти на следующую"
-  butNextTitle: string,
+  //butNextTitle: string,
 
   // значение кнопки "перейти на следующую"
-  butNextValue: string,
+  //butNextValue: string,
 
   // всплывающая подсказка на кнопке "перейти на последнюю"
-  butToLastPageTitle: string,
+  //butToLastPageTitle: string,
 
   // всплывающая подсказка на кнопке "Управление салоном"
-  butSalonManagementTitle: string,
+  //butSalonManagementTitle: string,
 
   // значение кнопки "Управление салоном"
-  butSalonManagementValue: string,
-
-  // всплывающая подсказка на кнопке "Управление услугами"
-  butServicesManagementTitle: string,
-
-  // значение кнопки "Управление услугами"
-  butServicesManagementValue: string,
+  //butSalonManagementValue: string,
 
   // всплывающая подсказка на кнопке "Управление персоналом"
-  butEmployeesManagementTitle: string,
+  //butEmployeesManagementTitle: string,
 
   // значение кнопки "Управление персоналом"
-  butEmployeesManagementValue: string,
+  //butEmployeesManagementValue: string,
 
   // всплывающая подсказка на кнопке "Управление складом"
-  butWarehouseManagementTitle: string,
+  //butWarehouseManagementTitle: string,
 
   // значение кнопки "Управление складом"
-  butWarehouseManagementValue: string,
+  //butWarehouseManagementValue: string,
 
   // всплывающая подсказка на кнопке "Просмотр отчётов"
-  butReportsTitle: string,
+  //butReportsTitle: string,
 
   // значение кнопки "Просмотр отчётов"
-  butReportsValue: string,
+  //butReportsValue: string,
 
   //endregion
 
@@ -112,5 +106,5 @@ export interface IBusinessComponent {
 
   //endregion
 
-} // interface IBusinessComponent
+} // interface IEmployeesComponent
 // ----------------------------------------------------------------------------

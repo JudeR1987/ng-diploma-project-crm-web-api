@@ -136,6 +136,7 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
   // сведения о компании для создания/изменения
   public company: Company = new Company();
 
+
   // поле ввода названия компании
   public companyName: FormControl = new FormControl();
 
@@ -312,7 +313,6 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
       companyId = params[Literals.id] != undefined
         ? +params[Literals.id]
         : 0;
-
       console.log(`*-companyId: '${companyId}' [${typeof companyId}] -*`);
 
       console.log(`*-(было)-this._companyId: '${this._companyId}' -*`);
@@ -388,7 +388,7 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
       console.log(`*- получить компанию с ID=${this._companyId} -*`);
 
       // запрос на получение записи о компании из БД для изменения
-      await this.requestGetCompanyById(this._companyId);
+      await this.requestGetCompanyById();
 
       // если данные не получены(т.е. Id=0), перейти на домашнюю страницу
       if (this.company.id === this.zero) {
@@ -447,10 +447,8 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
 
 
   // запрос на получение записи о компании из БД для изменения
-  async requestGetCompanyById(companyId: number): Promise<void> {
+  async requestGetCompanyById(): Promise<void> {
     console.log(`[-CompanyFormComponent-requestGetCompanyById--`);
-
-    console.log(`*- companyId = '${companyId}' -*`);
 
     // включение спиннера ожидания данных
     this.component.isWaitFlag = true;
@@ -488,7 +486,7 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
       console.log(`*-token: '${token}' -*`);
 
       let webResult: any = await firstValueFrom(
-        this._webApiService.getById(Config.urlGetCompanyById, companyId, token)
+        this._webApiService.getById(Config.urlGetCompanyById, this._companyId, token)
       );
       console.dir(webResult);
 
@@ -662,7 +660,7 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
 
     } else {
       // иначе - сообщение об успехе
-      result.message = Resources.companyFormParamsOkData[this.component.language];
+      result.message = Resources.formParamsOkData[this.component.language];
 
       // присвоить значения полученных данных
       // страны
@@ -748,7 +746,7 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
     this.component.companyDescriptionPlaceholder = Resources.companyFormCompanyDescriptionPlaceholder[this.component.language];
     this.component.errorRequiredTitle            = Resources.errorRequired[this.component.language];
     this.component.errorCompanyNameMaxLengthTitle
-      = Resources.errorNameMaxLength(this.component.language, this.component.companyNameLength);
+      = Resources.errorTitleMaxLength(this.component.language, this.component.companyNameLength);
     this.component.errorPhoneValidatorTitle      = Resources.errorPhoneValidator[this.component.language];
     this.component.errorCompanyDescriptionMaxLengthTitle
       = Resources.errorDescriptionMaxLength(this.component.language, this.component.companyDescriptionLength);
@@ -784,7 +782,7 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
     this.component.butNewLogoFileNameValue       = Resources.butNewFileNameValue[this.component.language];
     this.component.butNewTitleImageFileNameTitle = Resources.companyFormButNewTitleImageFileNameTitle[this.component.language];
     this.component.butNewTitleImageFileNameValue = Resources.butNewFileNameValue[this.component.language];
-    this.component.labelCheckboxIsNewCity        = Resources.labelNew[this.component.language];
+    this.component.labelCheckboxIsNewCity        = Resources.labelNewHe[this.component.language];
     this.component.labelCheckboxIsNewCityTitle   = Resources.companyFormLabelCheckboxIsNewCityTitle[this.component.language];
     /*this.component.labelUserName                  = Resources.userFormLabelUserName[this.component.language];
     this.component.labelEmail                     = Resources.labelEmail[this.component.language];
@@ -1256,6 +1254,10 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
 
       } // if
 
+      // сбросить флаг изменений данных в форме
+      console.log(`*-(было)-this.component.isChangedFormFlag: '${this.component.isChangedFormFlag}' -*`);
+      this.component.isChangedFormFlag = false;
+      console.log(`*-(стало)-this.component.isChangedFormFlag: '${this.component.isChangedFormFlag}' -*`);
 
     } else {
       // иначе - сообщение об успехе

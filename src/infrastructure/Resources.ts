@@ -1,6 +1,8 @@
 // ----------------------------------------------------------------------------
 // класс с набором строковых значений для разных языков
 // ----------------------------------------------------------------------------
+import {Literals} from './Literals';
+
 export class Resources {
 
   //#region AppComponent
@@ -45,15 +47,35 @@ export class Resources {
     'rus': 'Бизнес',
     'eng': 'Business' };
 
-  // заголовок на странице "Создать пароль"
+  // заголовок на странице "Создать салон"
   public static readonly appCreateCompanyFormTitle: Record<string, string> = {
     'rus': 'Регистрация нового салона',
     'eng': 'Registration of a new salon' };
 
-  // заголовок на странице "Изменить пароль"
+  // заголовок на странице "Изменить салон"
   public static readonly appEditCompanyFormTitle: Record<string, string> = {
     'rus': 'Изменение данных о салоне',
     'eng': 'Changing the information about the salon' };
+
+  // заголовок на странице "Услуги салона"
+  public static readonly appServicesTitle: Record<string, string> = {
+    'rus': 'Услуги салона',
+    'eng': 'Salon services' };
+
+  // заголовок на странице "Создать услугу"
+  public static readonly appCreateServiceFormTitle: Record<string, string> = {
+    'rus': 'Создание новой услуги',
+    'eng': 'Creating a new service' };
+
+  // заголовок на странице "Изменить услугу"
+  public static readonly appEditServiceFormTitle: Record<string, string> = {
+    'rus': 'Изменение данных об услуге',
+    'eng': 'Changing service information' };
+
+  // заголовок на странице "Сотрудники"
+  public static readonly appEmployeesTitle: Record<string, string> = {
+    'rus': 'Сотрудники',
+    'eng': 'Employees' };
 
   // всплывающая подсказка на логотипе "Home"
   public static readonly appLogoTitle: Record<string, string> = {
@@ -555,6 +577,56 @@ export class Resources {
     'rus': 'изменить сведения о салоне',
     'eng': 'change the information about the salon' };
 
+  // всплывающая подсказка на кнопке "Управление салоном"
+  public static readonly businessButSalonManagementTitle: Record<string, string> = {
+    'rus': 'управление салоном',
+    'eng': 'salon management' };
+
+  // значение кнопки "Управление салоном"
+  public static readonly businessButSalonManagementValue: Record<string, string> = {
+    'rus': 'управление',
+    'eng': 'management' };
+
+  // всплывающая подсказка на кнопке "Управление услугами"
+  public static readonly businessButServicesManagementTitle: Record<string, string> = {
+    'rus': 'управление услугами',
+    'eng': 'services management' };
+
+  // значение кнопки "Управление услугами"
+  public static readonly businessButServicesManagementValue: Record<string, string> = {
+    'rus': 'услуги',
+    'eng': 'services' };
+
+  // всплывающая подсказка на кнопке "Управление персоналом"
+  public static readonly businessButEmployeesManagementTitle: Record<string, string> = {
+    'rus': 'управление персоналом',
+    'eng': 'employees management' };
+
+  // значение кнопки "Управление персоналом"
+  public static readonly businessButEmployeesManagementValue: Record<string, string> = {
+    'rus': 'персонал',
+    'eng': 'employees' };
+
+  // всплывающая подсказка на кнопке "Управление складом"
+  public static readonly businessButWarehouseManagementTitle: Record<string, string> = {
+    'rus': 'управление складом',
+    'eng': 'warehouse management' };
+
+  // значение кнопки "Управление складом"
+  public static readonly businessButWarehouseManagementValue: Record<string, string> = {
+    'rus': 'склад',
+    'eng': 'warehouse' };
+
+  // всплывающая подсказка на кнопке "Просмотр отчётов"
+  public static readonly businessButReportsTitle: Record<string, string> = {
+    'rus': 'просмотр отчётов',
+    'eng': 'viewing reports' };
+
+  // значение кнопки "Просмотр отчётов"
+  public static readonly businessButReportsValue: Record<string, string> = {
+    'rus': 'отчёты',
+    'eng': 'reports' };
+
   //endregion
 
 
@@ -562,7 +634,7 @@ export class Resources {
 
   // заголовок формы (значение по умолчанию)
   public static readonly companyFormTitleDefault: Record<string, string> = {
-    'rus': 'Данные салона',
+    'rus': 'Данные о салоне',
     'eng': 'Salon data' };
 
   // заголовки
@@ -631,10 +703,6 @@ export class Resources {
   public static readonly companyFormEditCompanyIncorrectData: Record<string, string> = {
     'rus': 'некорректные данные для изменения салона',
     'eng': 'incorrect data for changing salon data' };
-
-  public static readonly companyFormParamsOkData: Record<string, string> = {
-    'rus': 'данные формы получены',
-    'eng': 'form data has been received' };
 
   public static readonly companyFormCreateOkData: Record<string, string> = {
     'rus': 'Новый салон успешно зарегистрирован!',
@@ -797,6 +865,154 @@ export class Resources {
   //endregion
 
 
+  //#region ServicesComponent
+
+  // заголовок
+  public static readonly servicesTitle: Record<string, string> = {
+    'rus': 'Услуги',
+    'eng': 'Services' };
+
+  // всплывающая подсказка на кнопке "создать услугу"
+  public static readonly servicesButCreateServiceTitle: Record<string, string> = {
+    'rus': 'создать новую услугу',
+    'eng': 'create a new service' };
+
+  // значение кнопки "создать услугу"
+  public static readonly servicesButCreateServiceValue: Record<string, string> = {
+    'rus': 'новая услуга',
+    'eng': 'new service' };
+
+  // начальный фрагмент всплывающей подсказки на поле отображения
+  // наименования категории услуг в дочернем компоненте
+  public static readonly servicesCollapseServicesCategoryNameTitleStart: Record<string, string> = {
+    'rus': 'список услуг категории',
+    'eng': 'list of service category' };
+
+  // начальный фрагмент всплывающей подсказки чек-бокса выбора услуги
+  public static readonly servicesLabelIsSelectedServiceTitleStart: Record<string, string> = {
+    'rus': 'выбрать услугу',
+    'eng': 'choose a service' };
+
+  // всплывающая подсказка на кнопке "изменить услугу"
+  public static readonly servicesButEditServiceTitle: Record<string, string> = {
+    'rus': 'изменить услугу',
+    'eng': 'edit the service' };
+
+  // всплывающая подсказка на кнопке "удалить услугу"
+  public static readonly servicesButDeleteServiceTitle: Record<string, string> = {
+    'rus': 'удалить услугу',
+    'eng': 'delete the service' };
+
+  // сообщения об ошибках
+  public static readonly servicesDeleteServiceOk: Record<string, string> = {
+    'rus': 'данные об услуге удалены',
+    'eng': 'service data has been deleted' };
+
+  //endregion
+
+
+  //#region ServiceFormComponent
+
+  // заголовок формы (значение по умолчанию)
+  public static readonly serviceFormTitleDefault: Record<string, string> = {
+    'rus': 'Данные об услуге',
+    'eng': 'Service data' };
+
+  // заголовки
+  public static readonly serviceFormCreateTitle: Record<string, string> = {
+    'rus': 'Новая услуга',
+    'eng': 'New service' };
+
+  public static readonly serviceFormEditTitle: Record<string, string> = {
+    'rus': 'Услуга',
+    'eng': 'Service' };
+
+  public static serviceFormEditTitleWithServiceName(language: string, serviceName: string): string {
+    return `${this.serviceFormEditTitle[language]} &laquo;${serviceName}&raquo;`;
+  } // serviceFormEditTitleWithServiceName
+
+  // всплывающая подсказка на кнопке "создать услугу"
+  public static readonly serviceFormButServiceCreateTitle: Record<string, string> = {
+    'rus': 'создать новую услугу',
+    'eng': 'create a new service' };
+
+  // всплывающая подсказка на кнопке "изменить услугу"
+  public static readonly serviceFormButServiceEditTitle: Record<string, string> = {
+    'rus': 'редактировать данные об услуге',
+    'eng': 'edit service data' };
+
+  // заголовок поля ввода наименования новой категории услуг салона
+  public static readonly serviceFormLabelNewServicesCategoryName: Record<string, string> = {
+    'rus': 'Новая категория услуг',
+    'eng': 'New service category' };
+
+  // шаблон поля ввода наименования новой категории услуг
+  public static readonly serviceFormNewServicesCategoryNamePlaceholder: Record<string, string> = {
+    'rus': 'наименование категории услуг',
+    'eng': 'name of the service category' };
+
+  // всплывающая подсказка на заголовке чек-бокса "новая категория услуг"
+  public static readonly serviceFormLabelCheckboxIsNewServicesCategoryTitle: Record<string, string> = {
+    'rus': 'добавить новую категорию услуг',
+    'eng': 'add a new service category' };
+
+  // шаблон поля ввода наименования услуги салона
+  public static readonly serviceFormServiceNamePlaceholder: Record<string, string> = {
+    'rus': 'наименование услуги',
+    'eng': 'name of the service' };
+
+  // шаблон поля ввода текста комментария к услуге
+  public static readonly serviceFormCommentPlaceholder: Record<string, string> = {
+    'rus': 'комментарий к услуге',
+    'eng': 'comment on the service' };
+
+  // сообщения об ошибках
+  public static readonly serviceFormCreateServiceIncorrectData: Record<string, string> = {
+    'rus': 'некорректные данные для создания услуги',
+    'eng': 'incorrect data for creating service data' };
+
+  public static readonly serviceFormEditServiceIncorrectData: Record<string, string> = {
+    'rus': 'некорректные данные для изменения услуги',
+    'eng': 'incorrect data for changing service data' };
+
+  public static readonly serviceFormCreateOkData: Record<string, string> = {
+    'rus': 'Новая услуга успешно создана!',
+    'eng': 'The new service has been successfully created' };
+
+  public static readonly serviceFormEditOkData: Record<string, string> = {
+    'rus': 'данные об услуге успешно изменены',
+    'eng': 'service data changed successfully' };
+
+  public static readonly serviceFormErrorRegisteredServicesCategoryName: Record<string, string> = {
+    'rus': 'такая категория услуг уже зарегистрирована',
+    'eng': 'this service category is already registered' };
+
+  public static readonly serviceFormErrorServicesCategorySelectedZeroValidator: Record<string, string> = {
+    'rus': 'категория услуг не выбрана',
+    'eng': 'service category not selected' };
+
+  public static readonly serviceFormErrorNewServicesCategoryNameMaxLengthStart: Record<string, string> = {
+    'rus': 'максимальная длина наименования категории услуг',
+    'eng': 'the maximum length of the service category name is' };
+
+  public static serviceFormErrorNewServicesCategoryNameMaxLength(language: string, maxLength: number): string {
+    return `${this.serviceFormErrorNewServicesCategoryNameMaxLengthStart[language]}
+      ${maxLength} ${this.errorForMaxLengthEnd[language]}`;
+  } // serviceFormErrorNewServicesCategoryNameMaxLength
+
+  //endregion
+
+
+  //#region EmployeesComponent
+
+  // заголовок
+  public static readonly employeesTitle: Record<string, string> = {
+    'rus': 'Сотрудники',
+    'eng': 'Employees' };
+
+  //endregion
+
+
   //#region NotFoundComponent
 
   // заголовок
@@ -893,8 +1109,17 @@ export class Resources {
     'rus': 'требуется авторизация',
     'eng': 'authorization is required' };
 
-  public static readonly errorNameMaxLengthStart: Record<string, string> = {
+  public static readonly errorTitleMaxLengthStart: Record<string, string> = {
     'rus': 'максимальная длина названия',
+    'eng': 'the maximum length of the title is' };
+
+  public static errorTitleMaxLength(language: string, maxLength: number): string {
+    return `${this.errorTitleMaxLengthStart[language]}
+      ${maxLength} ${this.errorForMaxLengthEnd[language]}`;
+  } // errorTitleMaxLength
+
+  public static readonly errorNameMaxLengthStart: Record<string, string> = {
+    'rus': 'максимальная длина наименования',
     'eng': 'the maximum length of the name is' };
 
   public static errorNameMaxLength(language: string, maxLength: number): string {
@@ -910,6 +1135,15 @@ export class Resources {
     return `${this.errorDescriptionMaxLengthStart[language]}
       ${maxLength} ${this.errorForMaxLengthEnd[language]}`;
   } // errorDescriptionMaxLength
+
+  public static readonly errorCommentMaxLengthStart: Record<string, string> = {
+    'rus': 'максимальная длина комментария',
+    'eng': 'the maximum length of the comment is' };
+
+  public static errorCommentMaxLength(language: string, maxLength: number): string {
+    return `${this.errorCommentMaxLengthStart[language]}
+      ${maxLength} ${this.errorForMaxLengthEnd[language]}`;
+  } // errorCommentMaxLength
 
   public static readonly errorForMaxLengthEnd: Record<string, string> = {
     'rus': 'символов',
@@ -942,6 +1176,36 @@ export class Resources {
   public static readonly incorrectStreetIdData: Record<string, string> = {
     'rus': 'некорректные данные об улице',
     'eng': 'incorrect street information' };
+
+  public static readonly incorrectServiceIdData: Record<string, string> = {
+    'rus': 'некорректные данные об услуге салона',
+    'eng': 'incorrect information about the salon service' };
+
+  public static readonly notRegisteredServiceIdData: Record<string, string> = {
+    'rus': 'услуга не найдена',
+    'eng': 'the service was not found' };
+
+  public static readonly formParamsOkData: Record<string, string> = {
+    'rus': 'данные формы получены',
+    'eng': 'form data has been received' };
+
+  public static readonly notRegisteredServicesCategoryIdData: Record<string, string> = {
+    'rus': 'категория услуг не найдена',
+    'eng': 'the service was not found' };
+
+  public static readonly errorMinValueStart: Record<string, string> = {
+    'rus': 'минимальное значение',
+    'eng': 'minimum value' };
+
+  public static readonly errorMaxValueStart: Record<string, string> = {
+    'rus': 'максимальное значение',
+    'eng': 'maximum value' };
+
+  public static errorMinMaxValue(language: string, mode: string, value: number): string {
+    return `${mode === Literals.min
+      ? this.errorMinValueStart[language]
+      : this.errorMaxValueStart[language]}: ${value}`;
+  } // errorMinMaxValue
 
 
   // для форм
@@ -1047,8 +1311,11 @@ export class Resources {
     'eng': 'selected' };
 
   // заголовок поля ввода чего-либо нового
-  public static readonly labelNew: Record<string, string> = {
+  public static readonly labelNewHe: Record<string, string> = {
     'rus': 'новый',
+    'eng': 'new' };
+  public static readonly labelNewShe: Record<string, string> = {
+    'rus': 'новая',
     'eng': 'new' };
 
   // заголовок поля отображения графика работы компании
@@ -1095,6 +1362,86 @@ export class Resources {
   public static readonly butToLastPageTitle: Record<string, string> = {
     'rus': 'перейти на последнюю страницу',
     'eng': 'go to the last page' };
+
+  // заголовок страницы "в разработке"
+  public static readonly pageUnderDevelopmentTitle: Record<string, string> = {
+    'rus': 'Страница в разработке',
+    'eng': 'The page is under development' };
+
+  // заголовок списка выбора категории услуг салона
+  public static readonly labelServicesCategory: Record<string, string> = {
+    'rus': 'Категория услуг',
+    'eng': 'Service category' };
+
+  // первый элемент списка выбора категории услуг салона
+  public static readonly firstOptionServicesCategories: Record<string, string> = {
+    'rus': 'выберите категорию услуг...',
+    'eng': 'select a service category...' };
+
+  // заголовок поля ввода наименования услуги салона
+  public static readonly labelService: Record<string, string> = {
+    'rus': 'Услуга',
+    'eng': 'Service' };
+
+  // заголовок поля ввода минимальной цены на услугу
+  public static readonly labelPriceMin: Record<string, string> = {
+    'rus': 'Мин. цена',
+    'eng': 'Min. price' };
+
+  // заголовок поля ввода максимальной цены на услугу
+  public static readonly labelPriceMax: Record<string, string> = {
+    'rus': 'Макс. цена',
+    'eng': 'Max. price' };
+
+  // всплывающая подсказка на фрагменте отображения цены услуги
+  public static readonly labelPriceTitle: Record<string, string> = {
+    'rus': 'цена услуги',
+    'eng': 'service price' };
+
+  // значение фрагмента отображения цены услуги
+  public static readonly labelPriceValue: Record<string, string> = {
+    'rus': 'цена',
+    'eng': 'price' };
+
+  // всплывающая подсказка на фрагменте отображения минимальной цены услуги
+  public static readonly labelMinPriceTitle: Record<string, string> = {
+    'rus': 'минимальная цена услуги',
+    'eng': 'minimum service price' };
+
+  // значение фрагмента отображения минимальной цены услуги
+  public static readonly labelMinPriceValue: Record<string, string> = {
+    'rus': 'мин.цена',
+    'eng': 'min.price' };
+
+  // всплывающая подсказка на фрагменте отображения максимальной цены услуги
+  public static readonly labelMaxPriceTitle: Record<string, string> = {
+    'rus': 'максимальная цена услуги',
+    'eng': 'maximum service price' };
+
+  // значение фрагмента отображения максимальной цены услуги
+  public static readonly labelMaxPriceValue: Record<string, string> = {
+    'rus': 'макс.цена',
+    'eng': 'max.price' };
+
+  // заголовок поля ввода длительности услуги
+  public static readonly labelDuration: Record<string, string> = {
+    'rus': 'Длительность, мин.',
+    'eng': 'Duration, minutes' };
+
+  // всплывающая подсказка на фрагменте отображения длительности услуги
+  public static readonly labelDurationTitle: Record<string, string> = {
+    'rus': 'длительность услуги',
+    'eng': 'service duration' };
+
+  // значение фрагмента отображения длительности услуги
+  public static readonly labelDurationValue: Record<string, string> = {
+    'rus': 'мин.',
+    'eng': 'minutes' };
+
+  // заголовок поля ввода текста комментария к услуге
+  public static readonly labelComment: Record<string, string> = {
+    'rus': 'Комментарий',
+    'eng': 'Comment' };
 
   //endregion
 

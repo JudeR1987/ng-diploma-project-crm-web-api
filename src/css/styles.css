@@ -1,5 +1,5 @@
 
-/* собственные стили: v.05.03.25 */
+/* собственные стили: v.17.03.25 */
 
 /* область объявления глобальных переменных CSS */
 :root {
@@ -155,8 +155,17 @@
 .w-12px {
     width: 12px;
 }
+.w-13px {
+  width: 13px !important;
+}
 .w-16px {
     width: 16px;
+}
+.w-18px {
+  width: 18px !important;
+}
+.w-20px {
+  width: 20px !important;
 }
 .w-65px {
     width: 65px;
@@ -348,6 +357,21 @@
 }
 .text-back-color {
     color: var(--back-color);
+}
+.hover-text-main-color:hover {
+  color: var(--main-color) !important;
+}
+.hover-opacity-60:hover {
+  opacity: 60% !important;
+}
+.active-border-color-transparent:active {
+  border-color: transparent !important;
+}
+.active-opacity-80:active {
+  opacity: 80% !important;
+}
+.hover-pointer:hover {
+  cursor: pointer !important;
 }
 /* для рамки */
 .border-back-color {

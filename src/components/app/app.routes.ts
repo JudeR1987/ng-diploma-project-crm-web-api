@@ -10,17 +10,9 @@ import {UserFormComponent} from '../user-form/user-form.component';
 import {PasswordFormComponent} from '../password-form/password-form.component';
 import {BusinessComponent} from '../business/business.component';
 import {CompanyFormComponent} from '../company-form/company-form.component';
-//import {CountriesComponent} from '../countries/countries.component';
-//import {PurposesComponent} from '../purposes/purposes.component';
-//import {PeopleComponent} from '../people/people.component';
-//import {ClientsComponent} from '../clients/clients.component';
-//import {RoutesComponent} from '../routes/routes.component';
-//import {TripsComponent} from '../../temp/trips/trips.component';
-//import {Query01Component} from '../query01/query01.component';
-//import {Query02Component} from '../../temp/query02/query02.component';
-//import {Query03Component} from '../../temp/query03/query03.component';
-//import {Query04Component} from '../query04/query04.component';
-//import {Query05Component} from '../query05/query05.component';
+import {EmployeesComponent} from '../employees/employees.component';
+import {ServicesComponent} from '../services/services.component';
+import {ServiceFormComponent} from '../service-form/service-form.component';
 
 export const routes: Routes = [
   {path: Literals.routeHomeEmpty,    component: HomeComponent},
@@ -33,6 +25,10 @@ export const routes: Routes = [
   {path: Literals.routeBusiness,     component: BusinessComponent, canActivate: [AuthGuardService]},
   {path: `${Literals.routeCompanyForm}/:${Literals.mode}`,                 component: CompanyFormComponent,  canActivate: [AuthGuardService]},
   {path: `${Literals.routeCompanyForm}/:${Literals.mode}/:${Literals.id}`, component: CompanyFormComponent,  canActivate: [AuthGuardService]},
+  {path: `${Literals.routeServices}/:${Literals.id}`,                      component: ServicesComponent,     canActivate: [AuthGuardService]},
+  //{path: `${Literals.routeServiceForm}/:${Literals.mode}/:${Literals.companyId}/:${Literals.servicesCategoryId}/:${Literals.serviceId}`, component: ServiceFormComponent, canActivate: [AuthGuardService]},
+  {path: `${Literals.routeServiceForm}/:${Literals.mode}`,                 component: ServiceFormComponent,  canActivate: [AuthGuardService]},
+  {path: `${Literals.routeEmployees}/:${Literals.id}`,                     component: EmployeesComponent,    canActivate: [AuthGuardService]},
   //{path: 'countries',             component: CountriesComponent},
   //{path: 'purposes',              component: PurposesComponent},
   //{path: 'people',                component: PeopleComponent},

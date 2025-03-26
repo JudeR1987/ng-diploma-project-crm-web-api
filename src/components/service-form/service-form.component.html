@@ -1,0 +1,344 @@
+
+<!-- /service-form/:mode -->
+
+<!-- компонент с формой создания/изменения услуги компании -->
+
+<!-- разметка компонента ServiceFormComponent -->
+<main class="row bg-main-color content-height mx-auto p-1 p-sm-2
+             w-lg-95 justify-content-center align-items-start">
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <div class="col-md-10 col-lg-8 col-xl-7 col-xxl-5 m-0 my-sm-2 p-0">
+
+    <!-- форма создания/изменения данных об услуге -->
+    <form class="form-control p-2" novalidate
+          [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
+
+      <!-- заголовок -->
+      <div class="bg-primary p-1">
+        <h2 class="text-center text-light m-0" [innerHTML]="component.title"></h2>
+      </div>
+
+
+      <!-- тело - основные параметры формы -->
+      <div class="row mx-0 my-1 p-2 bg-primary-subtle
+                  border border-primary justify-content-center">
+
+        <!-- выбор категории услуг / ввод наименования новой категории услуг салона -->
+        <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+
+          @if (!isNewServicesCategory.value) {
+
+            <label class="form-label col-sm-4 col-md-3 col-xl-4 m-0 px-2" for="servicesCategoryId">
+              {{component.labelServicesCategory}}:
+            </label>
+
+          } @else {
+
+            <label class="form-label col-sm-4 col-md-3 col-xl-4 m-0 px-2" for="newServicesCategoryName">
+              {{component.labelNewServicesCategoryName}}:
+            </label>
+
+          } <!-- if -->
+
+          <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 row m-0 p-0 align-items-center">
+
+            <div class="col-9 m-0 p-0">
+
+              @if (!isNewServicesCategory.value) {
+
+                <!-- список выбора категории услуг -->
+                <select class="form-select px-2 pe-4"
+                        id="servicesCategoryId" name="servicesCategoryId"
+                        formControlName="servicesCategoryId"
+                        [class.opacity-50]="component.isWaitFlag">
+                  <option value="0" disabled >{{component.firstOptionServicesCategories}}</option>
+                  @for (servicesCategory of component.servicesCategoriesList; track servicesCategory.id) {
+                    <option [value]="servicesCategory.id">{{servicesCategory.name}}</option>
+                  } <!-- for servicesCategory -->
+                </select>
+
+              } @else {
+
+                <!-- поле ввода наименования новой категории услуг -->
+                <input class="form-control px-2" type="text"
+                       id="newServicesCategoryName" name="newServicesCategoryName"
+                       formControlName="newServicesCategoryName"
+                       placeholder="{{component.newServicesCategoryNamePlaceholder}}"
+                       maxlength="{{component.newServicesCategoryNameLength + one}}"
+                       [class.opacity-75]="component.isWaitFlag" >
+
+              } <!-- if -->
+
+            </div>
+
+            <!-- чек-бокс включения режима ввода новой категории услуг -->
+            <div class="col-3 m-0 p-0 d-flex justify-content-center align-items-center">
+              <label class="form-check-label text-center"
+                     for="isNewServicesCategory"
+                     title="{{component.labelCheckboxIsNewServicesCategoryTitle}}"
+                     [class.opacity-60]="component.isWaitFlag">
+                <input class="form-check-input m-1"
+                       id="isNewServicesCategory"
+                       formControlName="isNewServicesCategory"
+                       type="checkbox" />
+                {{component.labelCheckboxIsNewServicesCategory}}
+              </label>
+            </div>
+
+          </div>
+
+        </div>
+        <!-- строка с подсказками -->
+        <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+          <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 offset-sm-4 offset-md-3 offset-xl-4 p-0">
+
+            @if (!isNewServicesCategory.value) {
+
+              <!-- ошибки для списка выбора категории услуг -->
+              @if (servicesCategoryId.errors && (servicesCategoryId.dirty || servicesCategoryId['touched'])) {
+                <div class="text-danger ps-2 fw-bold">
+                  <span *ngIf="servicesCategoryId.errors[component.errorSelectedZeroValidator]">
+                    {{component.errorServicesCategorySelectedZeroValidatorTitle}}
+                  </span>
+                </div>
+              } @else {
+                <span class="text-secondary ps-2 fw-bold"></span>
+              } <!-- if -->
+
+            } @else {
+
+              <!-- ошибки для поля ввода наименования новой категории услуг -->
+              @if (newServicesCategoryName.errors || component.errorRegisteredServicesCategoryName.isRegistered) {
+                <div class="text-danger ps-2 fw-bold">
+
+                  @if (component.errorRegisteredServicesCategoryName.isRegistered) {
+                    <span>{{component.errorRegisteredServicesCategoryName.message}}</span>
+                  } @else {
+                    <span *ngIf="newServicesCategoryName.errors![component.errorRequired]">
+                      {{component.errorRequiredTitle}}
+                    </span>
+                    <span *ngIf="newServicesCategoryName.errors![component.errorMaxLength]">
+                      {{component.errorNewServicesCategoryNameMaxLengthTitle}}
+                    </span>
+                  }<!-- if -->
+
+                </div>
+              } @else {
+                <span class="text-secondary ps-2 fw-bold"></span>
+              } <!-- if -->
+
+            } <!-- if -->
+
+          </div>
+        </div>
+
+        <!-- ввод наименования услуги салона -->
+        <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+          <label class="form-label col-sm-4 col-md-3 col-xl-4 m-0 px-2" for="serviceName">
+            {{component.labelServiceName}}:
+          </label>
+          <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 p-0">
+            <input class="form-control px-2" type="text"
+                   id="serviceName" name="serviceName" formControlName="serviceName"
+                   placeholder="{{component.serviceNamePlaceholder}}"
+                   maxlength="{{component.serviceNameLength + one}}"
+                   [readOnly]="component.isWaitFlag"
+                   [class.opacity-75]="component.isWaitFlag" >
+          </div>
+        </div>
+        <!-- строка с подсказками -->
+        <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+          <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 offset-sm-4 offset-md-3 offset-xl-4 p-0">
+
+            @if (serviceName.errors && (serviceName.dirty || serviceName['touched'])) {
+              <div class="text-danger ps-2 fw-bold">
+                <span *ngIf="serviceName.errors[component.errorRequired]">
+                  {{component.errorRequiredTitle}}
+                </span>
+                <span *ngIf="serviceName.errors[component.errorMaxLength]">
+                    {{component.errorServiceNameMaxLengthTitle}}
+                  </span>
+              </div>
+            } @else {
+              <span class="text-secondary ps-2 fw-bold"></span>
+            } <!-- if -->
+
+          </div>
+        </div>
+
+        <!-- ввод минимальной цены на услугу -->
+        <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+          <label class="form-label col-sm-4 col-md-3 col-xl-4 m-0 px-2" for="priceMin">
+            {{component.labelPriceMin}}:
+          </label>
+          <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 p-0">
+            <input class="form-control text-end px-2" type="number"
+                   id="priceMin" name="priceMin" formControlName="priceMin"
+                   min="{{zero}}" max="{{component.priceMaxValue + hundred}}"
+                   step="{{hundred}}"
+                   [readOnly]="component.isWaitFlag"
+                   [class.opacity-75]="component.isWaitFlag" >
+          </div>
+        </div>
+        <!-- строка с подсказками -->
+        <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+          <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 offset-sm-4 offset-md-3 offset-xl-4 p-0">
+
+            @if (priceMin.errors && (priceMin.dirty || priceMin['touched'])) {
+              <div class="text-danger ps-2 fw-bold">
+                <span *ngIf="priceMin.errors[component.errorMinValue]">
+                  {{component.errorMinValueTitle}}
+                </span>
+                <span *ngIf="priceMin.errors[component.errorMaxValue]">
+                  {{component.errorPriceMaxValueTitle}}
+                </span>
+              </div>
+            } @else {
+              <span class="text-secondary ps-2 fw-bold"></span>
+            } <!-- if -->
+
+          </div>
+        </div>
+
+        <!-- ввод максимальной цены на услугу -->
+        <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+          <label class="form-label col-sm-4 col-md-3 col-xl-4 m-0 px-2" for="priceMax">
+            {{component.labelPriceMax}}:
+          </label>
+          <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 p-0">
+            <input class="form-control text-end px-2" type="number"
+                   id="priceMax" name="priceMax" formControlName="priceMax"
+                   min="{{zero}}" max="{{component.priceMaxValue + hundred}}"
+                   step="{{hundred}}"
+                   [readOnly]="component.isWaitFlag"
+                   [class.opacity-75]="component.isWaitFlag" >
+          </div>
+        </div>
+        <!-- строка с подсказками -->
+        <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+          <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 offset-sm-4 offset-md-3 offset-xl-4 p-0">
+
+            @if (priceMax.errors && (priceMax.dirty || priceMax['touched'])) {
+              <div class="text-danger ps-2 fw-bold">
+                <span *ngIf="priceMax.errors[component.errorMinValue]">
+                  {{component.errorMinValueTitle}}
+                </span>
+                <span *ngIf="priceMax.errors[component.errorMaxValue]">
+                  {{component.errorPriceMaxValueTitle}}
+                </span>
+              </div>
+            } @else {
+              <span class="text-secondary ps-2 fw-bold"></span>
+            } <!-- if -->
+
+          </div>
+        </div>
+
+        <!-- ввод длительности услуги (вводить в минутах по 15 мин.) -->
+        <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+          <label class="form-label col-sm-4 col-md-3 col-xl-4 m-0 px-2" for="duration">
+            {{component.labelDuration}}:
+          </label>
+          <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 p-0">
+            <input class="form-control text-end px-2" type="number"
+                   id="duration" name="duration" formControlName="duration"
+                   min="{{zero}}" max="{{component.durationMaxValue + fifteen}}"
+                   step="{{fifteen}}"
+                   [readOnly]="component.isWaitFlag"
+                   [class.opacity-75]="component.isWaitFlag" >
+          </div>
+        </div>
+        <!-- строка с подсказками -->
+        <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+          <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 offset-sm-4 offset-md-3 offset-xl-4 p-0">
+
+            @if (duration.errors && (duration.dirty || duration['touched'])) {
+              <div class="text-danger ps-2 fw-bold">
+                <span *ngIf="duration.errors[component.errorMinValue]">
+                  {{component.errorMinValueTitle}}
+                </span>
+                <span *ngIf="duration.errors[component.errorMaxValue]">
+                  {{component.errorDurationMaxValueTitle}}
+                </span>
+              </div>
+            } @else {
+              <span class="text-secondary ps-2 fw-bold"></span>
+            } <!-- if -->
+
+          </div>
+        </div>
+
+        <!-- ввод текста комментария к услуге -->
+        <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+          <label class="form-label col-sm-4 col-md-3 col-xl-4 m-0 px-2 align-self-start"
+                 for="comment">
+            {{component.labelComment}}:
+          </label>
+          <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 p-0">
+            <textarea class="form-control px-2" type="text"
+                      id="comment" name="comment" formControlName="comment"
+                      placeholder="{{component.commentPlaceholder}}"
+                      maxlength="{{component.commentLength + one}}"
+                      [readOnly]="component.isWaitFlag"
+                      [class.opacity-75]="component.isWaitFlag" >
+            </textarea>
+          </div>
+        </div>
+        <!-- строка с подсказками -->
+        <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+          <div class="col-sm-8 col-md-7 col-lg-6 col-xl-8 offset-sm-4 offset-md-3 offset-xl-4 p-0">
+
+            @if (comment.errors && (comment.dirty || comment['touched'])) {
+              <div class="text-danger ps-2 fw-bold">
+                  <span *ngIf="comment.errors[component.errorMaxLength]">
+                    {{component.errorCommentMaxLengthTitle}}
+                  </span>
+              </div>
+            } @else {
+              <span class="text-secondary ps-2 fw-bold"></span>
+            } <!-- if -->
+
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- подвал - кнопки создать/изменить -->
+      <div class="bg-primary d-flex justify-content-evenly p-0">
+
+        <!-- кнопка "создать/изменить" -->
+        <button class="btn bg-success-subtle fw-bold text-success
+                       text-opacity-75 w-50 w-min-140-max-160 m-1
+                       border border-success border-2 border-opacity-50"
+                type="{{serviceForm.valid ? 'submit' : 'button'}}"
+                [class.disabled]="serviceForm.invalid || component.isWaitFlag ||
+                                  component.errorRegisteredServicesCategoryName.isRegistered ||
+                                  !component.isChangedFormFlag"
+                title="{{service.id === zero
+                       ? component.butServiceCreateTitle
+                       : component.butServiceEditTitle}}">
+          @if (component.isWaitFlag) {
+            <div class="row m-0 p-0 justify-content-center align-items-center">
+              <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
+            </div>
+          } @else {
+            {{service.id === zero ? component.butServiceCreateValue : component.butServiceEditValue}}
+          } <!-- if -->
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+</main>

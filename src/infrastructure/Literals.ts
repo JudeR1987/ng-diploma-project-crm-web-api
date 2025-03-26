@@ -1,8 +1,6 @@
 // ----------------------------------------------------------------------------
 // класс с набором константных строковых значений
 // ----------------------------------------------------------------------------
-import {WebApiService} from '../services/web-api.service';
-
 export class Literals {
 
   //#region AppComponent
@@ -94,6 +92,29 @@ export class Literals {
   //endregion
 
 
+  //#region ServicesComponent
+  public static readonly services: string = 'services';
+
+  //endregion
+
+
+  //#region ServiceFormComponent
+  public static readonly serviceForm: string = 'service-form';
+  public static readonly serviceNameLength: number = 50;
+  public static readonly serviceNewServicesCategoryNameLength: number = 50;
+  public static readonly serviceCommentLength: number = 500;
+  public static readonly serviceFormPriceMaxValue: number = 1_000_000;
+  public static readonly serviceFormDurationMax: number = 1_440;
+
+  //endregion
+
+
+  //#region EmployeesComponent
+  public static readonly employees: string = 'employees';
+
+  //endregion
+
+
   //#region NotFoundComponent
   public static readonly notFound: string = 'not-found';
 
@@ -121,6 +142,9 @@ export class Literals {
   public static readonly routePasswordForm: string = 'password-form';
   public static readonly routeBusiness: string = 'business';
   public static readonly routeCompanyForm: string = 'company-form';
+  public static readonly routeServices: string = 'services';
+  public static readonly routeServiceForm: string = 'service-form';
+  public static readonly routeEmployees: string = 'employees';
   public static readonly routeNotFound: string = '404';
   public static readonly routeOther: string = '**';
 
@@ -146,17 +170,22 @@ export class Literals {
   public static readonly one: number = 1;
   public static readonly two: number = 2;
   public static readonly hundred: number = 100;
+  public static readonly fifteen: number = 15;
   public static readonly fiveHundred: number = 500;
   public static readonly timeout: number = 6_000;
   public static readonly timeout10: number = 10;
   public static readonly timeStop: number = 25_000;
   public static readonly string: string = 'string';
   public static readonly slash: string = '/';
+  public static readonly question: string = '?';
   public static readonly page: string = 'page';
   public static readonly ellipsis: string = '...';
   public static readonly mode: string = 'mode';
   public static readonly createCompany: string = 'create-company';
   public static readonly editCompany: string = 'edit-company';
+  public static readonly createService: string = 'create-service';
+  public static readonly editService: string = 'edit-service';
+  public static readonly deleteService: string = 'delete-service';
 
   //endregion
 
@@ -168,6 +197,8 @@ export class Literals {
   public static readonly required: string = 'required';
   public static readonly minlength: string = 'minlength';
   public static readonly maxlength: string = 'maxlength';
+  public static readonly max: string = 'max';
+  public static readonly min: string = 'min';
   public static readonly phoneValidator: string = 'phoneValidator';
   public static readonly emailValidator: string = 'emailValidator';
   public static readonly passwordValidator: string = 'passwordValidator';
@@ -198,6 +229,8 @@ export class Literals {
   public static readonly image: string = 'image';
   public static readonly imageType: string = 'imageType';
   public static readonly temp: string = 'temp';
+  public static readonly servicesCategoryId: string = 'servicesCategoryId';
+  public static readonly serviceId: string = 'serviceId';
 
   //endregion
 

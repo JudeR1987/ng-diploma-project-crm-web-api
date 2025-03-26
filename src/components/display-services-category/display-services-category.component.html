@@ -1,0 +1,162 @@
+
+<!-- компонент отображения данных о категории услуг салона
+     с соответствующим списком услуг салона (collapsable-элемент) -->
+
+<div class="bg-main-color border border-2 border-back-color rounded m-0 p-1">
+
+  <!--  заголовок, отображаемая часть -->
+  <div class="m-0 p-1 d-flex justify-content-between align-items-center">
+
+    <!-- название категории услуг -->
+    <a class="m-0 p-0 link-underline link-underline-opacity-0
+              link-underline-opacity-0-hover text-back-color w-100"
+       href="#id-servicesCategory-{{displayServicesCategory.servicesCategory.id}}"
+       data-bs-toggle="collapse"
+       title="{{collapseServicesCategoryNameTitleStart}} &laquo;{{displayServicesCategory.servicesCategory.name}}&raquo;"
+       (click)="isShowFlag = !isShowFlag">
+      <div class="m-0 p-0 d-flex justify-content-start align-items-center">
+        @if (isShowFlag) {
+          <i class="fa fa-chevron-up" aria-hidden="true"></i>&nbsp;
+        } @else {
+          <i class="fa fa-chevron-down" aria-hidden="true"></i>&nbsp;
+        } <!-- if -->
+        <h5 class="fw-bold m-0 p-0">{{displayServicesCategory.servicesCategory.name}}</h5>
+      </div>
+    </a>
+
+    <!-- кнопки для добавления услуги -->
+    @if (isManagementFlag) {
+      <div class="m-0 p-0">
+        <button class="btn m-0 p-0 active-border-color-transparent active-opacity-80"
+                type="button"
+                title="{{butSenderServicesCategoryIdTitle}}"
+                (click)="sendServicesCategoryId(displayServicesCategory.servicesCategory.id)">
+          <i class="fa fa-2x fa-plus-square text-back-color" aria-hidden="true"></i>
+        </button>
+      </div>
+    } <!-- if -->
+
+  </div>
+
+  <!-- тело, скрываемая часть - список услуг -->
+  <div id="id-servicesCategory-{{displayServicesCategory.servicesCategory.id}}"
+       class="collapse m-0 p-0">
+    <div class="m-0 p-0 d-flex flex-column">
+
+      <!-- список категорий услуг -->
+      @for (service of displayServicesCategory.services; track service.id; let i = $index) {
+
+        <div class="m-0 mt-1 p-0">
+          <div class="row m-0 p-0 justify-content-end align-items-center
+                      bg-aside-color border border-back-color rounded">
+
+            <!-- название услуги -->
+            <div class="col m-0 p-0 fw-bold">
+              <div class="m-0 p-0 row justify-content-center align-items-center">
+                <div class="m-0 p-0 ps-2 text-back-color hover-opacity-60 hover-pointer">
+                  @if (!isRecordFlag) {
+                    <span class="m-0 p-0">
+                      &blacktriangleright;
+                    </span>
+                    <span class="m-0 p-0">
+                      {{service.name}}
+                    </span>
+                  } @else {
+                    <!-- чек-бокс выбора услуги -->
+                    <label class="form-check-label m-0 p-0 hover-pointer w-100"
+                           for="check-service-id-{{service.id}}"
+                           title="{{labelIsSelectedServiceTitleStart}} &laquo;{{service.name}}&raquo;">
+                      <input #isSelectedService
+                             [checked]="setChecked(service.id)"
+                             class="form-check-input m-0 mt-1 p-1 hover-pointer
+                                    border border-2 border-back-color"
+                             id="check-service-id-{{service.id}}"
+                             type="checkbox"
+                             (change)="sendSelectedServiceId(service.id, isSelectedService)" />
+                      <span class="m-0 p-0">&nbsp;{{service.name}}</span>
+                    </label>
+                  } <!-- if -->
+                </div>
+                <div class="m-0 p-0 ps-4 row align-items-center text-back-color font-size-10pt">
+                  @if (service.priceMin === service.priceMax) {
+                    <div class="m-0 p-1 w-auto">
+                      <div class="m-0 px-2 py-0 bg-main-color border border-2 border-back-color rounded"
+                           title="{{labelPriceTitle}}">
+                        {{labelPriceValue}} {{service.priceMin}} <i class="fa fa-rub"></i>
+                      </div>
+                    </div>
+                  } @else {
+                    <div class="m-0 p-1 w-auto">
+                      <div class="m-0 px-2 py-0 bg-main-color border border-2 border-back-color rounded"
+                           title="{{labelMinPriceTitle}}">
+                        {{labelMinPriceValue}} {{service.priceMin}} <i class="fa fa-rub"></i>
+                      </div>
+                    </div>
+                    <div class="m-0 p-1 w-auto">
+                      <div class="m-0 px-2 py-0 bg-main-color border border-2 border-back-color rounded"
+                           title="{{labelMaxPriceTitle}}">
+                        {{labelMaxPriceValue}} {{service.priceMax}} <i class="fa fa-rub"></i>
+                      </div>
+                    </div>
+                  } <!-- if -->
+
+                  <div class="m-0 p-1 w-auto">
+                    <div class="m-0 px-2 py-0 bg-main-color border border-2 border-back-color rounded"
+                         title="{{labelDurationTitle}}">
+                      <i class="fa fa-clock-o"></i>: {{service.durationInMinutes}} {{labelDurationValue}}
+                    </div>
+                  </div>
+
+                </div>
+                @if (service.comment) {
+                  <div class="m-0 py-0 ps-4 pe-1 font-size-10pt">
+                    <div class="m-0 p-1" style="overflow: auto">
+                      <span class="m-0 p-0 fw-normal fst-italic">
+                        {{service.comment}}
+                      </span>
+                    </div>
+                  </div>
+                } <!-- if -->
+              </div>
+            </div>
+
+            <!-- кнопки изменения/удаления услуги -->
+            @if (isManagementFlag) {
+
+              <div class="m-0 p-0 w-auto">
+                <div class="m-0 p-0 row justify-content-center align-items-center">
+
+                  <div class="col m-0 p-1 w-auto">
+                    <button class="btn btn-sm btn-outline-success m-0 px-2 py-1 w-100"
+                            type="button"
+                            title="{{butSenderServiceIdModeEditTitle}}"
+                            (click)="sendServiceIdMode(
+                                     displayServicesCategory.servicesCategory.id, service.id, editService)">
+                      <i class="fa fa-edit"></i>
+                    </button>
+                  </div>
+
+                  <div class="col m-0 p-1 w-auto">
+                    <button class="btn btn-sm btn-outline-danger m-0 px-2 py-1 w-100"
+                            type="button"
+                            title="{{butSenderServiceIdModeDeleteTitle}}"
+                            (click)="sendServiceIdMode(
+                                     displayServicesCategory.servicesCategory.id, service.id, deleteService)">
+                      <i class="fa fa-trash w-16px"></i>
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+
+            } <!-- if -->
+
+          </div>
+        </div>
+
+      } <!-- for -->
+
+    </div>
+  </div>
+
+</div>

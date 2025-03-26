@@ -144,7 +144,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
     console.dir(this.user);
 
     console.log(`--UserFormComponent-constructor-]`);
-
   } // constructor
 
 
@@ -968,7 +967,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       let token: string = this._tokenService.token;
       console.log(`*-token: '${token}' -*`);
 
-      let webResult: any = await firstValueFrom(this._webApiService.deleteUser(
+      let webResult: any = await firstValueFrom(this._webApiService.deleteById(
         Config.urlDeleteUser, this.user.id, token
       ));
       console.dir(webResult);

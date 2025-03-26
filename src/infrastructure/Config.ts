@@ -80,6 +80,32 @@ export class Config {
   public static readonly urlGetCompanyById: string =
     `${this.urlHost}/api/companies/getById`;
 
+  // 18. url для получения от сервера данных об услугах заданной компании,
+  // сгруппированных по категориям
+  public static readonly urlGetAllServicesByCompanyIdGroupByCategories: string =
+    `${this.urlHost}/api/services/getAllByCompanyIdGroupByCategories`;
+
+  // 19. url для получения данных о записи об услуге по её идентификатору
+  // из таблицы "УСЛУГИ" (Services) от сервера
+  public static readonly urlGetServiceById: string =
+    `${this.urlHost}/api/services/getById`;
+
+  // 20. url для получения данных из таблицы "КАТЕГОРИИ_УСЛУГ" (ServicesCategories) от сервера
+  public static readonly urlGetAllServicesCategories: string =
+    `${this.urlHost}/api/servicesCategories/getAll`;
+
+  // 21. url для добавления на сервере новой записи в таблицу "УСЛУГИ" БД
+  public static readonly urlCreateService: string =
+    `${this.urlHost}/api/services/createService`;
+
+  // 22. url для изменения на сервере выбранной записи в таблице "УСЛУГИ" БД
+  public static readonly urlEditService: string =
+    `${this.urlHost}/api/services/editService`;
+
+  // 23. url для удаления данных об услуге
+  public static readonly urlDeleteService: string =
+    `${this.urlHost}/api/services/deleteService`;
+
 
 
 
