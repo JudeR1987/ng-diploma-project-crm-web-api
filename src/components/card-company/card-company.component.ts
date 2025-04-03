@@ -52,8 +52,7 @@ export class CardCompanyComponent implements OnInit, OnDestroy {
   public fileNameCompanyTitleImageDef: string = Literals.fileNameCompanyTitleImageDef;
   //@Input() fileNameCompanyTitleImageDef: string = Literals.empty;
 
-  // свойство для генерации события передачи
-  // данных об Id выбранной компании
+  // свойство для генерации события передачи данных об Id выбранной компании
   @Output() onSendCompanyId: EventEmitter<number> = new EventEmitter<number>();
 
 

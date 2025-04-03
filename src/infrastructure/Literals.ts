@@ -1,6 +1,8 @@
 // ----------------------------------------------------------------------------
 // класс с набором константных строковых значений
 // ----------------------------------------------------------------------------
+import {Config} from './Config';
+
 export class Literals {
 
   //#region AppComponent
@@ -11,14 +13,13 @@ export class Literals {
   public static readonly footerEMailTitle: string = '&commat;-mail';
   public static readonly footerEMailHref: string = 'http://mail.ru';
   public static readonly footerEMailValue: string = 'j&lowbar;makarov&commat;mail.ru';
-  public static readonly fileNamePhotoDef: string = 'photo.ico';
 
   //endregion
 
 
   //#region HomeComponent
-  public static readonly fileNameLogoDef: string = 'logo.ico';
-  public static readonly fileNameCompanyTitleImageDef: string = 'company.jpg';
+  /*public static readonly fileNameLogoDef: string = 'logo.ico';
+  public static readonly fileNameCompanyTitleImageDef: string = 'company.jpg';*/
 
   //endregion
 
@@ -55,7 +56,6 @@ export class Literals {
   //#region UserFormComponent
   public static readonly userForm: string = 'user-form';
   public static readonly userNameLength: number = 50;
-  public static readonly userFormSizeImage: string = 'input-image-w-180-200px-h-224px';
 
   //endregion
 
@@ -115,6 +115,36 @@ export class Literals {
   //endregion
 
 
+  //#region EmployeeFormComponent
+  public static readonly employeeForm: string = 'employee-form';
+  public static readonly employeeNameLength: number = 50;
+  public static readonly employeeNewSpecializationNameLength: number = 80;
+  public static readonly employeeNewPositionNameLength: number = 80;
+  /*public static readonly serviceCommentLength: number = 500;
+  public static readonly serviceFormPriceMaxValue: number = 1_000_000;
+  public static readonly serviceFormDurationMax: number = 1_440;*/
+
+  //endregion
+
+
+  //#region ScheduleComponent
+  public static readonly schedule: string = 'schedule';
+
+  //endregion
+
+
+  //#region WarehouseComponent
+  public static readonly warehouse: string = 'warehouse';
+
+  //endregion
+
+
+  //#region ReportsComponent
+  public static readonly reports: string = 'reports';
+
+  //endregion
+
+
   //#region NotFoundComponent
   public static readonly notFound: string = 'not-found';
 
@@ -145,6 +175,10 @@ export class Literals {
   public static readonly routeServices: string = 'services';
   public static readonly routeServiceForm: string = 'service-form';
   public static readonly routeEmployees: string = 'employees';
+  public static readonly routeEmployeeForm: string = 'employee-form';
+  public static readonly routeSchedule: string = 'schedule';
+  public static readonly routeWarehouse: string = 'warehouse';
+  public static readonly routeReports: string = 'reports';
   public static readonly routeNotFound: string = '404';
   public static readonly routeOther: string = '**';
 
@@ -163,16 +197,20 @@ export class Literals {
   public static readonly srcImagePath: string = 'assets/images/';
   public static readonly srcPhotoPath: string = 'assets/photos/';
   public static readonly srcLogoPath: string = 'assets/logos/';
+  public static readonly fileNameLogoDef: string = 'logo.ico';
+  public static readonly fileNameCompanyTitleImageDef: string = 'company.jpg';
+  public static readonly fileNamePhotoDef: string = 'photo.ico';
   public static readonly jwt: string = 'jwt';
   public static readonly user: string = 'user';
   public static readonly Ok: string = 'Ok';
   public static readonly zero: number = 0;
   public static readonly one: number = 1;
   public static readonly two: number = 2;
+  public static readonly five: number = 5;
   public static readonly hundred: number = 100;
   public static readonly fifteen: number = 15;
   public static readonly fiveHundred: number = 500;
-  public static readonly timeout: number = 6_000;
+  public static readonly timeout: number = 8_000;
   public static readonly timeout10: number = 10;
   public static readonly timeStop: number = 25_000;
   public static readonly string: string = 'string';
@@ -186,6 +224,10 @@ export class Literals {
   public static readonly createService: string = 'create-service';
   public static readonly editService: string = 'edit-service';
   public static readonly deleteService: string = 'delete-service';
+  public static readonly createEmployee: string = 'create-employee';
+  public static readonly editEmployee: string = 'edit-employee';
+  public static readonly deleteEmployee: string = 'delete-employee';
+  public static readonly showSchedule: string = 'show-schedule';  // "показать расписание"
 
   //endregion
 
@@ -194,6 +236,7 @@ export class Literals {
 
   public static readonly phonePlaceholder: string = '+7(000)000-00-00';
   public static readonly passwordPlaceholder: string = '***...';
+  public static readonly touched: string = 'touched';
   public static readonly required: string = 'required';
   public static readonly minlength: string = 'minlength';
   public static readonly maxlength: string = 'maxlength';
@@ -222,15 +265,21 @@ export class Literals {
   public static readonly avatar: string = 'avatar';
   public static readonly error401: number = 401;
   public static readonly pathLogoDef: string =
-    'http://localhost:5297/download/getimage/companies/logos/logo.ico';
+    `${Config.urlHost}/download/getImage/companies/logos/${this.fileNameLogoDef}`;
   public static readonly pathTitleImageDef: string =
-    'http://localhost:5297/download/getimage/companies/images/company.jpg';
+    `${Config.urlHost}/download/getImage/companies/images/${this.fileNameCompanyTitleImageDef}`;
+  public static readonly pathEmployeePhotoDef: string =
+    `${Config.urlHost}/download/getImage/employees/photos/${this.fileNamePhotoDef}`;
   public static readonly logo: string = 'logo';
   public static readonly image: string = 'image';
   public static readonly imageType: string = 'imageType';
   public static readonly temp: string = 'temp';
   public static readonly servicesCategoryId: string = 'servicesCategoryId';
   public static readonly serviceId: string = 'serviceId';
+  public static readonly employeeId: string = 'employeeId';
+  public static readonly specialization: string = 'specialization';
+  public static readonly position: string = 'position';
+  public static readonly personSizeImage: string = 'input-image-w-180-200px-h-224px';
 
   //endregion
 

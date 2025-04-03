@@ -323,14 +323,16 @@
                                   component.errorRegisteredServicesCategoryName.isRegistered ||
                                   !component.isChangedFormFlag"
                 title="{{service.id === zero
-                       ? component.butServiceCreateTitle
-                       : component.butServiceEditTitle}}">
+                         ? component.butServiceCreateTitle
+                         : component.butServiceEditTitle}}">
           @if (component.isWaitFlag) {
             <div class="row m-0 p-0 justify-content-center align-items-center">
               <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
             </div>
           } @else {
-            {{service.id === zero ? component.butServiceCreateValue : component.butServiceEditValue}}
+            {{service.id === zero
+              ? component.butServiceCreateValue
+              : component.butServiceEditValue}}
           } <!-- if -->
         </button>
 

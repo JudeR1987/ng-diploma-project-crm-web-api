@@ -97,7 +97,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
               private _errorMessageService: ErrorMessageService,
               private _userService: UserService) {
     Utils.helloComponent(Literals.registration);
-
     console.log(`[-RegistrationComponent-constructor--`);
 
     console.log(`*-this.component.language='${this.component.language}'-*`);
@@ -108,14 +107,12 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     console.log(`*-this.component.route='${this.component.route}'-*`);
 
     console.log(`--RegistrationComponent-constructor-]`);
-
   } // constructor
 
 
   // 0. установка начальных значений и подписок
   // сразу после загрузки компонента
   ngOnInit(): void {
-
     console.log(`[-RegistrationComponent-ngOnInit--`);
 
     // задать значение языка отображения и установить
@@ -135,7 +132,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         this.changeLanguageLiterals(language);
 
         console.log(`--RegistrationComponent-subscribe-]`);
-
       }); // subscribe
 
     // создание объектов полей ввода и формы регистрации
@@ -143,14 +139,12 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     this.createForm();
 
     console.log(`--RegistrationComponent-ngOnInit-]`);
-
   } // ngOnInit
 
 
   // метод изменения значения языка отображения
   // и переназначения строковых переменных
   changeLanguageLiterals(language: string): void {
-
     console.log(`[-RegistrationComponent-changeLanguageLiterals--`);
 
     console.log(`*-input-language='${language}'-*`);
@@ -176,44 +170,19 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     this.component.butContinueValue             = Resources.registrationButContinueValue[this.component.language];
 
     console.log(`--RegistrationComponent-changeLanguageLiterals-]`);
-
   } // changeLanguageLiterals
-
-
-  // отмена срабатывания таймера и удаление всплывающего сообщения
-  /*private removeSetTimeout(): void {
-
-    // отменить ранее установленный setTimeout
-    clearTimeout(this.component.timerId);
-
-    // удалить всплывающее сообщение
-    this.component.validRegistration = true;
-    this.component.errorMessage = Literals.empty;
-
-  } // removeSetTimeout*/
 
 
   // обработчик события передачи данных из формы на сервер
   async onSubmit(): Promise<void> {
-
     console.log(`[-RegistrationComponent-onSubmit--`);
 
     console.log(`*- this._userService.user -*`);
     console.dir(this._userService.user);
 
-    // удаление всплывающего сообщения
-    //this.removeSetTimeout();
-
     console.log("Отправка данных на сервер");
     console.dir(this.registrationForm.value);
     console.log(this.registrationForm.valid);
-
-    /*// задать значения параметров регистрации
-    // (логин=телефону только при регистрации)
-    this.loginModel.login    = this.phone.value;
-    this.loginModel.phone    = this.phone.value;
-    this.loginModel.email    = this.email.value;
-    this.loginModel.password = Literals.empty;*/
 
     // задать значения параметров регистрации
     this.loginModel.phone    = this.phone.value;
@@ -244,8 +213,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         Resources.registrationIncorrectData[this.component.language];
 
       // ошибки сервера
-      if (result.title) result = result.title;
-      //if ((typeof result) === Literals.string) result = result;
+      console.log(`--result.title: '${result.title}'`);
+      if (result.title != undefined) result = result.title;
 
       // ошибки регистрации по номеру телефона
       if (result.phone) {
@@ -260,8 +229,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         this.checkingExisting(this.registrationForm.value);
 
         // формирование сообщения об ошибке
-        /*result.message += `${result.message.length > 0 ? Literals.comma + Literals.break : Literals.empty}\
-          ${Resources.registeredPhone[this.component.language]}`;*/
         result = Resources.registeredPhone[this.component.language];
 
       } // if
@@ -279,13 +246,10 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         this.checkingExisting(this.registrationForm.value);
 
         // формирование сообщения об ошибке
-        /*result.message += `${result.message.length > 0 ? Literals.comma + Literals.break : Literals.empty}\
-          ${Resources.registeredEmail[this.component.language]}`;*/
         result = Resources.registeredEmail[this.component.language];
 
       } // if
 
-      //return;
     } else {
 
       // иначе - сообщение об успехе
@@ -301,13 +265,11 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     this._errorMessageService.errorMessageSubject.next(result);
 
     console.log(`--RegistrationComponent-onSubmit-]`);
-
   } // onSubmit
 
 
   // создание объектов полей ввода формы регистрации
   createFormControls(): void {
-
     console.log(`[-RegistrationComponent-createFormControls--`);
 
     // поле ввода телефона пользователя
@@ -336,13 +298,11 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     );
 
     console.log(`--RegistrationComponent-createFormControls-]`);
-
   } // createFormControls
 
 
   // создание объекта формы регистрации
   createForm(): void {
-
     console.log(`[-RegistrationComponent-createForm--`);
 
     this.registrationForm = new FormGroup( {
@@ -364,13 +324,11 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     ); // subscribe
 
     console.log(`--RegistrationComponent-createForm-]`);
-
   } // createForm
 
 
   // проверка номера телефона и email на совпадение с зарегистрированными
   checkingExisting(data: { phone: string, email: string }): void {
-
     console.log(`[-RegistrationComponent-checkingExisting--`);
 
     // проверить совпадение с хотя бы одним элементом списка уже зарегистрированных
@@ -383,66 +341,18 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     console.dir(this.component.errorRegisteredEmail.isRegistered);
 
     console.log(`--RegistrationComponent-checkingExisting-]`);
-
   } // checkingExisting
 
 
   // отмены подписок и необходимые методы при уничтожении компонента
   ngOnDestroy(): void {
-
     console.log(`[-RegistrationComponent-ngOnDestroy--`);
 
     // отмена подписки
     this._languageSubscription.unsubscribe();
 
     console.log(`--RegistrationComponent-ngOnDestroy-]`);
-
   } // ngOnDestroy
-
-
-  /*async registration(form: NgForm) {
-
-    console.log(`[-RegistrationComponent-registration--`);
-
-    // задать значения параметров входа
-    this.loginModel.login    = `${form.value.phone}`;
-    this.loginModel.password = `${form.value.phone}`;
-    this.loginModel.email    = `${form.value.email}`;
-    this.loginModel.phone    = `${form.value.phone}`;
-
-    // включение спиннера ожидания данных
-    this.component.isWaitFlag = true;
-
-    console.log(`--RegistrationComponent-1-`);
-
-    // запрос на регистрацию в системе
-    //this.component.errorMessage = await this._authGuardService.registration(this.loginModel);
-    console.log(`--RegistrationComponent-this.component.errorMessage-${this.component.errorMessage}`);
-
-    console.log(`--RegistrationComponent-2-`);
-
-    // выключение спиннера ожидания данных
-    this.component.isWaitFlag = false;
-
-    // если сообщение с ошибкой - завершаем обработку,
-    // остаёмся в форме регистрации
-    if (this.component.errorMessage != Literals.Ok) {
-      // установить параметр валидности
-      this.component.validRegistration = false;
-      console.log(`--RegistrationComponent-registration-]`);
-      return;
-    } // if
-
-    // установить параметр валидности
-    this.component.validRegistration = true;
-
-    // перейти по маршруту на форму входа
-    this._router.navigateByUrl(Literals.routeLogin)
-      .then((e) => { console.dir(e); });
-
-    console.log(`--RegistrationComponent-registration-]`);
-
-  } // registration*/
 
 } // class RegistrationComponent
 // ----------------------------------------------------------------------------

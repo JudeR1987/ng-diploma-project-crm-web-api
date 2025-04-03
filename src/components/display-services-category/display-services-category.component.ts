@@ -10,18 +10,13 @@ import {ReactiveFormsModule} from "@angular/forms";
 @Component({
   selector: 'display-services-category',
   standalone: true,
-  imports: [
-    ReactiveFormsModule
-  ],
+  imports: [ReactiveFormsModule],
   templateUrl: './display-services-category.component.html',
   styleUrl: './display-services-category.component.css'
 })
 export class DisplayServicesCategoryComponent implements OnInit, OnDestroy {
 
   // входные параметры
-
-  // флаг включения спиннера при ожидании данных с сервера
-  @Input() isWaitFlag: boolean = false;
 
   // флаг включения режима выбора услуг при записи в салон
   @Input() isRecordFlag: boolean = false;
@@ -86,17 +81,18 @@ export class DisplayServicesCategoryComponent implements OnInit, OnDestroy {
   // свойство для генерации события передачи данных об Id выбранной категории услуг
   @Output() onSendServicesCategoryId: EventEmitter<number> = new EventEmitter<number>();
 
-  // свойство для генерации события передачи данных об Id выбранной услуги
-  // (передаём режим - mode: editService-изменение, chooseService-выбор для чек-бокса)
+  // свойство для генерации события передачи данных об Id выбранной услуги для изменения/удаления
+  // (передаём режим - mode: editService-изменение, deleteService-удаление)
   @Output() onSendServiceIdMode: EventEmitter<{ servicesCategoryId: number, serviceId: number, mode: string }> =
     new EventEmitter<{ servicesCategoryId: number, serviceId: number, mode: string }>();
 
   // свойство для генерации события передачи данных об Id выбранной услуги
+  // (в режиме выбора чек-боксом)
   @Output() onSendSelectedServiceId: EventEmitter<{ serviceId: number, isSelected: boolean }> =
     new EventEmitter<{ serviceId: number, isSelected: boolean }>();
 
   // дополнительные свойства
-  protected readonly editService: string = Literals.editService;
+  protected readonly editService: string   = Literals.editService;
   protected readonly deleteService: string = Literals.deleteService;
 
 

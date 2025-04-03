@@ -15,14 +15,14 @@ export class Employee {
     // идентификатор записи о сотруднике
     private _id: number = Literals.zero,
 
-    // имя сотрудника
-    private _name: string = Literals.empty,
+    // имя сотрудника                     // <-- используем имя пользователя
+    // private _name: string = Literals.empty,
 
     // данные о пользователе
-    //private _user: User = new User(),
+    private _user: User = new User(),
 
     // идентификатор записи данных о пользователе
-    private _userId: number = Literals.zero,
+    //private _userId: number = Literals.zero,
 
     // данные о компании
     private _company: Company = new Company(),
@@ -53,14 +53,14 @@ export class Employee {
   get id(): number { return this._id; }
   set id(value: number) { this._id = value; }
 
-  get name(): string { return this._name; }
-  set name(value: string) { this._name = value; }
+  /*get name(): string { return this._name; }
+  set name(value: string) { this._name = value; }*/
 
-  /*get user(): User { return this._user; }
-  set user(value: User) { this._user = value; }*/
+  get user(): User { return this._user; }
+  set user(value: User) { this._user = value; }
 
-  get userId(): number { return this._userId; }
-  set userId(value: number) { this._userId = value; }
+  /*get userId(): number { return this._userId; }
+  set userId(value: number) { this._userId = value; }*/
 
   get company(): Company { return this._company; }
   set company(value: Company) { this._company = value; }
@@ -97,8 +97,9 @@ export class Employee {
   public static newEmployee(srcEmployee: Employee | any): Employee {
     return new Employee(
       srcEmployee.id,
-      srcEmployee.name,
-      srcEmployee.userId,
+      //srcEmployee.name,
+      //srcEmployee.userId,
+      User.newUser(srcEmployee.user),
       Company.newCompany(srcEmployee.company),
       Specialization.newSpecialization(srcEmployee.specialization),
       Position.newPosition(srcEmployee.position),
@@ -120,8 +121,9 @@ export class Employee {
   public static EmployeeToDto(srcEmployee: Employee): any {
     return {
       id:             srcEmployee.id,
-      name:           srcEmployee.name,
-      userId:         srcEmployee.userId,
+      //name:           srcEmployee.name,
+      //userId:         srcEmployee.userId,
+      user:           User.UserToDto(srcEmployee.user),
       company:        Company.CompanyToDto(srcEmployee.company),
       specialization: Specialization.SpecializationToDto(srcEmployee.specialization),
       position:       Position.PositionToDto(srcEmployee.position),

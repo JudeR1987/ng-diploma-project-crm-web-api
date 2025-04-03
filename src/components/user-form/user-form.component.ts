@@ -83,7 +83,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     errorPhoneValidator:     Literals.phoneValidator,
     errorEmailValidator:     Literals.emailValidator,
     newFileName:             Literals.empty,
-    sizeImage:               Literals.userFormSizeImage
+    sizeImage:               Literals.personSizeImage
   };
 
   // объект подписки на изменение языка, для отмены подписки при уничтожении компонента
@@ -266,7 +266,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
     // установить значения строковых переменных
     this.component.title                          = Resources.userFormTitle[this.component.language];
-    this.component.labelUserName                  = Resources.userFormLabelUserName[this.component.language];
+    this.component.labelUserName                  = Resources.labelPersonName[this.component.language];
     this.component.labelPhone                     = Resources.labelPhone[this.component.language];
     this.component.labelEmail                     = Resources.labelEmail[this.component.language];
     this.component.userNamePlaceholder            = Resources.userFormUserNamePlaceholder[this.component.language];
@@ -281,10 +281,10 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.component.phoneNoErrorsTitle             = Resources.phoneNoErrors[this.component.language];
     this.component.butUserEditTitle               = Resources.userFormButUserEditTitle[this.component.language];
     this.component.butUserEditValue               = Resources.butEditValue[this.component.language];
-    this.component.labelInputImage                = Resources.userFormLabelInputImage[this.component.language];
+    this.component.labelInputImage                = Resources.labelInputPhoto[this.component.language];
     this.component.labelNewFileName               = Resources.labelNewFileName[this.component.language];
     this.component.labelFileNotSelected           = Resources.labelFileNotSelected[this.component.language];
-    this.component.butNewFileNameTitle            = Resources.userFormButNewFileNameTitle[this.component.language];
+    this.component.butNewFileNameTitle            = Resources.butNewPhotoFileNameTitle[this.component.language];
     this.component.butNewFileNameValue            = Resources.butNewFileNameValue[this.component.language];
     this.component.labelCheckboxDeletingFlag      = Resources.userFormLabelCheckboxDeletingFlag[this.component.language];
     this.component.butDeleteUserTitle             = Resources.userFormButDeleteUserTitle[this.component.language];
@@ -356,12 +356,10 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
     // запрос на изменение данных о пользователе
     let result: { message: any, user: User } =
-      //{ message: Literals.Ok, user: User.UserToDto(new User()) };
       { message: Literals.Ok, user: new User() };
     try {
       // получить jwt-токен
       let token: string = this._tokenService.token;
-      console.log(`*-token: '${token}' -*`);
 
       let webResult: any = await firstValueFrom(this._webApiService.editUserPOST(
         Config.urlEditUser, this.user, token
@@ -559,19 +557,19 @@ export class UserFormComponent implements OnInit, OnDestroy {
       let token: string = this._tokenService.token;
       console.log(`*-token: '${token}' -*`);
 
-      // идентификатор компании (пока тут не нужен)
-      let companyId: number = Literals.zero;
+      // идентификатор сущности (тут не нужен)
+      let id: number = Literals.zero;
 
-      // папка с временной фотографией пользователя (пока тут не нужна)
+      // папка с временной фотографией пользователя (тут не нужна)
       let tempDir: string = Literals.empty;
 
-      // тип изображения (пока тут не нужен)
+      // тип изображения (тут не нужен)
       let imageType: string = Literals.empty;
 
       // запрос на загрузку файла с изображением
       let webResult: any = await firstValueFrom(this._webApiService.uploadImagePOST(
         Config.urlUploadTempUserPhoto, file, this.user.id,
-        companyId, tempDir, imageType, token
+        id, tempDir, imageType, token
       ));
       console.dir(webResult);
 
@@ -633,9 +631,14 @@ export class UserFormComponent implements OnInit, OnDestroy {
       this.component.newFileName = Literals.empty;
       console.log(`*-(стало)- this.component.newFileName: '${this.component.newFileName}' -*`);
 
+      // сбросить флаг изменений данных в форме
+      console.log(`*-(было)-this.component.isChangedFormFlag: '${this.component.isChangedFormFlag}' -*`);
+      this.component.isChangedFormFlag = false;
+      console.log(`*-(стало)-this.component.isChangedFormFlag: '${this.component.isChangedFormFlag}' -*`);
+
     } else {
       // иначе - сообщение об успехе
-      result.message = Resources.userFormUploadImageOkData[this.component.language];
+      result.message = Resources.uploadImageOkData[this.component.language];
 
       // установить объекту с данными о пользователе
       // временный путь расположения выбранной фотографии
@@ -801,14 +804,14 @@ export class UserFormComponent implements OnInit, OnDestroy {
       let token: string = this._tokenService.token;
       console.log(`*-token: '${token}' -*`);
 
-      // идентификатор компании (пока тут не нужен)
-      let companyId: number = Literals.zero;
+      // идентификатор сущности (тут не нужен)
+      let id: number = Literals.zero;
 
-      // тип изображения (пока тут не нужен)
+      // тип изображения (тут не нужен)
       let imageType: string = Literals.empty;
 
       let webResult: any = await firstValueFrom(this._webApiService.deleteTempImages(
-        Config.urlDeleteTempUserPhotos, this.user.id, companyId, imageType, token
+        Config.urlDeleteTempUserPhotos, this.user.id, id, imageType, token
       ));
       console.dir(webResult);
 
@@ -850,7 +853,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       // ошибки существования папки
       console.log(`--result.directory: '${result.directory}'`);
       if (result.directory != undefined && !result.directory)
-        message = Resources.userFormIncorrectTempDirectory[this.component.language];
+        message = Resources.incorrectTempPhotosDirectory[this.component.language];
 
       // ошибки сервера
       console.log(`--result.title: '${result.title}'`);
@@ -867,7 +870,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
     } else {
       // иначе - сообщение об успехе
-      result = Resources.userFormDeleteTempDirectoryOk[this.component.language];
+      result = Resources.deleteTempPhotosDirectoryOk[this.component.language];
     } // if
 
     // передать сообщение об ошибке в AppComponent для отображения
@@ -1052,7 +1055,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   // метод выполнения/НЕ_выполнения обновления токена
   private async isRefreshToken(): Promise<boolean> {
-
     console.log(`Обновляем токен!`);
 
     // запрос на обновление токена
@@ -1108,7 +1110,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
     console.log(`*-this.user.isLogin: '${this.user.isLogin}' -*`);
     if (!this.component.isChangedFlag && this.user.isLogin) {
 
-      // запрос на удаление временной папки со всеми временными фотографиями пользователя
+      // запрос на удаление временной папки
+      // со всеми временными фотографиями пользователя
       await this.requestDeleteTempUserPhotos();
 
       console.log(`-this.component.isConfirmedFlag: '${this.component.isConfirmedFlag}'`);

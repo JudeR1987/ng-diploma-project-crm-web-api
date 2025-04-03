@@ -70,7 +70,7 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
     newServicesCategoryNameLength: Literals.serviceNewServicesCategoryNameLength,
     serviceNameLength:             Literals.serviceNameLength,
     priceMaxValue:                 Literals.serviceFormPriceMaxValue,
-    durationMaxValue:                   Literals.serviceFormDurationMax,
+    durationMaxValue:              Literals.serviceFormDurationMax,
     commentLength:                 Literals.serviceCommentLength,
     errorRequired:                 Literals.required,
     errorMaxLength:                Literals.maxlength,
@@ -184,7 +184,7 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
     console.log(`*-this.service-*`);
     console.dir(this.service);
 
-    // отключить списки выбора категории услуг
+    // отключить список выбора категории услуг
     this.servicesCategoryId.disable();
 
     // отключить чек-бокс включения режима ввода новой категории услуг
@@ -680,7 +680,7 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
 
     console.log(`--ServiceFormComponent-1-(запрос на получение категорий услуг)-`);
 
-    // запрос на получение параметров формы создания/изменения сведений о салоне
+    // запрос на получение коллекции категорий услуг
     let result: { message: any, allServicesCategories: ServicesCategory[] } =
       { message: Literals.Ok, allServicesCategories: [] };
     try {
@@ -689,7 +689,7 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
       console.log(`*-token: '${token}' -*`);
 
       let webResult: any = await firstValueFrom(
-        this._webApiService.getAll(Config.urlGetAllServicesCategories, token)
+        this._webApiService.get(Config.urlGetAllServicesCategories, token)
       );
       console.dir(webResult);
 

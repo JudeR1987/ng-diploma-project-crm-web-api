@@ -44,6 +44,7 @@
                           (company.description != null && company.description != ''
                             ? ': ' + company.description : '')}}">
             </div>
+
           </div>
 
 
@@ -80,7 +81,6 @@
 
               <!-- компонент отображения категории услуги со списком услуг компании -->
               <display-services-category class="m-0 p-1"
-                                         [isWaitFlag]="component.isWaitFlag"
                                          [isRecordFlag]="false"
                                          [isManagementFlag]="true"
                                          [displayServicesCategory]="displayServicesCategory"

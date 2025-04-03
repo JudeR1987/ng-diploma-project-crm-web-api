@@ -79,6 +79,16 @@ export class Service {
     this._duration = value * 60;
   } // get
 
+  // отображение значения в формате локали "ru"
+  get priceMinToLocalRu(): string {
+    return new Intl.NumberFormat("ru", { minimumFractionDigits: 2 })
+      .format(this._priceMin);
+  } // get
+  get priceMaxToLocalRu(): string {
+    return new Intl.NumberFormat("ru", { minimumFractionDigits: 2 })
+      .format(this._priceMax);
+  } // get
+
   //#endregion
 
 

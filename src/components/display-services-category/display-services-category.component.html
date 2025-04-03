@@ -50,7 +50,7 @@
           <div class="row m-0 p-0 justify-content-end align-items-center
                       bg-aside-color border border-back-color rounded">
 
-            <!-- название услуги -->
+            <!-- данные об услуге -->
             <div class="col m-0 p-0 fw-bold">
               <div class="m-0 p-0 row justify-content-center align-items-center">
                 <div class="m-0 p-0 ps-2 text-back-color hover-opacity-60 hover-pointer">
@@ -82,20 +82,20 @@
                     <div class="m-0 p-1 w-auto">
                       <div class="m-0 px-2 py-0 bg-main-color border border-2 border-back-color rounded"
                            title="{{labelPriceTitle}}">
-                        {{labelPriceValue}} {{service.priceMin}} <i class="fa fa-rub"></i>
+                        {{labelPriceValue}} {{service.priceMinToLocalRu}} <i class="fa fa-rub"></i>
                       </div>
                     </div>
                   } @else {
                     <div class="m-0 p-1 w-auto">
                       <div class="m-0 px-2 py-0 bg-main-color border border-2 border-back-color rounded"
                            title="{{labelMinPriceTitle}}">
-                        {{labelMinPriceValue}} {{service.priceMin}} <i class="fa fa-rub"></i>
+                        {{labelMinPriceValue}} {{service.priceMinToLocalRu}} <i class="fa fa-rub"></i>
                       </div>
                     </div>
                     <div class="m-0 p-1 w-auto">
                       <div class="m-0 px-2 py-0 bg-main-color border border-2 border-back-color rounded"
                            title="{{labelMaxPriceTitle}}">
-                        {{labelMaxPriceValue}} {{service.priceMax}} <i class="fa fa-rub"></i>
+                        {{labelMaxPriceValue}} {{service.priceMaxToLocalRu}} <i class="fa fa-rub"></i>
                       </div>
                     </div>
                   } <!-- if -->

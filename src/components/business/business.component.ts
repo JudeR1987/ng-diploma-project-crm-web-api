@@ -271,11 +271,11 @@ export class BusinessComponent implements OnInit, OnDestroy {
     console.log(`*- companyId: '${companyId}' -*`);
 
     // маршрут
-    //let routerLink: string = Literals.routeWarehouse;
+    let routerLink: string = Literals.routeWarehouse;
 
     // переход по маршруту
-    /*this._router.navigateByUrl(`${routerLink}/${companyId}`)
-      .then((e) => { console.log(`*- переход: ${e} -*`); });*/
+    this._router.navigateByUrl(`${routerLink}/${companyId}`)
+      .then((e) => { console.log(`*- переход: ${e} -*`); });
 
     console.log(`--BusinessComponent-routingToWarehouse-]`);
   } // routingToWarehouse
@@ -288,11 +288,11 @@ export class BusinessComponent implements OnInit, OnDestroy {
     console.log(`*- companyId: '${companyId}' -*`);
 
     // маршрут
-    //let routerLink: string = Literals.routeWarehouse;
+    let routerLink: string = Literals.routeReports;
 
     // переход по маршруту
-    /*this._router.navigateByUrl(`${routerLink}/${companyId}`)
-      .then((e) => { console.log(`*- переход: ${e} -*`); });*/
+    this._router.navigateByUrl(`${routerLink}/${companyId}`)
+      .then((e) => { console.log(`*- переход: ${e} -*`); });
 
     console.log(`--BusinessComponent-routingToReports-]`);
   } // routingToReports
@@ -374,7 +374,7 @@ export class BusinessComponent implements OnInit, OnDestroy {
       let token: string = this._tokenService.token;
       console.log(`*-token: '${token}' -*`);
 
-      let webResult: any = await firstValueFrom(this._webApiService.getAllCompaniesByUserIdByPage(
+      let webResult: any = await firstValueFrom(this._webApiService.getAllByIdByPage(
         Config.urlGetAllCompaniesByUserId, this.user.id, page, token
       ));
       console.dir(webResult);
@@ -420,7 +420,7 @@ export class BusinessComponent implements OnInit, OnDestroy {
       // ошибки данных
       console.log(`--result.message.page: '${result.message.page}'`);
       if (result.message.page <= Literals.zero) message =
-        Resources.pageIncorrectData[this.component.language];
+        Resources.incorrectPageData[this.component.language];
 
       console.log(`--result.message.userId: '${result.message.userId}'`);
       if (result.message.userId === Literals.zero)

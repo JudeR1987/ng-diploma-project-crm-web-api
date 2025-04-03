@@ -82,10 +82,9 @@ export class TokenService {
     console.log(`[-TokenService-isTokenExists--`);
 
     // получить jwt-токен
-    console.log(`*- this._token: '${this._token}' -*`);
+    //console.log(`*- this._token: '${this._token}' -*`);
 
-    console.log(`*- (token && !this._jwtHelper.isTokenExpired(token):
-    '${(this._token && !this._jwtHelper.isTokenExpired(this._token))}' -*`);
+    console.log(`*- (token && !this._jwtHelper.isTokenExpired(token): '${(this._token && !this._jwtHelper.isTokenExpired(this._token))}' -*`);
 
     console.log(`--TokenService-isTokenExists-]`);
 

@@ -30,8 +30,8 @@
         <!-- сведения о компаниях -->
         <div class="row justify-content-center justify-content-md-start m-0 mb-2 p-0">
 
+          <!-- компонент карточки со сведениями о компании -->
           @for (company of companies; track company.id; let i = $index) {
-            <!-- компонент карточки со сведениями о компании -->
             <card-company class="col-sm-11 col-md-6 col-xxl-4 m-0 p-1"
                           [company]="company"
                           [labelSchedule]="component.labelSchedule"

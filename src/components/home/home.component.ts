@@ -226,7 +226,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     try {
 
       let webResult: any = await firstValueFrom(
-        this._webApiService.getAllByPage(Config.urlGetAllCompanies, page)
+        this._webApiService.getAllByPage(Config.urlGetAllCompanies, page, Literals.empty)
       );
       console.dir(webResult);
 
@@ -262,7 +262,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       // ошибки данных
       console.log(`--result.message.page: '${result.message.page}'`);
       if (result.message.page <= Literals.zero) message =
-        Resources.pageIncorrectData[this.component.language];
+        Resources.incorrectPageData[this.component.language];
 
       // ошибки сервера
       if (result.message.title) message = result.message.title;

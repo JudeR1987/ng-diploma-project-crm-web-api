@@ -5,21 +5,26 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Utils} from '../../infrastructure/Utils';
 import {Literals} from '../../infrastructure/Literals';
 import {IEmployeesComponent} from '../../models/interfaces/IEmployeesComponent';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {LanguageService} from '../../services/language.service';
 import {WebApiService} from '../../services/web-api.service';
 import {ErrorMessageService} from '../../services/error-message.service';
 import {UserService} from '../../services/user.service';
 import {TokenService} from '../../services/token.service';
 import {AuthGuardService} from '../../services/auth-guard.service';
-import {Subscription} from 'rxjs';
+import {firstValueFrom, Subscription} from 'rxjs';
 import {Employee} from '../../models/classes/Employee';
 import {Resources} from '../../infrastructure/Resources';
+import {Company} from '../../models/classes/Company';
+import {Config} from '../../infrastructure/Config';
+import {CardEmployeeComponent} from '../card-employee/card-employee.component';
 
 @Component({
   selector: 'app-employees',
   standalone: true,
-  imports: [],
+  imports: [
+    CardEmployeeComponent
+  ],
   templateUrl: './employees.component.html',
   styleUrl: './employees.component.css'
 })
@@ -28,7 +33,20 @@ export class EmployeesComponent implements OnInit, OnDestroy {
   // объект с параметрами компонента
   public component: IEmployeesComponent = {
     // параметры меняющиеся при смене языка
-    displayTitle: Literals.empty,
+    displayTitle:                 Literals.empty,
+    ratingTitleStart:             Literals.empty,
+    labelName:                    Literals.empty,
+    labelPhone:                   Literals.empty,
+    labelEmail:                   Literals.empty,
+    labelSpecialization:          Literals.empty,
+    labelPosition:                Literals.empty,
+    /*labelRating:                Literals.empty,*/
+    butCreateEmployeeTitle:       Literals.empty,
+    butCreateEmployeeValue:       Literals.empty,
+    butShowScheduleEmployeeTitle: Literals.empty,
+    butShowScheduleEmployeeValue: Literals.empty,
+    butEditEmployeeTitle:         Literals.empty,
+    butDeleteEmployeeTitle:       Literals.empty,
     // параметры НЕ меняющиеся при смене языка
     language:   Literals.empty,
     route:      Literals.empty,
@@ -38,23 +56,29 @@ export class EmployeesComponent implements OnInit, OnDestroy {
   // объект подписки на изменение языка, для отмены подписки при уничтожении компонента
   private _languageSubscription: Subscription = new Subscription();
 
-  // сведения об Id компании
-  private _companyId: number = Literals.zero;
+  // сведения о выбранной компании
+  public company: Company = new Company();
 
   // коллекция сотрудников заданной компании
   public employees: Employee[] = [];
 
   // свойство для ограничения отображения элементов разметки
-  protected readonly zero: number     = Literals.zero;
-  protected readonly one: number      = Literals.one;
+  protected readonly zero: number = Literals.zero;
+  protected readonly one: number  = Literals.one;
+  protected readonly createEmployee: string = Literals.createEmployee;
+  protected readonly editEmployee: string   = Literals.editEmployee;
+  protected readonly deleteEmployee: string = Literals.deleteEmployee;
+  protected readonly showSchedule: string   = Literals.showSchedule;
 
 
   // конструктор с DI для подключения к объекту маршрутизатора
-  // для получения маршрута, подключения к сервису установки языка,
+  // для получения маршрута, подключения объекта активного маршрута для
+  // получения параметров маршрута, подключения к сервису установки языка,
   // подключения к web-сервису, подключения к сервису хранения сообщения об ошибке,
   // подключения к сервисам хранения данных о пользователе и jwt-токене
   // и подключения к сервису аутентификации/авторизации пользователя
   constructor(private _router: Router,
+              private _activatedRoute: ActivatedRoute,
               private _languageService: LanguageService,
               private _webApiService: WebApiService,
               private _errorMessageService: ErrorMessageService,
@@ -111,6 +135,57 @@ export class EmployeesComponent implements OnInit, OnDestroy {
     console.dir(this.user);*/
 
 
+    // получить параметры маршрута
+    console.dir(this._activatedRoute);
+    console.dir(this._activatedRoute.params);
+    let companyId: number = 0;
+    // подписка на получение результата перехода по маршруту
+    this._activatedRoute.params.subscribe(params => {
+
+      // параметр об Id компании, полученный из маршрута
+      console.log(`*-params['id']: '${params[Literals.id]}' -*`);
+      companyId = (params[Literals.id] != undefined && !isNaN(params[Literals.id]) && params[Literals.id] > 0)
+        ? +params[Literals.id]
+        : 0;
+      console.log(`*-companyId: '${companyId}' [${typeof companyId}] -*`);
+
+      console.log(`*-(было)-this.company.id: '${this.company.id}' -*`);
+      this.company.id = companyId;
+      console.log(`*-(стало)-this.company.id: '${this.company.id}' -*`);
+
+    }); // subscribe
+
+
+    // проверки на возможность перехода по маршруту
+    // (если вводить маршрут в командной строке браузера)
+
+    // ?????????
+
+    console.log(`*-(было)-this.company: -*`);
+    console.dir(this.company);
+
+    // запрос на получение записи о компании из БД для отображения
+    await this.requestGetCompanyById();
+
+    // если данные не получены(т.е. Id=0), перейти на домашнюю страницу
+    if (this.company.id === this.zero) {
+      console.log(`*- Переход на "Home" - 'TRUE' -*`);
+
+      // перейти по маршруту на главную страницу
+      this._router.navigateByUrl(Literals.routeHomeEmpty).then((e) => {
+        console.log(`*- переход: ${e} -*`);
+
+        console.log(`--EmployeesComponent-ngOnInit-]`);
+      }); // navigateByUrl
+
+      return;
+    } // if
+    console.log(`*- Переход на "Home" - 'FALSE' -*`);
+
+    console.log(`*-(стало)-this.company: -*`);
+    console.dir(this.company);
+
+
     // запрос на получение коллекции сотрудников заданной компании
     console.log(`*-(было)-this.employees: -*`);
     console.dir(this.employees);
@@ -118,8 +193,123 @@ export class EmployeesComponent implements OnInit, OnDestroy {
     console.log(`*-(стало)-this.employees: -*`);
     console.dir(this.employees);
 
+    // установить соответствующий заголовок
+    this.component.displayTitle = this.employees.length === this.zero
+      ? Resources.employeesZeroCollectionTitle[this.component.language]
+      : Resources.employeesTitle[this.component.language];
+
     console.log(`--EmployeesComponent-ngOnInit-]`);
   } // ngOnInit
+
+
+  // запрос на получение записи о компании из БД для отображения
+  async requestGetCompanyById(): Promise<void> {
+    console.log(`[-EmployeesComponent-requestGetCompanyById--`);
+
+    // включение спиннера ожидания данных
+    this.component.isWaitFlag = true;
+
+    console.log(`--EmployeesComponent-0-(обновление токена)-`);
+
+    // если токена нет ИЛИ время его действия закончилось -
+    // выполнить запрос на обновление токена
+    if (!this._tokenService.isTokenExists()) {
+
+      // получим результат операции обновления токена
+      let result: boolean = await this.isRefreshToken();
+
+      // при завершении с ошибкой - закончить обработку
+      if (!result) {
+
+        // выключение спиннера ожидания данных
+        this.component.isWaitFlag = false;
+
+        console.log(`--EmployeesComponent-requestGetCompanyById-КОНЕЦ-]`);
+        return;
+      } // if
+
+      // иначе - переходим к последующему запросу
+    } // if
+
+    console.log(`--EmployeesComponent-1-(запрос на получение компании)-`);
+
+    // запрос на получение записи о компании
+    let result: { message: any, company: Company } =
+      { message: Literals.Ok, company: new Company() };
+    try {
+      // получить jwt-токен
+      let token: string = this._tokenService.token;
+      console.log(`*-token: '${token}' -*`);
+
+      let webResult: any = await firstValueFrom(
+        this._webApiService.getById(Config.urlGetCompanyById, this.company.id, token)
+      );
+      console.dir(webResult);
+
+      result.company = Company.newCompany(webResult.company);
+
+    } catch (e: any) {
+
+      console.dir(e);
+      console.dir(e.error);
+
+      // ошибка авторизации ([Authorize])
+      if (e.status === Literals.error401 && e.error === null) {
+        console.log(`*- отработал [Authorize] -*`);
+        result.message = Resources.unauthorizedUserIdData[this.component.language]
+      }
+      // другие ошибки
+      else
+        result.message = e.error;
+
+    } // try-catch
+
+    console.log(`--EmployeesComponent-result:`);
+    console.dir(result);
+    console.dir(result.message);
+    console.dir(result.company);
+
+    console.log(`--EmployeesComponent-2-(ответ на запрос получен)-`);
+
+    // выключение спиннера ожидания данных
+    this.component.isWaitFlag = false;
+
+
+    // если сообщение с ошибкой - завершаем обработку, остаёмся в форме
+    if (result.message != Literals.Ok) {
+
+      // сформируем соответствующее сообщение об ошибке
+      let message: string = Literals.empty;
+
+      // ошибки данных
+      console.log(`--result.message.companyId: '${result.message.companyId}'`);
+      if (result.message.companyId != undefined)
+        message = result.message.companyId === this.zero
+          ? Resources.incorrectCompanyIdData[this.component.language]
+          : Resources.notRegisteredCompanyIdData[this.component.language];
+
+      // ошибки сервера
+      console.log(`--result.message.title: '${result.message.title}'`);
+      if (result.message.title != undefined) message = result.message.title;
+
+      // если результат уже содержит строку с сообщением
+      if ((typeof result.message) === Literals.string) message = result.message;
+
+      // передать сообщение об ошибке в AppComponent для отображения
+      this._errorMessageService.errorMessageSubject.next(message);
+
+      // при ошибках установить компании нулевой идентификатор
+      this.company.id = this.zero;
+
+    } else {
+
+      // присвоить значение полученных данных
+      this.company = result.company;
+
+    } // if
+
+    console.log(`--EmployeesComponent-requestGetCompanyById-]`);
+  } // requestGetCompanyById
 
 
   // метод изменения значения языка отображения
@@ -135,30 +325,22 @@ export class EmployeesComponent implements OnInit, OnDestroy {
     console.log(`*-this.component.language='${this.component.language}'-*`);
 
     // установить значения строковых переменных
-    //this.component.displayTitle = Resources.employeesTitle[this.component.language];
-    this.component.displayTitle = Resources.pageUnderDevelopmentTitle[this.component.language];
-    /*this.component.companiesTitle              = Resources.businessCompaniesTitle[this.component.language];
-    this.component.labelSchedule               = Resources.labelSchedule[this.component.language];
-    this.component.labelPhone                  = Resources.displayLabelPhone[this.component.language];
-    this.component.butCreateCompanyTitle       = Resources.businessButCreateCompanyTitle[this.component.language];
-    this.component.butCreateCompanyValue       = Resources.businessButCreateCompanyValue[this.component.language];
-    this.component.butEditCompanyTitle         = Resources.businessButEditCompanyTitle[this.component.language];
-    this.component.butEditCompanyValue         = Resources.butEditValue[this.component.language];
-    this.component.butToFirstPageTitle         = Resources.butToFirstPageTitle[this.component.language];
-    this.component.butPreviousTitle            = Resources.butPreviousTitle[this.component.language];
-    this.component.butPreviousValue            = Resources.butPreviousValue[this.component.language];
-    this.component.butCurrentPageTitle         = Resources.butCurrentPageTitle[this.component.language];
-    this.component.butNextTitle                = Resources.butNextTitle[this.component.language];
-    this.component.butNextValue                = Resources.butNextValue[this.component.language];
-    this.component.butToLastPageTitle          = Resources.butToLastPageTitle[this.component.language];
-    this.component.butSalonManagementTitle     = Resources.businessButSalonManagementTitle[this.component.language];
-    this.component.butSalonManagementValue     = Resources.businessButSalonManagementValue[this.component.language];
-    this.component.butEmployeesManagementTitle = Resources.businessButEmployeesManagementTitle[this.component.language];
-    this.component.butEmployeesManagementValue = Resources.businessButEmployeesManagementValue[this.component.language];
-    this.component.butWarehouseManagementTitle = Resources.businessButWarehouseManagementTitle[this.component.language];
-    this.component.butWarehouseManagementValue = Resources.businessButWarehouseManagementValue[this.component.language];
-    this.component.butReportsTitle             = Resources.businessButReportsTitle[this.component.language];
-    this.component.butReportsValue             = Resources.businessButReportsValue[this.component.language];*/
+    this.component.displayTitle = this.employees.length === this.zero
+      ? Resources.employeesZeroCollectionTitle[this.component.language]
+      : Resources.employeesTitle[this.component.language];
+    this.component.ratingTitleStart             = Resources.employeesRatingTitleStart[this.component.language];
+    this.component.labelName                    = Resources.labelPersonName[this.component.language];
+    this.component.labelPhone                   = Resources.labelPhone[this.component.language];
+    this.component.labelEmail                   = Resources.labelEmail[this.component.language];
+    this.component.labelSpecialization          = Resources.labelSpecialization[this.component.language];
+    this.component.labelPosition                = Resources.labelPosition[this.component.language];
+    /*this.component.labelRating                = Resources.labelRating[this.component.language];*/
+    this.component.butCreateEmployeeTitle       = Resources.employeesButCreateEmployeeTitle[this.component.language];
+    this.component.butCreateEmployeeValue       = Resources.employeesButCreateEmployeeValue[this.component.language];
+    this.component.butShowScheduleEmployeeTitle = Resources.employeesButShowScheduleEmployeeTitle[this.component.language];
+    this.component.butShowScheduleEmployeeValue = Resources.butScheduleValue[this.component.language];
+    this.component.butEditEmployeeTitle         = Resources.employeesButEditEmployeeTitle[this.component.language];
+    this.component.butDeleteEmployeeTitle       = Resources.employeesButDeleteEmployeeTitle[this.component.language];
 
     console.log(`--EmployeesComponent-changeLanguageLiterals-]`);
   } // changeLanguageLiterals
@@ -175,7 +357,7 @@ export class EmployeesComponent implements OnInit, OnDestroy {
 
     // если токена нет ИЛИ время его действия закончилось -
     // выполнить запрос на обновление токена
-    /*if (!this._tokenService.isTokenExists()) {
+    if (!this._tokenService.isTokenExists()) {
 
       // получим результат операции обновления токена
       let result: boolean = await this.isRefreshToken();
@@ -186,34 +368,29 @@ export class EmployeesComponent implements OnInit, OnDestroy {
         // выключение спиннера ожидания данных
         this.component.isWaitFlag = false;
 
-        console.log(`--BusinessComponent-requestGetAllCompaniesByUserId-КОНЕЦ-]`);
+        console.log(`--EmployeesComponent-requestGetAllEmployeesByCompanyId-КОНЕЦ-]`);
         return;
       } // if
 
-      // иначе - обновим данные о токене обновления пользователя
-      // и переходим к последующему запросу
-      console.log(`*-(было)-this.user.userToken: '${this.user.userToken}' -*`);
-      this.user.userToken = (this._userService.user).userToken;
-      console.log(`*-(стало)-this.user.userToken: '${this.user.userToken}' -*`);
-    } // if*/
+      // иначе - переходим к последующему запросу
+    } // if
 
-    console.log(`--EmployeesComponent-1-(запрос на получение)-`);
+    console.log(`--EmployeesComponent-1-(запрос на получение сотрудников)-`);
 
-    // запрос на получение коллекции компаний
-    /*let result: { message: any, companies: Company[], pageViewModel: PageViewModel } =
-      { message: Literals.Ok, companies: [], pageViewModel: new PageViewModel() };
+    // запрос на получение коллекции сотрудников
+    let result: { message: any, employees: Employee[] } =
+      { message: Literals.Ok, employees: [] };
     try {
       // получить jwt-токен
       let token: string = this._tokenService.token;
       console.log(`*-token: '${token}' -*`);
 
-      let webResult: any = await firstValueFrom(this._webApiService.getAllCompaniesByUserIdByPage(
-        Config.urlGetAllCompaniesByUserId, this.user.id, page, token
+      let webResult: any = await firstValueFrom(this._webApiService.getById(
+        Config.urlGetAllEmployeesByCompanyId, this.company.id, token
       ));
       console.dir(webResult);
 
-      result.companies = Company.parseCompanies(webResult.companies);
-      result.pageViewModel = PageViewModel.newPageViewModel(webResult.pageViewModel);
+      result.employees = Employee.parseEmployees(webResult.employees);
 
     } catch (e: any) {
 
@@ -234,33 +411,32 @@ export class EmployeesComponent implements OnInit, OnDestroy {
       } else
         result.message = e.error;
 
-    } // try-catch*/
+    } // try-catch
 
     console.log(`--EmployeesComponent-result:`);
-    //console.dir(result);
+    console.dir(result);
 
     console.log(`--EmployeesComponent-2-(ответ на запрос получен)-`);
 
     // выключение спиннера ожидания данных
     this.component.isWaitFlag = false;
 
-    /*// если сообщение с ошибкой - вывод сообщения на экран
+    // если сообщение с ошибкой - вывод сообщения на экран
     if (result.message != Literals.Ok) {
 
       // сформируем соответствующее сообщение об ошибке
       let message: string = Literals.empty;
 
       // ошибки данных
-      console.log(`--result.message.page: '${result.message.page}'`);
-      if (result.message.page <= Literals.zero) message =
-        Resources.pageIncorrectData[this.component.language];
-
-      console.log(`--result.message.userId: '${result.message.userId}'`);
-      if (result.message.userId === Literals.zero)
-        message = Resources.incorrectUserIdData[this.component.language];
+      console.log(`--result.message.companyId: '${result.message.companyId}'`);
+      if (result.message.companyId === Literals.zero)
+        message = Resources.incorrectCompanyIdData[this.component.language];
 
       // ошибки сервера
-      if (result.message.title) message = result.message.title;
+      console.log(`--result.message.title: '${result.message.title}'`);
+      if (result.message.title != undefined) message = result.message.title;
+
+      // если результат уже содержит строку с сообщением
       if ((typeof result.message) === Literals.string) message = result.message;
 
       // передать сообщение об ошибке в AppComponent для отображения
@@ -269,33 +445,230 @@ export class EmployeesComponent implements OnInit, OnDestroy {
     } else {
 
       // получить данные из результата запроса
-      this.companies     = result.companies;
-      this.pageViewModel = result.pageViewModel;
+      this.employees = result.employees;
 
-    } // if*/
+    } // if
 
     console.log(`--EmployeesComponent-requestGetAllEmployeesByCompanyId-]`);
   } // requestGetAllEmployeesByCompanyId
 
 
-  // программный переход к форме создания данных о сотруднике компании
-  createEmployee() {
-    console.log(`[-EmployeesComponent-createEmployee--`);
+  // обработчик события получения данных об Id выбранного сотрудника для
+  // демонстрации его расписания, изменения или удаления данных о сотруднике
+  async sendEmployeeIdModeHandler(result: { employeeId: number, mode: string }): Promise<void> {
+    console.log(`[-EmployeesComponent-sendEmployeeIdModeHandler--`);
 
-    /*// маршрут
-    let routerLink: string = Literals.routeCompanyForm;
+    console.dir(result);
+    console.log(`*- result.employeeId: '${result.employeeId}' -*`);
+    console.log(`*- result.mode: '${result.mode}' -*`);
 
-    // параметр
-    let mode: string = Literals.createCompany;
-    //let companyId: number = 45;
+    // если режим демонстрации расписания или изменения данных,
+    // то переходим по соответствующему маршруту
+    if (result.mode === this.showSchedule || result.mode === this.editEmployee) {
+
+      this.routingTo(result.mode, result.employeeId);
+
+    } // if
+
+    // если режим удаления данных - отправляем запрос на удаление выбранных данных
+    if (result.mode === this.deleteEmployee) {
+      console.log(`*- получили сотрудника для удаления -*`);
+
+      // запрос на удаление данных
+      await this.requestDeleteEmployee(result.employeeId);
+
+      // удалить данные коллекций, загруженные ранее
+      console.log(`*-(было)-this.employees: -*`);
+      console.dir(this.employees);
+      this.employees = [];
+      console.log(`*-(стало)-this.employees: -*`);
+      console.dir(this.employees);
+
+      // запрос на получение коллекции сотрудников заданной компании
+      console.log(`*-(было)-this.employees: -*`);
+      console.dir(this.employees);
+      await this.requestGetAllEmployeesByCompanyId();
+      console.log(`*-(стало)-this.employees: -*`);
+      console.dir(this.employees);
+
+    } // if
+
+    console.log(`--EmployeesComponent-sendEmployeeIdModeHandler-]`);
+  } // sendEmployeeIdModeHandler
+
+
+  // программный переход на страницу демонстрации расписания сотрудника
+  // или к форме добавления/изменения данных о сотруднике компании
+  routingTo(mode: string, employeeId: number) {
+    console.log(`[-EmployeesComponent-routingTo--`);
+
+    console.log(`*- mode: '${mode}' -*`);
+    console.log(`*- this.company.id: '${this.company.id}' -*`);
+    console.log(`*- employeeId: '${employeeId}' -*`);
+
+    // маршрут и параметры
+    let routerLink: string = Literals.empty;
+    let url: string = Literals.empty;
+    let queryParams: any;
+    switch (mode) {
+
+      // переход на страницу демонстрации расписания
+      case this.showSchedule:
+        console.log(`*- просмотр расписания сотрудника -*`);
+        routerLink = Literals.routeSchedule;
+        url = `${routerLink}/${this.company.id}/${employeeId}`;
+        queryParams = {};
+        break;
+
+      // переход к форме добавления данных о сотруднике
+      case this.createEmployee:
+        console.log(`*- добавление нового сотрудника -*`);
+        routerLink = Literals.routeEmployeeForm;
+        url = `${routerLink}/${mode}`;
+        queryParams = {
+          companyId: this.company.id,
+          employeeId: employeeId
+        };
+        break;
+
+      // переход к форме изменения данных о сотруднике
+      case this.editEmployee:
+        console.log(`*- получили сотрудника для изменения -*`);
+        routerLink = Literals.routeEmployeeForm;
+        url = `${routerLink}/${mode}`;
+        queryParams = {
+          companyId: this.company.id,
+          employeeId: employeeId
+        };
+        break;
+
+    } // switch
+    console.log(`*- routerLink: '${routerLink}' -*`);
+    console.log(`*- url: '${url}' -*`);
+    console.log(`*- queryParams: -*`);
+    console.dir(queryParams);
 
     // переход по маршруту
-    //this._router.navigateByUrl(`${routerLink}/${mode}/${companyId}`)
-    this._router.navigateByUrl(`${routerLink}/${mode}`)
-      .then((e) => { console.log(`*- переход: ${e} -*`); });*/
+    this._router.navigate(
+      [url], { queryParams: queryParams }
+    ).then((e) => {
+      console.log(`*- переход: ${e} -*`);
+    });
 
-    console.log(`--EmployeesComponent-createEmployee-]`);
-  } // createEmployee
+    console.log(`--EmployeesComponent-routingTo-]`);
+  } // routingTo
+
+
+  // выполнение запроса на удаление данных о сотруднике
+  async requestDeleteEmployee(employeeId: number): Promise<void> {
+    console.log(`[-EmployeesComponent-requestDeleteEmployee--`);
+
+    console.log(`*- employeeId: '${employeeId}' -*`);
+
+    // включение спиннера ожидания данных
+    this.component.isWaitFlag = true;
+
+    console.log(`--EmployeesComponent-0-(обновление токена)-`);
+
+    // если токена нет ИЛИ время его действия закончилось -
+    // выполнить запрос на обновление токена
+    if (!this._tokenService.isTokenExists()) {
+
+      // получим результат операции обновления токена
+      let result: boolean = await this.isRefreshToken();
+
+      // при завершении с ошибкой - закончить обработку
+      if (!result) {
+
+        // выключение спиннера ожидания данных
+        this.component.isWaitFlag = false;
+
+        console.log(`--EmployeesComponent-requestDeleteEmployee-КОНЕЦ-]`);
+        return;
+      } // if
+
+      // иначе - переходим к последующему запросу
+    } // if
+
+    console.log(`--EmployeesComponent-1-(запрос на удаление)-`);
+
+    // запрос на удаление данных об услуге
+    let result: any = Literals.Ok;
+    try {
+      // получить jwt-токен
+      let token: string = this._tokenService.token;
+      console.log(`*-token: '${token}' -*`);
+
+      let webResult: any = await firstValueFrom(
+        this._webApiService.deleteById(Config.urlDeleteEmployee, employeeId, token)
+      );
+      console.dir(webResult);
+
+    } catch (e: any) {
+
+      console.dir(e);
+      console.dir(e.error);
+
+      // ошибка авторизации ([Authorize])
+      if (e.status === Literals.error401 && e.error === null) {
+        console.log(`*- отработал [Authorize] -*`);
+        result = Resources.unauthorizedUserIdData[this.component.language]
+      }
+      // другие ошибки
+      else
+        result = e.error;
+
+    } // try-catch
+
+    console.log(`--EmployeesComponent-result:`);
+    console.dir(result);
+
+    console.log(`--EmployeesComponent-2-(ответ на запрос получен)-`);
+
+    // выключение спиннера ожидания данных
+    this.component.isWaitFlag = false;
+
+    // если сообщение с ошибкой - завершаем обработку,
+    // остаёмся на странице, отменяем удаление
+    if (result != Literals.Ok) {
+
+      // сформируем соответствующее сообщение об ошибке
+      let message: string = Literals.empty;
+
+      // ошибки данных
+      console.log(`--result.employeeId: '${result.employeeId}'`);
+      if (result.employeeId != undefined)
+        message = result.employeeId === 0
+          ? Resources.incorrectEmployeeIdData[this.component.language]
+          : Resources.notRegisteredEmployeeIdData[this.component.language];
+
+      // ошибки сервера
+      console.log(`--result.title: '${result.title}'`);
+      if (result.title != undefined) message = result.title;
+
+      console.log(`--result.updateMessage: '${result.updateMessage}'`);
+      if (result.updateMessage != undefined) message = result.updateMessage;
+
+      // если результат уже содержит строку с сообщением
+      if ((typeof result) === Literals.string) message = result;
+
+      // изменить результат на сообщение для вывода
+      result = message;
+
+    } else {
+      // иначе - сообщение об успехе
+      result = Resources.employeesDeleteEmployeeOk[this.component.language];
+
+    } // if
+
+    // передать сообщение об ошибке в AppComponent для отображения
+    this._errorMessageService.errorMessageSubject.next(result);
+
+    // переход в начало страницы
+    Utils.toStart();
+
+    console.log(`--EmployeesComponent-requestDeleteEmployee-]`);
+  } // requestDeleteEmployee
 
 
   // метод выполнения/НЕ_выполнения обновления токена

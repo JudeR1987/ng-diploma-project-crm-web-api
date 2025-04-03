@@ -412,6 +412,35 @@ export class AppComponent implements OnInit {
         routerLinkActive = Literals.routeEmployees;
         break;
 
+      case Literals.routeEmployeeForm:
+        this.component.title = elementRef.component.route_mode === Literals.editEmployee
+          ? Resources.appEditEmployeeFormTitle : Resources.appCreateEmployeeFormTitle;
+        back = Literals.navbarBrandActive;
+        icon = Literals.iconLight;
+        routerLinkActive = Literals.routeEmployeeForm;
+        break;
+
+      case Literals.routeSchedule:
+        this.component.title = Resources.appScheduleTitle;
+        back = Literals.navbarBrandActive;
+        icon = Literals.iconLight;
+        routerLinkActive = Literals.routeSchedule;
+        break;
+
+      case Literals.routeWarehouse:
+        this.component.title = Resources.appWarehouseTitle;
+        back = Literals.navbarBrandActive;
+        icon = Literals.iconLight;
+        routerLinkActive = Literals.routeWarehouse;
+        break;
+
+      case Literals.routeReports:
+        this.component.title = Resources.appReportsTitle;
+        back = Literals.navbarBrandActive;
+        icon = Literals.iconLight;
+        routerLinkActive = Literals.routeReports;
+        break;
+
       // маршрут перехода на страницу NotFound
       default:
         this.component.title = Resources.appTitleDefault;

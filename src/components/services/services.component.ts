@@ -407,7 +407,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
 
     console.log(`--ServicesComponent-1-(запрос на получение услуг)-`);
 
-    // запрос на получение коллекции компаний
+    // запрос на получение коллекции категорий услуг с соответствующими услугами
     let result: { message: any, displayServicesCategories: DisplayServicesCategory[] } =
       { message: Literals.Ok, displayServicesCategories: [] };
     try {
@@ -500,11 +500,10 @@ export class ServicesComponent implements OnInit, OnDestroy {
   } // sendServicesCategoryIdHandler
 
 
-  // обработчик события получения данных об Id выбранной услуги для изменения
-  // (программный переход к форме изменения/удаления данных об услуге)
+  // обработчик события получения данных об Id выбранной услуги для изменения/удаления
+  // (программный переход к форме изменения данных об услуге или запрос на удаление данных)
   async sendServiceIdModeHandler(result: { servicesCategoryId: number, serviceId: number, mode: string }): Promise<void> {
     console.log(`[-ServicesComponent-sendServiceIdModeHandler--`);
-
 
     console.dir(result);
     console.log(`*- result.servicesCategoryId: '${result.servicesCategoryId}' -*`);
@@ -589,14 +588,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
     // маршрут
     let routerLink: string = Literals.routeServiceForm;
 
-    // параметр
-    //let mode: string = Literals.createService;
-    //let companyId: number = 45;
-
     // переход по маршруту
-    /*this._router.navigateByUrl(
-      `${routerLink}/${mode}/${this.company.id}/${servicesCategoryId}/${serviceId}`
-    ).then((e) => { console.log(`*- переход: ${e} -*`); });*/
     this._router.navigate(
       [`${routerLink}/${mode}`],
       {
@@ -606,13 +598,16 @@ export class ServicesComponent implements OnInit, OnDestroy {
           serviceId: serviceId
         }
       }
-    ).then((e) => { console.log(`*- переход: ${e} -*`); });
+    ).then((e) => {
+      console.log(`*- переход: ${e} -*`);
+    });
 
     console.log(`--ServicesComponent-routingToServiceForm-]`);
   } // routingToServiceForm
 
 
   // обработчик события получения данных об Id выбранной услуги
+  // (в данном случае НЕ используем)
   sendSelectedServiceIdHandler(result: { serviceId: number, isSelected: boolean }): void {
     console.log(`[-ServicesComponent-sendSelectedServiceIdHandler--`);
 
@@ -729,13 +724,6 @@ export class ServicesComponent implements OnInit, OnDestroy {
 
       // изменить результат на сообщение для вывода
       result = message;
-
-      // отменить удаление
-      /*console.log(`-(было)-this.component.isDeletingFlag: '${this.component.isDeletingFlag}'`);
-      console.log(`-(было)-this.component.isConfirmedFlag: '${this.component.isConfirmedFlag}'`);
-      this.component.isDeletingFlag = this.component.isConfirmedFlag = false;
-      console.log(`-(стало)-this.component.isDeletingFlag: '${this.component.isDeletingFlag}'`);
-      console.log(`-(стало)-this.component.isConfirmedFlag: '${this.component.isConfirmedFlag}'`);*/
 
     } else {
       // иначе - сообщение об успехе

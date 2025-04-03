@@ -9,6 +9,7 @@ import {User} from '../models/classes/User';
 import {Literals} from '../infrastructure/Literals';
 import {Company} from '../models/classes/Company';
 import {Service} from '../models/classes/Service';
+import {Employee} from '../models/classes/Employee';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,117 @@ export class WebApiService {
     return this._http.get<any>(url, { headers: httpHeaders });
   } // get
 
+  // GET-запрос на удалённый сервер для получения данных из БД по идентификатору
+  getById(url: string, id: number, token: string): Observable<any> {
+    console.log(`[-WebApiService-getById--`);
+
+    console.log(`*- id: '${id}' -*`);
+    console.log(`*- token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-getById-]`);
+    return this._http.get<any>(url, {
+      headers: httpHeaders,
+      params: new HttpParams().set(Literals.id, id)
+    });
+  } // getById
+
+  // GET-запрос на удалённый сервер для получения части коллекции
+  // записей заданной таблицы из БД на заданной странице
+  getAllByPage(url: string, page: number, token: string): Observable<any> {
+    console.log(`[-WebApiService-getAllByPage--`);
+
+    console.log(`*- page: '${page}' -*`);
+    console.log(`*- token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-getAllByPage-]`);
+    return this._http.get<any>(url, {
+      headers: httpHeaders,
+      params: new HttpParams().set(Literals.page, page)
+    });
+  } // getAllByPage
+
+  // GET-запрос на удалённый сервер для получения части коллекции
+  // записей заданной таблицы из БД на заданной странице,
+  // соответствующих параметру с заданным идентификатором
+  getAllByIdByPage(url: string, id: number, page: number, token: string): Observable<any> {
+    console.log(`[-WebApiService-getAllByIdByPage--`);
+
+    console.log(`*- id: '${id}' -*`);
+    console.log(`*- page: '${page}' -*`);
+    console.log(`*- token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-getAllByIdByPage-]`);
+    return this._http.get<any>(url, {
+      headers: httpHeaders,
+      params: new HttpParams()
+        .set(Literals.id, id)
+        .set(Literals.page, page)
+    });
+  } // getAllByIdByPage
+
+  // GET-запрос на удалённый сервер для получения
+  // данных о пользователе из БД по номеру телефона
+  getUserByPhone(url: string, phone: string, token: string): Observable<any> {
+    console.log(`[-WebApiService-getUserByPhone--`);
+
+    console.log(`*- phone: '${phone}' -*`);
+    console.log(`*- token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-getUserByPhone-]`);
+    return this._http.get<any>(url, {
+      headers: httpHeaders,
+      params: new HttpParams().set(Literals.phone, phone)
+    });
+  } // getUserByPhone
+
+  // GET-запрос на удалённый сервер для получения
+  // данных о пользователе из БД по email
+  getUserByEmail(url: string, email: string, token: string): Observable<any> {
+    console.log(`[-WebApiService-getUserByEmail--`);
+
+    console.log(`*- email: '${email}' -*`);
+    console.log(`*- token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-getUserByEmail-]`);
+    return this._http.get<any>(url, {
+      headers: httpHeaders,
+      params: new HttpParams().set(Literals.email, email)
+    });
+  } // getUserByEmail
+
+
+  // DELETE-запрос на удалённый сервер для удаления данных по идентификатору
+  deleteById(url: string, id: number, token: string): Observable<any> {
+    console.log(`[-WebApiService-deleteById--`);
+
+    console.log(`*- id: '${id}' -*`);
+    console.log(`*- token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-deleteById-]`);
+    return this._http.delete<any>(url, {
+      headers: httpHeaders,
+      params: new HttpParams().set(Literals.id, id)
+    });
+  } // deleteById
+
 
   // POST-запрос на удалённый сервер для входа в систему
   loginPOST(url: string, loginModel: LoginModel): Observable<any> {
@@ -41,7 +153,6 @@ export class WebApiService {
     console.log(`--WebApiService-loginPOST-]`);
     return this._http.post<any>(url, LoginModel.LoginModelToDto(loginModel));
   } // loginPOST
-
 
   // POST-запрос на удалённый сервер для выхода из системы
   logOutPOST(url: string, user: User): Observable<any> {
@@ -54,7 +165,6 @@ export class WebApiService {
     );
   } // logOutPOST
 
-
   // POST-запрос на удалённый сервер для обновления jwt-токена
   refreshPOST(url: string, user: User): Observable<any> {
     console.log(`[-WebApiService-refreshPOST--`);
@@ -64,7 +174,6 @@ export class WebApiService {
       url, { userId: user.id, userToken: user.userToken }
     );
   } // refreshPOST
-
 
   // POST-запрос на удалённый сервер для регистрации в системе
   registrationPOST(url: string, loginModel: LoginModel): Observable<any> {
@@ -103,7 +212,6 @@ export class WebApiService {
     );
   } // editUserPOST
 
-
   // POST-запрос на удалённый сервер для смены пароля пользователя
   editPasswordPOST(url: string, userId: number, newPassword: string, token: string): Observable<any> {
     console.log(`[-WebApiService-editPasswordPOST--`);
@@ -128,14 +236,14 @@ export class WebApiService {
 
   // POST-запрос на удалённый сервер для загрузки файла с изображением
   uploadImagePOST(
-    url: string, file: File, userId: number, companyId: number,
+    url: string, file: File, userId: number, id: number,
     tempDir: string, imageType: string, token: string): Observable<any> {
     console.log(`[-WebApiService-uploadImagePOST--`);
 
     console.log(`*- file: -*`);
     console.dir(file);
     console.log(`*- userId: '${userId}' -*`);
-    console.log(`*- companyId: '${companyId}' -*`);
+    console.log(`*- id: '${id}' -*`); // используется для разных сущностей (companyId, employeeId и т.д.)
     console.log(`*- tempDir: '${tempDir}' -*`);
     console.log(`*- imageType: '${imageType}' -*`);
     console.log(`*- token: '${token}' -*`);
@@ -157,7 +265,7 @@ export class WebApiService {
         headers: httpHeaders,
         params: new HttpParams()
           .set(Literals.userId, userId)
-          .set(Literals.companyId, companyId)
+          .set(Literals.id, id)
           .set(Literals.tempDir, tempDir)
           .set(Literals.imageType, imageType)
       }
@@ -168,12 +276,12 @@ export class WebApiService {
   // DELETE-запрос на удалённый сервер для удаления
   // папок со всеми временными изображениями
   deleteTempImages(
-    url: string, userId: number, companyId: number,
+    url: string, userId: number, id: number,
     imageType: string, token: string): Observable<any> {
     console.log(`[-WebApiService-deleteTempImages--`);
 
     console.log(`*- userId: '${userId}' -*`);
-    console.log(`*- companyId: '${companyId}' -*`);
+    console.log(`*- id: '${id}' -*`); // используется для разных сущностей (companyId, employeeId и т.д.)
     console.log(`*- imageType: '${imageType}' -*`);
     console.log(`*- token: '${token}' -*`);
 
@@ -185,7 +293,7 @@ export class WebApiService {
       headers: httpHeaders,
       params: new HttpParams()
         .set(Literals.userId, userId)
-        .set(Literals.companyId, companyId)
+        .set(Literals.id, id)
         .set(Literals.imageType, imageType)
     });
   } // deleteTempImages
@@ -209,50 +317,10 @@ export class WebApiService {
   } // deleteUser*/
 
 
-  // DELETE-запрос на удалённый сервер для удаления данных по идентификатору
-  deleteById(url: string, id: number, token: string): Observable<any> {
-    console.log(`[-WebApiService-deleteById--`);
-
-    console.log(`*- id: '${id}' -*`);
-    console.log(`*- token: '${token}' -*`);
-
-    // заголовок запроса с jwt-токеном
-    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
-
-    console.log(`--WebApiService-deleteById-]`);
-    return this._http.delete<any>(url, {
-      headers: httpHeaders,
-      params: new HttpParams().set(Literals.id, id)
-    });
-  } // deleteById
-
-
-  // GET-запрос на удалённый сервер для получения части коллекции
-  // записей заданной таблицы из БД на заданной странице
-  getAllByPage(url: string, page: number): Observable<any> {
-    return this._http.get<any>(url, {
-      params: new HttpParams().set(Literals.page, page)
-    });
-  } // getAllByPage
-
-
-  // GET-запрос на удалённый сервер для получения всей коллекции
-  // записей заданной таблицы из БД
-  getAll(url: string, token: string): Observable<any> {
-    console.log(`[-WebApiService-getAll--`);
-
-    // заголовок запроса с jwt-токеном
-    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
-
-    console.log(`--WebApiService-getAll-]`);
-    return this._http.get<any>(url, { headers: httpHeaders });
-  } // getAll
-
-
-  // GET-запрос на удалённый сервер для получения части коллекции
+  // GET-запрос на удалённый сервер для получения части коллекции         // ЭТО getAllByIdByPage
   // записей таблицы "КОМПАНИИ" из БД на заданной странице,
   // соответствующих параметру идентификатора пользователя
-  getAllCompaniesByUserIdByPage(
+  /*getAllCompaniesByUserIdByPage(
     url: string, userId: number, page: number, token: string): Observable<any> {
     console.log(`[-WebApiService-getAllCompaniesByUserIdByPage--`);
 
@@ -270,30 +338,12 @@ export class WebApiService {
         .set(Literals.userId, userId)
         .set(Literals.page, page)
     });
-  } // getAllCompaniesByUserIdByPage
+  } // getAllCompaniesByUserIdByPage*/
 
 
-  // GET-запрос на удалённый сервер для получения записи из БД по идентификатору
-  getById(url: string, id: number, token: string): Observable<any> {
-    console.log(`[-WebApiService-getById--`);
-
-    console.log(`*- id: '${id}' -*`);
-    console.log(`*- token: '${token}' -*`);
-
-    // заголовок запроса с jwt-токеном
-    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
-
-    console.log(`--WebApiService-getById-]`);
-    return this._http.get<any>(url, {
-      headers: httpHeaders,
-      params: new HttpParams().set(Literals.id, id)
-    });
-  } // getCompanyFormParams
-
-
-  // GET-запрос на удалённый сервер для получения
+  // GET-запрос на удалённый сервер для получения           // ЭТО ПРОСТО GET
   // параметров формы создания/изменения данных о компании
-  getCompanyFormParams(url: string, token: string): Observable<any> {
+  /*getCompanyFormParams(url: string, token: string): Observable<any> {
     console.log(`[-WebApiService-getCompanyFormParams--`);
 
     console.log(`*- token: '${token}' -*`);
@@ -303,7 +353,7 @@ export class WebApiService {
 
     console.log(`--WebApiService-getCompanyFormParams-]`);
     return this._http.get<any>(url, { headers: httpHeaders });
-  } // getCompanyFormParams
+  } // getCompanyFormParams*/
 
 
   // PUT-запрос на удалённый сервер для создания новой записи в таблице "КОМПАНИИ" БД
@@ -325,7 +375,6 @@ export class WebApiService {
       { headers: httpHeaders }
     );
   } // createCompanyPUT
-
 
   // POST-запрос на удалённый сервер для изменения
   // на сервере выбранной записи в таблице "КОМПАНИИ" БД
@@ -369,7 +418,6 @@ export class WebApiService {
     );
   } // createServicePUT
 
-
   // POST-запрос на удалённый сервер для изменения
   // на сервере выбранной записи в таблице "УСЛУГИ" БД
   editServicePOST(url: string, service: Service, token: string): Observable<any> {
@@ -390,6 +438,48 @@ export class WebApiService {
       { headers: httpHeaders }
     );
   } // editServicePOST
+
+
+  // PUT-запрос на удалённый сервер для создания новой записи в таблице "СОТРУДНИКИ" БД
+  createEmployeePUT(url: string, employee: Employee, token: string): Observable<any> {
+    console.log(`[-WebApiService-createEmployeePUT--`);
+
+    console.log(`*- employee: -*`);
+    console.dir(employee);
+    console.dir(Employee.EmployeeToDto(employee));
+    console.log(`*- token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-createEmployeePUT-]`);
+    return this._http.put<any>(
+      url,
+      Employee.EmployeeToDto(employee),
+      { headers: httpHeaders }
+    );
+  } // createEmployeePUT
+
+  // POST-запрос на удалённый сервер для изменения
+  // на сервере выбранной записи в таблице "СОТРУДНИКИ" БД
+  editEmployeePOST(url: string, employee: Employee, token: string): Observable<any> {
+    console.log(`[-WebApiService-editEmployeePOST--`);
+
+    console.log(`*- employee: -*`);
+    console.dir(employee);
+    console.dir(Employee.EmployeeToDto(employee));
+    console.log(`*- token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-editEmployeePOST-]`);
+    return this._http.post<any>(
+      url,
+      Employee.EmployeeToDto(employee),
+      { headers: httpHeaders }
+    );
+  } // editEmployeePOST
 
 
   // метод формирования нового заголовка запроса с jwt-токеном

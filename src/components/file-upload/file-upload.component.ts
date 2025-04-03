@@ -118,14 +118,14 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
   // метод для передачи текста с html-разметкой в атрибут title
   toHtml(imageHTMLElement: HTMLElement, spanHTMLElement: HTMLElement): void {
-    console.log(`[-FileUploadComponent-toHtml--`);
+    //console.log(`[-FileUploadComponent-toHtml--`);
 
-    console.log(`*- spanHTMLElement.innerHTML: '${spanHTMLElement.innerHTML}' -*`);
+    //console.log(`*- spanHTMLElement.innerHTML: '${spanHTMLElement.innerHTML}' -*`);
 
     imageHTMLElement.title = spanHTMLElement.innerHTML;
-    console.log(`*- imageHTMLElement.title: '${imageHTMLElement.title}' -*`);
+    //console.log(`*- imageHTMLElement.title: '${imageHTMLElement.title}' -*`);
 
-    console.log(`--FileUploadComponent-toHtml-]`);
+    //console.log(`--FileUploadComponent-toHtml-]`);
   } // toHtml
 
 

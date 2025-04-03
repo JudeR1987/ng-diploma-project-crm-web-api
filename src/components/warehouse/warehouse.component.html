@@ -1,0 +1,142 @@
+
+<!-- /warehouse/:id -->
+
+<!-- компонент с отображением коллекции товаров со склада -->
+
+<!-- разметка компонента WarehouseComponent -->
+<main class="row bg-main-color content-height mx-auto p-0 w-lg-95
+             justify-content-center align-items-start align-items-lg-stretch">
+
+  <div class="col-12 m-0 p-0 row justify-content-center align-items-stretch">
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <!-- кнопки -->
+    <div class="col-lg-3 col-xl-2 m-0 p-1 px-sm-2 pt-sm-3 bg-aside-color">
+      <div class="row m-0 p-0 justify-content-evenly justify-content-lg-center">
+
+        <!-- 1-я кнопка: "создать сотрудника" -->
+        <!--<div class="col-5 col-sm-4 col-md-3 col-lg-11 col-xl-10 col-xxl-9 p-1">
+          <button class="btn btn-primary border-2 w-100 m-0 p-1 fw-bold"
+                  type="button"
+                  (click)="createEmployee()"
+                  title="{{component.butCreateEmployeeTitle}}">
+            {{component.butCreateEmployeeValue}}
+            <i class="fa fa-plus-circle"></i>
+          </button>
+        </div>-->
+
+      </div>
+    </div>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <!-- данные о возможностях -->
+    <div class="col-lg-9 col-xl-10 m-0 p-1 px-sm-2 py-sm-3 d-flex flex-column">
+
+      @if (component.isWaitFlag) {
+        <!-- загрузочный спиннер -->
+        <div class="d-flex justify-content-center align-items-end text-aside-color h-50">
+          <span class="spinner-border m-0 p-5 border-30px opacity-75 speed-600ms"></span>
+        </div>
+
+      } @else {
+        <!-- основные данные -->
+
+          <!-- заголовок -->
+        <h4 class="text-primary text-center" [innerHTML]="component.displayTitle"></h4>
+
+        <!-- данные о сотрудниках, если такие есть -->
+        <!--@if (employees.length > zero) {-->
+        @if (false) {
+
+          <div class="bg-aside-color border border-2 border-back-color m-0 mb-2 p-1
+                      row justify-content-center justify-content-md-start">
+
+            <!-- заголовок области "компании" -->
+            <!--<h5 class="text-back-color m-0 px-3 py-2" [innerHTML]="component.companiesTitle"></h5>-->
+
+            <!-- сведения о сотрудниках -->
+            <!--@for (employee of employees; track employee.id; let i = $index) {
+              <div class="col-sm-11 col-md-6 col-xxl-4 m-0 p-0">
+                <div class="d-flex flex-column m-0 p-1 h-100">
+
+                  &lt;!&ndash; компонент карточки со сведениями о компании &ndash;&gt;
+                  &lt;!&ndash;<card-company class="m-0 p-0 h-100"
+                                [company]="company"
+                                [labelSchedule]="component.labelSchedule"
+                                [labelPhone]="component.labelPhone"
+                                [butSenderCompanyIdTitle]="component.butEditCompanyTitle"
+                                [butSenderCompanyIdValue]="component.butEditCompanyValue"
+                                (onSendCompanyId)="sendCompanyIdHandler($event)">
+                  </card-company>&ndash;&gt;
+                  &lt;!&ndash;<card-company class="col-sm-11 col-md-6 col-xxl-4 m-0 p-1"
+                                [company]="company"
+                                [labelSchedule]="component.labelSchedule"
+                                [labelPhone]="component.labelPhone"
+                                [butSenderCompanyIdTitle]="component.butEditCompanyTitle"
+                                [butSenderCompanyIdValue]="component.butEditCompanyValue"
+                                [srcLogoPath]="component.srcLogoPath"
+                                [fileNameLogoDef]="component.fileNameLogoDef"
+                                [srcImagePath]="component.srcImagePath"
+                                [fileNameCompanyTitleImageDef]="component.fileNameCompanyTitleImageDef"
+                                (onSendCompanyId)="sendCompanyIdHandler($event)">
+                  </card-company>&ndash;&gt;
+
+                  &lt;!&ndash; кнопки для данного салона &ndash;&gt;
+                  &lt;!&ndash;<div class="m-0 mt-1 p-0 d-flex justify-content-start align-items-center h-auto">
+
+                    &lt;!&ndash; кнопка "Управление салоном" &ndash;&gt;
+                    <div class="dropdown m-0 p-0">
+                      <button class="dropdown-toggle btn btn-sm btn-primary m-0 px-1"
+                              type="button"
+                              data-bs-toggle="dropdown"
+                              title="{{component.butSalonManagementTitle}}">
+                        {{component.butSalonManagementValue}}
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-start
+                               m-0 mt-2px px-0 py-1 border border-1 border-primary">
+                        <li>
+                          &lt;!&ndash; кнопка "Управление персоналом"" &ndash;&gt;
+                          <button class="dropdown-item px-2 py-1 fw-bold text-primary hover-text-main-color"
+                                  type="button" (click)="routingToEmployees(company.id)"
+                                  title="{{component.butEmployeesManagementTitle}}">
+                            {{component.butEmployeesManagementValue}}
+                          </button>
+                        </li>
+                        <li>
+                          &lt;!&ndash; кнопка "Управление складом"" &ndash;&gt;
+                          <button class="dropdown-item px-2 py-1 fw-bold text-primary hover-text-main-color"
+                                  type="button" (click)="routingToWarehouse(company.id)"
+                                  title="{{component.butWarehouseManagementTitle}}">
+                            {{component.butWarehouseManagementValue}}
+                          </button>
+                        </li>
+                        <li>
+                          &lt;!&ndash; кнопка "Просмотр отчётов" &ndash;&gt;
+                          <button class="dropdown-item px-2 py-1 fw-bold text-primary hover-text-main-color"
+                                  type="button" (click)="routingToReports(company.id)"
+                                  title="{{component.butReportsTitle}}">
+                            {{component.butReportsValue}}
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+
+                  </div>&ndash;&gt;
+
+                </div>
+              </div>
+            }--> <!-- for -->
+
+          </div>
+
+        } <!-- if -->
+
+      } <!-- if -->
+
+    </div>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  </div>
+
+</main>

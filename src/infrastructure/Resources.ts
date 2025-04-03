@@ -2,6 +2,7 @@
 // класс с набором строковых значений для разных языков
 // ----------------------------------------------------------------------------
 import {Literals} from './Literals';
+import {ScheduleComponent} from '../components/schedule/schedule.component';
 
 export class Resources {
 
@@ -76,6 +77,31 @@ export class Resources {
   public static readonly appEmployeesTitle: Record<string, string> = {
     'rus': 'Сотрудники',
     'eng': 'Employees' };
+
+  // заголовок на странице "Добавить сотрудника"
+  public static readonly appCreateEmployeeFormTitle: Record<string, string> = {
+    'rus': 'Добавить нового сотрудника',
+    'eng': 'Add a new employee' };
+
+  // заголовок на странице "Изменить сотрудника"
+  public static readonly appEditEmployeeFormTitle: Record<string, string> = {
+    'rus': 'Изменение данных о сотруднике',
+    'eng': 'Changing employee information' };
+
+  // заголовок на странице "Расписание"
+  public static readonly appScheduleTitle: Record<string, string> = {
+    'rus': 'Расписание',
+    'eng': 'Schedule' };
+
+  // заголовок на странице "Склад"
+  public static readonly appWarehouseTitle: Record<string, string> = {
+    'rus': 'Склад',
+    'eng': 'Warehouse' };
+
+  // заголовок на странице "Отчёты"
+  public static readonly appReportsTitle: Record<string, string> = {
+    'rus': 'Отчёты',
+    'eng': 'Reports' };
 
   // всплывающая подсказка на логотипе "Home"
   public static readonly appLogoTitle: Record<string, string> = {
@@ -393,11 +419,6 @@ export class Resources {
     'rus': 'Ваши данные',
     'eng': 'Your details' };
 
-  // заголовок поля ввода имени пользователя
-  public static readonly userFormLabelUserName: Record<string, string> = {
-    'rus': 'Имя',
-    'eng': 'Name' };
-
   // шаблон поля ввода имени пользователя
   public static readonly userFormUserNamePlaceholder: Record<string, string> = {
     'rus': 'Ваше имя',
@@ -433,21 +454,9 @@ export class Resources {
     'rus': 'некорректные данные о новой фотографии',
     'eng': 'incorrect information about the new photo' };
 
-  public static readonly userFormIncorrectTempDirectory: Record<string, string> = {
-    'rus': 'папка с временными фотографиями отсутствует',
-    'eng': 'the folder with temporary photos is missing' };
-
   public static readonly userFormOkData: Record<string, string> = {
     'rus': 'данные о пользователе успешно изменены',
     'eng': 'user data changed successfully' };
-
-  public static readonly userFormUploadImageOkData: Record<string, string> = {
-    'rus': 'изображение успешно загружено',
-    'eng': 'image uploaded successfully' };
-
-  public static readonly userFormDeleteTempDirectoryOk: Record<string, string> = {
-    'rus': 'папка с временными фотографиями удалена',
-    'eng': 'folder with temporary photos deleted' };
 
   public static readonly userFormDeleteUserOk: Record<string, string> = {
     'rus': 'данные о пользователе удалены',
@@ -457,16 +466,6 @@ export class Resources {
   public static readonly userFormButUserEditTitle: Record<string, string> = {
     'rus': 'редактировать данные о пользователе',
     'eng': 'edit user data' };
-
-  // заголовок поля выбора фотографии пользователя
-  public static readonly userFormLabelInputImage: Record<string, string> = {
-    'rus': 'выберите фотографию',
-    'eng': 'select a photo' };
-
-  // всплывающая подсказка на кнопке "выбрать фотографию"
-  public static readonly userFormButNewFileNameTitle: Record<string, string> = {
-    'rus': 'выбрать файл с фотографией',
-    'eng': 'select a photo file' };
 
   // заголовок чек-бокса изменения возможности удаления данных
   public static readonly userFormLabelCheckboxDeletingFlag: Record<string, string> = {
@@ -785,6 +784,22 @@ export class Resources {
     'rus': 'некорректные данные о новом изображении салона',
     'eng': 'incorrect information about the new salon image' };
 
+  public static readonly companyFormIncorrectTempLogoDirectory: Record<string, string> = {
+    'rus': 'папка с временными изображениями логотипов отсутствует',
+    'eng': 'the folder with temporary logo images is missing' };
+
+  public static readonly companyFormIncorrectTempTitleImageDirectory: Record<string, string> = {
+    'rus': 'папка с временными изображениями компании отсутствует',
+    'eng': 'the folder with temporary company images is missing' };
+
+  public static readonly companyFormDeleteTempDirectoryLogoOk: Record<string, string> = {
+    'rus': 'папка с временными логотипами удалена',
+    'eng': 'folder with temporary logos deleted' };
+
+  public static readonly companyFormDeleteTempDirectoryTitleImageOk: Record<string, string> = {
+    'rus': 'папка с временными изображениями компании удалена',
+    'eng': 'folder with temporary company images deleted' };
+
   // всплывающая подсказка на кнопке "создать компанию"
   public static readonly companyFormButCompanyCreateTitle: Record<string, string> = {
     'rus': 'создать новый салон',
@@ -820,22 +835,6 @@ export class Resources {
   public static companyFormEditTitleImageTitleWithCompanyName(language: string, companyName: string): string {
     return `${this.companyFormEditTitleImageTitle[language]} &laquo;${companyName}&raquo;`;
   } // companyFormEditTitleImageTitleWithCompanyName
-
-  public static readonly companyFormIncorrectTempLogoDirectory: Record<string, string> = {
-    'rus': 'папка с временными изображениями логотипов отсутствует',
-    'eng': 'the folder with temporary logo images is missing' };
-
-  public static readonly companyFormIncorrectTempTitleImageDirectory: Record<string, string> = {
-    'rus': 'папка с временными изображениями компании отсутствует',
-    'eng': 'the folder with temporary company images is missing' };
-
-  public static readonly companyFormDeleteTempDirectoryLogoOk: Record<string, string> = {
-    'rus': 'папка с временными логотипами удалена',
-    'eng': 'folder with temporary logos deleted' };
-
-  public static readonly companyFormDeleteTempDirectoryTitleImageOk: Record<string, string> = {
-    'rus': 'папка с временными изображениями компании удалена',
-    'eng': 'folder with temporary company images deleted' };
 
   // заголовок поля выбора изображения логотипа компании
   public static readonly companyFormLabelInputImageLogo: Record<string, string> = {
@@ -1010,6 +1009,293 @@ export class Resources {
     'rus': 'Сотрудники',
     'eng': 'Employees' };
 
+  public static readonly employeesZeroCollectionTitle: Record<string, string> = {
+    'rus': 'Сотрудники отсутствуют',
+    'eng': 'There are no employees' };
+
+  // всплывающая подсказка на кнопке "создать сотрудника"
+  public static readonly employeesButCreateEmployeeTitle: Record<string, string> = {
+    'rus': 'добавить нового сотрудника',
+    'eng': 'add a new employee' };
+
+  // значение кнопки "создать сотрудника"
+  public static readonly employeesButCreateEmployeeValue: Record<string, string> = {
+    'rus': 'новый сотрудник',
+    'eng': 'new employee' };
+
+  // начальный фрагмент всплывающей подсказки на поле
+  // отображения рейтинга сотрудника в дочернем компоненте
+  public static readonly employeesRatingTitleStart: Record<string, string> = {
+    'rus': 'рейтинг сотрудника',
+    'eng': 'employee rating' };
+
+  // всплывающая подсказка на кнопке "показать расписание"
+  public static readonly employeesButShowScheduleEmployeeTitle: Record<string, string> = {
+    'rus': 'показать расписание сотрудника',
+    'eng': 'show the employee\'s schedule' };
+
+  // всплывающая подсказка на кнопке "изменить сотрудника"
+  public static readonly employeesButEditEmployeeTitle: Record<string, string> = {
+    'rus': 'изменить сведения о сотруднике',
+    'eng': 'change the information about the employee' };
+
+  // всплывающая подсказка на кнопке "удалить сотрудника"
+  public static readonly employeesButDeleteEmployeeTitle: Record<string, string> = {
+    'rus': 'удалить сведения о сотруднике',
+    'eng': 'delete employee information' };
+
+  // сообщения об ошибках
+  public static readonly employeesDeleteEmployeeOk: Record<string, string> = {
+    'rus': 'данные о сотруднике удалены',
+    'eng': 'employee data has been deleted' };
+
+  //endregion
+
+
+  //#region EmployeeFormComponent
+
+  // заголовок формы (значение по умолчанию)
+  public static readonly employeeFormTitleDefault: Record<string, string> = {
+    'rus': 'Данные о сотруднике',
+    'eng': 'Employee information' };
+
+  // заголовки
+  public static readonly employeeFormCreateTitle: Record<string, string> = {
+    'rus': 'Новый сотрудник',
+    'eng': 'New employee' };
+
+  public static readonly employeeFormEditTitle: Record<string, string> = {
+    'rus': 'Сотрудник',
+    'eng': 'Employee' };
+
+  public static employeeFormEditTitleWithEmployeeName(language: string, employeeName: string): string {
+    return `${this.employeeFormEditTitle[language]} ${employeeName}`;
+  } // employeeFormEditTitleWithEmployeeName
+
+  // всплывающая подсказка на кнопке "добавить сотрудника"
+  public static readonly employeeFormButEmployeeCreateTitle: Record<string, string> = {
+    'rus': 'добавить сведения о новом сотруднике',
+    'eng': 'add information about a new employee' };
+
+  // всплывающая подсказка на кнопке "изменить сотрудника"
+  public static readonly employeeFormButEmployeeEditTitle: Record<string, string> = {
+    'rus': 'редактировать сведения о сотруднике',
+    'eng': 'edit employee information' };
+
+  // всплывающая подсказка на кнопке "сброс данных"
+  public static readonly employeeFormButEmployeeFormCreateResetTitle: Record<string, string> = {
+    'rus': 'сбросить введённые данные о сотруднике',
+    'eng': 'reset the entered employee information' };
+
+  // шаблон поля ввода имени сотрудника
+  public static readonly employeeFormEmployeeNamePlaceholder: Record<string, string> = {
+    'rus': 'имя сотрудника',
+    'eng': 'employee name' };
+
+  // заголовок поля ввода наименования новой специальности сотрудника
+  public static readonly employeeFormLabelNewSpecializationName: Record<string, string> = {
+    'rus': 'Новая специальность',
+    'eng': 'New specialization' };
+
+  // шаблон поля ввода наименования новой специальности сотрудника
+  public static readonly employeeFormNewSpecializationNamePlaceholder: Record<string, string> = {
+    'rus': 'наименование специальности',
+    'eng': 'name of the specialization' };
+
+  // всплывающая подсказка на заголовке чек-бокса "новая специальность"
+  public static readonly employeeFormLabelCheckboxIsNewSpecializationTitle: Record<string, string> = {
+    'rus': 'добавить новую специальность',
+    'eng': 'add a new specialization' };
+
+  // заголовок поля ввода наименования новой должности сотрудника
+  public static readonly employeeFormLabelNewPositionName: Record<string, string> = {
+    'rus': 'Новая должность',
+    'eng': 'New position' };
+
+  // шаблон поля ввода наименования новой должности сотрудника
+  public static readonly employeeFormNewPositionNamePlaceholder: Record<string, string> = {
+    'rus': 'наименование должности',
+    'eng': 'name of the position' };
+
+  // всплывающая подсказка на заголовке чек-бокса "новая должность"
+  public static readonly employeeFormLabelCheckboxIsNewPositionTitle: Record<string, string> = {
+    'rus': 'добавить новую должность',
+    'eng': 'add a new position' };
+
+  // всплывающие подсказки на фотографии сотрудника
+  public static readonly employeeFormCreatePhotoTitle: Record<string, string> = {
+    'rus': 'фотография нового сотрудника',
+    'eng': 'photo of a new employee' };
+
+  // сообщения об ошибках
+  public static readonly employeeFormCreateEmployeeIncorrectData: Record<string, string> = {
+    'rus': 'некорректные данные для добавления сотрудника',
+    'eng': 'incorrect data for adding an employee' };
+
+  public static readonly employeeFormEditEmployeeIncorrectData: Record<string, string> = {
+    'rus': 'некорректные данные для изменения данных о сотруднике',
+    'eng': 'incorrect data for changing employee data' };
+
+  public static readonly employeeFormCreateOkData: Record<string, string> = {
+    'rus': 'Новый сотрудник успешно добавлен!',
+    'eng': 'New employee successfully added' };
+
+  public static readonly employeeFormEditOkData: Record<string, string> = {
+    'rus': 'данные о сотруднике успешно изменены',
+    'eng': 'employee data changed successfully' };
+
+  public static readonly employeeFormErrorRegisteredSpecialization: Record<string, string> = {
+    'rus': 'такая специальность уже зарегистрирована',
+    'eng': 'this specialization is already registered' };
+
+  public static readonly employeeFormErrorRegisteredPosition: Record<string, string> = {
+    'rus': 'такая должность уже зарегистрирована',
+    'eng': 'this position is already registered' };
+
+  public static readonly employeeFormIncorrectEmployeeName: Record<string, string> = {
+    'rus': 'некорректные данные об имени сотрудника',
+    'eng': 'incorrect information about the employee\'s name' };
+
+  public static readonly employeeFormIncorrectPhone: Record<string, string> = {
+    'rus': 'некорректные данные о номере телефона сотрудника',
+    'eng': 'incorrect information about the employee\'s phone number' };
+
+  public static readonly employeeFormIncorrectEmail: Record<string, string> = {
+    'rus': 'некорректные данные о почте сотрудника',
+    'eng': 'incorrect information about the employee\'s mail' };
+
+  public static readonly employeeFormIncorrectAvatar: Record<string, string> = {
+    'rus': 'некорректные данные о фотографии сотрудника',
+    'eng': 'incorrect information about the employee\'s photo' };
+
+  public static readonly employeeFormErrorEmployeeNameMaxLengthStart: Record<string, string> = {
+    'rus': 'максимальная длина имени сотрудника',
+    'eng': 'the maximum length of an employee\'s name is' };
+
+  public static employeeFormErrorEmployeeNameMaxLength(language: string, maxLength: number): string {
+    return `${this.employeeFormErrorEmployeeNameMaxLengthStart[language]}
+      ${maxLength} ${this.errorForMaxLengthEnd[language]}`;
+  } // employeeFormErrorEmployeeNameMaxLength
+
+  public static readonly employeeFormErrorSpecializationSelectedZeroValidator: Record<string, string> = {
+    'rus': 'специальность не выбрана',
+    'eng': 'specialization not selected' };
+
+  public static readonly employeeFormErrorNewSpecializationNameMaxLengthStart: Record<string, string> = {
+    'rus': 'максимальная длина наименования специальности',
+    'eng': 'the maximum length of the specialization name is' };
+
+  public static employeeFormErrorNewSpecializationNameMaxLength(language: string, maxLength: number): string {
+    return `${this.employeeFormErrorNewSpecializationNameMaxLengthStart[language]}
+      ${maxLength} ${this.errorForMaxLengthEnd[language]}`;
+  } // employeeFormErrorNewSpecializationNameMaxLength
+
+  public static readonly employeeFormErrorPositionSelectedZeroValidator: Record<string, string> = {
+    'rus': 'должность не выбрана',
+    'eng': 'position not selected' };
+
+  public static readonly employeeFormErrorNewPositionNameMaxLengthStart: Record<string, string> = {
+    'rus': 'максимальная длина наименования должности',
+    'eng': 'the maximum length of the position name is' };
+
+  public static employeeFormErrorNewPositionNameMaxLength(language: string, maxLength: number): string {
+    return `${this.employeeFormErrorNewPositionNameMaxLengthStart[language]}
+      ${maxLength} ${this.errorForMaxLengthEnd[language]}`;
+  } // employeeFormErrorNewPositionNameMaxLength
+
+
+  public static readonly employeeFormErrorNotMatchUserNameStart: Record<string, string> = {
+    'rus': 'пользователь зарегистрирован под именем',
+    'eng': 'the user is registered under the name' };
+
+  public static employeeFormErrorNotMatchUserName(language: string, userName: string): string {
+    return `${this.employeeFormErrorNotMatchUserNameStart[language]} <strong>${userName}</strong>`;
+  } // employeeFormErrorNotMatchUserName
+
+
+  public static readonly employeeFormErrorNotMatchUserPhoneStart: Record<string, string> = {
+    'rus': 'номер телефона пользователя',
+    'eng': 'user\'s phone number' };
+
+  public static employeeFormErrorNotMatchUserPhone(language: string, phone: string): string {
+    return `${this.employeeFormErrorNotMatchUserPhoneStart[language]}: <strong>${phone}</strong>`;
+  } // employeeFormErrorNotMatchUserPhone
+
+
+  public static readonly employeeFormErrorNotMatchUserEmailStart: Record<string, string> = {
+    'rus': 'адрес почты пользователя',
+    'eng': 'user\'s email address' };
+
+  public static employeeFormErrorNotMatchUserEmail(language: string, userEmail: string): string {
+    return `${this.employeeFormErrorNotMatchUserEmailStart[language]}: <strong>${userEmail}</strong>`;
+  } // employeeFormErrorNotMatchUserEmail
+
+
+  public static readonly employeeFormRegisteredUserOkStart: Record<string, string> = {
+    'rus': 'пользователь',
+    'eng': 'user' };
+
+  public static readonly employeeFormRegisteredUserOkEnd: Record<string, string> = {
+    'rus': 'успешно зарегистрирован',
+    'eng': 'successfully registered' };
+
+  public static employeeFormRegisteredUserOk(language: string, userName: string): string {
+    return `${this.employeeFormRegisteredUserOkStart[language]}
+      <strong>${userName}</strong> ${this.employeeFormRegisteredUserOkEnd[language]}`;
+  } // employeeFormRegisteredUserOk
+
+  public static readonly employeeFormUserNotRegisteredInCompanies: Record<string, string> = {
+    'rus': 'пользователь не сотрудничает с другими салонами',
+    'eng': 'the user does not cooperate with other salons' };
+
+  public static readonly employeeFormUserNotRegisteredInCompaniesStart: Record<string, string> = {
+    'rus': 'пользователь',
+    'eng': 'user' };
+
+  public static readonly employeeFormUserNotRegisteredInCompaniesMiddle: Record<string, string> = {
+    'rus': 'сотрудничает с салоном',
+    'eng': 'cooperates with the' };
+
+  public static readonly employeeFormUserNotRegisteredInCompaniesEnd: Record<string, string> = {
+    'rus': '',
+    'eng': ' salon' };
+
+  public static employeeFormUserRegisteredInCompany(language: string, userName: string, companyName: string): string {
+    return `${this.employeeFormUserNotRegisteredInCompaniesStart[language]}
+      <strong>${userName}</strong> ${this.employeeFormUserNotRegisteredInCompaniesMiddle[language]}
+      <strong>&laquo;${companyName}&raquo;</strong>${this.employeeFormUserNotRegisteredInCompaniesEnd[language]}`;
+  } // employeeFormUserRegisteredInCompany
+
+  //endregion
+
+
+  //#region ScheduleComponent
+
+  // заголовок
+  public static readonly scheduleTitle: Record<string, string> = {
+    'rus': 'Расписание',
+    'eng': 'Schedule' };
+
+  //endregion
+
+
+  //#region WarehouseComponent
+
+  // заголовок
+  public static readonly warehouseTitle: Record<string, string> = {
+    'rus': 'Склад',
+    'eng': 'Warehouse' };
+
+  //endregion
+
+
+  //#region ReportsComponent
+
+  // заголовок
+  public static readonly reportsTitle: Record<string, string> = {
+    'rus': 'Отчёты',
+    'eng': 'Reports' };
+
   //endregion
 
 
@@ -1157,7 +1443,7 @@ export class Resources {
     'rus': 'некорректный тип изображения',
     'eng': 'incorrect image type' };
 
-  public static readonly pageIncorrectData: Record<string, string> = {
+  public static readonly incorrectPageData: Record<string, string> = {
     'rus': 'некорректные данные о запрашиваемой странице',
     'eng': 'incorrect information about the requested page' };
 
@@ -1207,8 +1493,53 @@ export class Resources {
       : this.errorMaxValueStart[language]}: ${value}`;
   } // errorMinMaxValue
 
+  public static readonly incorrectEmployeeIdData: Record<string, string> = {
+    'rus': 'некорректные данные о сотруднике салона',
+    'eng': 'incorrect information about the salon employee' };
+
+  public static readonly notRegisteredEmployeeIdData: Record<string, string> = {
+    'rus': 'сотрудник не зарегистрирован',
+    'eng': 'the employee is not registered' };
+
+  public static readonly incorrectTempPhotosDirectory: Record<string, string> = {
+    'rus': 'папка с временными фотографиями отсутствует',
+    'eng': 'the folder with temporary photos is missing' };
+
+  public static readonly deleteTempPhotosDirectoryOk: Record<string, string> = {
+    'rus': 'папка с временными фотографиями удалена',
+    'eng': 'folder with temporary photos deleted' };
+
+  public static readonly uploadImageOkData: Record<string, string> = {
+    'rus': 'изображение успешно загружено',
+    'eng': 'image uploaded successfully' };
+
+  public static readonly notRegisteredSpecializationIdData: Record<string, string> = {
+    'rus': 'специальность не найдена',
+    'eng': 'specialty not found' };
+
+  public static readonly notRegisteredPositionIdData: Record<string, string> = {
+    'rus': 'должность не найдена',
+    'eng': 'position not found' };
+
+  public static readonly incorrectData: Record<string, string> = {
+    'rus': 'введены некорректные данные',
+    'eng': 'incorrect data has been entered' };
+
+  public static readonly incorrectPhoneData: Record<string, string> = {
+    'rus': 'некорректные данные номера телефона',
+    'eng': 'incorrect phone number data' };
+
+  public static readonly incorrectEmailData: Record<string, string> = {
+    'rus': 'некорректные данные почты',
+    'eng': 'incorrect email data' };
+
 
   // для форм
+
+  // заголовок поля ввода имени персоны
+  public static readonly labelPersonName: Record<string, string> = {
+    'rus': 'Имя',
+    'eng': 'Name' };
 
   // заголовок поля ввода номера телефона пользователя
   public static readonly labelPhone: Record<string, string> = {
@@ -1285,6 +1616,11 @@ export class Resources {
     'rus': 'создать',
     'eng': 'create' };
 
+  // значение кнопки "добавить"
+  public static readonly butAddValue: Record<string, string> = {
+    'rus': 'добавить',
+    'eng': 'add' };
+
   // значение кнопки "изменить"
   public static readonly butEditValue: Record<string, string> = {
     'rus': 'изменить',
@@ -1295,6 +1631,16 @@ export class Resources {
     'rus': 'удалить',
     'eng': 'delete' };
 
+  // значение кнопки "сброс"
+  public static readonly butResetValue: Record<string, string> = {
+    'rus': 'сброс',
+    'eng': 'reset' };
+
+  // заголовок поля выбора фотографии
+  public static readonly labelInputPhoto: Record<string, string> = {
+    'rus': 'выберите фотографию',
+    'eng': 'select a photo' };
+
   // заголовок поля вывода имени файла выбранного изображения
   public static readonly labelNewFileName: Record<string, string> = {
     'rus': 'выбран файл',
@@ -1304,6 +1650,11 @@ export class Resources {
   public static readonly labelFileNotSelected: Record<string, string> = {
     'rus': 'файл не выбран',
     'eng': 'the file is not selected' };
+
+  // всплывающая подсказка на кнопке "выбрать фотографию"
+  public static readonly butNewPhotoFileNameTitle: Record<string, string> = {
+    'rus': 'выбрать файл с фотографией',
+    'eng': 'select a photo file' };
 
   // значение кнопки "выбрать изображение"
   public static readonly butNewFileNameValue: Record<string, string> = {
@@ -1438,10 +1789,40 @@ export class Resources {
     'rus': 'мин.',
     'eng': 'minutes' };
 
-  // заголовок поля ввода текста комментария к услуге
+  // заголовок поля ввода текста комментария
   public static readonly labelComment: Record<string, string> = {
     'rus': 'Комментарий',
     'eng': 'Comment' };
+
+  // заголовок поля ввода специальности
+  public static readonly labelSpecialization: Record<string, string> = {
+    'rus': 'Специальность',
+    'eng': 'Specialization' };
+
+  // заголовок поля ввода должности
+  public static readonly labelPosition: Record<string, string> = {
+    'rus': 'Должность',
+    'eng': 'Position' };
+
+  // заголовок поля ввода рейтинга
+  public static readonly labelRating: Record<string, string> = {
+    'rus': 'Рейтинг',
+    'eng': 'Rating' };
+
+  // значение кнопки "показать расписание"
+  public static readonly butScheduleValue: Record<string, string> = {
+    'rus': 'расписание',
+    'eng': 'schedule' };
+
+  // первый элемент списка выбора специальности сотрудника
+  public static readonly firstOptionSpecializations: Record<string, string> = {
+    'rus': 'выберите специальность...',
+    'eng': 'select a specialization...' };
+
+  // первый элемент списка выбора должности сотрудника
+  public static readonly firstOptionPositions: Record<string, string> = {
+    'rus': 'выберите должность...',
+    'eng': 'select a position...' };
 
   //endregion
 

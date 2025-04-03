@@ -14,7 +14,6 @@ import {UserService} from '../../services/user.service';
 import {TokenService} from '../../services/token.service';
 import {AuthGuardService} from '../../services/auth-guard.service';
 import {Utils} from '../../infrastructure/Utils';
-import {User} from '../../models/classes/User';
 import {Resources} from '../../infrastructure/Resources';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NgIf} from '@angular/common';
@@ -124,14 +123,14 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
   // объект подписки на изменение языка, для отмены подписки при уничтожении компонента
   private _languageSubscription: Subscription = new Subscription();
 
+  // сведения об Id пользователя для создания/изменения сведений о компании
+  private _userId: number = Literals.zero;
+
   // режим создания/изменения сведений о компании
   private _mode: string = Literals.empty;
 
   // сведения об Id компании для изменения
   private _companyId: number = Literals.zero;
-
-  // сведения об Id пользователя для создания/изменения сведений о компании
-  private _userId: number = Literals.zero;
 
   // сведения о компании для создания/изменения
   public company: Company = new Company();
@@ -229,9 +228,9 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
     this.component.route_mode = items[1];
     console.log(`*- this.component.route_mode = '${this.component.route_mode}' -*`);
 
+    console.log(`*-this._userId: '${this._userId}' -*`);
     console.log(`*-this._mode: '${this._mode}' -*`);
     console.log(`*-this._companyId: '${this._companyId}' -*`);
-    console.log(`*-this._userId: '${this._userId}' -*`);
     console.log(`*-this.company-*`);
     console.dir(this.company);
 
@@ -286,9 +285,8 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
       }); // subscribe
 
     // получить данные о пользователе из сервиса-хранилища
-    let user: User = this._userService.user;
     console.log(`*-(было)-this._userId: '${this._userId}'-*`);
-    this._userId = user.id;
+    this._userId = this._userService.user.id;
     console.log(`*-(стало)-this._userId: '${this._userId}' -*`);
 
 
@@ -438,7 +436,7 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
     // на получение параметров формы создания/изменения данных о компании
     await this.requestGetCompanyFormParams();
 
-    // создание объектов полей ввода и формы создания/изменения данных о компании
+    // создание объектов полей ввода/выбора и формы создания/изменения данных о компании
     this.createFormControls();
     this.createForm();
 
@@ -596,7 +594,7 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
       console.log(`*-token: '${token}' -*`);
 
       let webResult: any = await firstValueFrom(
-        this._webApiService.getCompanyFormParams(Config.urlGetCompanyFormParams, token)
+        this._webApiService.get(Config.urlGetCompanyFormParams, token)
       );
       console.dir(webResult);
 
@@ -950,14 +948,10 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
     console.log(`--CompanyFormComponent-1-(запрос на создание/изменение)-`);
 
     // запрос на создание/изменение данных о компании
-    /*let result: { message: any, company: Company } =
-      //{ message: Literals.Ok, company: Company.CompanyToDto(new Company()) };
-      { message: Literals.Ok, company: new Company() };*/
     let result: any = Literals.Ok;
     try {
       // получить jwt-токен
       let token: string = this._tokenService.token;
-      console.log(`*-token: '${token}' -*`);
 
       let webResult: any = await firstValueFrom(
         this.company.id === Literals.zero
@@ -966,7 +960,8 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
       );
       console.dir(webResult);
 
-    } catch (e: any) {
+    }
+    catch (e: any) {
 
       console.dir(e);
       console.dir(e.error);
@@ -1052,7 +1047,8 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
       // переход в начало страницы
       Utils.toStart();
 
-    } else {
+    }
+    else {
       // иначе - сообщение об успехе
       result = this._companyId === this.zero
         ? Resources.companyFormCreateOkData[this.component.language]
@@ -1118,7 +1114,7 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
         // выключение спиннера ожидания данных
         this.component.isWaitFlag = false;
 
-        console.log(`--CompanyFormComponent-onSubmit-КОНЕЦ-]`);
+        console.log(`--CompanyFormComponent-sendFileHandler-КОНЕЦ-]`);
         return;
       } // if
 
@@ -1706,10 +1702,10 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
 
     } // try-catch
 
-    console.log(`--UserFormComponent-result:`);
+    console.log(`--CompanyFormComponent-result:`);
     console.dir(result);
 
-    console.log(`--UserFormComponent-2-(ответ на запрос получен)-`);
+    console.log(`--CompanyFormComponent-2-(ответ на запрос получен)-`);
 
     // выключение спиннера ожидания данных
     this.component.isWaitFlag = false;
@@ -1825,8 +1821,8 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
     console.log(`*-userIsLogin: '${userIsLogin}' -*`);
     if (!this.component.isChangedFlag && userIsLogin) {
 
-      // при загрузке компонента отправить запрос на удаление
-      // временных папок со всеми временными изображениями компании
+      // запрос на удаление временных папок
+      // со всеми временными изображениями компании
       await this.requestDeleteTempCompanyImages(this.logo);
       await this.requestDeleteTempCompanyImages(this.image);
 

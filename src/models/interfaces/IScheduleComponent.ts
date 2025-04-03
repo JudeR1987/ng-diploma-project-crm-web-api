@@ -1,57 +1,54 @@
 // ----------------------------------------------------------------------------
-// интерфейс объекта с параметрами компонента EmployeesComponent
+// интерфейс объекта с параметрами компонента ScheduleComponent
 // ----------------------------------------------------------------------------
-export interface IEmployeesComponent {
+export interface IScheduleComponent {
 
   //#region параметры меняющиеся при смене языка
 
-  // данные о заголовке для разных языков
-  //title: Record<string, string>,
-
-  // отображаемый заголовок
-  displayTitle: string,
+  // заголовок
+  title: string,
 
   // начальный фрагмент всплывающей подсказки на поле отображения рейтинга сотрудника
-  ratingTitleStart: string,
+  //ratingTitleStart: string,
 
   // заголовок поля отображения имени сотрудника
-  labelName: string,
+  //labelName: string,
 
   // заголовок поля отображения телефона сотрудника
-  labelPhone: string,
+  //labelPhone: string,
 
   // заголовок поля отображения e-mail сотрудника
-  labelEmail: string,
+  //labelEmail: string,
 
   // заголовок поля отображения специальности сотрудника
-  labelSpecialization: string,
+  //labelSpecialization: string,
 
   // заголовок поля отображения должности сотрудника
-  labelPosition: string,
+  //labelPosition: string,
 
   // заголовок поля отображения рейтинга сотрудника
   //labelRating: string,
 
   // всплывающая подсказка на кнопке "создать сотрудника"
-  butCreateEmployeeTitle: string,
+  //butCreateEmployeeTitle: string,
 
   // значение кнопки "создать сотрудника"
-  butCreateEmployeeValue: string,
+  //butCreateEmployeeValue: string,
 
   // всплывающая подсказка на кнопке "показать расписание"
-  butShowScheduleEmployeeTitle: string,
+  //butShowScheduleEmployeeTitle: string,
 
   // значение кнопки "показать расписание"
-  butShowScheduleEmployeeValue: string,
+  //butShowScheduleEmployeeValue: string,
 
   // всплывающая подсказка на кнопке "изменить сотрудника"
-  butEditEmployeeTitle: string,
+  //butEditEmployeeTitle: string,
 
   // значение кнопки "изменить сотрудника"
   //butEditEmployeeValue: string,
 
   // всплывающая подсказка на кнопке "удалить сотрудника"
-  butDeleteEmployeeTitle: string,
+  //butDeleteEmployeeTitle: string,
 
   // значение кнопки "удалить сотрудника"
   //butDeleteEmployeeValue: string,
@@ -130,5 +127,5 @@ export interface IEmployeesComponent {
 
   //endregion
 
-} // interface IEmployeesComponent
+} // interface IScheduleComponent
 // ----------------------------------------------------------------------------

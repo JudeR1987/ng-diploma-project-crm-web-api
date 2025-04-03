@@ -110,7 +110,14 @@ export class AuthGuardService implements CanActivate {
     } catch (e: any) {
       console.dir(e);
       console.dir(e.error);
-      result.message = e.error;
+
+      // если отсутствует соединение
+      if (e.status === Literals.zero) {
+        result.message = Resources.noConnection[this._languageService.language];
+
+        // другие ошибки
+      } else
+        result.message = e.error;
 
       console.log(`--AuthGuardService-login-]`);
       return result;
@@ -145,7 +152,14 @@ export class AuthGuardService implements CanActivate {
     } catch (e: any) {
       console.dir(e);
       console.dir(e.error);
-      message = e.error;
+
+      // если отсутствует соединение
+      if (e.status === Literals.zero) {
+        message = Resources.noConnection[this._languageService.language];
+
+        // другие ошибки
+      } else
+        message = e.error;
 
       console.log(`--AuthGuardService-logOut-]`);
       return message;
@@ -174,7 +188,14 @@ export class AuthGuardService implements CanActivate {
     } catch (e: any) {
       console.dir(e);
       console.dir(e.error);
-      message = e.error;
+
+      // если отсутствует соединение
+      if (e.status === Literals.zero) {
+        message = Resources.noConnection[this._languageService.language];
+
+        // другие ошибки
+      } else
+        message = e.error;
 
       console.log(`--AuthGuardService-registration-]`);
       return message;
@@ -211,7 +232,14 @@ export class AuthGuardService implements CanActivate {
     } catch (e: any) {
       console.dir(e);
       console.dir(e.error);
-      result.message = e.error;
+
+      // если отсутствует соединение
+      if (e.status === Literals.zero) {
+        result.message = Resources.noConnection[this._languageService.language];
+
+        // другие ошибки
+      } else
+        result.message = e.error;
 
     } // try-catch
 

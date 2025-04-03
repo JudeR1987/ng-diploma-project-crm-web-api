@@ -106,6 +106,54 @@ export class Config {
   public static readonly urlDeleteService: string =
     `${this.urlHost}/api/services/deleteService`;
 
+  // 24. url для получения от сервера данных о сотрудниках заданной компании
+  public static readonly urlGetAllEmployeesByCompanyId: string =
+    `${this.urlHost}/api/employees/getAllByCompanyId`;
+
+  // 25. url для удаления данных о сотруднике
+  public static readonly urlDeleteEmployee: string =
+    `${this.urlHost}/api/employees/deleteEmployee`;
+
+  // 26. url для получения данных о записи о сотруднике по его идентификатору
+  // из таблицы "СОТРУДНИКИ" (Employees) от сервера
+  public static readonly urlGetEmployeeById: string =
+    `${this.urlHost}/api/employees/getById`;
+
+  // 27. url для получения параметров формы добавления/изменения данных о сотруднике
+  public static readonly urlGetEmployeeFormParams: string =
+    `${this.urlHost}/api/employees/getEmployeeFormParams`;
+
+  // 28. url для удаления временной папки со всеми временными фотографиями сотрудника
+  public static readonly urlDeleteTempEmployeePhotos: string =
+    `${this.urlHost}/api/employees/deleteTempEmployeePhotos`;
+
+  // 29. url для загрузки изображения временной фотографии сотрудника
+  public static readonly urlUploadTempEmployeePhoto: string =
+    `${this.urlHost}/upload/tempEmployeePhoto`;
+
+  // 30. url для добавления на сервере новой записи в таблицу "СОТРУДНИКИ" БД
+  public static readonly urlCreateEmployee: string =
+    `${this.urlHost}/api/employees/createEmployee`;
+
+  // 31. url для изменения на сервере выбранной записи в таблице "СОТРУДНИКИ" БД
+  public static readonly urlEditEmployee: string =
+    `${this.urlHost}/api/employees/editEmployee`;
+
+  // 32. url для получения данных о записи о пользователе по его номеру телефона
+  // из таблицы "ПОЛЬЗОВАТЕЛИ" (Users) от сервера
+  public static readonly urlGetUserByPhone: string =
+    `${this.urlHost}/api/users/getByPhone`;
+
+  // 33. url для получения данных о записи о пользователе по его email
+  // из таблицы "ПОЛЬЗОВАТЕЛИ" (Users) от сервера
+  public static readonly urlGetUserByEmail: string =
+    `${this.urlHost}/api/users/getByEmail`;
+
+  // 34. url для получения данных о записи о сотруднике по идентификатору пользователя
+  // из таблицы "СОТРУДНИКИ" (Employees) от сервера
+  public static readonly urlGetEmployeeByUserId: string =
+    `${this.urlHost}/api/employees/getByUserId`;
+
 
 
 

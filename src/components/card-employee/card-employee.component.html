@@ -1,0 +1,179 @@
+
+<!-- компонент отображения данных о сотруднике в виде карточки -->
+
+<div class="card bg-main-color text-back-color border border-2
+            border-back-color border-opacity-75 h-100 m-0 p-0 justify-content-between">
+
+  <!-- сведения о сотруднике - тело -->
+  <div class="card-body m-0 p-0 bg-aside-color rounded-top-2
+              row justify-content-center align-items-center">
+
+    <!-- фотография и рейтинг сотрудника -->
+    <div class="col-sm-4 col-md-12 col-xl-4 col-xxl-4 m-0 p-1">
+      <div class="d-flex justify-content-center align-items-center m-0 p-0">
+        <div class="d-flex flex-column align-items-center m-0 p-0">
+
+          <!-- фотография сотрудника -->
+          <div class="m-0 p-1 h-180px-w-100-180px bg-main-color border border-back-color rounded d-flex">
+            <img class="card-img m-0 p-0 h-auto"
+                 src="{{employee.avatar ? employee.avatar : srcPhotoPath + fileNamePhotoDef}}"
+                 alt="{{employee.avatar ? employee.fileName : fileNamePhotoDef}}"
+                 title="{{employee.user.userName}}">
+          </div>
+
+          <!-- рейтинг сотрудника -->
+          <div class="m-0 p-1 font-size-16pt w-auto"
+               [innerHTML]="ratingToStar(employee.rating)"
+               title="{{ratingTitleStart}} &laquo;{{employee.rating}}&raquo;"></div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- сведения о сотруднике -->
+    <div class="col-sm-8 col-md-12 col-xl-8 col-xxl-8 m-0 p-1">
+      <div class="m-0 p-0 row justify-content-start align-items-center">
+
+        <!-- имя сотрудника -->
+        <div class="row m-0 p-0 align-items-center">
+
+          <div class="col-sm-4 p-1">
+            <p class="card-text m-0 p-0 font-size-10pt">
+              {{labelName}}:
+            </p>
+          </div>
+
+          <div class="col-sm-8 px-0 py-1">
+            <p class="card-text m-0 px-2 py-1 bg-light fw-bold
+                      border border-2 border-back-color rounded">
+              {{employee.user.userName}}
+            </p>
+          </div>
+
+        </div>
+
+        <!-- телефон сотрудника -->
+        <div class="row m-0 p-0 align-items-center">
+
+          <div class="col-sm-4 p-1">
+            <p class="card-text m-0 p-0 font-size-10pt">
+              {{labelPhone}}:
+            </p>
+          </div>
+
+          <div class="col-sm-8 px-0 py-1">
+            <p class="card-text m-0 px-2 py-1 bg-light fw-bold
+                      border border-2 border-back-color rounded">
+              {{employee.user.phone}}
+            </p>
+          </div>
+
+        </div>
+
+        <!-- e-mail сотрудника -->
+        <div class="row m-0 p-0 align-items-center">
+
+          <div class="col-sm-4 p-1">
+            <p class="card-text m-0 p-0 font-size-10pt">
+              {{labelEmail}}:
+            </p>
+          </div>
+
+          <div class="col-sm-8 px-0 py-1">
+            <p class="card-text m-0 px-2 py-1 bg-light fw-bold
+                      border border-2 border-back-color rounded">
+              {{employee.user.email}}
+            </p>
+          </div>
+
+        </div>
+
+        <!-- специальность сотрудника -->
+        <div class="row m-0 p-0 align-items-center">
+
+          <div class="col-sm-4 p-1">
+            <p class="card-text m-0 p-0 font-size-10pt">
+              {{labelSpecialization}}:
+            </p>
+          </div>
+
+          <div class="col-sm-8 px-0 py-1">
+            <p class="card-text m-0 px-2 py-1 bg-light fw-bold
+                      border border-2 border-back-color rounded">
+              {{employee.specialization.name}}
+            </p>
+          </div>
+
+        </div>
+
+        <!-- должность сотрудника -->
+        <div class="row m-0 p-0 align-items-center">
+
+          <div class="col-sm-4 p-1">
+            <p class="card-text m-0 p-0 font-size-10pt">
+              {{labelPosition}}:
+            </p>
+          </div>
+
+          <div class="col-sm-8 px-0 py-1">
+            <p class="card-text m-0 px-2 py-1 bg-light fw-bold
+                      border border-2 border-back-color rounded">
+              {{employee.position.name}}
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- подвал -->
+  <!-- в режиме управления -->
+  @if (isManagementFlag) {
+    <div class="card-footer m-0 p-0 row justify-content-start align-items-center">
+
+      <!-- кнопка "Расписание" -->
+      <div class="col-4 m-0 p-0">
+        <div class="m-0 p-1">
+          <button class="btn btn-sm btn-primary m-0 px-2 py-1 w-100 w-min-100px"
+                  type="button"
+                  title="{{butSenderEmployeeIdModeScheduleTitle}}"
+                  (click)="sendEmployeeIdMode(showSchedule)">
+            {{butSenderEmployeeIdModeScheduleValue}}
+          </button>
+        </div>
+      </div>
+
+      <!-- кнопки изменить/удалить -->
+      <div class="m-0 ms-auto p-0 w-auto">
+        <div class="m-0 p-0 row justify-content-center align-items-center">
+
+          <!-- кнопка изменить -->
+          <div class="col m-0 p-1 w-auto">
+            <button class="btn btn-sm btn-outline-success m-0 px-2 py-1 w-100"
+                    type="button"
+                    title="{{butSenderEmployeeIdModeEditTitle}}"
+                    (click)="sendEmployeeIdMode(editEmployee)">
+              <i class="fa fa-edit"></i>
+            </button>
+          </div>
+
+          <!-- кнопка удалить -->
+          <div class="col m-0 p-1 w-auto">
+            <button class="btn btn-sm btn-outline-danger m-0 px-2 py-1 w-100"
+                    type="button"
+                    title="{{butSenderEmployeeIdModeDeleteTitle}}"
+                    (click)="sendEmployeeIdMode(deleteEmployee)">
+              <i class="fa fa-trash w-16px"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  } <!-- if -->
+
+</div>

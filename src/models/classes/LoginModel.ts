@@ -11,6 +11,9 @@ export class LoginModel {
     // (логин=телефону только при регистрации)
     //private _login: string = Literals.empty,
 
+    // имя пользователя
+    private _userName: string = Literals.empty,
+
     // номер телефона пользователя
     private _phone: string = Literals.empty,
 
@@ -28,6 +31,9 @@ export class LoginModel {
   /*get login(): string { return this._login; }
   set login(value: string) { this._login = value; }*/
 
+  get userName(): string { return this._userName; }
+  set userName(value: string) { this._userName = value; }
+
   get phone(): string { return this._phone; }
   set phone(value: string) { this._phone = value; }
 
@@ -44,6 +50,7 @@ export class LoginModel {
   public static newLoginModel(srcLoginModel: LoginModel | any): LoginModel {
     return new LoginModel(
       //srcLoginModel.login,
+      srcLoginModel.userName,
       srcLoginModel.phone,
       srcLoginModel.email,
       srcLoginModel.password
@@ -62,8 +69,9 @@ export class LoginModel {
   public static LoginModelToDto(srcLoginModel: LoginModel): any {
     return {
       //login: srcLoginModel.login,
-      phone: srcLoginModel.phone,
-      email: srcLoginModel.email,
+      userName: srcLoginModel.userName,
+      phone:    srcLoginModel.phone,
+      email:    srcLoginModel.email,
       password: srcLoginModel.password,
     };
   } // LoginModelToDto

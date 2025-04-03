@@ -1,0 +1,455 @@
+
+<!-- /employee-form/:mode -->
+
+<!-- компонент с формой добавления/изменения сведений о сотруднике салона -->
+
+<!-- разметка компонента EmployeeFormComponent -->
+<main class="row bg-main-color content-height mx-auto p-1 p-sm-2
+             w-lg-95 justify-content-center align-items-start">
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+  <div class="col-md-10 col-lg-8 col-xl-7 col-xxl-6 m-0 my-sm-2 p-0">
+
+    <!-- форма добавления/изменения данных о сотруднике -->
+    <form class="form-control p-2" novalidate
+          [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+
+      <!-- заголовок -->
+      <div class="bg-primary p-1">
+        <h2 class="text-center text-light m-0">{{component.title}}</h2>
+      </div>
+
+      <!-- тело - основные параметры формы -->
+      <div class="row mx-0 my-1 p-2 bg-primary-subtle
+                  border border-primary justify-content-center">
+
+        <!-- компонент выбора фотографии сотрудника -->
+        <div class="row mx-0 my-1 p-0 justify-content-center align-items-center">
+          <file-upload class="col-md-10 col-lg-10 m-0 p-0"
+                       [imagePath]="employee.avatar"
+                       [fileName]="employee.fileName"
+                       [imageTitle]="component.photoTitle"
+                       [labelInputImage]="component.labelInputImage"
+                       [labelNewFileName]="component.labelNewFileName"
+                       [labelFileNotSelected]="component.labelFileNotSelected"
+                       [butNewFileNameTitle]="component.butNewFileNameTitle"
+                       [butNewFileNameValue]="component.butNewFileNameValue"
+                       [isWaitFlag]="component.isWaitFlag"
+                       [isDeletingFlag]="false"
+                       [newFileName]="component.newFileName"
+                       [sizeImage]="component.sizeImage"
+                       (onSendFile)="sendFileHandler($event)" >
+          </file-upload>
+        </div>
+
+        <!-- ввод имени сотрудника -->
+        <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+          <label class="form-label col-sm-4 col-md-3 m-0 px-2" for="employeeName">
+            {{component.labelEmployeeName}}:
+          </label>
+          <div class="col-sm-8 col-md-7 col-lg-7 col-xl-7 p-0">
+            <input class="form-control px-2" type="text"
+                   id="employeeName" name="employeeName" formControlName="employeeName"
+                   placeholder="{{component.employeeNamePlaceholder}}"
+                   maxlength="{{component.employeeNameLength + one}}"
+                   [readOnly]="component.isWaitFlag || mode === editEmployee"
+                   [class.opacity-75]="component.isWaitFlag || mode === editEmployee" >
+          </div>
+        </div>
+        <!-- строка с подсказками -->
+        <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+          <div class="col-sm-8 col-md-7 col-lg-7 offset-sm-4 offset-md-3 p-0">
+
+            @if ((employeeName.errors && (employeeName.dirty || employeeName['touched'])) ||
+                  component.errorNotMatchUserName.isNotMatched) {
+              <div class="text-danger ps-2 fw-bold">
+                @if (component.errorNotMatchUserName.isNotMatched) {
+                  <span [innerHTML]="component.errorNotMatchUserName.message"></span>
+                } @else {
+                  <span *ngIf="employeeName.errors![component.errorRequired]">
+                    {{component.errorRequiredTitle}}
+                  </span>
+                  <span *ngIf="employeeName.errors![component.errorMaxLength]">
+                    {{component.errorEmployeeNameMaxLengthTitle}}
+                  </span>
+                } <!-- if -->
+              </div>
+            } @else {
+              <span class="text-secondary ps-2 fw-bold"></span>
+            } <!-- if -->
+
+          </div>
+        </div>
+
+        <!-- ввод телефона сотрудника -->
+        <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+          <label class="form-label col-sm-4 col-md-3 m-0 px-2" for="phone">
+            {{component.labelPhone}}:
+          </label>
+          <div class="col-sm-8 col-md-7 col-lg-7 col-xl-7 p-0">
+            <input class="form-control px-2" type="text"
+                   id="phone" name="phone" formControlName="phone"
+                   placeholder="{{component.phonePlaceholder}}"
+                   maxlength="{{component.phoneLength}}"
+                   [readOnly]="component.isWaitFlag || mode === editEmployee"
+                   [class.opacity-75]="component.isWaitFlag || mode === editEmployee" >
+          </div>
+        </div>
+        <!-- строка с подсказками -->
+        <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+          <div class="col-sm-8 col-md-7 col-lg-7 offset-sm-4 offset-md-3 p-0">
+
+            @if ((phone.errors && (phone.dirty || phone['touched'])) ||
+                  component.errorNotMatchUserPhone.isNotMatched) {
+              <div class="text-danger ps-2 fw-bold">
+                @if (component.errorNotMatchUserPhone.isNotMatched) {
+                  <span [innerHTML]="component.errorNotMatchUserPhone.message"></span>
+                } @else {
+                  <span *ngIf="phone.errors![component.errorRequired]">
+                    {{component.errorRequiredTitle}}
+                  </span>
+                  <span *ngIf="phone.errors![component.errorPhoneValidator] &&
+                               !phone.errors![component.errorRequired]">
+                    {{component.errorPhoneValidatorTitle}}
+                  </span>
+                } <!-- if -->
+              </div>
+            } @else {
+              <span class="text-secondary ps-2 fw-bold">
+                {{component.phoneNoErrorsTitle}}
+              </span>
+            } <!-- if -->
+
+          </div>
+        </div>
+
+        <!-- ввод e-mail пользователя -->
+        <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+          <label class="form-label col-sm-4 col-md-3 m-0 px-2" for="email">
+            {{component.labelEmail}}:
+          </label>
+          <div class="col-sm-8 col-md-7 col-lg-7 col-xl-7 p-0">
+            <input class="form-control px-2" type="text"
+                   id="email" name="email" formControlName="email"
+                   placeholder="{{component.emailPlaceholder}}"
+                   maxlength="{{component.emailLength + 1}}"
+                   [readOnly]="component.isWaitFlag || mode === editEmployee"
+                   [class.opacity-75]="component.isWaitFlag || mode === editEmployee" >
+          </div>
+        </div>
+        <!-- строка с подсказками -->
+        <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+          <div class="col-sm-8 col-md-7 col-lg-7 offset-sm-4 offset-md-3 p-0">
+
+            @if ((email.errors && (email.dirty || email['touched'])) ||
+                  component.errorNotMatchUserEmail.isNotMatched) {
+              <div class="text-danger ps-2 fw-bold">
+                @if (component.errorNotMatchUserEmail.isNotMatched) {
+                  <span [innerHTML]="component.errorNotMatchUserEmail.message"></span>
+                } @else {
+                  <span *ngIf="email.errors![component.errorRequired]">
+                    {{component.errorRequiredTitle}}
+                  </span>
+                  <span *ngIf="email.errors![component.errorMaxLength]">
+                    {{component.errorEmailMaxLengthTitle}}
+                  </span>
+                  <span *ngIf="email.errors![component.errorEmailValidator] &&
+                               !email.errors![component.errorRequired] &&
+                               !email.errors![component.errorMaxLength]">
+                    {{component.errorEmailValidatorTitle}}
+                  </span>
+                } <!-- if -->
+              </div>
+            } @else {
+              <span class="text-secondary ps-2 fw-bold"></span>
+            } <!-- if -->
+
+          </div>
+        </div>
+
+        <!-- выбор специальности / ввод наименования новой специальности сотрудника -->
+        <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+
+          @if (!isNewSpecialization.value) {
+
+            <label class="form-label col-sm-4 col-md-3 m-0 px-2" for="specializationId">
+              {{component.labelSpecialization}}:
+            </label>
+
+          } @else {
+
+            <label class="form-label col-sm-4 col-md-3 m-0 px-2" for="newSpecializationName">
+              {{component.labelNewSpecializationName}}:
+            </label>
+
+          } <!-- if -->
+
+          <div class="col-sm-8 col-md-7 col-lg-7 col-xl-7 row m-0 p-0 align-items-center">
+
+            <div class="col-9 m-0 p-0">
+
+              @if (!isNewSpecialization.value) {
+
+                <!-- список выбора специальности -->
+                <select class="form-select px-2 pe-4"
+                        id="specializationId" name="specializationId"
+                        formControlName="specializationId"
+                        [class.opacity-50]="component.isWaitFlag">
+                  <option value="0" disabled >{{component.firstOptionSpecializations}}</option>
+                  @for (specialization of component.specializationsList; track specialization.id) {
+                    <option [value]="specialization.id">{{specialization.name}}</option>
+                  } <!-- for specialization -->
+                </select>
+
+              } @else {
+
+                <!-- поле ввода наименования новой специальности -->
+                <input class="form-control px-2" type="text"
+                       id="newSpecializationName" name="newSpecializationName"
+                       formControlName="newSpecializationName"
+                       placeholder="{{component.newSpecializationNamePlaceholder}}"
+                       maxlength="{{component.newSpecializationNameLength + one}}"
+                       [class.opacity-75]="component.isWaitFlag" >
+
+              } <!-- if -->
+
+            </div>
+
+            <!-- чек-бокс включения режима ввода новой специальности -->
+            <div class="col-3 m-0 p-0 d-flex justify-content-center align-items-center">
+              <label class="form-check-label text-center"
+                     for="isNewSpecialization"
+                     title="{{component.labelCheckboxIsNewSpecializationTitle}}"
+                     [class.opacity-60]="component.isWaitFlag">
+                <input class="form-check-input m-1"
+                       id="isNewSpecialization"
+                       formControlName="isNewSpecialization"
+                       type="checkbox" />
+                {{component.labelCheckboxIsNewSpecialization}}
+              </label>
+            </div>
+
+          </div>
+
+        </div>
+        <!-- строка с подсказками -->
+        <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+          <div class="col-sm-8 col-md-7 col-lg-7 col-xl-7 offset-sm-4 offset-md-3 p-0">
+
+            @if (!isNewSpecialization.value) {
+
+              <!-- ошибки для списка выбора специальности -->
+              @if (specializationId.errors && (specializationId.dirty || specializationId['touched'])) {
+                <div class="text-danger ps-2 fw-bold">
+                  <span *ngIf="specializationId.errors[component.errorSelectedZeroValidator]">
+                    {{component.errorSpecializationSelectedZeroValidatorTitle}}
+                  </span>
+                </div>
+              } @else {
+                <span class="text-secondary ps-2 fw-bold"></span>
+              } <!-- if -->
+
+            } @else {
+
+              <!-- ошибки для поля ввода наименования новой специальности -->
+              @if (newSpecializationName.errors || component.errorRegisteredSpecialization.isRegistered) {
+                <div class="text-danger ps-2 fw-bold">
+
+                  @if (component.errorRegisteredSpecialization.isRegistered) {
+                    <span>{{component.errorRegisteredSpecialization.message}}</span>
+                  } @else {
+                    <span *ngIf="newSpecializationName.errors![component.errorRequired]">
+                      {{component.errorRequiredTitle}}
+                    </span>
+                    <span *ngIf="newSpecializationName.errors![component.errorMaxLength]">
+                      {{component.errorNewSpecializationNameMaxLengthTitle}}
+                    </span>
+                  }<!-- if -->
+
+                </div>
+              } @else {
+                <span class="text-secondary ps-2 fw-bold"></span>
+              } <!-- if -->
+
+            } <!-- if -->
+
+          </div>
+        </div>
+
+        <!-- выбор должности / ввод наименования новой должности сотрудника -->
+        <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
+
+          @if (!isNewPosition.value) {
+
+            <label class="form-label col-sm-4 col-md-3 m-0 px-2" for="positionId">
+              {{component.labelPosition}}:
+            </label>
+
+          } @else {
+
+            <label class="form-label col-sm-4 col-md-3 m-0 px-2" for="newPositionName">
+              {{component.labelNewPositionName}}:
+            </label>
+
+          } <!-- if -->
+
+          <div class="col-sm-8 col-md-7 col-lg-7 col-xl-7 row m-0 p-0 align-items-center">
+
+            <div class="col-9 m-0 p-0">
+
+              @if (!isNewPosition.value) {
+
+                <!-- список выбора должности -->
+                <select class="form-select px-2 pe-4"
+                        id="positionId" name="positionId"
+                        formControlName="positionId"
+                        [class.opacity-50]="component.isWaitFlag">
+                  <option value="0" disabled >{{component.firstOptionPositions}}</option>
+                  @for (position of component.positionsList; track position.id) {
+                    <option [value]="position.id">{{position.name}}</option>
+                  } <!-- for position -->
+                </select>
+
+              } @else {
+
+                <!-- поле ввода наименования новой должности -->
+                <input class="form-control px-2" type="text"
+                       id="newPositionName" name="newPositionName"
+                       formControlName="newPositionName"
+                       placeholder="{{component.newPositionNamePlaceholder}}"
+                       maxlength="{{component.newPositionNameLength + one}}"
+                       [class.opacity-75]="component.isWaitFlag" >
+
+              } <!-- if -->
+
+            </div>
+
+            <!-- чек-бокс включения режима ввода новой специальности -->
+            <div class="col-3 m-0 p-0 d-flex justify-content-center align-items-center">
+              <label class="form-check-label text-center"
+                     for="isNewPosition"
+                     title="{{component.labelCheckboxIsNewPositionTitle}}"
+                     [class.opacity-60]="component.isWaitFlag">
+                <input class="form-check-input m-1"
+                       id="isNewPosition"
+                       formControlName="isNewPosition"
+                       type="checkbox" />
+                {{component.labelCheckboxIsNewPosition}}
+              </label>
+            </div>
+
+          </div>
+
+        </div>
+        <!-- строка с подсказками -->
+        <div class="row m-0 mb-1 p-0 font-size-9pt h-auto
+                    justify-content-center align-items-start">
+          <div class="col-sm-8 col-md-7 col-lg-7 col-xl-7 offset-sm-4 offset-md-3 p-0">
+
+            @if (!isNewPosition.value) {
+
+              <!-- ошибки для списка выбора должности -->
+              @if (positionId.errors && (positionId.dirty || positionId['touched'])) {
+                <div class="text-danger ps-2 fw-bold">
+                  <span *ngIf="positionId.errors[component.errorSelectedZeroValidator]">
+                    {{component.errorPositionSelectedZeroValidatorTitle}}
+                  </span>
+                </div>
+              } @else {
+                <span class="text-secondary ps-2 fw-bold"></span>
+              } <!-- if -->
+
+            } @else {
+
+              <!-- ошибки для поля ввода наименования новой должности -->
+              @if (newPositionName.errors || component.errorRegisteredPosition.isRegistered) {
+                <div class="text-danger ps-2 fw-bold">
+
+                  @if (component.errorRegisteredPosition.isRegistered) {
+                    <span>{{component.errorRegisteredPosition.message}}</span>
+                  } @else {
+                    <span *ngIf="newPositionName.errors![component.errorRequired]">
+                      {{component.errorRequiredTitle}}
+                    </span>
+                    <span *ngIf="newPositionName.errors![component.errorMaxLength]">
+                      {{component.errorNewPositionNameMaxLengthTitle}}
+                    </span>
+                  }<!-- if -->
+
+                </div>
+              } @else {
+                <span class="text-secondary ps-2 fw-bold"></span>
+              } <!-- if -->
+
+            } <!-- if -->
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- подвал - кнопки добавить/изменить -->
+      <div class="bg-primary d-flex justify-content-evenly p-0">
+
+        <!-- кнопка "добавить/изменить" -->
+        <button class="btn bg-success-subtle fw-bold text-success
+                       text-opacity-75 w-50 w-min-140-max-160 m-1
+                       border border-success border-2 border-opacity-50"
+                type="{{(employeeForm.valid && !component.isWaitFlag &&
+                         !component.errorNotMatchUserName.isNotMatched &&
+                         !component.errorNotMatchUserPhone.isNotMatched &&
+                         !component.errorNotMatchUserEmail.isNotMatched &&
+                         component.isChangedFormFlag) ? 'submit' : 'button'}}"
+                [class.disabled]="employeeForm.invalid || component.isWaitFlag ||
+                                  component.errorNotMatchUserName.isNotMatched ||
+                                  component.errorNotMatchUserPhone.isNotMatched ||
+                                  component.errorNotMatchUserEmail.isNotMatched ||
+                                  component.errorRegisteredPhone.isRegistered ||
+                                  component.errorRegisteredEmail.isRegistered ||
+                                  component.errorRegisteredSpecialization.isRegistered ||
+                                  component.errorRegisteredPosition.isRegistered ||
+                                  !component.isChangedFormFlag"
+                title="{{mode === createEmployee
+                         ? component.butEmployeeCreateTitle
+                         : component.butEmployeeEditTitle}}">
+          @if (component.isWaitFlag) {
+            <div class="row m-0 p-0 justify-content-center align-items-center">
+              <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
+            </div>
+          } @else {
+            {{mode === createEmployee
+              ? component.butEmployeeCreateValue
+              : component.butEmployeeEditValue}}
+          } <!-- if -->
+        </button>
+
+        <!-- кнопка "сброс данных" -->
+        <button class="btn bg-warning-subtle fw-bold text-success
+                       text-opacity-75 w-50 w-min-140-max-160 m-1
+                       border border-success border-2 border-opacity-50"
+                type="button"
+                [class.d-none]="mode === editEmployee || employee.user.id === zero"
+                [class.disabled]="component.isWaitFlag"
+                (click)="resetData()"
+                title="{{component.butEmployeeFormCreateResetTitle}}">
+          @if (component.isWaitFlag) {
+            <div class="row m-0 p-0 justify-content-center align-items-center">
+              <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
+            </div>
+          } @else {
+            {{component.butEmployeeFormCreateResetValue}}
+          } <!-- if -->
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+</main>
