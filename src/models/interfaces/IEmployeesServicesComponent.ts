@@ -1,15 +1,12 @@
 // ----------------------------------------------------------------------------
-// интерфейс объекта с параметрами компонента ServicesComponent
+// интерфейс объекта с параметрами компонента EmployeesServicesComponent
 // ----------------------------------------------------------------------------
-export interface IServicesComponent {
+export interface IEmployeesServicesComponent {
 
   //#region параметры меняющиеся при смене языка
 
-  // данные о заголовке для разных языков
-  //title: Record<string, string>,
-
-  // отображаемый заголовок
-  displayTitle: string,
+  // заголовок
+  title: string,
 
   // заголовок области "компании"
   //companiesTitle: string,
@@ -25,13 +22,13 @@ export interface IServicesComponent {
   collapseServicesCategoryNameTitleStart: string,
 
   // всплывающая подсказка на кнопке "создать услугу"
-  butCreateServiceTitle: string,
+  //butCreateServiceTitle: string,
 
   // значение кнопки "создать услугу"
-  butCreateServiceValue: string,
+  //butCreateServiceValue: string,
 
   // начальный фрагмент всплывающей подсказки чек-бокса выбора услуги
-  //labelIsSelectedServiceTitleStart: string,
+  labelIsSelectedServiceTitleStart: string,
 
   // всплывающая подсказка на фрагменте отображения цены услуги
   labelPriceTitle: string,
@@ -63,14 +60,11 @@ export interface IServicesComponent {
   // всплывающая подсказка на кнопке "скрыть все услуги"
   butCloseAllServicesTitle: string,
 
-  // всплывающая подсказка на кнопке "изменить услугу"
-  butEditServiceTitle: string,
-
   // значение кнопки "изменить услугу"
   //butEditServiceValue: string,
 
   // всплывающая подсказка на кнопке "удалить услугу"
-  butDeleteServiceTitle: string,
+  //butDeleteServiceTitle: string,
 
   // значение кнопки "удалить услугу"
   //butDeleteServiceValue: string,
@@ -159,5 +153,5 @@ export interface IServicesComponent {
 
   //endregion
 
-} // interface IServicesComponent
+} // interface IEmployeesServicesComponent
 // ----------------------------------------------------------------------------

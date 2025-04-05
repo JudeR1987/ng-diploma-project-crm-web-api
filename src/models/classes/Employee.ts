@@ -40,10 +40,10 @@ export class Employee {
     private _avatar: string = Literals.empty,
 
     // дата и время удаления записи о сотруднике
-    private _deleted: Date | null = null,
+    private _deleted: Date | null = null //,
 
     // услуги, предоставляемые сотрудником
-    private _services: Service[] = []
+    // private _services: Service[] = []
   ) {
   } // constructor
 
@@ -80,8 +80,8 @@ export class Employee {
   get deleted(): Date | null { return this._deleted; }
   set deleted(value: Date | null) { this._deleted = value; }
 
-  get services(): Service[] { return this._services; }
-  set services(value: Service[]) { this._services = Service.parseServices(value); }
+  /*get services(): Service[] { return this._services; }
+  set services(value: Service[]) { this._services = Service.parseServices(value); }*/
 
   // вычисляемое свойство
   // имя файла аватарки сотрудника
@@ -105,8 +105,8 @@ export class Employee {
       Position.newPosition(srcEmployee.position),
       srcEmployee.rating,
       srcEmployee.avatar,
-      srcEmployee.deleted,
-      Service.parseServices(srcEmployee.services)
+      srcEmployee.deleted/*,
+      Service.parseServices(srcEmployee.services)*/
     ); // return
   } // newEmployee
 
@@ -129,8 +129,8 @@ export class Employee {
       position:       Position.PositionToDto(srcEmployee.position),
       rating:         srcEmployee.rating,
       avatar:         srcEmployee.avatar,
-      deleted:        srcEmployee.deleted,
-      services:       Service.ServicesToDto(srcEmployee.services)
+      deleted:        srcEmployee.deleted/*,
+      services:       Service.ServicesToDto(srcEmployee.services)*/
     };
   } // EmployeeToDto
 

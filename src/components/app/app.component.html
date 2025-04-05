@@ -420,7 +420,9 @@
   <div class="alert alert-warning alert-dismissible
               fade show border-2 m-0 py-2">
     <button class="btn-close bg-secondary m-1 p-1"
-            type="button" data-bs-dismiss="alert">
+            type="button"
+            data-bs-dismiss="alert"
+            (click)="clearSetTimeout()">
     </button>
     <div [class.h-50vh]="component.errorMessage.message.length > fiveHundred"
          style="overflow: auto">

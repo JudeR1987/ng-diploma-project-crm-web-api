@@ -10,6 +10,7 @@ import {Literals} from '../infrastructure/Literals';
 import {Company} from '../models/classes/Company';
 import {Service} from '../models/classes/Service';
 import {Employee} from '../models/classes/Employee';
+import {EmployeeService} from '../models/classes/EmployeeService';
 
 @Injectable({
   providedIn: 'root'
@@ -144,6 +145,27 @@ export class WebApiService {
       params: new HttpParams().set(Literals.id, id)
     });
   } // deleteById
+
+
+  // DELETE-запрос на удалённый сервер для удаления данных по двум идентификаторам
+  deleteByFirstIdSecondId(url: string, firstId: number, secondId: number, token: string): Observable<any> {
+    console.log(`[-WebApiService-deleteByFirstIdSecondId--`);
+
+    console.log(`*- firstId: '${firstId}' -*`);
+    console.log(`*- secondId: '${secondId}' -*`);
+    console.log(`*- token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-deleteByFirstIdSecondId-]`);
+    return this._http.delete<any>(url, {
+      headers: httpHeaders,
+      params: new HttpParams()
+        .set(Literals.firstId, firstId)
+        .set(Literals.secondId, secondId)
+    });
+  } // deleteByFirstIdSecondId
 
 
   // POST-запрос на удалённый сервер для входа в систему
@@ -341,21 +363,6 @@ export class WebApiService {
   } // getAllCompaniesByUserIdByPage*/
 
 
-  // GET-запрос на удалённый сервер для получения           // ЭТО ПРОСТО GET
-  // параметров формы создания/изменения данных о компании
-  /*getCompanyFormParams(url: string, token: string): Observable<any> {
-    console.log(`[-WebApiService-getCompanyFormParams--`);
-
-    console.log(`*- token: '${token}' -*`);
-
-    // заголовок запроса с jwt-токеном
-    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
-
-    console.log(`--WebApiService-getCompanyFormParams-]`);
-    return this._http.get<any>(url, { headers: httpHeaders });
-  } // getCompanyFormParams*/
-
-
   // PUT-запрос на удалённый сервер для создания новой записи в таблице "КОМПАНИИ" БД
   createCompanyPUT(url: string, company: Company, token: string): Observable<any> {
     console.log(`[-WebApiService-createCompanyPUT--`);
@@ -480,6 +487,27 @@ export class WebApiService {
       { headers: httpHeaders }
     );
   } // editEmployeePOST
+
+
+  // PUT-запрос на удалённый сервер для создания новой записи в таблице "СОТРУДНИКИ_УСЛУГИ" БД
+  createEmployeeServicePUT(url: string, employeeService: EmployeeService, token: string): Observable<any> {
+    console.log(`[-WebApiService-createEmployeeServicePUT--`);
+
+    console.log(`*- employeeService: -*`);
+    console.dir(employeeService);
+    console.dir(EmployeeService.EmployeeServiceToDto(employeeService));
+    console.log(`*- token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-createEmployeeServicePUT-]`);
+    return this._http.put<any>(
+      url,
+      EmployeeService.EmployeeServiceToDto(employeeService),
+      { headers: httpHeaders }
+    );
+  } // createEmployeeServicePUT
 
 
   // метод формирования нового заголовка запроса с jwt-токеном

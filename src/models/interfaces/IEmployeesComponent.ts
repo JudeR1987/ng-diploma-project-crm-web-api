@@ -44,6 +44,12 @@ export interface IEmployeesComponent {
   // значение кнопки "показать расписание"
   butShowScheduleEmployeeValue: string,
 
+  // всплывающая подсказка на кнопке "показать услуги"
+  butShowServicesEmployeeTitle: string,
+
+  // значение кнопки "показать услуги"
+  butShowServicesEmployeeValue: string,
+
   // всплывающая подсказка на кнопке "изменить сотрудника"
   butEditEmployeeTitle: string,
 

@@ -427,6 +427,13 @@ export class AppComponent implements OnInit {
         routerLinkActive = Literals.routeSchedule;
         break;
 
+      case Literals.routeEmployeesServices:
+        this.component.title = Resources.appEmployeesServicesTitle;
+        back = Literals.navbarBrandActive;
+        icon = Literals.iconLight;
+        routerLinkActive = Literals.routeEmployeesServices;
+        break;
+
       case Literals.routeWarehouse:
         this.component.title = Resources.appWarehouseTitle;
         back = Literals.navbarBrandActive;
@@ -643,6 +650,18 @@ export class AppComponent implements OnInit {
     ); // setTimeout
 
   } // displayMessage
+
+
+  // отмена установленного setTimeout при закрытии контейнера с сообщением
+  clearSetTimeout(): void {
+
+    // отменить ранее установленный setTimeout
+    clearTimeout(this.component.timerId);
+
+    // сбросить сообщение
+    this.component.errorMessage = { message: Literals.empty, isVisible: false };
+
+  } // clearSetTimeout
 
 
 

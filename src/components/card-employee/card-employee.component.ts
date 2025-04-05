@@ -49,6 +49,12 @@ export class CardEmployeeComponent implements OnInit, OnDestroy {
   // значение кнопки "отправителяIDModeSchedule" ("показать расписание")
   @Input() butSenderEmployeeIdModeScheduleValue: string = Literals.empty;
 
+  // всплывающая подсказка на кнопке "отправителяIDModeServices" ("показать услуги")
+  @Input() butSenderEmployeeIdModeServicesTitle: string = Literals.empty;
+
+  // значение кнопки "отправителяIDModeServices" ("показать услуги")
+  @Input() butSenderEmployeeIdModeServicesValue: string = Literals.empty;
+
   // всплывающая подсказка на кнопке "отправителяIDModeEdit" ("изменить")
   @Input() butSenderEmployeeIdModeEditTitle: string = Literals.empty;
 
@@ -63,12 +69,14 @@ export class CardEmployeeComponent implements OnInit, OnDestroy {
 
   // свойство для генерации события передачи данных об Id выбранного сотрудника компании
   // (передаём режим - mode:
-  // showSchedule-показать расписание, editEmployee-изменение, deleteEmployee-удаление)
+  // showSchedule-показать расписание, showServices-показать услуги,
+  // editEmployee-изменение, deleteEmployee-удаление)
   @Output() onSendEmployeeIdMode: EventEmitter<{ employeeId: number, mode: string }> =
     new EventEmitter<{ employeeId: number, mode: string }>();
 
   // дополнительные свойства
   protected readonly showSchedule: string   = Literals.showSchedule;  // "показать расписание"
+  protected readonly showServices: string   = Literals.showServices;  // "показать услуги"
   protected readonly editEmployee: string   = Literals.editEmployee;
   protected readonly deleteEmployee: string = Literals.deleteEmployee;
 

@@ -18,11 +18,18 @@ export class DisplayServicesCategoryComponent implements OnInit, OnDestroy {
 
   // входные параметры
 
-  // флаг включения режима выбора услуг при записи в салон
-  @Input() isRecordFlag: boolean = false;
+  // флаг включения режима выбора услуг
+  // (при записи в салон или при добавлении/удалении услуг сотруднику)
+  @Input() isCheckingFlag: boolean = false;
+
+  // флаг включения режима disabled при ожидании данных с сервера
+  @Input() isWaitFlag: boolean = false;
+
+  // флаг переключения картинки при открытии/закрытии скрываемого элемента
+  @Input() isShowFlag: boolean = false;
 
   // флаг включения режима редактирования услуг при управлении услугами
-  @Input() isManagementFlag: boolean = false;
+  //@Input() isManagementFlag: boolean = false;
 
   // начальный фрагмент всплывающей подсказки на поле отображения наименования категории услуг
   @Input() collapseServicesCategoryNameTitleStart: string = Literals.empty;
@@ -74,9 +81,6 @@ export class DisplayServicesCategoryComponent implements OnInit, OnDestroy {
 
   // массив идентификаторов выбранных услуг
   @Input() selectedServicesIds: number[] = [];
-
-  // флаг переключения картинки при открытии/закрытии скрываемого элемента
-  public isShowFlag: boolean = false;
 
   // свойство для генерации события передачи данных об Id выбранной категории услуг
   @Output() onSendServicesCategoryId: EventEmitter<number> = new EventEmitter<number>();

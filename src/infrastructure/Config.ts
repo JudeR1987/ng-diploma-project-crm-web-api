@@ -154,6 +154,20 @@ export class Config {
   public static readonly urlGetEmployeeByUserId: string =
     `${this.urlHost}/api/employees/getByUserId`;
 
+  // 35. url для получения от сервера данных об услугах заданного сотрудника
+  public static readonly urlGetAllServicesByEmployeeId: string =
+    `${this.urlHost}/api/employees/getAllServicesByEmployeeId`;
+
+  // 36. url для добавления данных об услуге заданного сотрудника
+  public static readonly urlCreateEmployeeService: string =
+    `${this.urlHost}/api/employeesServices/createEmployeeService`;
+
+  // 37. url для удаления данных об услуге заданного сотрудника
+  public static readonly urlDeleteEmployeeServiceByEmployeeIdServiceId: string =
+    `${this.urlHost}/api/employeesServices/deleteEmployeeServiceByEmployeeIdServiceId`;
+
+
+
 
 
 

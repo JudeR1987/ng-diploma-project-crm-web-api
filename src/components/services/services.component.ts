@@ -36,7 +36,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
     collapseServicesCategoryNameTitleStart: Literals.empty,
     butCreateServiceTitle:                  Literals.empty,
     butCreateServiceValue:                  Literals.empty,
-    labelIsSelectedServiceTitleStart:       Literals.empty,
+    // labelIsSelectedServiceTitleStart:       Literals.empty,
     labelPriceTitle:                        Literals.empty,
     labelPriceValue:                        Literals.empty,
     labelMinPriceTitle:                     Literals.empty,
@@ -45,14 +45,17 @@ export class ServicesComponent implements OnInit, OnDestroy {
     labelMaxPriceValue:                     Literals.empty,
     labelDurationTitle:                     Literals.empty,
     labelDurationValue:                     Literals.empty,
+    butShowAllServicesTitle:                Literals.empty,
+    butCloseAllServicesTitle:               Literals.empty,
     butEditServiceTitle:                    Literals.empty,
     /*butEditServiceValue:   Literals.empty,*/
-    butDeleteServiceTitle: Literals.empty,
+    butDeleteServiceTitle:                  Literals.empty,
     /*butDeleteServiceValue: Literals.empty,*/
     // параметры НЕ меняющиеся при смене языка
     language:   Literals.empty,
     route:      Literals.empty,
-    isWaitFlag: false
+    isWaitFlag: false,
+    isShowFlag: false
   };
 
   // объект подписки на изменение языка, для отмены подписки при уничтожении компонента
@@ -70,6 +73,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
   // дополнительные свойства
   protected readonly zero: number          = Literals.zero;
   protected readonly one: number           = Literals.one;
+  protected readonly empty: string         = Literals.empty;
   protected readonly createService: string = Literals.createService;
   protected readonly editService: string   = Literals.editService;
   protected readonly deleteService: string = Literals.deleteService;
@@ -86,7 +90,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
               private _languageService: LanguageService,
               private _webApiService: WebApiService,
               private _errorMessageService: ErrorMessageService,
-              private _userService: UserService,
+              /*private _userService: UserService,*/
               private _tokenService: TokenService,
               private _authGuardService: AuthGuardService) {
     Utils.helloComponent(Literals.services);
@@ -248,7 +252,6 @@ export class ServicesComponent implements OnInit, OnDestroy {
     try {
       // получить jwt-токен
       let token: string = this._tokenService.token;
-      console.log(`*-token: '${token}' -*`);
 
       let webResult: any = await firstValueFrom(
         this._webApiService.getById(Config.urlGetCompanyById, this.company.id, token)
@@ -338,7 +341,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
     this.component.collapseServicesCategoryNameTitleStart = Resources.servicesCollapseServicesCategoryNameTitleStart[this.component.language];
     this.component.butCreateServiceTitle                  = Resources.servicesButCreateServiceTitle[this.component.language];
     this.component.butCreateServiceValue                  = Resources.servicesButCreateServiceValue[this.component.language];
-    this.component.labelIsSelectedServiceTitleStart       = Resources.servicesLabelIsSelectedServiceTitleStart[this.component.language];
+    //this.component.labelIsSelectedServiceTitleStart       = Resources.servicesLabelIsSelectedServiceTitleStart[this.component.language];
     this.component.labelPriceTitle                        = Resources.labelPriceTitle[this.component.language];
     this.component.labelPriceValue                        = Resources.labelPriceValue[this.component.language];
     this.component.labelMinPriceTitle                     = Resources.labelMinPriceTitle[this.component.language];
@@ -347,6 +350,8 @@ export class ServicesComponent implements OnInit, OnDestroy {
     this.component.labelMaxPriceValue                     = Resources.labelMaxPriceValue[this.component.language];
     this.component.labelDurationTitle                     = Resources.labelDurationTitle[this.component.language];
     this.component.labelDurationValue                     = Resources.labelDurationValue[this.component.language];
+    this.component.butShowAllServicesTitle                = Resources.butShowAllServicesTitle[this.component.language];
+    this.component.butCloseAllServicesTitle               = Resources.butCloseAllServicesTitle[this.component.language];
     this.component.butEditServiceTitle                    = Resources.servicesButEditServiceTitle[this.component.language];
     //this.component.butEditServiceValue   = Resources.butEditValue[this.component.language];
     this.component.butDeleteServiceTitle                  = Resources.servicesButDeleteServiceTitle[this.component.language];
@@ -554,28 +559,6 @@ export class ServicesComponent implements OnInit, OnDestroy {
   } // sendServiceIdModeHandler
 
 
-  // программный переход к форме создания данных об услуге
-  /*createService(servicesCategoryId: number) {
-    console.log(`[-ServicesComponent-createService--`);
-
-    console.log(`*- servicesCategoryId: '${servicesCategoryId}' -*`);
-
-    // маршрут
-    //let routerLink: string = Literals.routeServiceForm;
-
-    // параметр
-    let mode: string = Literals.createService;
-    //let companyId: number = 45;
-
-    // переход по маршруту
-    //this._router.navigateByUrl(`${routerLink}/${mode}/${companyId}`)
-    /!*this._router.navigateByUrl(`${routerLink}/${mode}`)
-      .then((e) => { console.log(`*- переход: ${e} -*`); });*!/
-
-    console.log(`--ServicesComponent-createService-]`);
-  } // createService*/
-
-
   // программный переход к форме добавления/изменения данных об услуге
   routingToServiceForm(mode: string, servicesCategoryId: number, serviceId: number) {
     console.log(`[-ServicesComponent-routingToServiceForm--`);
@@ -604,29 +587,6 @@ export class ServicesComponent implements OnInit, OnDestroy {
 
     console.log(`--ServicesComponent-routingToServiceForm-]`);
   } // routingToServiceForm
-
-
-  // обработчик события получения данных об Id выбранной услуги
-  // (в данном случае НЕ используем)
-  sendSelectedServiceIdHandler(result: { serviceId: number, isSelected: boolean }): void {
-    console.log(`[-ServicesComponent-sendSelectedServiceIdHandler--`);
-
-    console.log(`*- result: -*`);
-    console.dir(result);
-
-    console.log(`*- result.serviceId: '${result.serviceId}' [${typeof result.serviceId}] -*`);
-    console.log(`*- result.isSelected: '${result.isSelected}' [${typeof result.isSelected}] -*`);
-
-    // добавление в массив выбранных услуг
-    if (result.isSelected) {
-      console.log(`*- добавление в массив выбранных услуг -*`);
-    } else {
-    // удаление из массива выбранных услуг
-      console.log(`*- удаление из массива выбранных услуг -*`);
-    } // if
-
-    console.log(`--ServicesComponent-sendSelectedServiceIdHandler-]`);
-  } // sendSelectedServiceIdHandler
 
 
   // выполнение запроса на удаление данных об услуге
@@ -667,7 +627,6 @@ export class ServicesComponent implements OnInit, OnDestroy {
     try {
       // получить jwt-токен
       let token: string = this._tokenService.token;
-      console.log(`*-token: '${token}' -*`);
 
       let webResult: any = await firstValueFrom(
         this._webApiService.deleteById(Config.urlDeleteService, serviceId, token)
@@ -743,7 +702,6 @@ export class ServicesComponent implements OnInit, OnDestroy {
 
   // метод выполнения/НЕ_выполнения обновления токена
   private async isRefreshToken(): Promise<boolean> {
-
     console.log(`Обновляем токен!`);
 
     // запрос на обновление токена

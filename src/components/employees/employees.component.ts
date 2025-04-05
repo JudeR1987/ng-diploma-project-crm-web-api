@@ -45,6 +45,8 @@ export class EmployeesComponent implements OnInit, OnDestroy {
     butCreateEmployeeValue:       Literals.empty,
     butShowScheduleEmployeeTitle: Literals.empty,
     butShowScheduleEmployeeValue: Literals.empty,
+    butShowServicesEmployeeTitle: Literals.empty,
+    butShowServicesEmployeeValue: Literals.empty,
     butEditEmployeeTitle:         Literals.empty,
     butDeleteEmployeeTitle:       Literals.empty,
     // параметры НЕ меняющиеся при смене языка
@@ -69,6 +71,7 @@ export class EmployeesComponent implements OnInit, OnDestroy {
   protected readonly editEmployee: string   = Literals.editEmployee;
   protected readonly deleteEmployee: string = Literals.deleteEmployee;
   protected readonly showSchedule: string   = Literals.showSchedule;
+  protected readonly showServices: string   = Literals.showServices;
 
 
   // конструктор с DI для подключения к объекту маршрутизатора
@@ -82,7 +85,7 @@ export class EmployeesComponent implements OnInit, OnDestroy {
               private _languageService: LanguageService,
               private _webApiService: WebApiService,
               private _errorMessageService: ErrorMessageService,
-              private _userService: UserService,
+              /*private _userService: UserService,*/
               private _tokenService: TokenService,
               private _authGuardService: AuthGuardService) {
     Utils.helloComponent(Literals.employees);
@@ -239,7 +242,6 @@ export class EmployeesComponent implements OnInit, OnDestroy {
     try {
       // получить jwt-токен
       let token: string = this._tokenService.token;
-      console.log(`*-token: '${token}' -*`);
 
       let webResult: any = await firstValueFrom(
         this._webApiService.getById(Config.urlGetCompanyById, this.company.id, token)
@@ -339,6 +341,8 @@ export class EmployeesComponent implements OnInit, OnDestroy {
     this.component.butCreateEmployeeValue       = Resources.employeesButCreateEmployeeValue[this.component.language];
     this.component.butShowScheduleEmployeeTitle = Resources.employeesButShowScheduleEmployeeTitle[this.component.language];
     this.component.butShowScheduleEmployeeValue = Resources.butScheduleValue[this.component.language];
+    this.component.butShowServicesEmployeeTitle = Resources.employeesButShowServicesEmployeeTitle[this.component.language];
+    this.component.butShowServicesEmployeeValue = Resources.butServicesValue[this.component.language];
     this.component.butEditEmployeeTitle         = Resources.employeesButEditEmployeeTitle[this.component.language];
     this.component.butDeleteEmployeeTitle       = Resources.employeesButDeleteEmployeeTitle[this.component.language];
 
@@ -454,7 +458,7 @@ export class EmployeesComponent implements OnInit, OnDestroy {
 
 
   // обработчик события получения данных об Id выбранного сотрудника для
-  // демонстрации его расписания, изменения или удаления данных о сотруднике
+  // демонстрации его расписания, услуг, изменения или удаления данных о сотруднике
   async sendEmployeeIdModeHandler(result: { employeeId: number, mode: string }): Promise<void> {
     console.log(`[-EmployeesComponent-sendEmployeeIdModeHandler--`);
 
@@ -462,9 +466,11 @@ export class EmployeesComponent implements OnInit, OnDestroy {
     console.log(`*- result.employeeId: '${result.employeeId}' -*`);
     console.log(`*- result.mode: '${result.mode}' -*`);
 
-    // если режим демонстрации расписания или изменения данных,
+    // если режим демонстрации расписания, услуг или изменения данных,
     // то переходим по соответствующему маршруту
-    if (result.mode === this.showSchedule || result.mode === this.editEmployee) {
+    if (result.mode === this.showSchedule ||
+        result.mode === this.showServices ||
+        result.mode === this.editEmployee) {
 
       this.routingTo(result.mode, result.employeeId);
 
@@ -514,9 +520,17 @@ export class EmployeesComponent implements OnInit, OnDestroy {
 
       // переход на страницу демонстрации расписания
       case this.showSchedule:
-        console.log(`*- просмотр расписания сотрудника -*`);
+        console.log(`*- просмотр и изменение расписания сотрудника -*`);
         routerLink = Literals.routeSchedule;
-        url = `${routerLink}/${this.company.id}/${employeeId}`;
+        url = `${routerLink}/${employeeId}`;
+        queryParams = {};
+        break;
+
+      // переход на страницу демонстрации услуг
+      case this.showServices:
+        console.log(`*- просмотр и изменение услуг сотрудника -*`);
+        routerLink = Literals.routeEmployeesServices;
+        url = `${routerLink}/${employeeId}`;
         queryParams = {};
         break;
 
@@ -673,7 +687,6 @@ export class EmployeesComponent implements OnInit, OnDestroy {
 
   // метод выполнения/НЕ_выполнения обновления токена
   private async isRefreshToken(): Promise<boolean> {
-
     console.log(`Обновляем токен!`);
 
     // запрос на обновление токена

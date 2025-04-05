@@ -2,7 +2,6 @@
 // класс с набором строковых значений для разных языков
 // ----------------------------------------------------------------------------
 import {Literals} from './Literals';
-import {ScheduleComponent} from '../components/schedule/schedule.component';
 
 export class Resources {
 
@@ -92,6 +91,11 @@ export class Resources {
   public static readonly appScheduleTitle: Record<string, string> = {
     'rus': 'Расписание',
     'eng': 'Schedule' };
+
+  // заголовок на странице "Услуги сотрудника"
+  public static readonly appEmployeesServicesTitle: Record<string, string> = {
+    'rus': 'Услуги сотрудника',
+    'eng': 'Employee services' };
 
   // заголовок на странице "Склад"
   public static readonly appWarehouseTitle: Record<string, string> = {
@@ -1034,6 +1038,11 @@ export class Resources {
     'rus': 'показать расписание сотрудника',
     'eng': 'show the employee\'s schedule' };
 
+  // всплывающая подсказка на кнопке "показать услуги"
+  public static readonly employeesButShowServicesEmployeeTitle: Record<string, string> = {
+    'rus': 'показать услуги, предоставляемые сотрудником',
+    'eng': 'show the services provided by an employee' };
+
   // всплывающая подсказка на кнопке "изменить сотрудника"
   public static readonly employeesButEditEmployeeTitle: Record<string, string> = {
     'rus': 'изменить сведения о сотруднике',
@@ -1275,6 +1284,33 @@ export class Resources {
   public static readonly scheduleTitle: Record<string, string> = {
     'rus': 'Расписание',
     'eng': 'Schedule' };
+
+  //endregion
+
+
+  //#region EmployeesServicesComponent
+
+  // заголовок
+  public static readonly employeesServicesTitleStart: Record<string, string> = {
+    'rus': 'услуги сотрудника',
+    'eng': 'the services of an employee' };
+
+  public static employeesServicesTitle(language: string, employeesName: string): string {
+    return `${this.employeesServicesTitleStart[language]} <strong>${employeesName}</strong>`;
+  } // employeesServicesTitle
+
+  public static readonly employeesServicesZeroCollectionTitle: Record<string, string> = {
+    'rus': 'Услуги не добавлены',
+    'eng': 'No services added' };
+
+  // сообщения об ошибках
+  public static readonly employeesServicesCreateEmployeeServiceOk: Record<string, string> = {
+    'rus': 'данные об услуге сотрудника <strong>добавлены</strong>',
+    'eng': 'employee\'s service information <strong>added</strong>' };
+
+  public static readonly employeesServicesDeleteEmployeeServiceOk: Record<string, string> = {
+    'rus': 'данные об услуге сотрудника <strong>удалены</strong>',
+    'eng': 'employee\'s service information has been <strong>deleted</strong>' };
 
   //endregion
 
@@ -1532,6 +1568,10 @@ export class Resources {
   public static readonly incorrectEmailData: Record<string, string> = {
     'rus': 'некорректные данные почты',
     'eng': 'incorrect email data' };
+
+  public static readonly incorrectEmployeeServiceIdData: Record<string, string> = {
+    'rus': 'некорректные данные об услуге сотрудника',
+    'eng': 'incorrect information about the employee\'s service' };
 
 
   // для форм
@@ -1814,6 +1854,11 @@ export class Resources {
     'rus': 'расписание',
     'eng': 'schedule' };
 
+  // значение кнопки "показать услуги"
+  public static readonly butServicesValue: Record<string, string> = {
+    'rus': 'услуги',
+    'eng': 'services' };
+
   // первый элемент списка выбора специальности сотрудника
   public static readonly firstOptionSpecializations: Record<string, string> = {
     'rus': 'выберите специальность...',
@@ -1823,6 +1868,16 @@ export class Resources {
   public static readonly firstOptionPositions: Record<string, string> = {
     'rus': 'выберите должность...',
     'eng': 'select a position...' };
+
+  // всплывающая подсказка на кнопке "показать все услуги"
+  public static readonly butShowAllServicesTitle: Record<string, string> = {
+    'rus': 'показать все услуги',
+    'eng': 'show all services' };
+
+  // всплывающая подсказка на кнопке "скрыть все услуги"
+  public static readonly butCloseAllServicesTitle: Record<string, string> = {
+    'rus': 'скрыть все услуги',
+    'eng': 'close all services' };
 
   //endregion
 

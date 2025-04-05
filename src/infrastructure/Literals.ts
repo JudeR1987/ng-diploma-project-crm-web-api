@@ -133,6 +133,12 @@ export class Literals {
   //endregion
 
 
+  //#region EmployeesServicesComponent
+  public static readonly employeesServices: string = 'employees-services';
+
+  //endregion
+
+
   //#region WarehouseComponent
   public static readonly warehouse: string = 'warehouse';
 
@@ -177,6 +183,7 @@ export class Literals {
   public static readonly routeEmployees: string = 'employees';
   public static readonly routeEmployeeForm: string = 'employee-form';
   public static readonly routeSchedule: string = 'schedule';
+  public static readonly routeEmployeesServices: string = 'employees-services';
   public static readonly routeWarehouse: string = 'warehouse';
   public static readonly routeReports: string = 'reports';
   public static readonly routeNotFound: string = '404';
@@ -190,6 +197,7 @@ export class Literals {
   public static readonly space: string = ' ';
   public static readonly comma: string = ',';
   public static readonly plus: string = '+';
+  public static readonly doublePoint: string = ':';
   public static readonly break: string = '<br>';
   public static readonly language: string = 'language';
   public static readonly rus: string = 'rus';
@@ -228,6 +236,7 @@ export class Literals {
   public static readonly editEmployee: string = 'edit-employee';
   public static readonly deleteEmployee: string = 'delete-employee';
   public static readonly showSchedule: string = 'show-schedule';  // "показать расписание"
+  public static readonly showServices: string = 'show-services';  // "показать услуги"
 
   //endregion
 
@@ -257,6 +266,8 @@ export class Literals {
     { text: this.text, password: this.password };
   public static readonly newPassword: string = 'newPassword';
   public static readonly id: string = 'id';
+  public static readonly firstId: string = 'firstId';
+  public static readonly secondId: string = 'secondId';
   public static readonly userId: string = 'userId';
   public static readonly companyId: string = 'companyId';
   public static readonly userName: string = 'userName';
