@@ -10,7 +10,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {LanguageService} from '../../services/language.service';
 import {WebApiService} from '../../services/web-api.service';
 import {ErrorMessageService} from '../../services/error-message.service';
-import {UserService} from '../../services/user.service';
 import {TokenService} from '../../services/token.service';
 import {AuthGuardService} from '../../services/auth-guard.service';
 import {Utils} from '../../infrastructure/Utils';

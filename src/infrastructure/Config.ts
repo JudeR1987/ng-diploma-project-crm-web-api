@@ -166,6 +166,18 @@ export class Config {
   public static readonly urlDeleteEmployeeServiceByEmployeeIdServiceId: string =
     `${this.urlHost}/api/employeesServices/deleteEmployeeServiceByEmployeeIdServiceId`;
 
+  // 38. url для удаления данных об услуге заданного сотрудника
+  public static readonly urlGetAllWorkDaysBreakSlotsByEmployeeIdFromTo: string =
+    `${this.urlHost}/api/schedule/getAllWorkDaysBreakSlotsByEmployeeIdFromTo`;
+
+  // 39. url для добавления на сервере новой записи в таблицу "РАСПИСАНИЕ" БД
+  public static readonly urlCreateWorkDay: string =
+    `${this.urlHost}/api/schedule/createWorkDay`;
+
+  // 40. url для изменения на сервере выбранной записи в таблице "РАСПИСАНИЕ" БД
+  public static readonly urlEditWorkDay: string =
+    `${this.urlHost}/api/schedule/editWorkDay`;
+
 
 
 

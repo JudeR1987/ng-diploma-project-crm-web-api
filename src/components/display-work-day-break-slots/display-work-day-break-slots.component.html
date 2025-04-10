@@ -1,0 +1,206 @@
+
+<!-- компонент отображения данных о рабочем дне сотрудника
+     с коллекцией промежутков времени перерывов сотрудника -->
+
+<div class="m-0 p-0 row align-items-center
+            border border-2 border-back-color rounded text-back-color"
+     [class.bg-danger-subtle]="displayWorkDayBreakSlots.workDay.id === zero"
+     [ngClass]="displayWorkDayBreakSlots.workDay.id != zero &&
+                !displayWorkDayBreakSlots.workDay.isWorking
+                  ? bgSuccessSubtle : bgMainColor">
+
+  <!-- дата -->
+  <div class="m-0 px-0 py-1 w-65px align-self-stretch">
+    <div class="m-0 p-0 d-flex justify-content-center align-items-center h-100
+                border-end border-2 border-back-color">
+      <span class="m-0 px-1 py-0 fw-bold">
+        {{displayWorkDayBreakSlots.workDay.date | date: "dd.MM"}}
+      </span>
+    </div>
+  </div>
+
+  <!-- обозначение дня недели -->
+  <div class="m-0 px-0 py-1 w-65px align-self-stretch">
+    <div class="m-0 p-0 d-flex justify-content-center align-items-center h-100
+                border-end border-2 border-back-color">
+      <span class="m-0 px-1 py-0 fw-bold"
+            title="{{labelWeekDayTitle}}">
+        {{labelWeekDayValue}}
+      </span>
+    </div>
+  </div>
+
+  <!-- форма с отображением данных о рабочем дне -->
+  <form class="col m-0 p-0 font-size-10pt" novalidate>
+    <div class="m-0 p-0 row justify-content-start align-items-center">
+
+      <!-- признак того, что день рабочий -->
+      <div class="col-12 col-xl-2 col-xxl-2 m-0 p-1 ps-2">
+        <label class="form-check-label m-0 p-0 hover-pointer"
+               for="workDayIsWorking-date-{{displayWorkDayBreakSlots.workDay.date.getDate()}}"
+               title="{{displayWorkDayBreakSlots.workDay.isWorking
+                        ? labelCheckboxWorkingDayTitle
+                        : labelCheckboxWeekendTitle}}">
+          <input class="form-check-input m-0 mt-1 p-1 hover-pointer
+                        border border-2 border-back-color"
+                 [(ngModel)]="displayWorkDayBreakSlots.workDay.isWorking"
+                 id="workDayIsWorking-date-{{displayWorkDayBreakSlots.workDay.date.getDate()}}"
+                 name="workDayIsWorking"
+                 type="checkbox"
+                 [disabled]="isWaitFlag"
+                 [class.opacity-75]="isWaitFlag"/>
+          <span class="m-0 p-0">
+            &nbsp;{{displayWorkDayBreakSlots.workDay.isWorking
+                    ? labelCheckboxWorkingDay : labelCheckboxWeekend}}
+          </span>
+        </label>
+      </div>
+
+      <!-- время начала рабочего дня -->
+      <div class="col-12 col-md-6 col-xl-5 col-xxl-2 m-0 p-1">
+        <div class="row m-0 p-0 align-items-center">
+          <div class="col-12 col-sm-6 col-xl-7 col-xxl-12 m-0 p-0">
+            <label class="form-label m-0 px-2 w-100 text-sm-end"
+                   for="workDayStartTime-date-{{displayWorkDayBreakSlots.workDay.date.getDate()}}">
+              {{labelWorkDayStartTime}}:
+            </label>
+          </div>
+          <div class="col-12 col-sm-6 col-xl-5 col-xxl-12 m-0 p-0">
+            <input class="form-control m-0 p-0 text-end"
+                   type="time"
+                   id="workDayStartTime-date-{{displayWorkDayBreakSlots.workDay.date.getDate()}}"
+                   name="workDayStartTime"
+                   [(ngModel)]="displayWorkDayBreakSlots.workDay.startTime"
+                   (input)="inputTimeHandler()"
+                   [disabled]="isWaitFlag || !displayWorkDayBreakSlots.workDay.isWorking"
+                   [class.opacity-75]="isWaitFlag || !displayWorkDayBreakSlots.workDay.isWorking"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- время окончания рабочего дня -->
+      <div class="col-12 col-md-6 col-xl-5 col-xxl-2 m-0 p-1">
+        <div class="row m-0 p-0 align-items-center">
+          <div class="col-12 col-sm-6 col-xl-7 col-xxl-12 m-0 p-0">
+            <label class="form-label m-0 px-2 w-100 text-sm-end"
+                   for="workDayEndTime-date-{{displayWorkDayBreakSlots.workDay.date.getDate()}}">
+              {{labelWorkDayEndTime}}:
+            </label>
+          </div>
+          <div class="col-12 col-sm-6 col-xl-5 col-xxl-12 m-0 p-0">
+            <input class="form-control m-0 p-0 text-end"
+                   type="time"
+                   id="workDayEndTime-date-{{displayWorkDayBreakSlots.workDay.date.getDate()}}"
+                   name="workDayEndTime"
+                   [(ngModel)]="displayWorkDayBreakSlots.workDay.endTime"
+                   (input)="inputTimeHandler()"
+                   [disabled]="isWaitFlag || !displayWorkDayBreakSlots.workDay.isWorking"
+                   [class.opacity-75]="isWaitFlag || !displayWorkDayBreakSlots.workDay.isWorking"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- коллекция промежутков времени перерывов сотрудника -->
+      <div class="col-12 col-xxl-6 m-0 px-1 py-0">
+        <div class="m-0 p-0 row justify-content-end align-items-center
+                    border-top-1-xxl-0 border-back-color">
+
+          <!-- кнопка "добавить перерыв" -->
+          @if (displayWorkDayBreakSlots.slots.length < two) {
+
+            <div class="m-0 p-0 w-auto">
+              <button class="btn m-0 p-0 border-0 active-opacity-70"
+                      type="button"
+                      title="{{butAddBreakSlotTitle}}"
+                      (click)="addBreakSlot()"
+                      [disabled]="isWaitFlag || !displayWorkDayBreakSlots.workDay.isWorking"
+                      [class.opacity-75]="isWaitFlag || !displayWorkDayBreakSlots.workDay.isWorking">
+                <i class="fa fa-plus-circle text-back-color" aria-hidden="true"></i>
+              </button>
+            </div>
+
+          } <!-- if -->
+
+          <!-- контейнеры с данными о промежутках времени -->
+          <div class="m-0 p-1 w-auto"
+               *ngFor="let slot of displayWorkDayBreakSlots.slots; index as i">
+            <div class="m-0 p-1 border border-success bg-success-subtle rounded">
+              <div class="m-0 p-0 row justify-content-start align-items-center">
+
+                <!-- длина промежутка времени в минутах -->
+                <div class="m-0 p-0 w-auto">
+                  <input class="form-control text-end p-0 w-50px" type="number"
+                         id="slot-lengthInMinutes-{{i}}-date-{{displayWorkDayBreakSlots.workDay.date.getDate()}}"
+                         name="slot-lengthInMinutes-{{i}}"
+                         min="{{zero}}" max="60" step="15"
+                         [(ngModel)]="slot.lengthInMinutes"
+                         [disabled]="isWaitFlag || !displayWorkDayBreakSlots.workDay.isWorking"
+                         [class.opacity-75]="isWaitFlag || !displayWorkDayBreakSlots.workDay.isWorking" >
+                </div>
+
+                <!-- дополнительный фрагмент -->
+                <div class="m-0 p-0 w-auto">
+                  <span class="m-0 px-1 py-0 text-center">
+                    {{labelDuration}}&nbsp;{{labelFrom}}
+                  </span>
+                </div>
+
+                <!-- время начала перерыва -->
+                <div class="m-0 p-0 w-auto">
+                  <input class="form-control m-0 p-0 text-end"
+                         type="time"
+                         id="slot-from-{{i}}-date-{{displayWorkDayBreakSlots.workDay.date.getDate()}}"
+                         name="slot-from-{{i}}"
+                         [(ngModel)]="slot.from"
+                         (input)="inputTimeHandler()"
+                         [disabled]="isWaitFlag || !displayWorkDayBreakSlots.workDay.isWorking"
+                         [class.opacity-75]="isWaitFlag || !displayWorkDayBreakSlots.workDay.isWorking"/>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- кнопка "убрать перерыв" -->
+          @if (displayWorkDayBreakSlots.slots.length > zero) {
+
+            <div class="m-0 p-0 w-auto">
+              <button class="btn m-0 p-0 border-0 active-opacity-70"
+                      type="button"
+                      title="{{butRemoveBreakSlotTitle}}"
+                      (click)="removeBreakSlot()"
+                      [disabled]="isWaitFlag || !displayWorkDayBreakSlots.workDay.isWorking"
+                      [class.opacity-75]="isWaitFlag || !displayWorkDayBreakSlots.workDay.isWorking">
+                <i class="fa fa-minus-circle text-back-color" aria-hidden="true"></i>
+              </button>
+            </div>
+
+          } <!-- if -->
+
+        </div>
+      </div>
+
+    </div>
+  </form>
+
+  <!-- кнопка "изменить параметры" -->
+  <div class="m-0 p-1 w-auto align-self-end align-self-lg-center">
+    <button class="btn btn-sm m-0 bg-plum hover-bg-paleturquoise
+                   border border-back-color w-32px h-32px"
+            [ngClass]="isWaitFlag ? 'p-0' : 'px-2 py-1'"
+            type="button"
+            title="{{butEditWorkDayTitle}}"
+            (click)="sendDisplayWorkDayBreakSlots()"
+            [disabled]="isWaitFlag"
+            [class.opacity-75]="isWaitFlag">
+      @if (isWaitFlag) {
+        <div class="row m-0 p-0 justify-content-center align-items-center">
+          <span class="col-1 spinner-border spinner-border-sm m-1 p-0"></span>
+        </div>
+      } @else {
+        <i class="fa fa-edit"></i>
+      } <!-- if -->
+    </button>
+  </div>
+
+</div>

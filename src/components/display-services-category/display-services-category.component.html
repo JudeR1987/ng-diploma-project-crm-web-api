@@ -27,7 +27,7 @@
     <!-- кнопки для добавления услуги -->
     @if (!isCheckingFlag) {
       <div class="m-0 p-0">
-        <button class="btn m-0 p-0 active-border-color-transparent active-opacity-80"
+        <button class="btn m-0 p-0 active-border-color-transparent active-opacity-70"
                 type="button"
                 title="{{butSenderServicesCategoryIdTitle}}"
                 (click)="sendServicesCategoryId(displayServicesCategory.servicesCategory.id)">
@@ -127,6 +127,7 @@
               <div class="m-0 p-0 w-auto">
                 <div class="m-0 p-0 row justify-content-center align-items-center">
 
+                  <!-- кнопка изменения услуги -->
                   <div class="col m-0 p-1 w-auto">
                     <button class="btn btn-sm btn-outline-success m-0 px-2 py-1 w-100"
                             type="button"
@@ -137,6 +138,7 @@
                     </button>
                   </div>
 
+                  <!-- кнопка удаления услуги -->
                   <div class="col m-0 p-1 w-auto">
                     <button class="btn btn-sm btn-outline-danger m-0 px-2 py-1 w-100"
                             type="button"

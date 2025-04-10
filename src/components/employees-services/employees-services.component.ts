@@ -24,9 +24,7 @@ import {EmployeeService} from '../../models/classes/EmployeeService';
 @Component({
   selector: 'app-employees-services',
   standalone: true,
-  imports: [
-    DisplayServicesCategoryComponent
-  ],
+  imports: [DisplayServicesCategoryComponent],
   templateUrl: './employees-services.component.html',
   styleUrl: './employees-services.component.css'
 })
@@ -37,8 +35,6 @@ export class EmployeesServicesComponent implements OnInit, OnDestroy {
     // параметры меняющиеся при смене языка
     title:                                  Literals.empty,
     collapseServicesCategoryNameTitleStart: Literals.empty,
-    /*butCreateServiceTitle:                  Literals.empty,
-    butCreateServiceValue:                  Literals.empty,*/
     labelIsSelectedServiceTitleStart:       Literals.empty,
     labelPriceTitle:                        Literals.empty,
     labelPriceValue:                        Literals.empty,
@@ -50,9 +46,6 @@ export class EmployeesServicesComponent implements OnInit, OnDestroy {
     labelDurationValue:                     Literals.empty,
     butShowAllServicesTitle:                Literals.empty,
     butCloseAllServicesTitle:               Literals.empty,
-    /*butEditServiceValue:   Literals.empty,*/
-    //butDeleteServiceTitle:                  Literals.empty,
-    /*butDeleteServiceValue: Literals.empty,*/
     // параметры НЕ меняющиеся при смене языка
     language:   Literals.empty,
     route:      Literals.empty,
@@ -74,9 +67,6 @@ export class EmployeesServicesComponent implements OnInit, OnDestroy {
 
   // коллекция услуг заданного сотрудника
   public employeeServices: Service[] = [];
-
-  // коллекция категорий услуг заданного сотрудника с соответствующими услугами
-  // public displayServicesCategories: DisplayServicesCategory[] = [];
 
   // массив идентификаторов выбранных услуг
   public selectedServicesIds: number[] = [];
@@ -688,7 +678,7 @@ export class EmployeesServicesComponent implements OnInit, OnDestroy {
 
     console.log(`--EmployeesServicesComponent-1-(запрос на добавление услуги)-`);
 
-    // запрос на удаление данных об услуге сотрудника
+    // запрос на добавление данных об услуге сотрудника
     let result: any = Literals.Ok;
     try {
       // получить jwt-токен
@@ -700,8 +690,8 @@ export class EmployeesServicesComponent implements OnInit, OnDestroy {
         )
       );
       console.dir(webResult);
-
-    } catch (e: any) {
+    }
+    catch (e: any) {
 
       console.dir(e);
       console.dir(e.error);
@@ -757,8 +747,8 @@ export class EmployeesServicesComponent implements OnInit, OnDestroy {
 
       // изменить результат на сообщение для вывода
       result = message;
-
-    } else {
+    }
+    else {
       // иначе - сообщение об успехе
       result = Resources.employeesServicesCreateEmployeeServiceOk[this.component.language];
 
@@ -817,8 +807,8 @@ export class EmployeesServicesComponent implements OnInit, OnDestroy {
         )
       );
       console.dir(webResult);
-
-    } catch (e: any) {
+    }
+    catch (e: any) {
 
       console.dir(e);
       console.dir(e.error);
@@ -874,8 +864,8 @@ export class EmployeesServicesComponent implements OnInit, OnDestroy {
 
       // изменить результат на сообщение для вывода
       result = message;
-
-    } else {
+    }
+    else {
       // иначе - сообщение об успехе
       result = Resources.employeesServicesDeleteEmployeeServiceOk[this.component.language];
 

@@ -1281,9 +1281,52 @@ export class Resources {
   //#region ScheduleComponent
 
   // заголовок
-  public static readonly scheduleTitle: Record<string, string> = {
-    'rus': 'Расписание',
-    'eng': 'Schedule' };
+  public static readonly scheduleTitleStart: Record<string, string> = {
+    'rus': 'Расписание сотрудника',
+    'eng': 'Schedule of employee' };
+
+  public static scheduleTitle(language: string, employeesName: string): string {
+    return `${this.scheduleTitleStart[language]} <strong>${employeesName}</strong>`;
+  } // scheduleTitle
+
+  // заголовок таблицы
+  public static readonly scheduleTableTitleFrom: Record<string, string> = {
+    'rus': 'с',
+    'eng': 'from' };
+
+  public static readonly scheduleTableTitleTo: Record<string, string> = {
+    'rus': 'по',
+    'eng': 'to' };
+
+  public static scheduleTableTitle(language: string, firstDay: Date, lastDay: Date): string {
+    return `${this.scheduleTableTitleFrom[language]} <strong>${firstDay.toLocaleDateString()}</strong>
+            ${this.scheduleTableTitleTo[language]} <strong>${lastDay.toLocaleDateString()}</strong>`;
+  } // scheduleTableTitle
+
+  // всплывающая подсказка в поле чек-бокса "рабочий/НЕ_рабочий день" для выходного дня
+  public static readonly scheduleLabelCheckboxWeekendTitle: Record<string, string> = {
+    'rus': 'назначить день рабочим',
+    'eng': 'set the day as a working day' };
+
+  // всплывающая подсказка в поле чек-бокса "рабочий/НЕ_рабочий день" для рабочего дня
+  public static readonly scheduleLabelCheckboxWorkingDayTitle: Record<string, string> = {
+    'rus': 'назначить день выходным',
+    'eng': 'set the day as a weekend' };
+
+  // всплывающая подсказка на кнопке "добавить перерыв"
+  public static readonly scheduleButAddBreakSlotTitle: Record<string, string> = {
+    'rus': 'добавить перерыв',
+    'eng': 'add a break' };
+
+  // всплывающая подсказка на кнопке "убрать перерыв"
+  public static readonly scheduleButRemoveBreakSlotTitle: Record<string, string> = {
+    'rus': 'убрать перерыв',
+    'eng': 'remove the break' };
+
+  // сообщения об ошибках
+  public static readonly scheduleIncorrectDateData: Record<string, string> = {
+    'rus': 'некорректные данные о дате рабочего дня',
+    'eng': 'incorrect information about the date of the working day' };
 
   //endregion
 
@@ -1573,6 +1616,22 @@ export class Resources {
     'rus': 'некорректные данные об услуге сотрудника',
     'eng': 'incorrect information about the employee\'s service' };
 
+  public static readonly incorrectWorkDayIdData: Record<string, string> = {
+    'rus': 'некорректные данные о рабочем дне сотрудника',
+    'eng': 'incorrect information about the employee\'s working day' };
+
+  public static readonly createDataOk: Record<string, string> = {
+    'rus': 'данные добавлены',
+    'eng': 'data added' };
+
+  public static readonly editDataOk: Record<string, string> = {
+    'rus': 'данные изменены',
+    'eng': 'data changed' };
+
+  public static readonly notRegisteredWorkDayIdData: Record<string, string> = {
+    'rus': 'данные о рабочем дне не найдены',
+    'eng': 'working day data was not found' };
+
 
   // для форм
 
@@ -1827,7 +1886,7 @@ export class Resources {
   // значение фрагмента отображения длительности услуги
   public static readonly labelDurationValue: Record<string, string> = {
     'rus': 'мин.',
-    'eng': 'minutes' };
+    'eng': 'min.' };
 
   // заголовок поля ввода текста комментария
   public static readonly labelComment: Record<string, string> = {
@@ -1878,6 +1937,116 @@ export class Resources {
   public static readonly butCloseAllServicesTitle: Record<string, string> = {
     'rus': 'скрыть все услуги',
     'eng': 'close all services' };
+
+  // всплывающая подсказка на кнопке "предыдущая неделя"
+  public static readonly butPreviousWeekTitle: Record<string, string> = {
+    'rus': 'предыдущая неделя',
+    'eng': 'previous week' };
+
+  // всплывающая подсказка на кнопке "следующая неделя"
+  public static readonly butNextWeekTitle: Record<string, string> = {
+    'rus': 'следующая неделя',
+    'eng': 'next week' };
+
+  // всплывающая подсказка поля отображения дня недели "понедельник"
+  public static readonly labelMondayTitle: Record<string, string> = {
+    'rus': 'понедельник',
+    'eng': 'monday' };
+
+  // значение поля отображения дня недели "понедельник"
+  public static readonly labelMondayValue: Record<string, string> = {
+    'rus': 'Пн',
+    'eng': 'Mo' };
+
+  // значение поля отображения дня недели "вторник"
+  public static readonly labelTuesdayTitle: Record<string, string> = {
+    'rus': 'вторник',
+    'eng': 'tuesday' };
+
+  // значение поля отображения дня недели "вторник"
+  public static readonly labelTuesdayValue: Record<string, string> = {
+    'rus': 'Вт',
+    'eng': 'Tu' };
+
+  // значение поля отображения дня недели "среда"
+  public static readonly labelWednesdayTitle: Record<string, string> = {
+    'rus': 'среда',
+    'eng': 'wednesday' };
+
+  // значение поля отображения дня недели "среда"
+  public static readonly labelWednesdayValue: Record<string, string> = {
+    'rus': 'Ср',
+    'eng': 'We' };
+
+  // значение поля отображения дня недели "четверг"
+  public static readonly labelThursdayTitle: Record<string, string> = {
+    'rus': 'четверг',
+    'eng': 'thursday' };
+
+  // значение поля отображения дня недели "четверг"
+  public static readonly labelThursdayValue: Record<string, string> = {
+    'rus': 'Чт',
+    'eng': 'Th' };
+
+  // значение поля отображения дня недели "пятница"
+  public static readonly labelFridayTitle: Record<string, string> = {
+    'rus': 'пятница',
+    'eng': 'friday' };
+
+  // значение поля отображения дня недели "пятница"
+  public static readonly labelFridayValue: Record<string, string> = {
+    'rus': 'Пт',
+    'eng': 'Fr' };
+
+  // значение поля отображения дня недели "суббота"
+  public static readonly labelSaturdayTitle: Record<string, string> = {
+    'rus': 'суббота',
+    'eng': 'saturday' };
+
+  // значение поля отображения дня недели "суббота"
+  public static readonly labelSaturdayValue: Record<string, string> = {
+    'rus': 'Сб',
+    'eng': 'Sa' };
+
+  // значение поля отображения дня недели "воскресенье"
+  public static readonly labelSundayTitle: Record<string, string> = {
+    'rus': 'воскресенье',
+    'eng': 'sunday' };
+
+  // значение поля отображения дня недели "воскресенье"
+  public static readonly labelSundayValue: Record<string, string> = {
+    'rus': 'Вс',
+    'eng': 'Su' };
+
+  // значение заголовка чек-бокса выбора признака рабочего дня для выходного дня
+  public static readonly labelCheckboxWeekend: Record<string, string> = {
+    'rus': 'выходной',
+    'eng': 'weekend' };
+
+  // значение заголовка чек-бокса выбора признака рабочего дня для рабочего дня
+  public static readonly labelCheckboxWorkingDay: Record<string, string> = {
+    'rus': 'рабочий',
+    'eng': 'working day' };
+
+  // заголовок поля выбора времени начала рабочего дня сотрудника
+  public static readonly labelWorkDayStartTime: Record<string, string> = {
+    'rus': 'начало работы',
+    'eng': 'start of work' };
+
+  // заголовок поля выбора времени окончания рабочего дня сотрудника
+  public static readonly labelWorkDayEndTime: Record<string, string> = {
+    'rus': 'конец работы',
+    'eng': 'end of work' };
+
+  // значение фрагмента заголовка
+  public static readonly labelFrom: Record<string, string> = {
+    'rus': 'с',
+    'eng': 'from' };
+
+  // всплывающая подсказка на кнопке "изменить параметры"
+  public static readonly butEditParamsTitle: Record<string, string> = {
+    'rus': 'изменить параметры',
+    'eng': 'change parameters' };
 
   //endregion
 

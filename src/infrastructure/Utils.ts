@@ -1,6 +1,8 @@
 // ----------------------------------------------------------------------------
 // класс со вспомогательными функциями
 // ----------------------------------------------------------------------------
+import {Literals} from './Literals';
+
 export class Utils {
 
   // генерация случайного вещественного числа
@@ -72,6 +74,78 @@ export class Utils {
 
     return new Date(year, month - 1, day);
   } // stringToDate
+
+
+  // получить даты первого и последнего дня недели относительно заданной даты
+  public static getFirstLastDatesOfWeek(date: Date): [first: Date, last: Date] {
+
+    // переопределяем день недели: понедельник = 0...воскресенье = 6
+    let dayOfWeek: number = date.getDay() === 0
+      ? 6                  // воскресенье делаем последним днём недели
+      : date.getDay() - 1; // остальные дни смещаем по индексу для удобства вычислений
+    //console.log(`*- dayOfWeek: '${dayOfWeek}' -*`);
+
+    // число месяца даты
+    let numberDay = date.getDate();
+    //console.log(`*- numberDay: '${numberDay}' -*`);
+
+    // первый день недели (создаём из копии заданной даты)
+    let firstDay: Date = new Date(date);
+    //console.log(`*- firstDay.toLocaleString(): '${firstDay.toLocaleString()}' -*`);
+    firstDay.setDate(numberDay - dayOfWeek);
+    //console.log(`*- firstDay.toLocaleString(): '${firstDay.toLocaleString()}' -*`);
+    firstDay.setHours(0, 0, 0, 0);
+    //console.log(`*- firstDay.toLocaleString(): '${firstDay.toLocaleString()}' -*`);
+
+    // последний день недели (создаём из копии заданной даты)
+    let lastDay: Date = new Date(date);
+    //console.log(`*- lastDay.toLocaleString(): '${lastDay.toLocaleString()}' -*`);
+    lastDay.setDate(numberDay + (6 - dayOfWeek));
+    //console.log(`*- lastDay.toLocaleString(): '${lastDay.toLocaleString()}' -*`);
+    lastDay.setHours(0, 0, 0, 0);
+    //console.log(`*- lastDay.toLocaleString(): '${lastDay.toLocaleString()}' -*`);
+
+    return [firstDay, lastDay];
+  } // getFirstLastDatesOfWeek
+
+
+  // получить массив дат дней заданной недели
+  public static getAllDatesOfWeek(firstDay: Date, lastDay: Date): Date[] {
+    //console.log(`[-Utils-getAllDatesOfWeek--`);
+
+    //console.log(`*- firstDay.toLocaleString(): '${firstDay.toLocaleString()}' -*`);
+    //console.log(`*- lastDay.toLocaleString(): '${lastDay.toLocaleString()}' -*`);
+
+    let dates: Date[] = [];
+    //console.log(`*- dates: -*`);
+    //console.dir(dates);
+
+    let date: Date = new Date(firstDay);
+    //console.log(`*- date.toLocaleString(): '${date.toLocaleString()}' -*`);
+
+    while (date <= lastDay) {
+      dates.push(new Date(date));
+      date.setDate(date.getDate() + 1);
+      //console.log(`*- date.toLocaleString(): '${date.toLocaleString()}' -*`);
+    } // while
+
+    //console.log(`*- dates: -*`);
+    //console.dir(dates);
+
+    //console.log(`--Utils-getAllDatesOfWeek-]`);
+    return dates;
+  } // getAllDatesOfWeek
+
+
+  // дополнить нулями строку со значением времени до формата "00:00"
+  public static toTime(time: string): string {
+
+    let items: string[] = time.split(Literals.doublePoint);
+    let hours: string = items[0];
+    let minutes: string = items[1];
+
+    return `${hours.length < 2 ? '0' : ''}${hours}:${minutes.length < 2 ? '0' : ''}${minutes}`;
+  } // toTime
 
 
   // метод перехода в начало страницы

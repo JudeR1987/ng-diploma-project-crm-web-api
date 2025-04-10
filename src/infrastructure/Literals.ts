@@ -237,6 +237,17 @@ export class Literals {
   public static readonly deleteEmployee: string = 'delete-employee';
   public static readonly showSchedule: string = 'show-schedule';  // "показать расписание"
   public static readonly showServices: string = 'show-services';  // "показать услуги"
+  public static readonly firstDateString: string = 'firstDateString';
+  public static readonly secondDateString: string = 'secondDateString';
+  public static readonly previous: string = 'previous';
+  public static readonly next: string = 'next';
+  public static readonly bgSuccessSubtle: string = 'bg-success-subtle';
+  public static readonly bgMainColor: string = 'bg-main-color';
+  public static readonly bgBackColor: string = 'bg-back-color';
+  public static readonly fwBold: string = 'fw-bold';
+  public static readonly title: string = 'title';
+  public static readonly value: string = 'value';
+  public static readonly zeroTime: string = '00:00';
 
   //endregion
 

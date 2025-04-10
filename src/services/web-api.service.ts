@@ -11,6 +11,8 @@ import {Company} from '../models/classes/Company';
 import {Service} from '../models/classes/Service';
 import {Employee} from '../models/classes/Employee';
 import {EmployeeService} from '../models/classes/EmployeeService';
+import {Utils} from '../infrastructure/Utils';
+import {DisplayWorkDayBreakSlots} from '../models/classes/DisplayWorkDayBreakSlots';
 
 @Injectable({
   providedIn: 'root'
@@ -91,6 +93,30 @@ export class WebApiService {
         .set(Literals.page, page)
     });
   } // getAllByIdByPage
+
+  // GET-запрос на удалённый сервер для получения части данных из БД
+  // по идентификатору за заданный период времени
+  getAllByIdFromTo(url: string, id: number, firstDay: Date, lastDay: Date, token: string): Observable<any> {
+    console.log(`[-WebApiService-getAllByIdFromTo--`);
+
+    console.log(`*- id: '${id}' -*`);
+    console.log(`*- firstDay: '${Utils.dateToString(firstDay)}' -*`);
+    console.log(`*- lastDay: '${Utils.dateToString(lastDay)}' -*`);
+    console.log(`*- token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-getAllByIdFromTo-]`);
+    return this._http.get<any>(url, {
+      headers: httpHeaders,
+      params: new HttpParams()
+        .set(Literals.id, id)
+        // дату передаём в виде строки формата YYYY-MM-dd
+        .set(Literals.firstDateString, Utils.dateToString(firstDay))
+        .set(Literals.secondDateString, Utils.dateToString(lastDay))
+    });
+  } // getAllByIdFromTo
 
   // GET-запрос на удалённый сервер для получения
   // данных о пользователе из БД по номеру телефона
@@ -508,6 +534,48 @@ export class WebApiService {
       { headers: httpHeaders }
     );
   } // createEmployeeServicePUT
+
+
+  // PUT-запрос на удалённый сервер для создания новой записи в таблице "РАСПИСАНИЕ" БД
+  createWorkDayPUT(url: string, displayWorkDayBreakSlots: DisplayWorkDayBreakSlots, token: string): Observable<any> {
+    console.log(`[-WebApiService-createWorkDayPUT--`);
+
+    console.log(`*- displayWorkDayBreakSlots: -*`);
+    console.dir(displayWorkDayBreakSlots);
+    console.dir(DisplayWorkDayBreakSlots.DisplayWorkDayBreakSlotsToDto(displayWorkDayBreakSlots));
+    console.log(`*- token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-createWorkDayPUT-]`);
+    return this._http.put<any>(
+      url,
+      DisplayWorkDayBreakSlots.DisplayWorkDayBreakSlotsToDto(displayWorkDayBreakSlots),
+      { headers: httpHeaders }
+    );
+  } // createWorkDayPUT
+
+  // POST-запрос на удалённый сервер для изменения
+  // на сервере выбранной записи в таблице "РАСПИСАНИЕ" БД
+  editWorkDayPOST(url: string, displayWorkDayBreakSlots: DisplayWorkDayBreakSlots, token: string): Observable<any> {
+    console.log(`[-WebApiService-editWorkDayPOST--`);
+
+    console.log(`*- displayWorkDayBreakSlots: -*`);
+    console.dir(displayWorkDayBreakSlots);
+    console.dir(DisplayWorkDayBreakSlots.DisplayWorkDayBreakSlotsToDto(displayWorkDayBreakSlots));
+    console.log(`*- token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-editWorkDayPOST-]`);
+    return this._http.post<any>(
+      url,
+      DisplayWorkDayBreakSlots.DisplayWorkDayBreakSlotsToDto(displayWorkDayBreakSlots),
+      { headers: httpHeaders }
+    );
+  } // editWorkDayPOST
 
 
   // метод формирования нового заголовка запроса с jwt-токеном

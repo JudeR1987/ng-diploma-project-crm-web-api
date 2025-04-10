@@ -51,8 +51,8 @@ export class DisplayServicesCategory {
     let services: Service[] = [];
 
     // на каждой категории получим каждый элемент коллекции услуг
-    srcDisplayServicesCategories.forEach((displayServicesCategories: DisplayServicesCategory) => {
-      displayServicesCategories.services.forEach((service: Service) => {
+    srcDisplayServicesCategories.forEach((displayServicesCategory: DisplayServicesCategory) => {
+      displayServicesCategory.services.forEach((service: Service) => {
         services.push(service);
       }); // forEach
     }); // forEach

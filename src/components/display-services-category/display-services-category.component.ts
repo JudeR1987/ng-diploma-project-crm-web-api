@@ -34,9 +34,6 @@ export class DisplayServicesCategoryComponent implements OnInit, OnDestroy {
   // начальный фрагмент всплывающей подсказки на поле отображения наименования категории услуг
   @Input() collapseServicesCategoryNameTitleStart: string = Literals.empty;
 
-  // всплывающая подсказка на кнопке "отправителяServicesCategoryId"
-  @Input() butSenderServicesCategoryIdTitle: string = Literals.empty;
-
   // начальный фрагмент всплывающей подсказки чек-бокса выбора услуги
   @Input() labelIsSelectedServiceTitleStart: string = Literals.empty;
 
@@ -63,6 +60,9 @@ export class DisplayServicesCategoryComponent implements OnInit, OnDestroy {
 
   // значение фрагмента отображения длительности услуги
   @Input() labelDurationValue: string = Literals.empty;
+
+  // всплывающая подсказка на кнопке "отправителяServicesCategoryId"
+  @Input() butSenderServicesCategoryIdTitle: string = Literals.empty;
 
   // всплывающая подсказка на кнопке "отправителяServiceIdModeEdit"
   @Input() butSenderServiceIdModeEditTitle: string = Literals.empty;

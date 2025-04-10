@@ -1,9 +1,10 @@
 // ----------------------------------------------------------------------------
-// класс для отображения сведений о записи в таблице "ПРОМЕЖУТКИ_ВРЕМЕНИ" (Slots)
+// класс, представляющий сведения о записи в таблице "ПРОМЕЖУТКИ_ВРЕМЕНИ" (Slots)
 // ----------------------------------------------------------------------------
 import {Literals} from '../../infrastructure/Literals';
+import {Utils} from '../../infrastructure/Utils';
 
-export class DisplayWorkDay {
+export class Slot {
 
   // конструктор с параметрами по умолчанию
   constructor(
@@ -11,14 +12,14 @@ export class DisplayWorkDay {
     private _id: number = Literals.zero,
 
     // начало промежутка времени
-    private _from: string = Literals.empty,
+    private _from: string = Literals.zeroTime,
 
     // длина промежутка времени в секундах
     private _length: number = Literals.zero,
 
     // признак отношения промежутка к перерыву
     // (true - относится к перерыву, false - НЕ_относится к перерыву)
-    private _isBreak: boolean = false,
+    //private _isBreak: boolean = false,
 
     // дата и время удаления записи о промежутке времени
     private _deleted: Date | null = null
@@ -37,15 +38,19 @@ export class DisplayWorkDay {
   get length(): number { return this._length; }
   set length(value: number) { this._length = value; }
 
-  get isBreak(): boolean { return this._isBreak; }
-  set isBreak(value: boolean) { this._isBreak = value; }
+  // свойство длины промежутка времени в минутах
+  get lengthInMinutes(): number { return this._length / 60; }
+  set lengthInMinutes(value: number) { this._length = value * 60; }
+
+  /*get isBreak(): boolean { return this._isBreak; }
+  set isBreak(value: boolean) { this._isBreak = value; }*/
 
   get deleted(): Date | null { return this._deleted; }
   set deleted(value: Date | null) { this._deleted = value; }
 
   // вычисляемое свойство
   // конец промежутка времени
-  get To(): string {
+  get to(): string {
     let items: string[] = this._from.split(Literals.doublePoint);
     let hours: number   = +items[0];
     let minutes: number = +items[1];
@@ -59,46 +64,53 @@ export class DisplayWorkDay {
       hours++;
     } // while
 
-    return `${hours}:${minutes}`;
+    let time: string = `${hours}:${minutes}`;
+
+    // проверка на формат "00:00"
+    if (time.length < 5) time = Utils.toTime(time);
+
+    return time;
   } // get
 
   //#endregion
 
 
   // статический метод, возвращающий новый объект-копию
-  public static newDisplaySlot(srcDisplaySlot: DisplaySlot | any): DisplaySlot {
-    return new DisplaySlot(
-      srcDisplaySlot.id,
-      srcDisplaySlot.from,
-      srcDisplaySlot.length,
-      srcDisplaySlot.isBreak,
-      srcDisplaySlot.deleted
+  public static newSlot(srcSlot: Slot | any): Slot {
+    return new Slot(
+      srcSlot.id,
+      srcSlot.from.length < 5
+        ? Utils.toTime(srcSlot.from)
+        : srcSlot.from,
+      srcSlot.length,
+      //srcDisplaySlot.isBreak,
+      srcSlot.deleted
     ); // return
-  } // newDisplaySlot
+  } // newSlot
 
 
   // статический метод, возвращающий массив новых объектов-копий
-  public static parseDisplaySlots(srcDisplaySlots: DisplaySlot[] | any[]): DisplaySlot[] {
-    return srcDisplaySlots.map((displaySlot: DisplaySlot | any) => this.newDisplaySlot(displaySlot));
-  } // parseDisplaySlots
+  public static parseSlots(srcSlots: Slot[] | any[]): Slot[] {
+    return srcSlots.map((slot: Slot | any) => this.newSlot(slot));
+  } // parseSlots
 
 
   // статический метод, возвращающий объект-DTO
-  public static DisplaySlotToDto(srcDisplaySlot: DisplaySlot): any {
+  public static SlotToDto(srcSlot: Slot): any {
     return {
-      id:      srcDisplaySlot.id,
-      from:    srcDisplaySlot.from,
-      length:  srcDisplaySlot.length,
-      isBreak: srcDisplaySlot.isBreak,
-      deleted: srcDisplaySlot.deleted
+      id:      srcSlot.id,
+      from:    srcSlot.from,
+      length:  srcSlot.length,
+      //isBreak: srcDisplaySlot.isBreak,
+      deleted: srcSlot.deleted
     }; // return
-  } // DisplaySlotToDto
+  } // SlotToDto
 
 
   // статический метод, возвращающий массив объектов-DTO
-  public static DisplaySlotsToDto(srcDisplaySlots: DisplaySlot[]): any[] {
-    return srcDisplaySlots.map((displaySlot: DisplaySlot) => this.DisplaySlotToDto(displaySlot));
-  } // DisplaySlotsToDto
+  public static SlotsToDto(srcSlots: Slot[]): any[] {
+    return srcSlots.map((slot: Slot) => this.SlotToDto(slot));
+  } // SlotsToDto
 
 
   // статический метод, возвращающий объект
@@ -114,5 +126,5 @@ export class DisplayWorkDay {
     return srcCountries.map((country: Country) => this.newCountryToSelect(country));
   } // parseCountriesToSelect*/
 
-} // class DisplayWorkDay
+} // class DisplaySlot
 // ----------------------------------------------------------------------------

@@ -23,7 +23,7 @@
     } @else {
       <!-- основные данные -->
 
-        <!-- данные о сотруднике -->
+      <!-- данные о сотруднике -->
       <div class="col-lg-3 col-xl-2 m-0 p-1 px-sm-2 pt-sm-3 bg-aside-color">
         <div class="row m-0 p-0 justify-content-evenly justify-content-lg-center">
 
@@ -41,7 +41,7 @@
               </div>
             </div>
 
-            <!-- название салона -->
+            <!-- краткие данные о сотруднике -->
             <div class="m-0 p-0">
               <h4 class="text-center text-primary">
                 {{employee.specialization.name}} <strong>{{employee.user.userName}}</strong>
@@ -50,24 +50,12 @@
 
           </div>
 
-
-          <!-- 1-я кнопка: "создать услугу" -->
-          <!--<div class="col-5 col-sm-4 col-md-3 col-lg-11 col-xl-10 col-xxl-9 p-1">
-            <button class="btn btn-primary border-2 w-100 m-0 p-1 fw-bold"
-                    type="button"
-                    (click)="routingToServiceForm(createService, zero, zero)"
-                    title="{{component.butCreateServiceTitle}}">
-              {{component.butCreateServiceValue}}
-              <i class="fa fa-plus-circle"></i>
-            </button>
-          </div>-->
-
         </div>
       </div>
 
       <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-        <!-- данные о категориях услуг и услугах салона с отмеченными услугами сотрудника -->
+      <!-- данные о категориях услуг и услугах салона с отмеченными услугами сотрудника -->
       <div class="col-lg-9 col-xl-10 m-0 p-1 px-sm-2 py-sm-3 d-flex flex-column align-items-center">
 
         <!-- заголовок -->
@@ -101,25 +89,25 @@
 
               <!-- компонент отображения категории услуги со списком услуг -->
               <display-services-category class="m-0 p-1"
-                                         [isCheckingFlag]="true"
-                                         [isWaitFlag]="component.isWaitFlag"
-                                         [isShowFlag]="component.isShowFlag"
-                                         [displayServicesCategory]="displayServicesCategory"
-                                         [collapseServicesCategoryNameTitleStart]="component.collapseServicesCategoryNameTitleStart"
-                                         [butSenderServicesCategoryIdTitle]="empty"
-                                         [labelIsSelectedServiceTitleStart]="component.labelIsSelectedServiceTitleStart"
-                                         [labelPriceTitle]="component.labelPriceTitle"
-                                         [labelPriceValue]="component.labelPriceValue"
-                                         [labelMinPriceTitle]="component.labelMinPriceTitle"
-                                         [labelMinPriceValue]="component.labelMinPriceValue"
-                                         [labelMaxPriceTitle]="component.labelMaxPriceTitle"
-                                         [labelMaxPriceValue]="component.labelMaxPriceValue"
-                                         [labelDurationTitle]="component.labelDurationTitle"
-                                         [labelDurationValue]="component.labelDurationValue"
-                                         [butSenderServiceIdModeEditTitle]="empty"
-                                         [butSenderServiceIdModeDeleteTitle]="empty"
-                                         [selectedServicesIds]="selectedServicesIds"
-                                         (onSendSelectedServiceId)="sendSelectedServiceIdHandler($event)">
+                [isCheckingFlag]="true"
+                [isWaitFlag]="component.isWaitFlag"
+                [isShowFlag]="component.isShowFlag"
+                [collapseServicesCategoryNameTitleStart]="component.collapseServicesCategoryNameTitleStart"
+                [labelIsSelectedServiceTitleStart]="component.labelIsSelectedServiceTitleStart"
+                [labelPriceTitle]="component.labelPriceTitle"
+                [labelPriceValue]="component.labelPriceValue"
+                [labelMinPriceTitle]="component.labelMinPriceTitle"
+                [labelMinPriceValue]="component.labelMinPriceValue"
+                [labelMaxPriceTitle]="component.labelMaxPriceTitle"
+                [labelMaxPriceValue]="component.labelMaxPriceValue"
+                [labelDurationTitle]="component.labelDurationTitle"
+                [labelDurationValue]="component.labelDurationValue"
+                [butSenderServicesCategoryIdTitle]="empty"
+                [butSenderServiceIdModeEditTitle]="empty"
+                [butSenderServiceIdModeDeleteTitle]="empty"
+                [displayServicesCategory]="displayServicesCategory"
+                [selectedServicesIds]="selectedServicesIds"
+                (onSendSelectedServiceId)="sendSelectedServiceIdHandler($event)">
               </display-services-category>
 
             } <!-- for -->
