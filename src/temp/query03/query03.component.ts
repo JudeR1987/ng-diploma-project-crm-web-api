@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgIf} from '@angular/common';
-import {Client} from '../Client';
+import {ClientTemp} from '../ClientTemp';
 import {WebApiService} from '../web-api.service';
 import {Utils} from '../../infrastructure/Utils';
 import {Config} from '../../infrastructure/Config';
 import {TaskButtonComponent} from '../shared/task-button/task-button.component';
-import {TableHeaderClientsComponent} from '../../components/clients/table-header-clients/table-header-clients.component';
-import {TrClientComponent} from '../../components/clients/tr-client/tr-client.component';
+import {TableHeaderClientsComponent} from '../../components/clientsTemp/table-header-clientsTemp/table-header-clientsTemp.component';
+import {TrClientComponent} from '../../components/clientsTemp/tr-clientTemp/tr-clientTemp.component';
 
 @Component({
   selector: 'app-query03',
@@ -34,10 +34,10 @@ export class Query03Component implements OnInit {
   public displayTitle: string = "";
 
   // коллекция для получения информации с сервера
-  private _clients: Client[] = [];
+  private _clients: ClientTemp[] = [];
 
   // коллекция для отображения
-  public displayClients: Client[] = [];
+  public displayClients: ClientTemp[] = [];
 
   // параметр, передающий маршрут в родительский компонент для
   // выделения активной кнопки навигации после перезагрузки страницы
@@ -80,10 +80,10 @@ export class Query03Component implements OnInit {
       this._webApiService.putQuery03(url, this.amountDays).subscribe({
 
         // вызов метода при получении данных
-        next: (webResult: {clients: Client[], amountDays: number}) => {
+        next: (webResult: {clients: ClientTemp[], amountDays: number}) => {
 
           // сведения о клиентах, полученные при помощи сервиса
-          this._clients = Client.parseClients(webResult.clients);
+          this._clients = ClientTemp.parseClients(webResult.clients);
 
           // вывод данных в разметку
           this.show(
@@ -110,7 +110,7 @@ export class Query03Component implements OnInit {
 
 
   // метод вывода коллекции в разметку
-  private show(title: string, clients: Client[]): void {
+  private show(title: string, clients: ClientTemp[]): void {
 
     this.displayTitle = title;
     this.displayClients = clients;

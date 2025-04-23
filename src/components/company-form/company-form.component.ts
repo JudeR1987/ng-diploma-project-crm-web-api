@@ -985,7 +985,6 @@ export class CompanyFormComponent implements OnInit, OnDestroy {
     // выключение спиннера ожидания данных
     this.component.isWaitFlag = false;
 
-
     // если сообщение с ошибкой - завершаем обработку, остаёмся в форме
     if (result != Literals.Ok) {
 

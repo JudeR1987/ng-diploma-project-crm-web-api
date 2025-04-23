@@ -2,13 +2,13 @@ import {Component, Input, EventEmitter, Output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
 @Component({
-  selector: '[table-header-clients]',
+  selector: '[table-header-clientsTemp]',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './table-header-clients.component.html',
-  styleUrl: './table-header-clients.component.css'
+  templateUrl: './table-header-clientsTemp.component.html',
+  styleUrl: './table-header-clientsTemp.component.css'
 })
-export class TableHeaderClientsComponent {
+export class TableHeaderClientsTempComponent {
 
   // флаг включения режима удаления записей
   public isDeleteFlag: boolean = false;
@@ -29,4 +29,4 @@ export class TableHeaderClientsComponent {
 
   } // sendIsDeleteFlag
 
-} // class TableHeaderClientsComponent
+} // class TableHeaderClientsTempComponent

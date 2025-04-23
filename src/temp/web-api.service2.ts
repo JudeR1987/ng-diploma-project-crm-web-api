@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Client} from './Client';
+import {ClientTemp} from './ClientTemp';
 import {Trip} from './Trip';
 import {Utils} from '../infrastructure/Utils';
 
@@ -79,7 +79,7 @@ export class WebApiService2 {
 
   // PUT-запрос на удалённый сервер для
   // добавления новой записи в таблицу "КЛИЕНТЫ" БД
-  addClient(url: string, client: Client): Observable<any> {
+  addClient(url: string, client: ClientTemp): Observable<any> {
     return this._http.put<any>(url,
       new HttpParams()
         .set('id', client.id)
@@ -93,7 +93,7 @@ export class WebApiService2 {
 
   // POST-запрос на удалённый сервер для
   // изменения выбранной записи в таблице "КЛИЕНТЫ" БД
-  editClient(url: string, client: Client): Observable<any> {
+  editClient(url: string, client: ClientTemp): Observable<any> {
     return this._http.post<any>(url,
       new HttpParams()
         .set('id', client.id)

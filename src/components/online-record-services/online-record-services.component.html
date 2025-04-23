@@ -1,0 +1,135 @@
+
+<!-- /online-record-services/:id -->
+
+<!-- компонент с отображением коллекции услуг салона -->
+
+<!-- разметка компонента OnlineRecordServicesComponent -->
+<main class="row bg-main-color content-height mx-auto p-0 w-lg-95
+             justify-content-center align-items-lg-stretch"
+      [class.align-items-start]="!component.isWaitFlag">
+
+  <div class="col-12 m-0 p-0 row justify-content-center align-items-stretch">
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    @if (component.isWaitFlag) {
+
+      <!-- загрузочный спиннер -->
+      <div class="col-12 m-0 p-1 px-sm-2 py-sm-3 d-flex flex-column">
+        <div class="d-flex justify-content-center align-items-end text-aside-color h-50">
+          <span class="spinner-border m-0 p-5 border-30px opacity-75 speed-600ms"></span>
+        </div>
+      </div>
+
+    } @else {
+      <!-- основные данные -->
+
+        <!-- данные о салоне и кнопки -->
+      <div class="col-lg-3 col-xl-2 m-0 p-1 px-sm-2 pt-sm-3 bg-aside-color">
+        <div class="row m-0 p-0 justify-content-evenly justify-content-lg-center">
+
+          <!-- отображение данных о салоне -->
+          <div class="col-12 m-0 mb-2 p-0 d-flex flex-column">
+
+            <!-- название салона -->
+            <div class="m-0 p-0">
+              <h4 class="text-center text-primary">&laquo;{{company.name}}&raquo;</h4>
+            </div>
+
+            <!-- изображение салона -->
+            <div class="m-0 p-0 d-flex justify-content-center align-items-center">
+              <img class="card-img m-0 p-0 h-max-250px-w-max-400px border border-back-color"
+                   src="{{company.titleImage}}"
+                   alt="{{company.titleImageFileName}}"
+                   title="&laquo;{{company.name}}&raquo;{{
+                          (company.description != null && company.description != ''
+                            ? ': ' + company.description : '')}}">
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+        <!-- данные о категориях услуг и услугах салона -->
+      <div class="col-lg-9 col-xl-10 m-0 p-1 px-sm-2 py-sm-3 d-flex flex-column align-items-center">
+
+        <!-- заголовок -->
+        <div class="m-0 p-0 w-md-75">
+          <div class="m-0 p-0 d-flex align-items-center">
+            <h4 class="text-primary w-100" [innerHTML]="component.title"></h4>
+            <button class="btn m-1 px-3 py-1 bg-plum hover-bg-paleturquoise back-color-hover
+                           border-2 border-back-color w-auto fw-bold disabled-bg-plum"
+                    type="button"
+                    (click)="routingToOnlineRecordEmployees()"
+                    title="выбрать мастера"
+                    [disabled]="selectedServicesIds.length === 0">
+              выбрать&nbsp;мастера&nbsp;<i class="fa fa-chevron-circle-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- данные о категориях услуг и услугах салона -->
+        @if (displayServicesCategories.length > zero) {
+
+          <div class="bg-aside-color border border-2 border-back-color m-0 mb-2 p-1
+                      d-flex flex-column w-md-75">
+
+            <!-- кнопка "открыть/закрыть все вкладки" -->
+            <div class="m-0 p-0 ps-1 d-flex align-items-center">
+              <button class="btn btn-sm m-0 px-2 py-0 text-main-color back-color-hover
+                             bg-back-color border border-2 border-back-color"
+                      type="button"
+                      title="{{isShowFlag
+                               ? 'скрыть все услуги'
+                               : 'показать все услуги'}}"
+                      (click)="isShowFlag = !isShowFlag">
+                @if (isShowFlag) {
+                  <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+                } @else {
+                  <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+                } <!-- if -->
+              </button>
+            </div>
+
+            <!-- сведения о категориях услуг и услугах салона -->
+            @for (displayServicesCategory of displayServicesCategories; track displayServicesCategory.servicesCategory.id; let i = $index) {
+
+              <!-- компонент отображения категории услуги со списком услуг компании -->
+              <display-services-category class="m-0 p-1"
+                [isCheckingFlag]="true"
+                [isWaitFlag]="component.isWaitFlag"
+                [isShowFlag]="isShowFlag"
+                [collapseServicesCategoryNameTitleStart]="'список услуг категории'"
+                [labelIsSelectedServiceTitleStart]="'выбрать услугу'"
+                [labelPriceTitle]="'цена'"
+                [labelPriceValue]="'цена'"
+                [labelMinPriceTitle]="'минимальная цена'"
+                [labelMinPriceValue]="'мин.цена'"
+                [labelMaxPriceTitle]="'максимальная цена'"
+                [labelMaxPriceValue]="'макс.цена'"
+                [labelDurationTitle]="'длительность'"
+                [labelDurationValue]="'мин.'"
+                [butSenderServicesCategoryIdTitle]="empty"
+                [butSenderServiceIdModeEditTitle]="empty"
+                [butSenderServiceIdModeDeleteTitle]="empty"
+                [displayServicesCategory]="displayServicesCategory"
+                [selectedServicesIds]="[]"
+                (onSendSelectedServiceId)="sendSelectedServiceIdHandler($event)">
+              </display-services-category>
+
+            } <!-- for -->
+
+          </div>
+
+        } <!-- if -->
+
+      </div>
+
+    } <!-- if -->
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  </div>
+
+</main>

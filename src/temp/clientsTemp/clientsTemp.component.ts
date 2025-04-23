@@ -1,28 +1,28 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {NgIf} from '@angular/common';
-import {Client} from '../../temp/Client';
+import {ClientTemp} from '../ClientTemp';
 import {PageViewModel} from '../../infrastructure/PageViewModel';
 import {WebApiService} from '../../temp/web-api.service';
 import {Utils} from '../../infrastructure/Utils';
 import {Config} from '../../infrastructure/Config';
 import {TaskButtonComponent} from '../../temp/shared/task-button/task-button.component';
-import {TableHeaderClientsComponent} from './table-header-clients/table-header-clients.component';
-import {TrClientComponent} from './tr-client/tr-client.component';
-import {ClientFormComponent} from './client-form/client-form.component';
+import {TableHeaderClientsTempComponent} from './table-header-clientsTemp/table-header-clientsTemp.component';
+import {TrClientTempComponent} from './tr-clientTemp/tr-clientTemp.component';
+import {ClientTempFormComponent} from './clientTemp-form/clientTemp-form.component';
 import {IClientFormParams} from '../../temp/IClientFormParams';
 
 @Component({
-  selector: 'app-clients',
+  selector: 'app-clientsTemp',
   standalone: true,
   imports: [
-    NgIf, TaskButtonComponent, TableHeaderClientsComponent,
-    TrClientComponent, ClientFormComponent
+    NgIf, TaskButtonComponent, TableHeaderClientsTempComponent,
+    TrClientTempComponent, ClientTempFormComponent
   ],
-  templateUrl: './clients.component.html',
-  styleUrl: './clients.component.css'
+  templateUrl: './clientsTemp.component.html',
+  styleUrl: './clientsTemp.component.css'
 })
-export class ClientsComponent implements OnInit {
+export class ClientsTempComponent implements OnInit {
 
   // «идентификатор таймера», для отмены срабатывания setTimeout()
   // при нажатии кнопок обработки быстрее длительности срабатывания таймера
@@ -53,19 +53,19 @@ export class ClientsComponent implements OnInit {
   public displayTitle: string = "";
 
   // коллекция для получения информации с сервера
-  private _clients: Client[] = [];
+  private _clients: ClientTemp[] = [];
 
   // коллекция для отображения
-  public displayClients: Client[] = [];
+  public displayClients: ClientTemp[] = [];
 
   // информация о пагинации страницы
   public pageViewModel: PageViewModel = new PageViewModel();
 
   // объект сведений о клиенте для добавления/изменения
-  public client: Client = new Client();
+  public client: ClientTemp = new ClientTemp();
 
   // объект-копия для обработчика сброса данных в форме
-  public clientCopy: Client = new Client();
+  public clientCopy: ClientTemp = new ClientTemp();
 
   // параметры формы добавления/изменения
   public clientFormParams: IClientFormParams = { passportList: [] };
@@ -113,10 +113,10 @@ export class ClientsComponent implements OnInit {
 
     // подписка на получение результата запроса
     this._webApiService.getAllByPage(url, page)
-      .subscribe((webResult: {clients: Client[], pageViewModel: PageViewModel}) => {
+      .subscribe((webResult: {clients: ClientTemp[], pageViewModel: PageViewModel}) => {
 
         // сведения о клиентах, полученные при помощи сервиса
-        this._clients = Client.parseClients(webResult.clients);
+        this._clients = ClientTemp.parseClients(webResult.clients);
         this.pageViewModel = PageViewModel.newPageViewModel(webResult.pageViewModel);
 
         // вывод данных в разметку
@@ -137,7 +137,7 @@ export class ClientsComponent implements OnInit {
 
 
   // метод вывода коллекции в разметку
-  private show(title: string, clients: Client[]): void {
+  private show(title: string, clients: ClientTemp[]): void {
 
     this.displayTitle = title;
     this.displayClients = clients;
@@ -181,7 +181,7 @@ export class ClientsComponent implements OnInit {
     this.isDisabledFormButtonsFlag = false;
 
     // создание нового объекта для добавления
-    this.client = new Client();
+    this.client = new ClientTemp();
 
     // url для получения параметров формы добавления/изменения
     // сведений о клиенте из БД от сервера
@@ -198,7 +198,7 @@ export class ClientsComponent implements OnInit {
         this.isWaitClientForm = false;
 
         // создание нового объекта для сброса в форме добавления
-        this.clientCopy = new Client();
+        this.clientCopy = new ClientTemp();
 
         // параметры формы добавления/изменения клиента
         this.clientFormParams = { passportList: webResult.passportList };
@@ -239,8 +239,8 @@ export class ClientsComponent implements OnInit {
     this.isDisabledFormButtonsFlag = false;
 
     // получить объект из коллекции по Id
-    let client: Client | undefined =
-      this._clients.find((client: Client) => client.id === clientId);
+    let client: ClientTemp | undefined =
+      this._clients.find((client: ClientTemp) => client.id === clientId);
 
     // если объект не найден - завершаем обработку
     if (client === undefined) {
@@ -267,7 +267,7 @@ export class ClientsComponent implements OnInit {
     } // if
 
     // создание копии изменяемого объекта для изменения
-    this.client = Client.newClient(client);
+    this.client = ClientTemp.newClient(client);
 
     // url для получения параметров формы добавления/изменения
     // сведений о клиенте из БД от сервера
@@ -309,7 +309,7 @@ export class ClientsComponent implements OnInit {
         } // if
 
         // создание копии изменяемого объекта для сброса в форме изменения
-        this.clientCopy = Client.newClient(client);
+        this.clientCopy = ClientTemp.newClient(client);
 
         // параметры формы добавления/изменения клиента
         this.clientFormParams = { passportList: webResult.passportList };
@@ -400,7 +400,7 @@ export class ClientsComponent implements OnInit {
 
   // метод получения объекта Client из формы
   // добавления/изменения сведений о клиенте
-  sendClientHandler(client: Client): void {
+  sendClientHandler(client: ClientTemp): void {
 
     // отмена выделения строк и удаление сообщения
     this.removeSetTimeout();
@@ -561,7 +561,7 @@ export class ClientsComponent implements OnInit {
   // обработчик события изменения режима удаления записей
   sendIsDeleteFlagHandler(value: boolean): void {
 
-    // передача значения в дочерний компонент (TrClientComponent)
+    // передача значения в дочерний компонент (TrClientTempComponent)
     this.isDeleteFlag = value;
 
   } // sendIsDeleteFlagHandler
@@ -581,4 +581,4 @@ export class ClientsComponent implements OnInit {
 
   } // sendMessageHandler
 
-} // class ClientsComponent
+} // class ClientsTempComponent

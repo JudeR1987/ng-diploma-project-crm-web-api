@@ -2,6 +2,7 @@
 // класс с набором строковых значений для разных языков
 // ----------------------------------------------------------------------------
 import {Literals} from './Literals';
+import {OnlineRecordEmployeesComponent} from '../components/online-record-employees/online-record-employees.component';
 
 export class Resources {
 
@@ -97,6 +98,16 @@ export class Resources {
     'rus': 'Услуги сотрудника',
     'eng': 'Employee services' };
 
+  // заголовок на странице "Клиенты"
+  public static readonly appClientsTitle: Record<string, string> = {
+    'rus': 'Клиенты',
+    'eng': 'Clients' };
+
+  // заголовок на странице "Записи"
+  public static readonly appRecordsTitle: Record<string, string> = {
+    'rus': 'Записи',
+    'eng': 'Records' };
+
   // заголовок на странице "Склад"
   public static readonly appWarehouseTitle: Record<string, string> = {
     'rus': 'Склад',
@@ -106,6 +117,11 @@ export class Resources {
   public static readonly appReportsTitle: Record<string, string> = {
     'rus': 'Отчёты',
     'eng': 'Reports' };
+
+  // заголовок на странице "Онлайн-запись"
+  public static readonly appOnlineRecordTitle: Record<string, string> = {
+    'rus': 'Онлайн-запись',
+    'eng': 'Online-Record' };
 
   // всплывающая подсказка на логотипе "Home"
   public static readonly appLogoTitle: Record<string, string> = {
@@ -609,6 +625,26 @@ export class Resources {
   public static readonly businessButEmployeesManagementValue: Record<string, string> = {
     'rus': 'персонал',
     'eng': 'employees' };
+
+  // всплывающая подсказка на кнопке "Просмотр клиентов"
+  public static readonly businessButClientsManagementTitle: Record<string, string> = {
+    'rus': 'просмотр клиентской базы',
+    'eng': 'viewing the customer base' };
+
+  // значение кнопки "Просмотр клиентов"
+  public static readonly businessButClientsManagementValue: Record<string, string> = {
+    'rus': 'клиенты',
+    'eng': 'clients' };
+
+  // всплывающая подсказка на кнопке "Просмотр записей"
+  public static readonly businessButRecordsManagementTitle: Record<string, string> = {
+    'rus': 'просмотр записей',
+    'eng': 'viewing records' };
+
+  // значение кнопки "Просмотр записей"
+  public static readonly businessButRecordsManagementValue: Record<string, string> = {
+    'rus': 'записи',
+    'eng': 'records' };
 
   // всплывающая подсказка на кнопке "Управление складом"
   public static readonly businessButWarehouseManagementTitle: Record<string, string> = {
@@ -1358,6 +1394,34 @@ export class Resources {
   //endregion
 
 
+  //#region ClientsComponent
+
+  // заголовок
+  public static readonly clientsTitle: Record<string, string> = {
+    'rus': 'Клиенты',
+    'eng': 'Clients' };
+
+  public static readonly clientsZeroCollectionTitle: Record<string, string> = {
+    'rus': 'Клиенты отсутствуют',
+    'eng': 'There are no clients' };
+
+  //endregion
+
+
+  //#region RecordsComponent
+
+  // заголовок
+  public static readonly recordsTitle: Record<string, string> = {
+    'rus': 'Записи',
+    'eng': 'Records' };
+
+  public static readonly recordsZeroCollectionTitle: Record<string, string> = {
+    'rus': 'Записи отсутствуют',
+    'eng': 'There are no records' };
+
+  //endregion
+
+
   //#region WarehouseComponent
 
   // заголовок
@@ -1378,12 +1442,32 @@ export class Resources {
   //endregion
 
 
+  //#region OnlineRecordServicesComponent
+
+  // заголовок
+  public static readonly onlineRecordServicesTitle: Record<string, string> = {
+    'rus': 'выбор услуги',
+    'eng': 'choosing a service' };
+
+  //endregion
+
+
+  //#region OnlineRecordEmployeesComponent
+
+  // заголовок
+  public static readonly onlineRecordEmployeesTitle: Record<string, string> = {
+    'rus': 'выбор мастера',
+    'eng': 'choosing a master' };
+
+  //endregion
+
+
   //#region NotFoundComponent
 
   // заголовок
   public static readonly notFoundTitle: Record<string, string> = {
-    'rus': 'Маршрут не найден / Страница не найдена',
-    'eng': 'Route not found / Page not found' };
+    'rus': 'Страница не найдена',
+    'eng': 'Page not found' };
 
   //endregion
 

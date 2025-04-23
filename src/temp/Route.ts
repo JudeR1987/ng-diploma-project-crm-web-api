@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------------
 
 // класс, представляющий сведения о записи в таблице "МАРШРУТЫ" (Routes)
-import {Country} from './CountryTemp';
+import {CountryTemp} from './CountryTemp';
 import {Purpose} from './Purpose';
 import {IRouteToSelect} from './IRouteToSelect';
 
@@ -13,7 +13,7 @@ export class Route {
     private _id: number = 0,
 
     // данные о стране пребывания
-    private _country: Country = new Country(),
+    private _country: CountryTemp = new CountryTemp(),
 
     // данные о цели поездки
     private _purpose: Purpose = new Purpose()
@@ -26,8 +26,8 @@ export class Route {
   get id(): number { return this._id; }
   set id(value: number) { this._id = value; }
 
-  get country(): Country { return this._country; }
-  set country(value: Country) { this._country = value; }
+  get country(): CountryTemp { return this._country; }
+  set country(value: CountryTemp) { this._country = value; }
 
   get purpose(): Purpose { return this._purpose; }
   set purpose(value: Purpose) { this._purpose = value; }
@@ -47,7 +47,7 @@ export class Route {
   public static newRoute(srcRoute: Route | any): Route {
     return new Route(
       srcRoute.id,
-      Country.newCountry(srcRoute.country),
+      CountryTemp.newCountry(srcRoute.country),
       Purpose.newPurpose(srcRoute.purpose)
     ); // return
   } // newRoute

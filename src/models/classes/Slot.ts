@@ -113,6 +113,26 @@ export class Slot {
   } // SlotsToDto
 
 
+  // метод, сравнивающий время начала промежутка с заданным временем
+  // true - время промежутка больше, false - время промежутка меньше
+  public compareTime(date: Date): boolean {
+
+    let hoursSlot: number = +this.from.split(Literals.doublePoint)[0];
+    let minutesSlot: number = +this.from.split(Literals.doublePoint)[1];
+
+    let hoursDate: number = date.getHours();
+    let minutesDate: number = date.getMinutes();
+
+    if (hoursSlot < hoursDate) {
+      return false;
+    } else if (hoursSlot > hoursDate) {
+      return true;
+    } else
+      return minutesSlot > minutesDate; // if
+
+  } // compareTime
+
+
   // статический метод, возвращающий объект
   // с интерфейсом для отображения в списке выбора
   /*public static newCountryToSelect(srcCountry: Country): { id: number, name: string } {

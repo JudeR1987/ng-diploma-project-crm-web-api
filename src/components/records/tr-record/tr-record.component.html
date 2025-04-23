@@ -1,0 +1,22 @@
+<td class="text-center p-1">{{row}}</td>
+<td class="text-start p-1">{{record.employee.user.userName}}</td>
+<td class="text-start p-1">{{record.client.surname === null || record.client.surname === empty
+  ? record.client.name : record.client.fullName}}</td>
+<td class="text-center p-1">{{record.date | date: "dd.MM.yyyy"}}г. - {{record.date | date: "HH:mm"}}</td>
+<td class="p-1">{{record.lengthInMinutes | number:"0.0-0"}}</td>
+<td class="text-start p-1">{{
+    record.attendance === -1
+      ? 'не пришёл'
+      : record.attendance === zero
+        ? 'ожидание'
+        : record.attendance === one
+          ? 'пришёл'
+          : record.attendance === 2
+            ? 'подтвердил запись'
+            : empty}}</td>
+<td class="text-start p-1">{{record.isOnline ? 'да' : 'нет'}}</td>
+<td class="p-1" [class]="record.isPaid ? '' : 'fw-bold'">{{record.isPaid
+  ? (record.totalPrice | number:"0.2-2")
+  : 'не оплачено'}}</td>
+<td class="text-start p-1">{{record.comment}}</td>
+

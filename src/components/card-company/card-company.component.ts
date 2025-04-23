@@ -27,14 +27,11 @@ export class CardCompanyComponent implements OnInit, OnDestroy {
   // всплывающая подсказка на кнопке "отправителяID"
   @Input() butSenderCompanyIdTitle: string = Literals.empty;
 
-  // всплывающая подсказка на кнопке "записаться"
-  //@Input() butRecordTitle: string = Literals.empty;
-
   // значение кнопки "отправителяID"
   @Input() butSenderCompanyIdValue: string = Literals.empty;
 
-  // значение кнопки "записаться"
-  //@Input() butRecordValue: string = Literals.empty;
+  // режим "онлайн-записи"
+  //@Input() isOnlineRecord: boolean = false;
 
   // путь расположения изображений логотипов в приложении
   public srcLogoPath: string = Literals.srcLogoPath;
@@ -54,6 +51,10 @@ export class CardCompanyComponent implements OnInit, OnDestroy {
 
   // свойство для генерации события передачи данных об Id выбранной компании
   @Output() onSendCompanyId: EventEmitter<number> = new EventEmitter<number>();
+
+  // свойство для генерации события передачи данных об Id выбранной компании и режима выбора
+  /*@Output() onSendCompanyIdMode: EventEmitter<{companyId: number, mode: string}> =
+    new EventEmitter<{companyId: number, mode: string}>();*/
 
 
   // конструктор
@@ -90,15 +91,16 @@ export class CardCompanyComponent implements OnInit, OnDestroy {
     console.log(`--CardCompanyComponent-sendCompanyId-]`);
   } // sendCompanyId
 
-  // метод передачи данных
-  /*sendCompanyId(companyId: number): void {
-    console.log(`[-CardCompanyComponent-sendCompanyId--`);
+
+  // метод передачи данных + режим выбора
+  /*sendCompanyIdMode(mode: string): void {
+    console.log(`[-CardCompanyComponent-sendCompanyIdMode--`);
 
     // зажигаем событие передачи данных
-    this.onSendCompanyId.emit(companyId);
+    this.onSendCompanyIdMode.emit({ companyId: this.company.id, mode: mode });
 
-    console.log(`--CardCompanyComponent-sendCompanyId-]`);
-  } // sendCompanyId*/
+    console.log(`--CardCompanyComponent-sendCompanyIdMode-]`);
+  } // sendCompanyIdMode*/
 
 
   // отмены подписок и необходимые методы при уничтожении компонента

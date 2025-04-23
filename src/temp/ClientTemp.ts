@@ -4,7 +4,7 @@
 import {Person} from './Person';
 import {IClientToSelect} from './IClientToSelect';
 
-export class Client extends Person {
+export class ClientTemp extends Person {
 
   // конструктор с параметрами по умолчанию
   constructor(
@@ -26,8 +26,8 @@ export class Client extends Person {
 
 
   // статический метод, возвращающий новый объект-копию
-  public static newClient(srcClient: Client | any): Client {
-    return new Client(
+  public static newClient(srcClient: ClientTemp | any): ClientTemp {
+    return new ClientTemp(
       srcClient.id,
       srcClient.surname,
       srcClient.name,
@@ -38,22 +38,22 @@ export class Client extends Person {
 
 
   // статический метод, возвращающий массив новых объектов-копий
-  public static parseClients(srcClients: Client[] | any[]): Client[] {
-    return srcClients.map((client: Client | any) => this.newClient(client));
+  public static parseClients(srcClients: ClientTemp[] | any[]): ClientTemp[] {
+    return srcClients.map((client: ClientTemp | any) => this.newClient(client));
   } // parseClients
 
 
   // статический метод, возвращающий новый объект-копию
   // с интерфейсом IClientToSelect для отображения в списке выбора
-  public static newClientToSelect(srcClient: Client): IClientToSelect {
+  public static newClientToSelect(srcClient: ClientTemp): IClientToSelect {
     return { id: srcClient.id, fullName: srcClient.fullName };
   } // newClientToSelect
 
 
   // статический метод, возвращающий массив новых объектов-копий
   // с интерфейсом IClientToSelect для отображения в списке выбора
-  public static parseClientsToSelect(srcClients: Client[]): IClientToSelect[] {
-    return srcClients.map((client: Client) => this.newClientToSelect(client));
+  public static parseClientsToSelect(srcClients: ClientTemp[]): IClientToSelect[] {
+    return srcClients.map((client: ClientTemp) => this.newClientToSelect(client));
   } // parseClientsToSelect
 
 } // class Client

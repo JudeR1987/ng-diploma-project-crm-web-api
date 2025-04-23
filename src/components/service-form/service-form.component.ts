@@ -575,7 +575,6 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
     try {
       // получить jwt-токен
       let token: string = this._tokenService.token;
-      console.log(`*-token: '${token}' -*`);
 
       let webResult: any = await firstValueFrom(
         this._webApiService.getById(Config.urlGetServiceById, this._serviceId, token)
@@ -602,14 +601,11 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
 
     console.log(`--ServiceFormComponent-result:`);
     console.dir(result);
-    console.dir(result.message);
-    console.dir(result.service);
 
     console.log(`--ServiceFormComponent-2-(ответ на запрос получен)-`);
 
     // выключение спиннера ожидания данных
     this.component.isWaitFlag = false;
-
 
     // если сообщение с ошибкой - завершаем обработку, остаёмся в форме
     if (result.message != Literals.Ok) {

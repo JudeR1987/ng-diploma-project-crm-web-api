@@ -46,11 +46,8 @@
                           [labelPhone]="component.labelPhone"
                           [butSenderCompanyIdTitle]="component.butRecordTitle"
                           [butSenderCompanyIdValue]="component.butRecordValue"
-                          [srcLogoPath]="component.srcLogoPath"
-                          [fileNameLogoDef]="component.fileNameLogoDef"
-                          [srcImagePath]="component.srcImagePath"
-                          [fileNameCompanyTitleImageDef]="component.fileNameCompanyTitleImageDef"
-                          (onSendCompanyId)="sendCompanyIdHandler($event)">
+                          [isOnlineRecord]="true"
+                          (onSendCompanyIdMode)="sendCompanyIdModeHandler($event)">
             </card-company>-->
           } <!-- for -->
 

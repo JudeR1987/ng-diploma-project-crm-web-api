@@ -60,6 +60,13 @@ export class Utils {
   } // dateToString
 
 
+  // преобразование времени к формату HH-mm-ss типа string
+  public static timeToString(date: Date): string {
+    //return date.toLocaleTimeString().split('.').reverse().join('-');
+    return date.toLocaleTimeString();
+  } // timeToString
+
+
   // преобразование даты из формата YYYY-MM-dd типа string
   public static stringToDate(string: string): Date {
 

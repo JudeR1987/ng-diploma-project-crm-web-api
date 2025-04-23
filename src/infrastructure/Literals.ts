@@ -2,6 +2,9 @@
 // класс с набором константных строковых значений
 // ----------------------------------------------------------------------------
 import {Config} from './Config';
+import {Record} from '../models/classes/Record';
+import {OnlineRecordServicesComponent} from '../components/online-record-services/online-record-services.component';
+import {OnlineRecordEmployeesComponent} from '../components/online-record-employees/online-record-employees.component';
 
 export class Literals {
 
@@ -139,6 +142,18 @@ export class Literals {
   //endregion
 
 
+  //#region ClientsComponent
+  public static readonly clients: string = 'clients';
+
+  //endregion
+
+
+  //#region RecordsComponent
+  public static readonly records: string = 'records';
+
+  //endregion
+
+
   //#region WarehouseComponent
   public static readonly warehouse: string = 'warehouse';
 
@@ -147,6 +162,18 @@ export class Literals {
 
   //#region ReportsComponent
   public static readonly reports: string = 'reports';
+
+  //endregion
+
+
+  //#region OnlineRecordServicesComponent
+  public static readonly onlineRecordServices: string = 'online-record-services';
+
+  //endregion
+
+
+  //#region OnlineRecordServicesComponent
+  public static readonly onlineRecordEmployees: string = 'online-record-employees';
 
   //endregion
 
@@ -184,8 +211,12 @@ export class Literals {
   public static readonly routeEmployeeForm: string = 'employee-form';
   public static readonly routeSchedule: string = 'schedule';
   public static readonly routeEmployeesServices: string = 'employees-services';
+  public static readonly routeClients: string = 'clients';
+  public static readonly routeRecords: string = 'records';
   public static readonly routeWarehouse: string = 'warehouse';
   public static readonly routeReports: string = 'reports';
+  public static readonly routeOnlineRecordServices: string = 'online-record-services';
+  public static readonly routeOnlineRecordEmployees: string = 'online-record-employees';
   public static readonly routeNotFound: string = '404';
   public static readonly routeOther: string = '**';
 
@@ -248,6 +279,21 @@ export class Literals {
   public static readonly title: string = 'title';
   public static readonly value: string = 'value';
   public static readonly zeroTime: string = '00:00';
+  public static readonly asc: string = 'asc';
+  public static readonly desc: string = 'desc';
+  public static readonly surname: string = 'surname';
+  public static readonly birthDate: string = 'birthDate';
+  public static readonly gender: string = 'gender';
+  public static readonly discount: string = 'discount';
+  public static readonly card: string = 'card';
+  public static readonly balance: string = 'balance';
+  public static readonly employee: string = 'employee';
+  public static readonly client: string = 'client';
+  public static readonly date: string = 'date';
+  public static readonly length: string = 'length';
+  public static readonly attendance: string = 'attendance';
+  public static readonly isOnline: string = 'isOnline';
+  public static readonly price: string = 'price';
 
   //endregion
 

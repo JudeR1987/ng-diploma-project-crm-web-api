@@ -1,0 +1,123 @@
+<tr>
+  <th class="p-1 w-5">&numero;<br>п&nbsp;<b>&frasl;</b>&nbsp;п</th>
+  <th class="p-0 pe-1 hover-pointer w-10"
+      (click)="sorted(employee)">
+    <div class="m-0 p-0 row align-items-center">
+      <div class="col m-0 p-0">
+        сотрудник
+      </div>
+      <div class="m-0 p-0 w-auto">
+        @if (sortProp === employee && sortMode != empty) {
+          @if (sortMode === asc) {
+            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+          } @else {
+            <i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>
+          } <!-- if -->
+        } <!-- if -->
+      </div>
+    </div>
+  </th>
+  <th class="p-0 pe-1 hover-pointer w-10"
+      (click)="sorted(client)">
+    <div class="m-0 p-0 row align-items-center">
+      <div class="col m-0 p-0">
+        клиент
+      </div>
+      <div class="m-0 p-0 w-auto">
+        @if (sortProp === client && sortMode != empty) {
+          @if (sortMode === asc) {
+            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+          } @else {
+            <i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>
+          } <!-- if -->
+        } <!-- if -->
+      </div>
+    </div>
+  </th>
+  <th class="p-0 pe-1 hover-pointer w-10"
+      (click)="sorted(date)">
+    <div class="m-0 p-0 row align-items-center">
+      <div class="col m-0 p-0">
+        начало записи
+      </div>
+      <div class="m-0 p-0 w-auto">
+        @if (sortProp === date && sortMode != empty) {
+          @if (sortMode === asc) {
+            <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+          } @else {
+            <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i>
+          } <!-- if -->
+        } <!-- if -->
+      </div>
+    </div>
+  </th>
+  <th class="p-0 pe-1 hover-pointer w-10"
+      (click)="sorted(length)">
+    <div class="m-0 p-0 row align-items-center">
+      <div class="col m-0 p-0">
+        длительность, мин.
+      </div>
+      <div class="m-0 p-0 w-auto">
+        @if (sortProp === length && sortMode != empty) {
+          @if (sortMode === asc) {
+            <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+          } @else {
+            <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i>
+          } <!-- if -->
+        } <!-- if -->
+      </div>
+    </div>
+  </th>
+  <th class="p-0 pe-1 hover-pointer w-10"
+      (click)="sorted(attendance)">
+    <div class="m-0 p-0 row align-items-center">
+      <div class="col m-0 p-0">
+        статус посещения
+      </div>
+      <div class="m-0 p-0 w-auto">
+        @if (sortProp === attendance && sortMode != empty) {
+          @if (sortMode === asc) {
+            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+          } @else {
+            <i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>
+          } <!-- if -->
+        } <!-- if -->
+      </div>
+    </div>
+  </th>
+  <th class="p-0 pe-1 hover-pointer w-10"
+      (click)="sorted(isOnline)">
+    <div class="m-0 p-0 row align-items-center">
+      <div class="col m-0 p-0">
+        онлайн-запись
+      </div>
+      <div class="m-0 p-0 w-auto">
+        @if (sortProp === isOnline && sortMode != empty) {
+          @if (sortMode === asc) {
+            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+          } @else {
+            <i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>
+          } <!-- if -->
+        } <!-- if -->
+      </div>
+    </div>
+  </th>
+  <th class="p-0 pe-1 hover-pointer w-10"
+      (click)="sorted(price)">
+    <div class="m-0 p-0 row align-items-center">
+      <div class="col m-0 p-0">
+        оплата, руб.
+      </div>
+      <div class="m-0 p-0 w-auto">
+        @if (sortProp === price && sortMode != empty) {
+          @if (sortMode === asc) {
+            <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+          } @else {
+            <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i>
+          } <!-- if -->
+        } <!-- if -->
+      </div>
+    </div>
+  </th>
+  <th class="p-0">комментарий</th>
+</tr>

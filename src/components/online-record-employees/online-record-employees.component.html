@@ -1,0 +1,294 @@
+
+<!-- /online-record-employees/:id -->
+
+<!-- компонент с отображением коллекции сотрудников салона, выполняющих выбранную услугу -->
+
+<!-- разметка компонента OnlineRecordEmployeesComponent -->
+<main class="row bg-main-color content-height mx-auto p-0 w-lg-95
+             justify-content-center align-items-lg-stretch"
+      [class.align-items-start]="!component.isWaitFlag">
+
+  <div class="col-12 m-0 p-0 row justify-content-center align-items-stretch">
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    @if (component.isWaitFlag && employees.length <= zero) {
+
+      <!-- загрузочный спиннер -->
+      <div class="col-12 m-0 p-1 px-sm-2 py-sm-3 d-flex flex-column">
+        <div class="d-flex justify-content-center align-items-end text-aside-color h-50">
+          <span class="spinner-border m-0 p-5 border-30px opacity-75 speed-600ms"></span>
+        </div>
+      </div>
+
+    } @else {
+      <!-- основные данные -->
+
+      <!-- данные о салоне и кнопки -->
+      <div class="col-lg-3 col-xl-2 m-0 p-1 px-sm-2 pt-sm-3 bg-aside-color">
+        <div class="row m-0 p-0 justify-content-evenly justify-content-lg-center">
+
+          <!-- отображение данных о салоне -->
+          <div class="col-12 m-0 mb-2 p-0 d-flex flex-column">
+
+            <!-- название салона -->
+            <div class="m-0 p-0">
+              <h4 class="text-center text-primary">&laquo;{{company.name}}&raquo;</h4>
+            </div>
+
+            <!-- изображение салона -->
+            <div class="m-0 p-0 d-flex justify-content-center align-items-center">
+              <img class="card-img m-0 p-0 h-max-250px-w-max-400px border border-back-color"
+                   src="{{company.titleImage}}"
+                   alt="{{company.titleImageFileName}}"
+                   title="&laquo;{{company.name}}&raquo;{{
+                          (company.description != null && company.description != ''
+                            ? ': ' + company.description : '')}}">
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+      <!-- данные о сотрудниках салона -->
+      <div class="col-lg-9 col-xl-10 m-0 p-1 px-sm-2 py-sm-3 d-flex flex-column align-items-center">
+
+        <!-- заголовок -->
+        <h4 class="text-primary text-center w-md-75" [innerHTML]="component.title"></h4>
+
+        <!-- данные о сотрудниках салона -->
+        @if (employees.length > zero) {
+
+          <div class="m-0 mb-2 p-1 bg-aside-color border border-2 border-back-color
+                      row w-md-75">
+
+            <!-- сведения о сотрудниках салона -->
+            @for (employee of employees; track employee.id; let i = $index) {
+
+              <div class="col m-0 p-1 hover-pointer"
+                   (click)="getEmployeeId(employee.id)"
+                   [ngClass]="component.isWaitFlag ||
+                              (selectedEmployeeId !== zero && selectedEmployeeId !== employee.id)
+                              ? 'disabled opacity-60' : ''">
+                <div class="m-0 p-0 row h-100">
+                  <div class="m-0 p-0 border border-back-color rounded
+                              d-flex flex-column bg-main-color">
+
+                    <!-- фотография сотрудника -->
+                    <div class="m-0 p-1 d-flex justify-content-center align-items-center">
+                      <div class="m-0 p-0 w-auto">
+                        <img class="card-img m-0 p-1 h-max-250px-w-max-400px
+                                  bg-main-color border border-back-color"
+                             src="{{employee.avatar}}"
+                             alt="{{employee.fileName}}"
+                             title="{{employee.specialization.name}} {{employee.user.userName}}">
+                      </div>
+                    </div>
+
+                    <!-- рейтинг сотрудника -->
+                    <div class="m-0 p-0 d-flex justify-content-center">
+                      <div class="m-0 p-1 font-size-14pt w-auto"
+                           [innerHTML]="ratingToStar(employee.rating)"
+                           title="рейтинг &laquo;{{employee.rating}}&raquo;"></div>
+                    </div>
+
+                    <!-- краткие данные о сотруднике -->
+                    <div class="m-0 p-0 text-center">
+                      <span class="m-0 px-1 py-0 text-back-color">
+                        {{employee.specialization.name}} <strong>{{employee.user.userName}}</strong>
+                      </span>
+                    </div>
+
+                    <!-- чек-бокс выбора сотрудника -->
+                    <div class="m-0 p-0 d-flex justify-content-end">
+                      <input class="form-check-input m-1 p-2 hover-pointer
+                                    border border-2 border-back-color"
+                             [checked]="selectedEmployeeId === employee.id"
+                             type="checkbox"
+                             [disabled]="component.isWaitFlag ||
+                                         (selectedEmployeeId !== zero && selectedEmployeeId !== employee.id)"/>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            } <!-- for -->
+
+            <!-- сведения о свободных для записи промежутках времени у выбранного сотрудника -->
+            @if (selectedEmployeeId > 0) {
+
+              <div class="m-0 p-1">
+                <div class="m-0 p-1 row bg-main-color border
+                            border-2 border-back-color rounded">
+
+                  <!-- "шапка" таблицы -->
+                  <div class="m-0 p-1 w-100">
+                    <div class="m-0 p-0 d-flex align-items-center
+                                border-2 border-bottom border-back-color">
+
+                      <!-- кнопка "предыдущая неделя" -->
+                      <div class="m-0 p-1 w-auto">
+                        <button class="btn m-0 p-0 border-0 active-opacity-70"
+                                type="button"
+                                title="предыдущий день"
+                                (click)="getDate('previous')"
+                                [disabled]="selectedDate <= today || component.isWaitFlag">
+                          <i class="fa fa-2x fa-chevron-circle-left text-back-color" aria-hidden="true"></i>
+                        </button>
+                      </div>
+
+                      <!-- заголовок -->
+                      <div class="m-0 p-1 w-100">
+                        <h4 class="m-0 text-back-color text-center">
+                          {{selectedDate.toLocaleDateString()}}
+                        </h4>
+                      </div>
+
+                      <!-- кнопка "следующая неделя" -->
+                      <div class="m-0 p-1 w-auto">
+                        <button class="btn m-0 p-0 border-0 active-opacity-70"
+                                type="button"
+                                title="следующий день"
+                                (click)="getDate('next')"
+                                [disabled]="component.isWaitFlag">
+                          <i class="fa fa-2x fa-chevron-circle-right text-back-color" aria-hidden="true"></i>
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <!-- сведения о свободных для записи промежутках времени -->
+                  <div class="m-0 p-0 bg-aside-color rounded">
+                    <div class="m-0 p-1 row justify-content-start align-items-center">
+
+                      <!-- сведения о свободных для записи промежутках времени -->
+                      @for (slot of freeSlots; track slot.id; let i = $index) {
+
+                        <div class="m-0 p-1 w-auto">
+                          <button class="m-0 p-1 btn fw-bold bg-main-color hover-bg-paleturquoise
+                                         border border-2 rounded w-auto"
+                                  type="button"
+                                  [class]="(!slot.compareTime(selectedDate) &&
+                                            selectedDate.getTime() === today.getTime()) ||
+                                            isWorkDayBreak || component.isWaitFlag
+                                            ? 'disabled opacity-60 border-secondary'
+                                            : 'border-success'"
+                                  (click)="getStartTime(slot.from)">
+                            {{slot.from}}
+                          </button>
+                        </div>
+
+                      } <!-- for -->
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- форма для заполнения данных о клиенте -->
+              @if (selectedStartTime != '') {
+
+                <form class="m-0 p-1" novalidate>
+                  <div class="m-0 p-1 row bg-main-color border
+                              border-2 border-back-color rounded">
+
+                    <!-- вывод выбранного времени -->
+                    <div class="m-0 p-1 row justify-content-center align-items-center">
+                      <label class="form-label col-4 col-md-3 m-0 px-2" for="userName">
+                        время записи:
+                      </label>
+                      <div class="col-8 col-md-7 col-lg-6 p-0">
+                        <span class="m-0 px-2">{{selectedStartTime}}</span>
+                      </div>
+                    </div>
+
+                    <!-- ввод имени клиента -->
+                    <div class="m-0 p-1 row justify-content-center align-items-center">
+                      <label class="form-label col-sm-4 col-md-3 m-0 px-2" for="userName">
+                        Ваше имя:
+                      </label>
+                      <div class="col-sm-8 col-md-7 col-lg-6 p-0">
+                        <input class="form-control px-2" type="text"
+                               id="userName" name="userName"
+                               placeholder="имя"
+                               maxlength="50"
+                               [readOnly]="component.isWaitFlag"
+                               [class.opacity-75]="component.isWaitFlag"
+                               [(ngModel)]="name">
+                      </div>
+                    </div>
+
+                    <!-- ввод телефона клиента -->
+                    <div class="m-0 p-1 row justify-content-center align-items-center">
+                      <label class="form-label col-sm-4 col-md-3 m-0 px-2" for="userPhone">
+                        Ваш телефон:
+                      </label>
+                      <div class="col-sm-8 col-md-7 col-lg-6 p-0">
+                        <input class="form-control px-2" type="text"
+                               id="userPhone" name="userPhone"
+                               placeholder="+7 000 111 22 33"
+                               maxlength="12"
+                               [readOnly]="component.isWaitFlag"
+                               [class.opacity-75]="component.isWaitFlag"
+                               [(ngModel)]="phone">
+                      </div>
+                    </div>
+
+                    <!-- ввод email клиента -->
+                    <div class="m-0 p-1 row justify-content-center align-items-center">
+                      <label class="form-label col-sm-4 col-md-3 m-0 px-2" for="userEmail">
+                        Ваша почта:
+                      </label>
+                      <div class="col-sm-8 col-md-7 col-lg-6 p-0">
+                        <input class="form-control px-2" type="text"
+                               id="userEmail" name="userEmail"
+                               placeholder="abc@abc.com"
+                               maxlength="50"
+                               [readOnly]="component.isWaitFlag"
+                               [class.opacity-75]="component.isWaitFlag"
+                               [(ngModel)]="email">
+                      </div>
+                    </div>
+
+                    <!-- кнопка "добавить запись" -->
+                    <div class="m-0 p-1 row justify-content-center align-items-center">
+                      <button class="btn btn-sm btn-success m-0 px-2 py-1 w-100px"
+                              type="button"
+                              title="записаться на услугу"
+                              [disabled]="component.isWaitFlag"
+                              [class.opacity-75]="component.isWaitFlag"
+                              (click)="onSubmit()">
+                        @if (component.isWaitFlag) {
+                          <div class="row m-0 p-0 justify-content-center align-items-center">
+                            <span class="col-1 spinner-border spinner-border-sm m-1 p-0"></span>
+                          </div>
+                        } @else {
+                          записаться
+                        } <!-- if -->
+                      </button>
+                    </div>
+
+                  </div>
+                </form>
+
+              } <!-- if -->
+
+            } <!-- if -->
+
+          </div>
+
+        } <!-- if -->
+
+      </div>
+
+    } <!-- if -->
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  </div>
+
+</main>

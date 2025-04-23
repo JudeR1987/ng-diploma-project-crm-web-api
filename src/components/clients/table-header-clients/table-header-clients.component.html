@@ -1,0 +1,140 @@
+<tr>
+  <th class="p-1 w-5">&numero;<br>п&nbsp;<b>&frasl;</b>&nbsp;п</th>
+  <th class="p-0 pe-1 hover-pointer w-10"
+      (click)="sorted(surname)">
+    <div class="m-0 p-0 row align-items-center">
+      <div class="col m-0 p-0">
+        Ф.И.О.
+      </div>
+      <div class="m-0 p-0 w-auto">
+        @if (sortProp === surname && sortMode != empty) {
+          @if (sortMode === asc) {
+            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+          } @else {
+            <i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>
+          } <!-- if -->
+        } <!-- if -->
+      </div>
+    </div>
+  </th>
+  <th class="p-0 pe-1 hover-pointer w-10"
+      (click)="sorted(phone)">
+    <div class="m-0 p-0 row align-items-center">
+      <div class="col m-0 p-0">
+        телефон
+      </div>
+      <div class="m-0 p-0 w-auto">
+        @if (sortProp === phone && sortMode != empty) {
+          @if (sortMode === asc) {
+            <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+          } @else {
+            <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i>
+          } <!-- if -->
+        } <!-- if -->
+      </div>
+    </div>
+  </th>
+  <th class="p-0 pe-1 hover-pointer w-10"
+      (click)="sorted(email)">
+    <div class="m-0 p-0 row align-items-center">
+      <div class="col m-0 p-0">
+        email
+      </div>
+      <div class="m-0 p-0 w-auto">
+        @if (sortProp === email && sortMode != empty) {
+          @if (sortMode === asc) {
+            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+          } @else {
+            <i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>
+          } <!-- if -->
+        } <!-- if -->
+      </div>
+    </div>
+  </th>
+  <th class="p-0 pe-1 hover-pointer w-10"
+      (click)="sorted(birthDate)">
+    <div class="m-0 p-0 row align-items-center">
+      <div class="col m-0 p-0">
+        дата рождения
+      </div>
+      <div class="m-0 p-0 w-auto">
+        @if (sortProp === birthDate && sortMode != empty) {
+          @if (sortMode === asc) {
+            <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+          } @else {
+            <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i>
+          } <!-- if -->
+        } <!-- if -->
+      </div>
+    </div>
+  </th>
+  <th class="p-0 pe-1 hover-pointer w-10"
+      (click)="sorted(gender)">
+    <div class="m-0 p-0 row align-items-center">
+      <div class="col m-0 p-0">
+        пол
+      </div>
+      <div class="m-0 p-0 w-auto">
+        @if (sortProp === gender && sortMode != empty) {
+          @if (sortMode === asc) {
+            <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+          } @else {
+            <i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>
+          } <!-- if -->
+        } <!-- if -->
+      </div>
+    </div>
+  </th>
+  <th class="p-0 pe-1 hover-pointer w-10"
+      (click)="sorted(discount)">
+    <div class="m-0 p-0 row align-items-center">
+      <div class="col m-0 p-0">
+        скидка, &percnt;
+      </div>
+      <div class="m-0 p-0 w-auto">
+        @if (sortProp === discount && sortMode != empty) {
+          @if (sortMode === asc) {
+            <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+          } @else {
+            <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i>
+          } <!-- if -->
+        } <!-- if -->
+      </div>
+    </div>
+  </th>
+  <th class="p-0 pe-1 hover-pointer w-10"
+      (click)="sorted(card)">
+    <div class="m-0 p-0 row align-items-center">
+      <div class="col m-0 p-0">
+        номер карты
+      </div>
+      <div class="m-0 p-0 w-auto">
+        @if (sortProp === card && sortMode != empty) {
+          @if (sortMode === asc) {
+            <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+          } @else {
+            <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i>
+          } <!-- if -->
+        } <!-- if -->
+      </div>
+    </div>
+  </th>
+  <th class="p-0 pe-1 hover-pointer w-10"
+      (click)="sorted(balance)">
+    <div class="m-0 p-0 row align-items-center">
+      <div class="col m-0 p-0">
+        баланс, руб.
+      </div>
+      <div class="m-0 p-0 w-auto">
+        @if (sortProp === balance && sortMode != empty) {
+          @if (sortMode === asc) {
+            <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+          } @else {
+            <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i>
+          } <!-- if -->
+        } <!-- if -->
+      </div>
+    </div>
+  </th>
+  <th class="p-0">комментарий</th>
+</tr>

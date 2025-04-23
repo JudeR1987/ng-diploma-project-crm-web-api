@@ -1,6 +1,8 @@
 // ----------------------------------------------------------------------------
 // класс с адресами запросов
 // ----------------------------------------------------------------------------
+import {Record} from '../models/classes/Record';
+
 export class Config {
 
   // адрес хоста
@@ -166,7 +168,7 @@ export class Config {
   public static readonly urlDeleteEmployeeServiceByEmployeeIdServiceId: string =
     `${this.urlHost}/api/employeesServices/deleteEmployeeServiceByEmployeeIdServiceId`;
 
-  // 38. url для удаления данных об услуге заданного сотрудника
+  // 38. url для получения рабочих дней сотрудника за заданный период
   public static readonly urlGetAllWorkDaysBreakSlotsByEmployeeIdFromTo: string =
     `${this.urlHost}/api/schedule/getAllWorkDaysBreakSlotsByEmployeeIdFromTo`;
 
@@ -177,6 +179,30 @@ export class Config {
   // 40. url для изменения на сервере выбранной записи в таблице "РАСПИСАНИЕ" БД
   public static readonly urlEditWorkDay: string =
     `${this.urlHost}/api/schedule/editWorkDay`;
+
+  // 41. url для получения данных из таблицы "КЛИЕНТЫ" (Clients) от сервера,
+  // соответствующих параметру идентификатора компании
+  public static readonly urlGetAllClientsByCompanyId: string =
+    `${this.urlHost}/api/clients/getAllByCompanyId`;
+
+  // 42. url для получения данных из таблицы "ЗАПИСИ_НА_СЕАНС" (Records) от сервера,
+  // соответствующих параметру идентификатора компании
+  public static readonly urlGetAllRecordsByCompanyId: string =
+    `${this.urlHost}/api/records/getAllByCompanyId`;
+
+  // 43. url для получения данных о сотрудниках по идентификатору компании с заданной
+  // услугой из таблицы "СОТРУДНИКИ" (Employees) от сервера
+  public static readonly urlGetAllEmployeesByCompanyIdByServiceId: string =
+    `${this.urlHost}/api/employees/getAllByCompanyIdByServiceId`;
+
+  // 44. url для получения свободных для записи промежутков
+  // времени заданного сотрудника в заданную дату
+  public static readonly urlGetAllFreeSlotsByEmployeeIdByDate: string =
+    `${this.urlHost}/api/schedule/getAllFreeSlotsByEmployeeIdByDate`;
+
+  // 45. url для добавления на сервере новой записи в таблицу "ЗАПИСИ_НА_СЕАНС" БД
+  public static readonly urlCreateOnlineRecord: string =
+    `${this.urlHost}/api/records/createOnlineRecord`;
 
 
 

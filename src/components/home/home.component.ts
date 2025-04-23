@@ -171,13 +171,32 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
   // обработчик события получения данных об Id выбранной компании
+  // (программный переход на страницу выбора услуги салона в онлайн-записи)
   sendCompanyIdHandler(companyId: number): void {
     console.log(`[-HomeComponent-sendCompanyIdHandler--`);
 
     console.log(`*- companyId: '${companyId}' -*`);
 
+    // маршрут
+    let routerLink: string = Literals.routeOnlineRecordServices;
+
+    // переход по маршруту
+    this._router.navigateByUrl(`${routerLink}/${companyId}`)
+      .then((e) => { console.log(`*- переход: ${e} -*`); });
+
     console.log(`--HomeComponent-sendCompanyIdHandler-]`);
   } // sendCompanyIdHandler
+
+
+  // обработчик события получения данных об Id выбранной компании и режима выбора
+  /*sendCompanyIdModeHandler(result: { companyId: number, mode: string }): void {
+    console.log(`[-HomeComponent-sendCompanyIdModeHandler--`);
+
+    console.log(`*- result.companyId: '${result.companyId}' -*`);
+    console.log(`*- result.mode: '${result.mode}' -*`);
+
+    console.log(`--HomeComponent-sendCompanyIdModeHandler-]`);
+  } // sendCompanyIdModeHandler*/
 
 
   // обработчик события получения данных о номере выбранной страницы
@@ -224,7 +243,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     let result: { message: any, companies: Company[], pageViewModel: PageViewModel } =
       { message: Literals.Ok, companies: [], pageViewModel: new PageViewModel() };
     try {
-
       let webResult: any = await firstValueFrom(
         this._webApiService.getAllByPage(Config.urlGetAllCompanies, page, Literals.empty)
       );

@@ -2,7 +2,7 @@ import {Component, Input, EventEmitter, Output} from '@angular/core';
 import {FormsModule, NgForm} from "@angular/forms";
 import {Trip} from '../../Trip';
 import {Route} from '../../Route';
-import {Client} from '../../Client';
+import {ClientTemp} from '../../ClientTemp';
 import {DecimalPipe} from '@angular/common';
 import {Utils} from '../../../infrastructure/Utils';
 import {ITripFormParams} from '../../ITripFormParams';
@@ -134,10 +134,10 @@ export class TripFormComponent {
 
     // получим выбранного клиента из коллекции
     // (!!! не ссылку, а новый объект-копию !!!)
-    let client: Client = this.tripFormParams.allClients
-      .find((client: Client) => client.id === this.trip.client.id)!;
+    let client: ClientTemp = this.tripFormParams.allClients
+      .find((client: ClientTemp) => client.id === this.trip.client.id)!;
 
-    this.trip.client = Client.newClient(client);
+    this.trip.client = ClientTemp.newClient(client);
 
   } // changeClientHandler
 

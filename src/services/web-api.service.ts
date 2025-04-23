@@ -13,6 +13,7 @@ import {Employee} from '../models/classes/Employee';
 import {EmployeeService} from '../models/classes/EmployeeService';
 import {Utils} from '../infrastructure/Utils';
 import {DisplayWorkDayBreakSlots} from '../models/classes/DisplayWorkDayBreakSlots';
+import {Record} from '../models/classes/Record';
 
 @Injectable({
   providedIn: 'root'
@@ -153,6 +154,26 @@ export class WebApiService {
       params: new HttpParams().set(Literals.email, email)
     });
   } // getUserByEmail
+
+  // GET-запрос на удалённый сервер для получения данных по двум идентификаторам
+  getByFirstIdSecondId(url: string, firstId: number, secondId: number, token: string): Observable<any> {
+    console.log(`[-WebApiService-getByFirstIdSecondId--`);
+
+    console.log(`*- firstId: '${firstId}' -*`);
+    console.log(`*- secondId: '${secondId}' -*`);
+    console.log(`*- token: '${token}' -*`);
+
+    // заголовок запроса с jwt-токеном
+    let httpHeaders: HttpHeaders = this.authNewHttpHeaders(token);
+
+    console.log(`--WebApiService-getByFirstIdSecondId-]`);
+    return this._http.get<any>(url, {
+      headers: httpHeaders,
+      params: new HttpParams()
+        .set(Literals.firstId, firstId)
+        .set(Literals.secondId, secondId)
+    });
+  } // getByFirstIdSecondId
 
 
   // DELETE-запрос на удалённый сервер для удаления данных по идентификатору
@@ -576,6 +597,36 @@ export class WebApiService {
       { headers: httpHeaders }
     );
   } // editWorkDayPOST
+
+
+  // POST-запрос на удалённый сервер для создания новой онлайн-записи в таблице "ЗАПИСИ_НА_СЕАНС" БД
+  createOnlineRecordPUT(url: string, record: Record): Observable<any> {
+    console.log(`[-WebApiService-createOnlineRecordPUT--`);
+
+    console.log(`*- record: -*`);
+    console.dir(record);
+    //console.dir(Record.RecordToDto(record));
+
+    console.log(`*- record.date.toLocaleTimeString(): '${record.date.toLocaleTimeString()}' -*`);
+
+    console.log(`--WebApiService-createOnlineRecordPUT-]`);
+    return this._http.put<any>(
+      url, new HttpParams()
+        .set('employeeId', record.employee.id)
+        .set('clientName', `${record.client.name}`)
+        .set('clientPhone', `${record.client.phone}`)
+        .set('clientEmail', `${record.client.email}`)
+        .set('dateString', `${Utils.dateToString(record.date)}`)
+        .set('timeString', `${record.date.toLocaleTimeString()}`)
+        .set('createDateString', `${Utils.dateToString(record.createDate)}`)
+        .set('createTimeString', `${record.createDate.toLocaleTimeString()}`)
+        .set('length', record.length)
+        .set('comment', record.comment === null ? Literals.empty : record.comment)
+        .set('attendance', record.attendance)
+        .set('isOnline', record.isOnline)
+        .set('isPaid', record.isPaid)
+    );
+  } // createOnlineRecordPUT
 
 
   // метод формирования нового заголовка запроса с jwt-токеном

@@ -1,22 +1,22 @@
 import {Component, Input, EventEmitter, Output} from "@angular/core";
 import {FormsModule, NgForm} from "@angular/forms";
-import {Client} from '../../../temp/Client';
+import {ClientTemp} from '../../ClientTemp';
 import {IClientFormParams} from '../../../temp/IClientFormParams';
 
 @Component({
-  selector: 'client-form',
+  selector: 'clientTemp-form',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './client-form.component.html',
-  styleUrl: './client-form.component.css'
+  templateUrl: './clientTemp-form.component.html',
+  styleUrl: './clientTemp-form.component.css'
 })
-export class ClientFormComponent {
+export class ClientTempFormComponent {
 
   // получаемый объект сведений о клиенте для добавления/изменения
-  @Input() client: Client = new Client();
+  @Input() client: ClientTemp = new ClientTemp();
 
   // объект-копия для обработчика сброса данных в форме
-  @Input() clientCopy: Client = new Client();
+  @Input() clientCopy: ClientTemp = new ClientTemp();
 
   // параметры формы добавления/изменения
   @Input() clientFormParams: IClientFormParams = { passportList: [] };
@@ -29,7 +29,7 @@ export class ClientFormComponent {
 
   // свойства для генерации событий выдачи данных из компонента
   // добавляемый/изменяемый объект сведений о клиенте
-  @Output() onSendClient: EventEmitter<Client> = new EventEmitter<Client>();
+  @Output() onSendClient: EventEmitter<ClientTemp> = new EventEmitter<ClientTemp>();
 
   // сообщение об ошибке для вывода в родительском компоненте
   @Output() onSendMessage: EventEmitter<string> = new EventEmitter<string>();
@@ -90,7 +90,7 @@ export class ClientFormComponent {
     this.onSendClient.emit(this.client);
 
     // сброс данных формы
-    this.client = new Client();
+    this.client = new ClientTemp();
 
   } // sendClient
 
@@ -99,7 +99,7 @@ export class ClientFormComponent {
   resetClient(): void {
 
     // восстановим начальные значения обрабатываемого объекта
-    this.client = Client.newClient(this.clientCopy);
+    this.client = ClientTemp.newClient(this.clientCopy);
 
   } // resetClient
 
@@ -122,4 +122,4 @@ export class ClientFormComponent {
 
   } // isUniqPassport
 
-} // class ClientFormComponent
+} // class ClientTempFormComponent

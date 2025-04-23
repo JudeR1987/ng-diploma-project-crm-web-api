@@ -10,7 +10,7 @@ import {TaskButtonComponent} from '../shared/task-button/task-button.component';
 import {TableHeaderTripsComponent} from './table-header-trips/table-header-trips.component';
 import {TrTripComponent} from './tr-trip/tr-trip.component';
 import {TripFormComponent} from './trip-form/trip-form.component';
-import {Client} from '../Client';
+import {ClientTemp} from '../ClientTemp';
 import {Route} from '../Route';
 import {ITripFormParams} from '../ITripFormParams';
 
@@ -204,7 +204,7 @@ export class TripsComponent implements OnInit {
 
     // запрос на получение параметров формы добавления/изменения поездки
     this._webApiService.getTripFormParams(url, this.trip.id)
-      .subscribe((webResult: {tripId: number, allClients: Client[], allRoutes: Route[]}) => {
+      .subscribe((webResult: {tripId: number, allClients: ClientTemp[], allRoutes: Route[]}) => {
 
         // выключение спиннера ожидания данных на форме
         this.isWaitTripForm = false;
@@ -213,12 +213,12 @@ export class TripsComponent implements OnInit {
         this.tripCopy = Trip.newTrip(this.trip);
 
         // параметры формы добавления/изменения поездки
-        let allClients: Client[] = Client.parseClients(webResult.allClients);
+        let allClients: ClientTemp[] = ClientTemp.parseClients(webResult.allClients);
         let allRoutes: Route[] = Route.parseRoutes(webResult.allRoutes);
         this.tripFormParams = {
           allClients: allClients,
           allRoutes:  allRoutes,
-          clientList: Client.parseClientsToSelect(allClients),
+          clientList: ClientTemp.parseClientsToSelect(allClients),
           routeList: Route.parseRoutesToSelect(allRoutes)
         };
 
@@ -304,7 +304,7 @@ export class TripsComponent implements OnInit {
 
     // запрос на получение параметров формы добавления/изменения поездки
     this._webApiService.getTripFormParams(url, this.trip.id)
-      .subscribe((webResult: {tripId: number, allClients: Client[], allRoutes: Route[]}) => {
+      .subscribe((webResult: {tripId: number, allClients: ClientTemp[], allRoutes: Route[]}) => {
 
         // выключение спиннера ожидания данных на форме
         this.isWaitTripForm = false;
@@ -338,12 +338,12 @@ export class TripsComponent implements OnInit {
         this.tripCopy = Trip.newTrip(this.trip);
 
         // параметры формы добавления/изменения поездки
-        let allClients: Client[] = Client.parseClients(webResult.allClients);
+        let allClients: ClientTemp[] = ClientTemp.parseClients(webResult.allClients);
         let allRoutes: Route[] = Route.parseRoutes(webResult.allRoutes);
         this.tripFormParams = {
           allClients: allClients,
           allRoutes:  allRoutes,
-          clientList: Client.parseClientsToSelect(allClients),
+          clientList: ClientTemp.parseClientsToSelect(allClients),
           routeList: Route.parseRoutesToSelect(allRoutes)
         };
 

@@ -237,6 +237,9 @@
 .hover-bg-paleturquoise:hover {
     background-color: paleturquoise !important;
 }
+.disabled-bg-plum:disabled {
+  background-color: plum;
+}
 
 /* равномерное распределение текста */
 .text-justify {
@@ -387,6 +390,9 @@
   color: var(--main-color) !important;
 }
 .hover-opacity-60:hover {
+  opacity: 60% !important;
+}
+.disabled-opacity-60:disabled {
   opacity: 60% !important;
 }
 .active-border-color-transparent:active {

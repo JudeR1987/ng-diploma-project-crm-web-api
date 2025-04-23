@@ -16,6 +16,8 @@ import {ErrorMessageService} from '../../services/error-message.service';
 import {NgIf} from '@angular/common';
 import {UserService} from '../../services/user.service';
 import {TokenService} from '../../services/token.service';
+import {Record} from '../../models/classes/Record';
+import {OnlineRecordEmployeesComponent} from '../online-record-employees/online-record-employees.component';
 
 @Component({
   selector: 'app-root',
@@ -434,6 +436,20 @@ export class AppComponent implements OnInit {
         routerLinkActive = Literals.routeEmployeesServices;
         break;
 
+      case Literals.routeClients:
+        this.component.title = Resources.appClientsTitle;
+        back = Literals.navbarBrandActive;
+        icon = Literals.iconLight;
+        routerLinkActive = Literals.routeClients;
+        break;
+
+      case Literals.routeRecords:
+        this.component.title = Resources.appRecordsTitle;
+        back = Literals.navbarBrandActive;
+        icon = Literals.iconLight;
+        routerLinkActive = Literals.routeRecords;
+        break;
+
       case Literals.routeWarehouse:
         this.component.title = Resources.appWarehouseTitle;
         back = Literals.navbarBrandActive;
@@ -446,6 +462,20 @@ export class AppComponent implements OnInit {
         back = Literals.navbarBrandActive;
         icon = Literals.iconLight;
         routerLinkActive = Literals.routeReports;
+        break;
+
+        case Literals.routeOnlineRecordServices:
+        this.component.title = Resources.appOnlineRecordTitle;
+        back = Literals.navbarBrandActive;
+        icon = Literals.iconLight;
+        routerLinkActive = Literals.routeOnlineRecordServices;
+        break;
+
+      case Literals.routeOnlineRecordEmployees:
+        this.component.title = Resources.appOnlineRecordTitle;
+        back = Literals.navbarBrandActive;
+        icon = Literals.iconLight;
+        routerLinkActive = Literals.routeOnlineRecordEmployees;
         break;
 
       // маршрут перехода на страницу NotFound

@@ -1,0 +1,12 @@
+<td class="text-center p-1">{{row}}</td>
+<td class="text-start p-1">{{client.surname === null || client.surname === empty
+                             ? client.name : client.fullName}}</td>
+<td class="text-start p-1">{{client.phone}}</td>
+<td class="text-start p-1">{{client.email}}</td>
+<td class="text-center p-1">{{client.birthDate | date: "dd.MM.yyyy"}}г.</td>
+<td class="text-start p-1">{{client.gender === zero
+  ? 'не известно' : client.gender === one ? 'мужской' : 'женский'}}</td>
+<td class="p-1">{{client.discount | number:"0.2-2"}}</td>
+<td class="text-start p-1">{{client.card}}</td>
+<td class="p-1">{{client.balance | number:"0.2-2"}}</td>
+<td class="text-start p-1">{{client.comment}}</td>

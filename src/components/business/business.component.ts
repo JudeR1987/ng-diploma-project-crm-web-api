@@ -55,6 +55,10 @@ export class BusinessComponent implements OnInit, OnDestroy {
     butServicesManagementTitle:  Literals.empty,
     butServicesManagementValue:  Literals.empty,
     butEmployeesManagementTitle: Literals.empty,
+    butClientsManagementValue:   Literals.empty,
+    butClientsManagementTitle:   Literals.empty,
+    butRecordsManagementValue:   Literals.empty,
+    butRecordsManagementTitle:   Literals.empty,
     butEmployeesManagementValue: Literals.empty,
     butWarehouseManagementTitle: Literals.empty,
     butWarehouseManagementValue: Literals.empty,
@@ -199,6 +203,10 @@ export class BusinessComponent implements OnInit, OnDestroy {
     this.component.butServicesManagementValue  = Resources.businessButServicesManagementValue[this.component.language];
     this.component.butEmployeesManagementTitle = Resources.businessButEmployeesManagementTitle[this.component.language];
     this.component.butEmployeesManagementValue = Resources.businessButEmployeesManagementValue[this.component.language];
+    this.component.butClientsManagementTitle   = Resources.businessButClientsManagementTitle[this.component.language];
+    this.component.butClientsManagementValue   = Resources.businessButClientsManagementValue[this.component.language];
+    this.component.butRecordsManagementTitle   = Resources.businessButRecordsManagementTitle[this.component.language];
+    this.component.butRecordsManagementValue   = Resources.businessButRecordsManagementValue[this.component.language];
     this.component.butWarehouseManagementTitle = Resources.businessButWarehouseManagementTitle[this.component.language];
     this.component.butWarehouseManagementValue = Resources.businessButWarehouseManagementValue[this.component.language];
     this.component.butReportsTitle             = Resources.businessButReportsTitle[this.component.language];
@@ -261,6 +269,40 @@ export class BusinessComponent implements OnInit, OnDestroy {
 
     console.log(`--BusinessComponent-routingToEmployees-]`);
   } // routingToEmployees
+
+
+  // программный переход на страницу просмотра клиентской базы
+  routingToClients(companyId: number): void {
+    console.log(`[-BusinessComponent-routingToClients--`);
+
+    console.log(`*- companyId: '${companyId}' -*`);
+
+    // маршрут
+    let routerLink: string = Literals.routeClients;
+
+    // переход по маршруту
+    this._router.navigateByUrl(`${routerLink}/${companyId}`)
+      .then((e) => { console.log(`*- переход: ${e} -*`); });
+
+    console.log(`--BusinessComponent-routingToClients-]`);
+  } // routingToClients
+
+
+  // программный переход на страницу просмотра записей на процедуры
+  routingToRecords(companyId: number): void {
+    console.log(`[-BusinessComponent-routingToRecords--`);
+
+    console.log(`*- companyId: '${companyId}' -*`);
+
+    // маршрут
+    let routerLink: string = Literals.routeRecords;
+
+    // переход по маршруту
+    this._router.navigateByUrl(`${routerLink}/${companyId}`)
+      .then((e) => { console.log(`*- переход: ${e} -*`); });
+
+    console.log(`--BusinessComponent-routingToRecords-]`);
+  } // routingToRecords
 
 
   // программный переход на страницу управления складом
@@ -372,7 +414,6 @@ export class BusinessComponent implements OnInit, OnDestroy {
     try {
       // получить jwt-токен
       let token: string = this._tokenService.token;
-      console.log(`*-token: '${token}' -*`);
 
       let webResult: any = await firstValueFrom(this._webApiService.getAllByIdByPage(
         Config.urlGetAllCompaniesByUserId, this.user.id, page, token
@@ -381,8 +422,8 @@ export class BusinessComponent implements OnInit, OnDestroy {
 
       result.companies = Company.parseCompanies(webResult.companies);
       result.pageViewModel = PageViewModel.newPageViewModel(webResult.pageViewModel);
-
-    } catch (e: any) {
+    }
+    catch (e: any) {
 
       console.dir(e);
       console.dir(e.error);
@@ -432,8 +473,8 @@ export class BusinessComponent implements OnInit, OnDestroy {
 
       // передать сообщение об ошибке в AppComponent для отображения
       this._errorMessageService.errorMessageSubject.next(message);
-
-    } else {
+    }
+    else {
 
       // получить данные из результата запроса
       this.companies     = result.companies;
@@ -467,7 +508,6 @@ export class BusinessComponent implements OnInit, OnDestroy {
 
   // метод выполнения/НЕ_выполнения обновления токена
   private async isRefreshToken(): Promise<boolean> {
-
     console.log(`Обновляем токен!`);
 
     // запрос на обновление токена

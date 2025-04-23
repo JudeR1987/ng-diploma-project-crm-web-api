@@ -45,8 +45,8 @@ export class CountryTemp {
 
 
   // статический метод, возвращающий новый объект-копию
-  public static newCountry(srcCountry: Country | any): Country {
-    return new Country(
+  public static newCountry(srcCountry: CountryTemp | any): CountryTemp {
+    return new CountryTemp(
       srcCountry.id,
       srcCountry.name,
       srcCountry.transportCost,
@@ -57,8 +57,8 @@ export class CountryTemp {
 
 
   // статический метод, возвращающий массив новых объектов-копий
-  public static parseCountries(srcCountries: Country[] | any[]): Country[] {
-    return srcCountries.map((country: Country | any) => this.newCountry(country));
+  public static parseCountries(srcCountries: CountryTemp[] | any[]): CountryTemp[] {
+    return srcCountries.map((country: CountryTemp | any) => this.newCountry(country));
   } // parseCountries
 
 } // class CountryTemp

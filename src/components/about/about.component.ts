@@ -9,9 +9,7 @@ import {Utils} from '../../infrastructure/Utils';
 import {Literals} from '../../infrastructure/Literals';
 import {Resources} from '../../infrastructure/Resources';
 import {IAboutComponent} from '../../models/interfaces/IAboutComponent';
-import {User} from '../../models/classes/User';
 import {WebApiService} from '../../services/web-api.service';
-import {Config} from '../../infrastructure/Config';
 
 @Component({
   selector: 'app-about',
@@ -21,13 +19,6 @@ import {Config} from '../../infrastructure/Config';
   styleUrl: './about.component.css'
 })
 export class AboutComponent implements OnInit, OnDestroy {
-
-  // параметр, передающий маршрут в родительский компонент для
-  // выделения активной кнопки навигации после перезагрузки страницы
-  //public route: string = Literals.empty;
-
-  // параметр языка отображения
-  //public language: string = Literals.empty;
 
   // объект с параметрами компонента
   public component: IAboutComponent = {
@@ -48,7 +39,6 @@ export class AboutComponent implements OnInit, OnDestroy {
               private _languageService: LanguageService,
               private _webApiService: WebApiService) {
     Utils.helloComponent(Literals.about);
-
     console.log(`[-AboutComponent-constructor--`);
 
     console.log(`*-this.component.language='${this.component.language}'-*`);
@@ -59,14 +49,12 @@ export class AboutComponent implements OnInit, OnDestroy {
     console.log(`*-this.component.route='${this.component.route}'-*`);
 
     console.log(`--AboutComponent-constructor-]`);
-
   } // constructor
 
 
   // 0. установка начальных значений и подписок
   // сразу после загрузки компонента
   ngOnInit(): void {
-
     console.log(`[-AboutComponent-ngOnInit--`);
 
     // задать значение языка отображения и установить
@@ -86,49 +74,15 @@ export class AboutComponent implements OnInit, OnDestroy {
         this.changeLanguageLiterals(language);
 
         console.log(`--AboutComponent-subscribe-]`);
-
       }); // subscribe
 
-    // пока не нужно, но не удалять!!!
-    /*// получить jwt-токен
-    let token: string | null = localStorage.getItem(Literals.jwt);
-    console.log(`--AboutComponent-ngOnInit-token: ${token}`);
-
-    // получить данные о пользователе
-    let user: User = User.loadUser();
-
-    // подписка на получение результата запроса
-    this._webApiService.refreshPOST(Config.urlAuthRefresh, user).subscribe({
-
-      // вызов метода при получении данных
-      next: (webResult: {token: string, user: User} ) => {
-
-        console.log(`[-AboutComponent-ngOnInit-subscribe-`);
-
-        console.dir(webResult);
-        console.dir(webResult.token);
-        console.dir(webResult.user);
-
-        console.log(`--AboutComponent-ngOnInit-subscribe-]`);
-
-      }, // next
-
-      // вызов метода при обнаружении ошибки в данных
-      error: (err: any) => {
-        console.dir(err);
-      } // error
-
-    }); // refreshPOST*/
-
     console.log(`--AboutComponent-ngOnInit-]`);
-
   } // ngOnInit
 
 
   // метод изменения значения языка отображения
   // и переназначения строковых переменных
   changeLanguageLiterals(language: string): void {
-
     console.log(`[-AboutComponent-changeLanguageLiterals--`);
 
     console.log(`*-input-language='${language}'-*`);
@@ -142,20 +96,17 @@ export class AboutComponent implements OnInit, OnDestroy {
     this.component.title = Resources.aboutTitle[this.component.language];
 
     console.log(`--AboutComponent-changeLanguageLiterals-]`);
-
   } // changeLanguageLiterals
 
 
   // отмены подписок и необходимые методы при уничтожении компонента
   ngOnDestroy(): void {
-
     console.log(`[-AboutComponent-ngOnDestroy--`);
 
     // отмена подписки
     this._languageSubscription.unsubscribe();
 
     console.log(`--AboutComponent-ngOnDestroy-]`);
-
   } // ngOnDestroy
 
 } // class AboutComponent

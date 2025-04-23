@@ -71,6 +71,18 @@ export interface IBusinessComponent {
   // значение кнопки "Управление персоналом"
   butEmployeesManagementValue: string,
 
+  // всплывающая подсказка на кнопке "Просмотр клиентов"
+  butClientsManagementTitle: string,
+
+  // значение кнопки "Просмотр клиентов"
+  butClientsManagementValue: string,
+
+  // всплывающая подсказка на кнопке "Просмотр записей"
+  butRecordsManagementTitle: string,
+
+  // значение кнопки "Просмотр записей"
+  butRecordsManagementValue: string,
+
   // всплывающая подсказка на кнопке "Управление складом"
   butWarehouseManagementTitle: string,
 

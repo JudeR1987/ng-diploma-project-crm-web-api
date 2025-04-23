@@ -9,7 +9,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {LanguageService} from '../../services/language.service';
 import {WebApiService} from '../../services/web-api.service';
 import {ErrorMessageService} from '../../services/error-message.service';
-import {UserService} from '../../services/user.service';
 import {TokenService} from '../../services/token.service';
 import {AuthGuardService} from '../../services/auth-guard.service';
 import {firstValueFrom, Subscription} from 'rxjs';
@@ -22,9 +21,7 @@ import {CardEmployeeComponent} from '../card-employee/card-employee.component';
 @Component({
   selector: 'app-employees',
   standalone: true,
-  imports: [
-    CardEmployeeComponent
-  ],
+  imports: [CardEmployeeComponent],
   templateUrl: './employees.component.html',
   styleUrl: './employees.component.css'
 })
@@ -277,7 +274,7 @@ export class EmployeesComponent implements OnInit, OnDestroy {
     this.component.isWaitFlag = false;
 
 
-    // если сообщение с ошибкой - завершаем обработку, остаёмся в форме
+    // если сообщение с ошибкой - завершаем обработку, остаёмся на странице
     if (result.message != Literals.Ok) {
 
       // сформируем соответствующее сообщение об ошибке
@@ -503,7 +500,7 @@ export class EmployeesComponent implements OnInit, OnDestroy {
   } // sendEmployeeIdModeHandler
 
 
-  // программный переход на страницу демонстрации расписания сотрудника
+  // программный переход на страницу демонстрации расписания сотрудника, услуг
   // или к форме добавления/изменения данных о сотруднике компании
   routingTo(mode: string, employeeId: number) {
     console.log(`[-EmployeesComponent-routingTo--`);

@@ -23,7 +23,7 @@
     } @else {
       <!-- основные данные -->
 
-        <!-- кнопки -->
+      <!-- кнопки -->
       <div class="col-lg-3 col-xl-2 m-0 p-1 px-sm-2 pt-sm-3 bg-aside-color">
         <div class="row m-0 p-0 justify-content-evenly justify-content-lg-center">
 
@@ -43,8 +43,8 @@
 
       <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-        <!-- данные о возможностях -->
-        <div class="col-lg-9 col-xl-10 m-0 p-1 px-sm-2 py-sm-3 d-flex flex-column">
+      <!-- данные о возможностях -->
+      <div class="col-lg-9 col-xl-10 m-0 p-1 px-sm-2 py-sm-3 d-flex flex-column">
 
         <!-- заголовок -->
         <h4 class="text-primary" [innerHTML]="component.displayTitle"></h4>
@@ -72,16 +72,13 @@
                                 [butSenderCompanyIdValue]="component.butEditCompanyValue"
                                 (onSendCompanyId)="sendCompanyIdHandler($event)">
                   </card-company>
-                  <!--<card-company class="col-sm-11 col-md-6 col-xxl-4 m-0 p-1"
+                  <!--<card-company class="m-0 p-0 h-100"
                                 [company]="company"
                                 [labelSchedule]="component.labelSchedule"
                                 [labelPhone]="component.labelPhone"
                                 [butSenderCompanyIdTitle]="component.butEditCompanyTitle"
                                 [butSenderCompanyIdValue]="component.butEditCompanyValue"
-                                [srcLogoPath]="component.srcLogoPath"
-                                [fileNameLogoDef]="component.fileNameLogoDef"
-                                [srcImagePath]="component.srcImagePath"
-                                [fileNameCompanyTitleImageDef]="component.fileNameCompanyTitleImageDef"
+                                [isOnlineRecord]="false"
                                 (onSendCompanyId)="sendCompanyIdHandler($event)">
                   </card-company>-->
 
@@ -99,7 +96,7 @@
                       <ul class="dropdown-menu dropdown-menu-start
                                  m-0 mt-2px px-0 py-1 border border-1 border-primary">
                         <li>
-                          <!-- кнопка "Управление услугами"" -->
+                          <!-- кнопка "Управление услугами" -->
                           <button class="dropdown-item px-2 py-1 fw-bold text-primary hover-text-main-color"
                                   type="button" (click)="routingToServices(company.id)"
                                   title="{{component.butServicesManagementTitle}}">
@@ -107,7 +104,7 @@
                           </button>
                         </li>
                         <li>
-                          <!-- кнопка "Управление персоналом"" -->
+                          <!-- кнопка "Управление персоналом" -->
                           <button class="dropdown-item px-2 py-1 fw-bold text-primary hover-text-main-color"
                                   type="button" (click)="routingToEmployees(company.id)"
                                   title="{{component.butEmployeesManagementTitle}}">
@@ -115,7 +112,23 @@
                           </button>
                         </li>
                         <li>
-                          <!-- кнопка "Управление складом"" -->
+                          <!-- кнопка "Просмотр клиентов" -->
+                          <button class="dropdown-item px-2 py-1 fw-bold text-primary hover-text-main-color"
+                                  type="button" (click)="routingToClients(company.id)"
+                                  title="{{component.butClientsManagementTitle}}">
+                            {{component.butClientsManagementValue}}
+                          </button>
+                        </li>
+                        <li>
+                          <!-- кнопка "Просмотр записей" -->
+                          <button class="dropdown-item px-2 py-1 fw-bold text-primary hover-text-main-color"
+                                  type="button" (click)="routingToRecords(company.id)"
+                                  title="{{component.butRecordsManagementTitle}}">
+                            {{component.butRecordsManagementValue}}
+                          </button>
+                        </li>
+                        <li>
+                          <!-- кнопка "Управление складом" -->
                           <button class="dropdown-item px-2 py-1 fw-bold text-primary hover-text-main-color"
                                   type="button" (click)="routingToWarehouse(company.id)"
                                   title="{{component.butWarehouseManagementTitle}}">

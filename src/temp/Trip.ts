@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------------
 
 // класс, представляющий сведения о записи в таблице "ПОЕЗДКИ" (Trips)
-import {Client} from './Client';
+import {ClientTemp} from './ClientTemp';
 import {Route} from './Route';
 import {Utils} from '../infrastructure/Utils';
 
@@ -16,7 +16,7 @@ export class Trip {
     private _startDate: Date = new Date(),
 
     // данные о клиенте
-    private _client: Client = new Client(),
+    private _client: ClientTemp = new ClientTemp(),
 
     // данные о маршруте
     private _route: Route = new Route(),
@@ -35,8 +35,8 @@ export class Trip {
   get startDate(): Date { return this._startDate; }
   set startDate(value: Date) { this._startDate = value; }
 
-  get client(): Client { return this._client; }
-  set client(value: Client) { this._client = value; }
+  get client(): ClientTemp { return this._client; }
+  set client(value: ClientTemp) { this._client = value; }
 
   get route(): Route { return this._route; }
   set route(value: Route) { this._route = value; }
@@ -83,7 +83,7 @@ export class Trip {
     return new Trip(
       srcTrip.id,
       date,
-      Client.newClient(srcTrip.client),
+      ClientTemp.newClient(srcTrip.client),
       Route.newRoute(srcTrip.route),
       srcTrip.amountDays
     ); // return

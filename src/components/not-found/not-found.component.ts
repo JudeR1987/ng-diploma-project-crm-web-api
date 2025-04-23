@@ -20,12 +20,6 @@ import {INotFoundComponent} from '../../models/interfaces/INotFoundComponent';
 })
 export class NotFoundComponent implements OnInit, OnDestroy {
 
-  // параметр, передающий маршрут в родительский компонент
-  //public route: string = Literals.empty;
-
-  // параметр языка отображения
-  //public language: string = Literals.empty;
-
   // объект с параметрами компонента
   public component: INotFoundComponent = {
     // параметры меняющиеся при смене языка
@@ -44,7 +38,6 @@ export class NotFoundComponent implements OnInit, OnDestroy {
   constructor(private _router: Router,
               private _languageService: LanguageService) {
     Utils.helloComponent(Literals.notFound);
-
     console.log(`[-NotFoundComponent-constructor--`);
 
     console.log(`*-this.component.language='${this.component.language}'-*`);
@@ -55,14 +48,12 @@ export class NotFoundComponent implements OnInit, OnDestroy {
     console.log(`*-this.component.route='${this.component.route}'-*`);
 
     console.log(`--NotFoundComponent-constructor-]`);
-
   } // constructor
 
 
   // 0. установка начальных значений и подписок
   // сразу после загрузки компонента
   ngOnInit(): void {
-
     console.log(`[-NotFoundComponent-ngOnInit--`);
 
     // задать значение языка отображения и установить
@@ -82,18 +73,15 @@ export class NotFoundComponent implements OnInit, OnDestroy {
         this.changeLanguageLiterals(language);
 
         console.log(`--NotFoundComponent-subscribe-]`);
-
       }); // subscribe
 
     console.log(`--NotFoundComponent-ngOnInit-]`);
-
   } // ngOnInit
 
 
   // метод изменения значения языка отображения
   // и переназначения строковых переменных
   changeLanguageLiterals(language: string): void {
-
     console.log(`[-NotFoundComponent-changeLanguageLiterals--`);
 
     console.log(`*-input-language='${language}'-*`);
@@ -107,20 +95,17 @@ export class NotFoundComponent implements OnInit, OnDestroy {
     this.component.title = Resources.notFoundTitle[this.component.language];
 
     console.log(`--NotFoundComponent-changeLanguageLiterals-]`);
-
   } // changeLanguageLiterals
 
 
   // отмены подписок и необходимые методы при уничтожении компонента
   ngOnDestroy(): void {
-
     console.log(`[-NotFoundComponent-ngOnDestroy--`);
 
     // отмена подписки
     this._languageSubscription.unsubscribe();
 
     console.log(`--NotFoundComponent-ngOnDestroy-]`);
-
   } // ngOnDestroy
 
 } // class NotFoundComponent

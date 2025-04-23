@@ -1,20 +1,20 @@
 import {Component, Input, EventEmitter, Output} from '@angular/core';
-import {Client} from '../../../temp/Client';
+import {ClientTemp} from '../../ClientTemp';
 
 @Component({
-  selector: '[tr-client]',
+  selector: '[tr-clientTemp]',
   standalone: true,
   imports: [],
-  templateUrl: './tr-client.component.html',
-  styleUrl: './tr-client.component.css'
+  templateUrl: './tr-clientTemp.component.html',
+  styleUrl: './tr-clientTemp.component.css'
 })
-export class TrClientComponent {
+export class TrClientTempComponent {
 
   // номер выводимой строки таблицы
   @Input() row: number = 0;
 
   // сведения о клиенте
-  @Input() client: Client = new Client();
+  @Input() client: ClientTemp = new ClientTemp();
 
   // флаг включения спиннера при ожидании данных с сервера
   @Input() isWaitFlag: boolean = false;
@@ -39,4 +39,4 @@ export class TrClientComponent {
 
   } // sendClientId
 
-} // class TrClientComponent
+} // class TrClientTempComponent
