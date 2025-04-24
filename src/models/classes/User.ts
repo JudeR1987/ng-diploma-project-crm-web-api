@@ -14,10 +14,6 @@ export class User {
     // имя пользователя
     private _userName: string = Literals.empty,
 
-    // логин пользователя
-    // (логин=телефону только при регистрации)
-    //private _login: string = Literals.empty,
-
     // номер телефона пользователя
     private _phone: string = Literals.empty,
 
@@ -53,9 +49,6 @@ export class User {
 
   get userName(): string { return this._userName; }
   set userName(value: string) { this._userName = value; }
-
-  /*get login(): string { return this._login; }
-  set login(value: string) { this._login = value; }*/
 
   get phone(): string { return this._phone; }
   set phone(value: string) { this._phone = value; }
@@ -96,7 +89,6 @@ export class User {
     return new User(
       srcUser.id,
       srcUser.userName,
-      //srcUser.login,
       srcUser.phone,
       srcUser.email,
       srcUser.password,
@@ -120,7 +112,6 @@ export class User {
     return {
       id:        srcUser.id,
       userName:  srcUser.userName,
-      //login:     srcUser.login,
       phone:     srcUser.phone,
       email:     srcUser.email,
       password:  srcUser.password,

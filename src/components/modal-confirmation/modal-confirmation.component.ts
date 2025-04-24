@@ -1,8 +1,7 @@
 // ----------------------------------------------------------------------------
 // модальный компонент подтверждения/НЕ_подтверждения действия
 // ----------------------------------------------------------------------------
-import {Component, Input, EventEmitter, Output, OnInit, OnDestroy}
-  from '@angular/core';
+import {Component, Input, EventEmitter, Output} from '@angular/core';
 import {Literals} from '../../infrastructure/Literals';
 
 @Component({
@@ -12,7 +11,7 @@ import {Literals} from '../../infrastructure/Literals';
   templateUrl: './modal-confirmation.component.html',
   styleUrl: './modal-confirmation.component.css'
 })
-export class ModalConfirmationComponent implements OnInit, OnDestroy {
+export class ModalConfirmationComponent {
 
   // входные параметры
   // заголовок сообщения
@@ -49,55 +48,22 @@ export class ModalConfirmationComponent implements OnInit, OnDestroy {
 
   // конструктор
   constructor() {
-    console.log(`[-ModalConfirmationComponent-constructor--`);
-
-    console.log(`*-this.isConfirmed= '${this.isConfirmed}' -*`);
-    console.log(`*-this.title= '${this.title}' -*`);
-    console.log(`*-this.isDeletingFlag= '${this.isDeletingFlag}' -*`);
-
-    console.log(`--ModalConfirmationComponent-constructor-]`);
   } // constructor
-
-
-  // 0. установка начальных значений и подписок
-  // сразу после загрузки компонента
-  ngOnInit() {
-    console.log(`[-ModalConfirmationComponent-ngOnInit--`);
-
-    console.log(`*- параметры должны быть получены -*`);
-    console.log(`*-this.isConfirmed= '${this.isConfirmed}' -*`);
-    console.log(`*-this.title= '${this.title}' -*`);
-    console.log(`*-this.isDeletingFlag= '${this.isDeletingFlag}' -*`);
-
-    console.log(`--ModalConfirmationComponent-ngOnInit-]`);
-  } // ngOnInit
 
 
   // обработчик события передачи данных о возможности удаления данных
   sendIsConfirmed(value: boolean): void {
-    console.log(`[-ModalConfirmationComponent-sendIsConfirmed--`);
 
-    console.log(`-(было)-this.isConfirmed: '${this.isConfirmed}'`);
+    // установить заданное значение
     this.isConfirmed = value;
-    console.log(`-(стало)-this.isConfirmed: '${this.isConfirmed}'`);
 
     // зажигаем событие передачи данных
     this.onSendIsConfirmed.emit(this.isConfirmed);
 
     // установить исходное значение параметра
-    console.log(`-(было)-this.isConfirmed: '${this.isConfirmed}'`);
     this.isConfirmed = false;
-    console.log(`-(стало)-this.isConfirmed: '${this.isConfirmed}'`);
 
-    console.log(`--ModalConfirmationComponent-sendIsConfirmed-]`);
   } // sendIsConfirmed
-
-
-  // отмены подписок и необходимые методы при уничтожении компонента
-  ngOnDestroy() {
-    console.log(`[-ModalConfirmationComponent-ngOnDestroy--`);
-    console.log(`--ModalConfirmationComponent-ngOnDestroy-]`);
-  } // ngOnDestroy
 
 } // class ModalConfirmationComponent
 // ----------------------------------------------------------------------------

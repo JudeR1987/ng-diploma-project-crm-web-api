@@ -2,9 +2,6 @@
 // класс с набором константных строковых значений
 // ----------------------------------------------------------------------------
 import {Config} from './Config';
-import {Record} from '../models/classes/Record';
-import {OnlineRecordServicesComponent} from '../components/online-record-services/online-record-services.component';
-import {OnlineRecordEmployeesComponent} from '../components/online-record-employees/online-record-employees.component';
 
 export class Literals {
 
@@ -21,8 +18,6 @@ export class Literals {
 
 
   //#region HomeComponent
-  /*public static readonly fileNameLogoDef: string = 'logo.ico';
-  public static readonly fileNameCompanyTitleImageDef: string = 'company.jpg';*/
 
   //endregion
 
@@ -123,9 +118,6 @@ export class Literals {
   public static readonly employeeNameLength: number = 50;
   public static readonly employeeNewSpecializationNameLength: number = 80;
   public static readonly employeeNewPositionNameLength: number = 80;
-  /*public static readonly serviceCommentLength: number = 500;
-  public static readonly serviceFormPriceMaxValue: number = 1_000_000;
-  public static readonly serviceFormDurationMax: number = 1_440;*/
 
   //endregion
 
@@ -299,10 +291,8 @@ export class Literals {
 
 
   //#region для форм
-
   public static readonly phonePlaceholder: string = '+7(000)000-00-00';
   public static readonly passwordPlaceholder: string = '***...';
-  public static readonly touched: string = 'touched';
   public static readonly required: string = 'required';
   public static readonly minlength: string = 'minlength';
   public static readonly maxlength: string = 'maxlength';

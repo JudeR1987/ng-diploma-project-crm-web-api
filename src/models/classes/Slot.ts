@@ -17,10 +17,6 @@ export class Slot {
     // длина промежутка времени в секундах
     private _length: number = Literals.zero,
 
-    // признак отношения промежутка к перерыву
-    // (true - относится к перерыву, false - НЕ_относится к перерыву)
-    //private _isBreak: boolean = false,
-
     // дата и время удаления записи о промежутке времени
     private _deleted: Date | null = null
   ) {
@@ -41,9 +37,6 @@ export class Slot {
   // свойство длины промежутка времени в минутах
   get lengthInMinutes(): number { return this._length / 60; }
   set lengthInMinutes(value: number) { this._length = value * 60; }
-
-  /*get isBreak(): boolean { return this._isBreak; }
-  set isBreak(value: boolean) { this._isBreak = value; }*/
 
   get deleted(): Date | null { return this._deleted; }
   set deleted(value: Date | null) { this._deleted = value; }
@@ -83,7 +76,6 @@ export class Slot {
         ? Utils.toTime(srcSlot.from)
         : srcSlot.from,
       srcSlot.length,
-      //srcDisplaySlot.isBreak,
       srcSlot.deleted
     ); // return
   } // newSlot
@@ -101,7 +93,6 @@ export class Slot {
       id:      srcSlot.id,
       from:    srcSlot.from,
       length:  srcSlot.length,
-      //isBreak: srcDisplaySlot.isBreak,
       deleted: srcSlot.deleted
     }; // return
   } // SlotToDto
@@ -128,23 +119,9 @@ export class Slot {
     } else if (hoursSlot > hoursDate) {
       return true;
     } else
-      return minutesSlot > minutesDate; // if
+      return minutesSlot > minutesDate;
 
   } // compareTime
-
-
-  // статический метод, возвращающий объект
-  // с интерфейсом для отображения в списке выбора
-  /*public static newCountryToSelect(srcCountry: Country): { id: number, name: string } {
-    return { id: srcCountry.id, name: srcCountry.name };
-  } // newCountryToSelect*/
-
-
-  // статический метод, возвращающий массив объектов
-  // с интерфейсом для отображения в списке выбора
-  /*public static parseCountriesToSelect(srcCountries: Country[]): { id: number, name: string }[] {
-    return srcCountries.map((country: Country) => this.newCountryToSelect(country));
-  } // parseCountriesToSelect*/
 
 } // class DisplaySlot
 // ----------------------------------------------------------------------------

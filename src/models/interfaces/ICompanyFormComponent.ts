@@ -51,15 +51,6 @@ export interface ICompanyFormComponent {
   // заголовок поля ввода текста сайта компании
   labelSite: string,
 
-  // заголовок поля ввода нового пароля пользователя
-  //labelNewPassword: string,
-
-  // заголовок поля подтверждения нового пароля пользователя
-  //labelNewPasswordConfirmation: string,
-
-  // заголовок чек-бокса изменения отображения пароля при вводе
-  //labelCheckboxPassword: string,
-
   // шаблон поля ввода названия компании
   companyNamePlaceholder: string,
 
@@ -94,9 +85,6 @@ export interface ICompanyFormComponent {
   errorRegisteredCity:                          { message: string, isRegistered: boolean },
   errorStreetNameMaxLengthTitle:                string,
   errorBuildingMaxLengthTitle:                  string,
-  //errorPasswordValidatorTitle:    string,
-  //errorPasswordMinMaxLengthTitle: string,
-  //errorMatchValidatorTitle:       string,
 
   // всплывающая подсказка на логотипе компании
   logoTitle: string,
@@ -187,12 +175,6 @@ export interface ICompanyFormComponent {
   // шаблон поля ввода номера телефона компании
   phonePlaceholder: string,
 
-  // шаблон поля ввода пароля пользователя
-  //passwordPlaceholder: string,
-
-  // минимальная длина пароля пользователя
-  //passwordMinLength: number,
-
   // длина названия компании
   companyNameLength: number,
 
@@ -222,15 +204,9 @@ export interface ICompanyFormComponent {
 
   // типы ошибок
   errorRequired:              string,
-  //errorMinLength:         string,
   errorMaxLength:             string,
   errorPhoneValidator:        string,
   errorSelectedZeroValidator: string,
-  //errorPasswordValidator: string,
-  //errorMatchValidator:    string,
-
-  // объект с типами поля ввода пароля
-  //passwordInputTypes: { text: string, password: string }
 
   // имя выбранного файла с изображением логотипа компании
   newLogoFileName: string,
@@ -257,7 +233,7 @@ export interface ICompanyFormComponent {
   citiesList: { id: number, name: string }[],
 
   // коллекция всех записей об улицах
-  allStreets: Street[],
+  allStreets: Street[]
 
   //endregion
 

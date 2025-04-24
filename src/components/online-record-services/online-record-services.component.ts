@@ -78,166 +78,83 @@ export class OnlineRecordServicesComponent implements OnInit, OnDestroy {
               private _authGuardService: AuthGuardService) {
     Utils.helloComponent(Literals.onlineRecordServices);
 
-    console.log(`[-OnlineRecordServicesComponent-constructor--`);
-    console.log(`*-this.component.language='${this.component.language}'-*`);
-    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
-
     // получить маршрут
     this.component.route = this._router.url.slice(1).split(Literals.slash)[0];
-    console.log(`*-this.component.route='${this.component.route}'-*`);
 
-    console.log(`*-this.company: -*`);
-    console.dir(this.company);
-
-    console.log(`*-this.services: -*`);
-    console.dir(this.services);
-
-    console.log(`*-this.displayServicesCategories: -*`);
-    console.dir(this.displayServicesCategories);
-
-    console.log(`--OnlineRecordServicesComponent-constructor-]`);
   } // constructor
 
 
   // 0. установка начальных значений и подписок
   // сразу после загрузки компонента
   async ngOnInit(): Promise<void> {
-    console.log(`[-OnlineRecordServicesComponent-ngOnInit--`);
 
     // задать значение языка отображения и установить
     // значения строковых переменных
-    console.log(`*-this.component.language='${this.component.language}'-*`);
-    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
     this.changeLanguageLiterals(this._languageService.language);
 
     // подписаться на изменение значения названия выбранного языка
     this._languageSubscription = this._languageService.languageSubject
       .subscribe((language: string) => {
-        console.log(`[-OnlineRecordServicesComponent-subscribe--`);
-        console.log(`*-subscribe-language='${language}'-*`);
 
         // задать значение языка отображения и установить
         // значения строковых переменных
         this.changeLanguageLiterals(language);
 
-        console.log(`--OnlineRecordServicesComponent-subscribe-]`);
       }); // subscribe
 
 
     // получить параметры маршрута
-    console.dir(this._activatedRoute);
-    console.dir(this._activatedRoute.params);
     let companyId: number = 0;
     // подписка на получение результата перехода по маршруту
     this._activatedRoute.params.subscribe(params => {
 
       // параметр об Id компании, полученный из маршрута
-      console.log(`*-params['id']: '${params[Literals.id]}' -*`);
       companyId = params[Literals.id] != undefined
         ? +params[Literals.id]
         : 0;
-      console.log(`*-companyId: '${companyId}' [${typeof companyId}] -*`);
-
-      console.log(`*-(было)-this.company.id: '${this.company.id}' -*`);
       this.company.id = companyId;
-      console.log(`*-(стало)-this.company.id: '${this.company.id}' -*`);
 
     }); // subscribe
 
-    // проверки на возможность перехода по маршруту
-    // (если вводить маршрут в командной строке браузера)
-
-    // ?????????
-
-    console.log(`*-(было)-this.company: -*`);
-    console.dir(this.company);
 
     // запрос на получение записи о компании из БД для отображения
     await this.requestGetCompanyById();
 
     // если данные не получены(т.е. Id=0), перейти на домашнюю страницу
     if (this.company.id === this.zero) {
-      console.log(`*- Переход на "Home" - 'TRUE' -*`);
 
       // перейти по маршруту на главную страницу
-      this._router.navigateByUrl(Literals.routeHomeEmpty).then((e) => {
-        console.log(`*- переход: ${e} -*`);
-
-        console.log(`--OnlineRecordServicesComponent-ngOnInit-]`);
-      }); // navigateByUrl
+      this._router.navigateByUrl(Literals.routeHomeEmpty)
+        .then((e) => { console.log(`*- переход: ${e} -*`); });
 
       return;
     } // if
-    console.log(`*- Переход на "Home" - 'FALSE' -*`);
-
-    console.log(`*-(стало)-this.company: -*`);
-    console.dir(this.company);
 
 
     // запрос на получение коллекции услуг заданной компании
-    console.log(`*-(было)-this.services: -*`);
-    console.dir(this.services);
-    console.log(`*-(было)-this.displayServicesCategories: -*`);
-    console.dir(this.displayServicesCategories);
     await this.requestGetAllServicesByCompanyIdGroupByCategories();
-    console.log(`*-(стало)-this.services: -*`);
-    console.dir(this.services);
-    console.log(`*-(стало)-this.displayServicesCategories: -*`);
-    console.dir(this.displayServicesCategories);
 
-    console.log(`--OnlineRecordServicesComponent-ngOnInit-]`);
   } // ngOnInit
 
 
   // метод изменения значения языка отображения
   // и переназначения строковых переменных
   changeLanguageLiterals(language: string): void {
-    console.log(`[-OnlineRecordServicesComponent-changeLanguageLiterals--`);
-
-    console.log(`*-input-language='${language}'-*`);
-    console.log(`*-this.component.language='${this.component.language}'-*`);
 
     // задать значение языка отображения
     this.component.language = language;
-    console.log(`*-this.component.language='${this.component.language}'-*`);
 
     // установить значения строковых переменных
     this.component.title = Resources.onlineRecordServicesTitle[this.component.language];
 
-    console.log(`--OnlineRecordServicesComponent-changeLanguageLiterals-]`);
   } // changeLanguageLiterals
 
 
   // запрос на получение записи о компании из БД для отображения
   async requestGetCompanyById(): Promise<void> {
-    console.log(`[-OnlineRecordServicesComponent-requestGetCompanyById--`);
 
     // включение спиннера ожидания данных
     this.component.isWaitFlag = true;
-
-    console.log(`--OnlineRecordServicesComponent-0-(обновление токена)-`);
-
-    // если токена нет ИЛИ время его действия закончилось -
-    // выполнить запрос на обновление токена
-    /*if (!this._tokenService.isTokenExists()) {
-
-      // получим результат операции обновления токена
-      let result: boolean = await this.isRefreshToken();
-
-      // при завершении с ошибкой - закончить обработку
-      if (!result) {
-
-        // выключение спиннера ожидания данных
-        this.component.isWaitFlag = false;
-
-        console.log(`--OnlineRecordServicesComponent-requestGetCompanyById-КОНЕЦ-]`);
-        return;
-      } // if
-
-      // иначе - переходим к последующему запросу
-    } // if*/
-
-    console.log(`--OnlineRecordServicesComponent-1-(запрос на получение компании)-`);
 
     // запрос на получение записи о компании
     let result: { message: any, company: Company } =
@@ -249,30 +166,19 @@ export class OnlineRecordServicesComponent implements OnInit, OnDestroy {
       let webResult: any = await firstValueFrom(
         this._webApiService.getById(Config.urlGetCompanyById, this.company.id, token)
       );
-      console.dir(webResult);
 
       result.company = Company.newCompany(webResult.company);
     }
     catch (e: any) {
 
-      console.dir(e);
-      console.dir(e.error);
-
       // ошибка авторизации ([Authorize])
-      if (e.status === Literals.error401 && e.error === null) {
-        console.log(`*- отработал [Authorize] -*`);
-        result.message = Resources.unauthorizedUserIdData[this.component.language]
-      }
+      if (e.status === Literals.error401 && e.error === null)
+        result.message = Resources.unauthorizedUserIdData[this.component.language];
       // другие ошибки
       else
         result.message = e.error;
 
     } // try-catch
-
-    console.log(`--OnlineRecordServicesComponent-result:`);
-    console.dir(result);
-
-    console.log(`--OnlineRecordServicesComponent-2-(ответ на запрос получен)-`);
 
     // выключение спиннера ожидания данных
     this.component.isWaitFlag = false;
@@ -284,14 +190,12 @@ export class OnlineRecordServicesComponent implements OnInit, OnDestroy {
       let message: string = Literals.empty;
 
       // ошибки данных
-      console.log(`--result.message.companyId: '${result.message.companyId}'`);
       if (result.message.companyId != undefined)
         message = result.message.companyId === this.zero
           ? Resources.incorrectCompanyIdData[this.component.language]
           : Resources.notRegisteredCompanyIdData[this.component.language];
 
       // ошибки сервера
-      console.log(`--result.message.title: '${result.message.title}'`);
       if (result.message.title != undefined) message = result.message.title;
 
       // если результат уже содержит строку с сообщением
@@ -302,7 +206,6 @@ export class OnlineRecordServicesComponent implements OnInit, OnDestroy {
 
       // при ошибках установить компании нулевой идентификатор
       this.company.id = this.zero;
-
     }
     else {
 
@@ -311,40 +214,14 @@ export class OnlineRecordServicesComponent implements OnInit, OnDestroy {
 
     } // if
 
-    console.log(`--OnlineRecordServicesComponent-requestGetCompanyById-]`);
   } // requestGetCompanyById
 
 
   // запрос на получение коллекции услуг заданной компании
   async requestGetAllServicesByCompanyIdGroupByCategories(): Promise<void> {
-    console.log(`[-OnlineRecordServicesComponent-requestGetAllServicesByCompanyIdGroupByCategories--`);
 
     // включение спиннера ожидания данных
     this.component.isWaitFlag = true;
-
-    console.log(`--OnlineRecordServicesComponent-0-(обновление токена)-`);
-
-    // если токена нет ИЛИ время его действия закончилось -
-    // выполнить запрос на обновление токена
-    /*if (!this._tokenService.isTokenExists()) {
-
-      // получим результат операции обновления токена
-      let result: boolean = await this.isRefreshToken();
-
-      // при завершении с ошибкой - закончить обработку
-      if (!result) {
-
-        // выключение спиннера ожидания данных
-        this.component.isWaitFlag = false;
-
-        console.log(`--OnlineRecordServicesComponent-requestGetAllServicesByCompanyIdGroupByCategories-КОНЕЦ-]`);
-        return;
-      } // if
-
-      // иначе - переходим к последующему запросу
-    } // if*/
-
-    console.log(`--OnlineRecordServicesComponent-1-(запрос на получение услуг)-`);
 
     // запрос на получение коллекции категорий услуг с соответствующими услугами
     let result: { message: any, displayServicesCategories: DisplayServicesCategory[] } =
@@ -356,36 +233,23 @@ export class OnlineRecordServicesComponent implements OnInit, OnDestroy {
       let webResult: any = await firstValueFrom(this._webApiService
         .getById(Config.urlGetAllServicesByCompanyIdGroupByCategories, this.company.id, token)
       );
-      console.dir(webResult);
 
       result.displayServicesCategories = DisplayServicesCategory
         .parseDisplayServicesCategories(webResult.displayServicesCategories);
     }
     catch (e: any) {
 
-      console.dir(e);
-      console.dir(e.error);
-      console.dir(e.status);
-
       // если отсутствует соединение
-      if (e.status === Literals.zero) {
+      if (e.status === Literals.zero)
         result.message = Resources.noConnection[this.component.language];
-
-        // ошибка авторизации ([Authorize])
-      } else if (e.status === Literals.error401 && e.error === null) {
-        console.log(`*- отработал [Authorize] -*`);
-        result.message = Resources.unauthorizedUserIdData[this.component.language]
-
-        // другие ошибки
-      } else
+      // ошибка авторизации ([Authorize])
+      else if (e.status === Literals.error401 && e.error === null)
+        result.message = Resources.unauthorizedUserIdData[this.component.language];
+      // другие ошибки
+      else
         result.message = e.error;
 
     } // try-catch
-
-    console.log(`--OnlineRecordServicesComponent-result:`);
-    console.dir(result);
-
-    console.log(`--OnlineRecordServicesComponent-2-(ответ на запрос получен)-`);
 
     // выключение спиннера ожидания данных
     this.component.isWaitFlag = false;
@@ -397,12 +261,10 @@ export class OnlineRecordServicesComponent implements OnInit, OnDestroy {
       let message: string = Literals.empty;
 
       // ошибки данных
-      console.log(`--result.message.companyId: '${result.message.companyId}'`);
       if (result.message.companyId === Literals.zero)
         message = Resources.incorrectCompanyIdData[this.component.language];
 
       // ошибки сервера
-      console.log(`--result.message.title: '${result.message.title}'`);
       if (result.message.title != undefined) message = result.message.title;
 
       // если результат уже содержит строку с сообщением
@@ -419,17 +281,11 @@ export class OnlineRecordServicesComponent implements OnInit, OnDestroy {
 
     } // if
 
-    console.log(`--OnlineRecordServicesComponent-requestGetAllServicesByCompanyIdGroupByCategories-]`);
   } // requestGetAllServicesByCompanyIdGroupByCategories
 
 
   // программный переход на страницу выбора сотрудника
   routingToOnlineRecordEmployees() {
-    console.log(`[-OnlineRecordServicesComponent-routingToOnlineRecordEmployees--`);
-
-    console.log(`*- this.company.id: '${this.company.id}' -*`);
-    console.log(`*- this.selectedServicesIds: -*`);
-    console.dir(this.selectedServicesIds);
 
     // маршрут
     let routerLink: string = Literals.routeOnlineRecordEmployees;
@@ -446,93 +302,29 @@ export class OnlineRecordServicesComponent implements OnInit, OnDestroy {
       console.log(`*- переход: ${e} -*`);
     });
 
-    console.log(`--OnlineRecordServicesComponent-routingToOnlineRecordEmployees-]`);
   } // routingToOnlineRecordEmployees
 
 
   // обработчик события получения данных об Id выбранной услуги
   async sendSelectedServiceIdHandler(result: { serviceId: number, isSelected: boolean }): Promise<void> {
-    console.log(`[-OnlineRecordServicesComponent-sendSelectedServiceIdHandler--`);
-
-    console.log(`*- result: -*`);
-    console.dir(result);
-
-    console.log(`*- result.serviceId: '${result.serviceId}' [${typeof result.serviceId}] -*`);
-    console.log(`*- result.isSelected: '${result.isSelected}' [${typeof result.isSelected}] -*`);
 
     // добавить/удалить идентификатор выбранной услуги
-    if (result.isSelected) {
-      console.log(`*- push -*`);
+    if (result.isSelected)
       this.selectedServicesIds.push(result.serviceId);
-    } else {
-      console.log(`*- splice -*`);
+    else {
       let index: number = this.selectedServicesIds.findIndex(id => id === result.serviceId);
-      console.log(`*- index: '${index}' -*`);
       this.selectedServicesIds.splice(index, 1);
     } // if
 
-    console.log(`*- this.selectedServicesIds: -*`);
-    console.dir(this.selectedServicesIds);
-
-    console.log(`--OnlineRecordServicesComponent-sendSelectedServiceIdHandler-]`);
   } // sendSelectedServiceIdHandler
-
-
-  // метод выполнения/НЕ_выполнения обновления токена
-  /*private async isRefreshToken(): Promise<boolean> {
-    console.log(`Обновляем токен!`);
-
-    // запрос на обновление токена
-    let result: boolean;
-    let message: any;
-    [result, message] = await this._authGuardService.refreshToken();
-
-    console.log(`--result: '${result}'`);
-
-    console.log(`--message: '${message}'`);
-    console.dir(message);
-
-    // сообщение об успехе
-    if (message === Literals.Ok)
-      message = Resources.refreshTokenOk[this.component.language];
-
-    // ошибки данных
-    console.log(`--message.refreshModel: '${message.refreshModel}'`);
-    console.dir(message.refreshModel);
-    if (message.refreshModel) message =
-      Resources.incorrectUserIdData[this.component.language];
-
-    // ошибки данных о пользователе
-    console.log(`--message.userId: '${message.userId}'`);
-    console.log(`--message.userToken: '${message.userToken}'`);
-    if (message.userId != undefined && message.userToken === undefined)
-      message = Resources.notRegisteredUserIdData[this.component.language];
-
-    // ошибки входа пользователя
-    if (message.userId != undefined && message.userToken != undefined)
-      message = Resources.unauthorizedUserIdData[this.component.language];
-
-    // ошибки сервера
-    console.log(`--message.title: '${message.title}'`);
-    if (message.title != undefined) message = message.title;
-
-    // передать сообщение об ошибке в AppComponent для отображения
-    this._errorMessageService.errorMessageSubject.next(message);
-
-    // вернуть логический результат операции
-    return result;
-
-  } // isRefreshToken*/
 
 
   // отмены подписок и необходимые методы при уничтожении компонента
   ngOnDestroy() {
-    console.log(`[-OnlineRecordServicesComponent-ngOnDestroy--`);
 
     // отмена подписки
     this._languageSubscription.unsubscribe();
 
-    console.log(`--OnlineRecordServicesComponent-ngOnDestroy-]`);
   } // ngOnDestroy
 
 } // class OnlineRecordServicesComponent

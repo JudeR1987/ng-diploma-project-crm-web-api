@@ -21,14 +21,14 @@ export interface IUserFormComponent {
   userNamePlaceholder: string,
 
   // значения сообщений об ошибках
-  errorRequiredTitle:             string,
-  errorUserNameMaxLengthTitle:    string,
-  errorRegisteredPhone:           { message: string, isRegistered: boolean },
-  errorRegisteredEmail:           { message: string, isRegistered: boolean },
-  errorPhoneValidatorTitle:       string,
-  errorEmailMaxLengthTitle:       string,
-  errorEmailValidatorTitle:       string,
-  phoneNoErrorsTitle:             string,
+  errorRequiredTitle:          string,
+  errorUserNameMaxLengthTitle: string,
+  errorRegisteredPhone:        { message: string, isRegistered: boolean },
+  errorRegisteredEmail:        { message: string, isRegistered: boolean },
+  errorPhoneValidatorTitle:    string,
+  errorEmailMaxLengthTitle:    string,
+  errorEmailValidatorTitle:    string,
+  phoneNoErrorsTitle:          string,
 
   // всплывающая подсказка на кнопке "изменить"
   butUserEditTitle: string,

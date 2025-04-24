@@ -21,15 +21,10 @@ export class LanguageService {
 
   // в конструкторе получим исходное значение языка отображения
   constructor() {
-    console.log(`[-LanguageService-constructor--`);
-    console.log(`*-(было)-this._language: '${this._language}' -*`);
 
     // прочитать значение языка отображения из локального хранилища
     this.loadLanguageFromLocalStorage();
 
-    console.log(`*-(стало)-this._language: '${this._language}' -*`);
-
-    console.log(`--LanguageService-constructor-]`);
   } // constructor
 
 
@@ -40,43 +35,27 @@ export class LanguageService {
   // запись свойства (записываем значение языка отображения
   // в свойство-хранилище и передаём данные подписчикам)
   set language(value: string) {
-    console.log(`[-LanguageService-set--`);
-
-    console.log(`*-(было)-this._language: '${this._language}' -*`);
 
     // сохранить данные
     this._language = value;
 
-    console.log(`*-(стало)-this._language: '${this._language}' -*`);
-
     // передать данные
     this.languageSubject.next(value);
 
-    console.log(`--LanguageService-set-]`);
   } // set
 
 
   // запись значения языка отображения в локальное хранилище
   saveLanguageToLocalStorage(): void {
-    console.log(`[-LanguageService-saveLanguageToLocalStorage--`);
-
     localStorage.setItem(Literals.language, this._language);
-
-    console.log(`--LanguageService-saveLanguageToLocalStorage-]`);
   } // saveLanguageToLocalStorage
 
 
   // чтение значения языка отображения из локального хранилища
   loadLanguageFromLocalStorage(): void {
 
-    console.log(`[-LanguageService-loadLanguageFromLocalStorage--`);
-
     // получить запись из хранилища, если она есть
-    console.log(`*-(было)-this._language: '${this._language}' -*`);
     this._language = localStorage.getItem(Literals.language) ?? Literals.rus;
-    console.log(`*-(стало)-this._language: '${this._language}' -*`);
-
-    console.log(`--LanguageService-loadLanguageFromLocalStorage-]`);
 
   } // loadLanguageFromLocalStorage
 

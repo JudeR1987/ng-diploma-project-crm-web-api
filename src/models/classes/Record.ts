@@ -4,7 +4,6 @@
 import {Literals} from '../../infrastructure/Literals';
 import {Employee} from './Employee';
 import {Client} from './Client';
-import {Address} from './Address';
 
 export class Record {
 
@@ -13,14 +12,8 @@ export class Record {
     // идентификатор записи на сеанс
     private _id: number = Literals.zero,
 
-    // идентификатор записи о сотруднике
-    // private _employeeId: number = Literals.zero,
-
     // данные о сотруднике
     private _employee: Employee = new Employee(),
-
-    // идентификатор записи о клиенте
-    // private _clientId: number = Literals.zero,
 
     // данные о клиенте
     private _client: Client = new Client(),
@@ -66,12 +59,6 @@ export class Record {
   get id(): number { return this._id; }
   set id(value: number) { this._id = value; }
 
-  /*get employeeId(): number { return this._employeeId; }
-  set employeeId(value: number) { this._employeeId = value; }
-
-  get clientId(): number { return this._clientId; }
-  set clientId(value: number) { this._clientId = value; }*/
-
   get employee(): Employee { return this._employee; }
   set employee(value: Employee) { this._employee = value; }
 
@@ -116,8 +103,6 @@ export class Record {
   public static newRecord(srcRecord: Record | any): Record {
     return new Record(
       srcRecord.id,
-      /*srcRecord.employeeId,
-      srcRecord.clientId,*/
       Employee.newEmployee(srcRecord.employee),
       Client.newClient(srcRecord.client),
       srcRecord.date,
@@ -143,8 +128,6 @@ export class Record {
   public static RecordToDto(srcRecord: Record): any {
     return {
       id:         srcRecord.id,
-      /*employeeId: srcRecord.employeeId,
-      clientId:   srcRecord.clientId,*/
       employee:   Employee.EmployeeToDto(srcRecord.employee),
       client:     Client.ClientToDto(srcRecord.client),
       date:       srcRecord.date,

@@ -71,7 +71,6 @@
                    id="workDayStartTime-date-{{displayWorkDayBreakSlots.workDay.date.getDate()}}"
                    name="workDayStartTime"
                    [(ngModel)]="displayWorkDayBreakSlots.workDay.startTime"
-                   (input)="inputTimeHandler()"
                    [disabled]="isWaitFlag || !displayWorkDayBreakSlots.workDay.isWorking"
                    [class.opacity-75]="isWaitFlag || !displayWorkDayBreakSlots.workDay.isWorking"/>
           </div>
@@ -93,7 +92,6 @@
                    id="workDayEndTime-date-{{displayWorkDayBreakSlots.workDay.date.getDate()}}"
                    name="workDayEndTime"
                    [(ngModel)]="displayWorkDayBreakSlots.workDay.endTime"
-                   (input)="inputTimeHandler()"
                    [disabled]="isWaitFlag || !displayWorkDayBreakSlots.workDay.isWorking"
                    [class.opacity-75]="isWaitFlag || !displayWorkDayBreakSlots.workDay.isWorking"/>
           </div>
@@ -152,7 +150,6 @@
                          id="slot-from-{{i}}-date-{{displayWorkDayBreakSlots.workDay.date.getDate()}}"
                          name="slot-from-{{i}}"
                          [(ngModel)]="slot.from"
-                         (input)="inputTimeHandler()"
                          [disabled]="isWaitFlag || !displayWorkDayBreakSlots.workDay.isWorking"
                          [class.opacity-75]="isWaitFlag || !displayWorkDayBreakSlots.workDay.isWorking"/>
                 </div>

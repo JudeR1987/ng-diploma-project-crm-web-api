@@ -16,8 +16,6 @@ import {ErrorMessageService} from '../../services/error-message.service';
 import {NgIf} from '@angular/common';
 import {UserService} from '../../services/user.service';
 import {TokenService} from '../../services/token.service';
-import {Record} from '../../models/classes/Record';
-import {OnlineRecordEmployeesComponent} from '../online-record-employees/online-record-employees.component';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +29,6 @@ export class AppComponent implements OnInit {
   // объект с параметрами компонента
   public component: IAppComponent = {
     // параметры меняющиеся при смене языка
-    //title: { 'rus': Literals.empty, 'eng': Literals.empty },
     title:                Resources.appTitleDefault,
     displayTitle:         Literals.empty,
     logoTitle:            Literals.empty,
@@ -87,9 +84,6 @@ export class AppComponent implements OnInit {
     routerLinkActive: Literals.empty
   };
 
-  // сведения о jwt-токене безопасности
-  //public jwtToken: string | null = Literals.empty;
-
   // сведения о пользователе
   public user: User = new User();
 
@@ -102,8 +96,7 @@ export class AppComponent implements OnInit {
   // подключения к сервису аутентификации/авторизации пользователя,
   // подключения к сервису хранения сообщения об ошибке
   // и подключения к сервисам хранения данных о пользователе и jwt-токене
-  constructor(/*private _webApiService: WebApiService,*/
-              private _router: Router,
+  constructor(private _router: Router,
               private _languageService: LanguageService,
               private _authGuardService: AuthGuardService,
               private _errorMessageService: ErrorMessageService,
@@ -111,122 +104,55 @@ export class AppComponent implements OnInit {
               private _tokenService: TokenService) {
     Utils.hello();
     Utils.helloComponent(Literals.app);
-
-    console.log(`[-AppComponent-constructor--`);
-
-    // получить значение языка отображения из хранилища
-    /*console.log(`*-this.component.language='${this.component.language}'-*`);
-    this.component.language = localStorage.getItem(Literals.language) ?? Literals.rus;
-    console.log(`*-this.component.language='${this.component.language}'-*`);*/
-
-    // получить значение языка отображения из сервиса-хранилища
-    console.log(`*-this.component.language='${this.component.language}'-*`);
-    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
-    //this.component.language = this._languageService.language;
-    //console.log(`*-this.component.language='${this.component.language}'-*`);
-
-    // получить данные о пользователе из сервиса-хранилища
-    console.log(`*-this.user: -*`);
-    console.dir(this.user);
-    console.log(`*-this._userService.user: -*`);
-    console.dir(this._userService.user);
-    //this.user = this._userService.user;
-    //console.log(`*-this.user: -*`);
-    //console.dir(this.user);
-
-    console.log(`--AppComponent-constructor-]`);
   } // constructor
 
 
   // 0. установка значений строковых переменных и получение данных
   // о jwt-токене и пользователе сразу после загрузки компонента
   ngOnInit(): void {
-    console.log(`[-AppComponent-ngOnInit--`);
-
-    // задать параметры заголовка по умолчанию
-    //this.component.title = Resources.appTitleDefault;
 
     // задать значение языка отображения и установить
     // значения строковых переменных
-    console.log(`*-this.component.language='${this.component.language}'-*`);
-    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
     this.changeLanguageLiterals(this._languageService.language);
 
     // подписаться на изменение значения названия выбранного языка
     this._languageService.languageSubject.subscribe((language: string) => {
-      console.log(`[-AppComponent-subscribe--`);
-      console.log(`*-subscribe(пришло)-language='${language}'-*`);
 
       // задать значение языка отображения и установить
       // значения строковых переменных
       this.changeLanguageLiterals(language);
 
-      console.log(`--AppComponent-subscribe-]`);
     }); // subscribe
 
     // получить данные о пользователе из сервиса-хранилища
-    console.log(`*-(было)-this.user: -*`);
-    console.dir(this.user);
     this.user = this._userService.user;
-    console.log(`*-(стало)-this.user: -*`);
-    console.dir(this.user);
 
     // подписаться на изменение данных о пользователе
     this._userService.userSubject.subscribe((user: User) => {
-      console.log(`[-AppComponent-subscribe--`);
-      console.log(`*-subscribe(пришло)-user:`);
-      console.dir(user);
-
-      console.log(`*-subscribe-(было)-this.user:`);
-      console.dir(this.user);
 
       // изменить данные о пользователе
       this.user = User.newUser(user);
-
-      console.log(`*-subscribe-(стало)-this.user:`);
-      console.dir(this.user);
-
-      console.log(`--AppComponent-subscribe-]`);
 
     }); // subscribe
 
     // подписаться на изменение значения сообщения об ошибке
     this._errorMessageService.errorMessageSubject
       .subscribe((message: string) => {
-        console.log(`[-AppComponent-subscribe--`);
-        console.log(`*-subscribe(пришло)-message='${message}'-*`);
 
         // вывод сообщения
         this.displayMessage(message);
 
-        console.log(`--AppComponent-subscribe-]`);
-
     }); // subscribe
 
-    // если данные о пользователе есть - отправить запрос на вход в систему
-    //console.log(`--AppComponent-this.user.isLogin:${this.user.isLogin}`);
-    //if (this.user.isLogin) {
-    //  async () => {
-    //    await this._authGuardService.login(new LoginModel(this.user.login, this.user.password));
-    //  }
-    //  this._authGuardService.login(new LoginModel(this.user.login, this.user.password));
-    //} // if
-
-    console.log(`--AppComponent-ngOnInit-]`);
   } // ngOnInit
 
 
   // метод изменения значения языка отображения
   // и переназначения строковых переменных
   changeLanguageLiterals(language: string): void {
-    console.log(`[-AppComponent-changeLanguageLiterals--`);
-
-    console.log(`*-input(пришло)-language='${language}'-*`);
-    console.log(`*-(было)-this.component.language='${this.component.language}'-*`);
 
     // задать значение языка отображения
     this.component.language = language;
-    console.log(`*-(стало)-this.component.language='${this.component.language}'-*`);
 
     // установить значения строковых переменных
     this.component.displayTitle         = this.component.title[this.component.language];
@@ -258,34 +184,18 @@ export class AppComponent implements OnInit {
     this.component.footerCityValue      = Resources.appFooterCityValue[this.component.language];
     this.component.footerShortYearValue = Resources.appFooterShortYearValue[this.component.language];
 
-    console.log(`--AppComponent-changeLanguageLiterals-]`);
   } // changeLanguageLiterals
 
 
   // метод перехода в начало страницы
   toStart(): void {
-    //window.scrollTo(Literals.zero, Literals.one);
     Utils.toStart();
   } // toStart
-
-
-  // отмена срабатывания таймера и удаление всплывающего сообщения
-  /*private removeSetTimeout(): void {
-
-    // отменить ранее установленный setTimeout
-    clearTimeout(this.component.timerId);
-
-    // удалить всплывающее сообщение
-    this.component.errorMessage = { message: Literals.empty, isVisible: false };
-
-  } // removeSetTimeout*/
 
 
   // метод, устанавливающий значение заголовка страницы
   // и параметры активной ссылки при переходах между страницами
   private setActivePage(title: string, back: string, icon: string, routerLinkActive: string): void {
-
-    console.log(`[-AppComponent-setActivePage--`);
 
     this.component.displayTitle = title;
     this.brandActive.back = back;
@@ -293,36 +203,18 @@ export class AppComponent implements OnInit {
     this.brandActive.routerLinkActive = routerLinkActive;
     this.toStart();
 
-    console.log(`--AppComponent-setActivePage-]`);
-
   } // setActivePage
 
 
   // обработчик события перехода по маршруту
   onActivateHandler(elementRef: any): void {
 
-    console.log(`[-AppComponent-onActivateHandler--`);
-
-    console.log(`*-elementRef-*`);
-    console.dir(elementRef);
-    //console.log(`*-elementRef.component = '${elementRef.component}' -*`);
     // если свойство параметров компонента отсутствует - завершаем обработку
     if (elementRef.component === undefined) return;
-    /*if (elementRef.component === undefined)
-      elementRef.component = { userId: 111, title: "ok" };
-    console.log(`*-elementRef.component: -*`);
-    console.dir(elementRef.component);*/
 
-    console.log(`*-elementRef.component.route = '${elementRef.component.route}' -*`);
     // если маршрут неопределён, установим ему пустое значение
     if (elementRef.component.route === undefined)
       elementRef.component.route = Literals.empty;
-    /*if (elementRef.component.route === undefined) {
-      elementRef.component = { oldComponent: elementRef.component, route: Literals.empty };
-    }*/
-    /*console.log(`*-elementRef.component: -*`);
-    console.dir(elementRef.component);*/
-    console.log(`*-elementRef.component.route = '${elementRef.component.route}' -*`);
 
     // выбор значения заголовка и параметров активной страницы
     let back: string = '';
@@ -464,7 +356,7 @@ export class AppComponent implements OnInit {
         routerLinkActive = Literals.routeReports;
         break;
 
-        case Literals.routeOnlineRecordServices:
+      case Literals.routeOnlineRecordServices:
         this.component.title = Resources.appOnlineRecordTitle;
         back = Literals.navbarBrandActive;
         icon = Literals.iconLight;
@@ -494,30 +386,18 @@ export class AppComponent implements OnInit {
       back, icon, routerLinkActive
     ); // setActivePage
 
-    console.log(`--AppComponent-onActivateHandler-]`);
-
   } // onActivateHandler
 
 
   // выход из системы - удаление данных из хранилища,
   // перейти на главную
   async logOut() {
-    console.log(`[-AppComponent-logOut--`);
-
-    // удаление всплывающего сообщения
-    //this.removeSetTimeout();
 
     // включение спиннера ожидания данных
     this.component.isWaitFlag = true;
 
-    console.log(`--AppComponent-1-`);
-
     // запрос на выход из системы
     let message: any = await this._authGuardService.logOut(this.user);
-    console.log(`--AppComponent-message:`);
-    console.dir(message);
-
-    console.log(`--AppComponent-2-`);
 
     // выключение спиннера ожидания данных
     this.component.isWaitFlag = false;
@@ -531,26 +411,21 @@ export class AppComponent implements OnInit {
         Resources.incorrectUserIdData[this.component.language];
 
       // ошибки данных о пользователе
-      console.log(`--message.userId: '${message.userId}'`);
       if (message.userId != undefined) message =
         Resources.notRegisteredUserIdData[this.component.language];
 
       // ошибки входа пользователя
-      console.log(`--message.isLogin: '${message.isLogin}'`);
-      console.log(`--message.userToken: '${message.userToken}'`);
       if (message.isLogin != undefined && message.userToken != undefined)
         message = Resources.unauthorizedUserIdData[this.component.language];
 
       // ошибки сервера
-      console.log(`--message.title: '${message.title}'`);
       if (message.title != undefined) message = message.title;
-      console.log(`--message: '${message}'`);
 
       // перейти к форме входа
       this._router.navigateByUrl(Literals.routeLogin)
         .then((e) => { console.log(`*- переход: ${e} -*`); });
-
-    } else {
+    }
+    else {
       // иначе - сообщение об успехе
       message = Resources.appLogOutOk[this.component.language];
 
@@ -572,13 +447,11 @@ export class AppComponent implements OnInit {
     localStorage.removeItem(Literals.jwt);
     localStorage.removeItem(Literals.user);
 
-    console.log(`--AppComponent-logOut-]`);
   } // logOut
 
 
   // программный переход к форме изменения данных о пользователе
   routingToUserForm(): void {
-    console.log(`[-AppComponent-routingToUserForm--`);
 
     // маршрут
     let routerLink: string = Literals.routeUserForm;
@@ -587,21 +460,14 @@ export class AppComponent implements OnInit {
     let userId: number = this.user.id;
 
     // переход по маршруту
-    /*this._router.navigate([routerLink, userId], {
-      state: { user: User.UserToDto(this.user) }
-    }).then((e) => { console.log(`*- переход: ${e} -*`); });*/
     this._router.navigateByUrl(`${routerLink}/${userId}`)
       .then((e) => { console.log(`*- переход: ${e} -*`); });
-
-    console.log(`--AppComponent-routingToUserForm-]`)
 
   } // routingToUserForm
 
 
   // программный переход к форме изменения пароля пользователя
   routingToPasswordForm(): void {
-
-    console.log(`[-AppComponent-routingToPasswordForm--`);
 
     // маршрут
     let routerLink: string = Literals.routePasswordForm;
@@ -610,16 +476,8 @@ export class AppComponent implements OnInit {
     let userId: number = this.user.id;
 
     // переход по маршруту
-    /*this._router.navigate([routerLink, userId], {
-      state: {
-        userId: this.user.id,
-        password: this.user.password
-      }
-    }).then((e) => { console.log(`*- переход: ${e} -*`); });*/
     this._router.navigateByUrl(`${routerLink}/${userId}`)
       .then((e) => { console.log(`*- переход: ${e} -*`); });
-
-    console.log(`--AppComponent-routingToPasswordForm-]`);
 
   } // routingToPasswordForm
 
@@ -627,25 +485,12 @@ export class AppComponent implements OnInit {
   // программный переход на страницу ведения бизнеса
   routingToBusiness(): void {
 
-    console.log(`[-AppComponent-routingToBusiness--`);
-
     // маршрут
     let routerLink: string = Literals.routeBusiness;
 
-    // параметр
-    //let userId: number = this.user.id;
-
     // переход по маршруту
-    /*this._router.navigate([routerLink, userId], {
-      state: {
-        userId: this.user.id,
-        password: this.user.password
-      }
-    }).then((e) => { console.log(`*- переход: ${e} -*`); });*/
     this._router.navigateByUrl(`${routerLink}`)
       .then((e) => { console.log(`*- переход: ${e} -*`); });
-
-    console.log(`--AppComponent-routingToBusiness-]`);
 
   } // routingToBusiness
 
@@ -653,23 +498,15 @@ export class AppComponent implements OnInit {
   // метод вывода сообщения
   displayMessage(message: string): void {
 
-    // удаление всплывающего сообщения
-    //this.removeSetTimeout();
-
     // отменить ранее установленный setTimeout
     clearTimeout(this.component.timerId);
 
     // если сообщение ещё не исчезло, новое сообщение добавляем к старому
-    console.log(`*-this.component.errorMessage.message-*`);
-    console.log(`*- '${this.component.errorMessage.message}' -*`);
     if (this.component.errorMessage.message != Literals.empty)
       message = this.component.errorMessage.message + Literals.break + message;
 
     // установить параметры сообщения
     this.component.errorMessage = { message: message, isVisible: true };
-
-    console.log(`*-this.component.errorMessage.message-*`);
-    console.log(`*- '${this.component.errorMessage.message}' -*`);
 
     // сбросить сообщение об ошибке
     this.component.timerId = setTimeout(() => {
@@ -692,172 +529,6 @@ export class AppComponent implements OnInit {
     this.component.errorMessage = { message: Literals.empty, isVisible: false };
 
   } // clearSetTimeout
-
-
-
-
-
-
-
-
-
-
-
-  // обработчик клика для получения данных о параметрах запроса №1 с сервера
-  /*getQuery01Params(): void {
-
-    // сброс значений параметров
-    this.purposes = [];
-
-    // url для получения данных о параметрах запроса №1 от сервера
-    let url: string = Config.urlGetQuery01Params;
-
-    // включение спиннера ожидания данных
-    this.isWaitFlag = true;
-
-    // подписка на получение результата запроса
-    this._webApiService.get(url).subscribe((webResult: any) => {
-
-      // сведения о всех целях поездки, полученные при помощи сервиса
-      this.purposes = Purpose.parsePurposes(webResult);
-
-      // выключение спиннера ожидания данных
-      this.isWaitFlag = false;
-
-    }); // get
-
-  } // getQuery01Params*/
-
-
-  // метод получения параметров запроса №1 из формы выбора параметров,
-  // переход на страницу отображения результатов запроса №1
-  /*sendQuery01ParamsHandler(purposeId: number): void {
-
-    // программный переход на страницу с передачей параметров
-    let routerLink: string = "/query01";
-
-    this._router.navigate([routerLink], {queryParams: {purposeId: purposeId}})
-      .then((e) => { console.dir(e); });
-
-  } // sendQuery01ParamsHandler*/
-
-
-  // обработчик клика для получения данных о параметрах запроса №2 с сервера
-  /*getQuery02Params(): void {
-
-    // сброс значений параметров
-    this.purposes = [];
-    this.minTransportCost = this.maxTransportCost = 0;
-
-    // url для получения данных о параметрах запроса №2 от сервера
-    let url: string = Config.urlGetQuery02Params;
-
-    // включение спиннера ожидания данных
-    this.isWaitFlag = true;
-
-    // подписка на получение результата запроса
-    this._webApiService.get(url).subscribe((webResult: {
-      purposes: Purpose[], minTransportCost: number, maxTransportCost: number
-    }) => {
-
-      // сведения о всех целях поездки, полученные при помощи сервиса
-      this.purposes = Purpose.parsePurposes(webResult.purposes);
-
-      // сведения о минимальной и максимальной стоимости
-      // транспортных услуг, полученные при помощи сервиса
-      this.minTransportCost = webResult.minTransportCost;
-      this.maxTransportCost = webResult.maxTransportCost;
-
-      // выключение спиннера ожидания данных
-      this.isWaitFlag = false;
-
-    }); // get
-
-  } // getQuery02Params*/
-
-
-  // метод получения параметров запроса №2 из формы выбора параметров,
-  // переход на страницу отображения результатов запроса №2
-  /*sendQuery02ParamsHandler(params: {purposeId: number, transportCost: number}): void {
-
-    // программный переход на страницу с передачей параметров
-    let routerLink: string = "/query02";
-    this._router.navigate(
-      [routerLink],
-      {
-        queryParams: {
-          purposeId: params.purposeId,
-          transportCost: params.transportCost
-        }
-      })
-      .then((e) => { console.dir(e); });
-
-  } // sendQuery02ParamsHandler*/
-
-
-  // обработчик клика для получения данных о параметрах запроса №3 с сервера
-  /*getQuery03Params(): void {
-
-    // сброс значений параметров
-    this.minAmountDays = this.maxAmountDays = 0;
-
-    // url для получения данных о параметрах запроса №3 от сервера
-    let url: string = Config.urlGetQuery03Params;
-
-    // включение спиннера ожидания данных
-    this.isWaitFlag = true;
-
-    // подписка на получение результата запроса
-    this._webApiService.get(url).subscribe((webResult: {
-      minAmountDays: number, maxAmountDays: number}) => {
-
-      // сведения о минимальном и максимальном количестве дней
-      // пребывания клиентов в стране, полученные при помощи сервиса
-      this.minAmountDays = webResult.minAmountDays;
-      this.maxAmountDays = webResult.maxAmountDays;
-
-      // выключение спиннера ожидания данных
-      this.isWaitFlag = false;
-
-    }); // get
-
-  } // getQuery03Params*/
-
-
-  // метод получения параметров запроса №3 из формы выбора параметров,
-  // переход на страницу отображения результатов запроса №3
-  /*sendQuery03ParamsHandler(amountDays: number): void {
-
-    // программный переход на страницу с передачей параметров
-    let routerLink: string = "/query03";
-    this._router.navigate(
-      [routerLink],
-      { queryParams: {amountDays: amountDays} })
-      .then((e) => { console.dir(e); });
-
-  } // sendQuery03ParamsHandler*/
-
-
-  // обработчик клика для перехода на страницу отображения результатов запроса №4
-  /*viewQuery04(): void {
-
-    // программный переход на страницу без передачи параметров
-    let routerLink: string = "/query04";
-    this._router.navigateByUrl(routerLink)
-      .then((e) => { console.dir(e); });
-
-  } // viewQuery04*/
-
-
-  // обработчик клика для перехода на страницу отображения результатов запроса №5
-  /*viewQuery05(): void {
-
-    // программный переход на страницу без передачи параметров
-    let routerLink: string = "/query05";
-    this._router.navigateByUrl(routerLink)
-      .then((e) => { console.dir(e); });
-
-  } // viewQuery05*/
 
 } // class AppComponent
 // ----------------------------------------------------------------------------

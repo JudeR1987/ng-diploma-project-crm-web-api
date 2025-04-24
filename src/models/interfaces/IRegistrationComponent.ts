@@ -42,12 +42,6 @@ export interface IRegistrationComponent {
   // выделения активной кнопки навигации после перезагрузки страницы
   route: string,
 
-  // параметр валидности вводимых данных
-  /*validRegistration: boolean,
-
-  // сообщение об ошибке
-  errorMessage: string,*/
-
   // флаг включения спиннера при ожидании данных с сервера
   isWaitFlag: boolean,
 
@@ -64,17 +58,10 @@ export interface IRegistrationComponent {
   emailLength: number,
 
   // типы ошибок
-  errorRequired: string,
+  errorRequired:       string,
   errorPhoneValidator: string,
-  errorMaxLength: string,
+  errorMaxLength:      string,
   errorEmailValidator: string
-
-  // «идентификатор таймера», для отмены срабатывания setTimeout()
-  // при нажатии кнопок обработки быстрее длительности срабатывания таймера
-  //timerId: number,
-
-  // длительность срабатывания setTimeout()
-  //timeout: number
 
   //endregion
 

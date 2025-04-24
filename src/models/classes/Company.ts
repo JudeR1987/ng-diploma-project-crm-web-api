@@ -11,9 +11,6 @@ export class Company {
     // идентификатор записи о компании
     private _id: number = Literals.zero,
 
-    // данные о пользователе-владельце
-    //private _ownerUser: User = new User(),
-
     // идентификатор записи о пользователе-владельце
     private _userOwnerId: number = Literals.zero,
 

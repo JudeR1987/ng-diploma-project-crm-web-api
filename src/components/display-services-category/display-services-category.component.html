@@ -43,7 +43,7 @@
        class="collapse m-0 p-0" [class.show]="isShowFlag">
     <div class="m-0 p-0 d-flex flex-column">
 
-      <!-- список категорий услуг -->
+      <!-- список услуг -->
       @for (service of displayServicesCategory.services; track service.id; let i = $index) {
 
         <div class="m-0 mt-1 p-0">
@@ -79,6 +79,7 @@
                   } <!-- if -->
                 </div>
                 <div class="m-0 p-0 ps-4 row align-items-center text-back-color font-size-10pt">
+
                   @if (service.priceMin === service.priceMax) {
                     <div class="m-0 p-1 w-auto">
                       <div class="m-0 px-2 py-0 bg-main-color border border-2 border-back-color rounded"

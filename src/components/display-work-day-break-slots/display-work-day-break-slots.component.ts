@@ -2,26 +2,23 @@
 // компонент отображения данных о рабочем дне сотрудника с коллекцией
 // промежутков времени перерывов сотрудника
 // ----------------------------------------------------------------------------
-import {Component, Input, EventEmitter, Output, OnInit, OnDestroy} from '@angular/core';
+import {Component, Input, EventEmitter, Output} from '@angular/core';
 import {DisplayWorkDayBreakSlots} from '../../models/classes/DisplayWorkDayBreakSlots';
 import {Literals} from '../../infrastructure/Literals';
 import {DatePipe, NgClass, NgForOf} from '@angular/common';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormsModule} from '@angular/forms';
 import {Slot} from '../../models/classes/Slot';
 
 @Component({
   selector: 'display-work-day-break-slots',
   standalone: true,
-  imports: [
-    NgClass, DatePipe, FormsModule, NgForOf, ReactiveFormsModule
-  ],
+  imports: [NgClass, DatePipe, FormsModule, NgForOf],
   templateUrl: './display-work-day-break-slots.component.html',
   styleUrl: './display-work-day-break-slots.component.css'
 })
-export class DisplayWorkDayBreakSlotsComponent implements OnInit, OnDestroy {
+export class DisplayWorkDayBreakSlotsComponent {
 
   // входные параметры
-
   // флаг включения спиннера при ожидании данных с сервера
   @Input() isWaitFlag: boolean = false;
 
@@ -77,90 +74,36 @@ export class DisplayWorkDayBreakSlotsComponent implements OnInit, OnDestroy {
 
   // конструктор
   constructor() {
-    console.log(`[-DisplayWorkDayBreakSlotsComponent-constructor--`);
-
-    console.log(`*-this.displayWorkDayBreakSlots: -*`);
-    console.dir(this.displayWorkDayBreakSlots);
-
-    console.log(`--DisplayWorkDayBreakSlotsComponent-constructor-]`);
   } // constructor
-
-
-  // 0. установка начальных значений и подписок
-  // сразу после загрузки компонента
-  ngOnInit() {
-    console.log(`[-DisplayWorkDayBreakSlotsComponent-ngOnInit--`);
-
-    console.log(`*- параметры должны быть получены -*`);
-    console.log(`*-this.displayWorkDayBreakSlots: -*`);
-    console.dir(this.displayWorkDayBreakSlots);
-
-    console.log(`--DisplayWorkDayBreakSlotsComponent-ngOnInit-]`);
-  } // ngOnInit
-
-
-  // обработчик события изменения значения выбора времени
-  inputTimeHandler(): void {
-    console.log(`[-DisplayWorkDayBreakSlotsComponent-inputTimeHandler--`);
-
-    console.log(`*-this.displayWorkDayBreakSlots: -*`);
-    console.dir(this.displayWorkDayBreakSlots);
-
-    console.log(`*-this.displayWorkDayBreakSlots.workDay.startTime: '${this.displayWorkDayBreakSlots.workDay.startTime}' [${typeof this.displayWorkDayBreakSlots.workDay.startTime}] -*`);
-    console.log(`*-this.displayWorkDayBreakSlots.workDay.endTime: '${this.displayWorkDayBreakSlots.workDay.endTime}' [${typeof this.displayWorkDayBreakSlots.workDay.endTime}] -*`);
-
-    console.log(`--DisplayWorkDayBreakSlotsComponent-inputTimeHandler-]`);
-  } // inputTimeHandler
 
 
   // обработчик события добавления нового промежутка времени для перерыва сотрудника
   addBreakSlot(): void {
-    console.log(`[-DisplayWorkDayBreakSlotsComponent-addBreakSlot--`);
-
-    console.log(`*-this.displayWorkDayBreakSlots.slots.length: '${this.displayWorkDayBreakSlots.slots.length}' -*`);
 
     // добавить новый промежуток времени
     this.displayWorkDayBreakSlots.slots.push(new Slot());
 
-    console.log(`*-this.displayWorkDayBreakSlots.slots.length: '${this.displayWorkDayBreakSlots.slots.length}' -*`);
-
-    console.log(`--DisplayWorkDayBreakSlotsComponent-addBreakSlot-]`);
   } // addBreakSlot
 
 
   // обработчик события удаления последнего в коллекции
   // промежутка времени для перерыва сотрудника
   removeBreakSlot(): void {
-    console.log(`[-DisplayWorkDayBreakSlotsComponent-removeBreakSlot--`);
-
-    console.log(`*-this.displayWorkDayBreakSlots.slots.length: '${this.displayWorkDayBreakSlots.slots.length}' -*`);
 
     // удалить последний в коллекции промежуток времени
     this.displayWorkDayBreakSlots.slots = this.displayWorkDayBreakSlots.slots
       .slice(0, this.displayWorkDayBreakSlots.slots.length - 1);
 
-    console.log(`*-this.displayWorkDayBreakSlots.slots.length: '${this.displayWorkDayBreakSlots.slots.length}' -*`);
-
-    console.log(`--DisplayWorkDayBreakSlotsComponent-removeBreakSlot-]`);
   } // removeBreakSlot
 
 
   // метод передачи данных об объекте для изменения
   sendDisplayWorkDayBreakSlots(): void {
-    console.log(`[-DisplayWorkDayBreakSlotsComponent-sendDisplayWorkDayBreakSlots--`);
 
     // зажигаем событие передачи данных
     this.onSendDisplayWorkDayBreakSlots.emit(this.displayWorkDayBreakSlots);
 
-    console.log(`--DisplayWorkDayBreakSlotsComponent-sendDisplayWorkDayBreakSlots-]`);
   } // sendDisplayWorkDayBreakSlots
-
-
-  // отмены подписок и необходимые методы при уничтожении компонента
-  ngOnDestroy() {
-    console.log(`[-DisplayWorkDayBreakSlotsComponent-ngOnDestroy--`);
-    console.log(`--DisplayWorkDayBreakSlotsComponent-ngOnDestroy-]`);
-  } // ngOnDestroy
 
 } // class DisplayWorkDayBreakSlotsComponent
 // ----------------------------------------------------------------------------

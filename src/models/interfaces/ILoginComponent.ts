@@ -42,12 +42,6 @@ export interface ILoginComponent {
   // выделения активной кнопки навигации после перезагрузки страницы
   route: string,
 
-  // параметр валидности вводимых данных
-  /*validLogin: boolean,
-
-  // сообщение об ошибке
-  errorMessage: string,*/
-
   // флаг включения спиннера при ожидании данных с сервера
   isWaitFlag: boolean,
 
@@ -67,18 +61,11 @@ export interface ILoginComponent {
   passwordMaxLength: number,
 
   // типы ошибок
-  errorRequired: string,
+  errorRequired:       string,
   errorPhoneValidator: string,
   errorEmailValidator: string,
-  errorMinLength: string,
-  errorMaxLength: string,
-
-  // «идентификатор таймера», для отмены срабатывания setTimeout()
-  // при нажатии кнопок обработки быстрее длительности срабатывания таймера
-  //timerId: number,
-
-  // длительность срабатывания setTimeout()
-  //timeout: number
+  errorMinLength:      string,
+  errorMaxLength:      string,
 
   // объект с типами поля ввода пароля
   passwordInputTypes: { text: string, password: string }

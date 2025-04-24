@@ -2,10 +2,6 @@
 // класс, представляющий сведения о записи в таблице "КЛИЕНТЫ" (Clients)
 // ----------------------------------------------------------------------------
 import {Literals} from '../../infrastructure/Literals';
-import {User} from './User';
-import {Company} from './Company';
-import {Specialization} from './Specialization';
-import {Position} from './Position';
 
 export class Client {
 

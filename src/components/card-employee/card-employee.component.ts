@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------------
 // компонент отображения данных о сотруднике компании в виде карточки
 // ----------------------------------------------------------------------------
-import {Component, Input, EventEmitter, Output, OnInit, OnDestroy} from '@angular/core';
+import {Component, Input, EventEmitter, Output} from '@angular/core';
 import {Employee} from '../../models/classes/Employee';
 import {Literals} from '../../infrastructure/Literals';
 
@@ -12,10 +12,9 @@ import {Literals} from '../../infrastructure/Literals';
   templateUrl: './card-employee.component.html',
   styleUrl: './card-employee.component.css'
 })
-export class CardEmployeeComponent implements OnInit, OnDestroy {
+export class CardEmployeeComponent {
 
   // входные параметры
-
   // флаг включения режима редактирования данных о сотруднике
   @Input() isManagementFlag: boolean = false;
 
@@ -39,9 +38,6 @@ export class CardEmployeeComponent implements OnInit, OnDestroy {
 
   // заголовок поля отображения должности сотрудника
   @Input() labelPosition: string = Literals.empty;
-
-  // заголовок поля отображения рейтинга сотрудника
-  // @Input() labelRating: string = Literals.empty;
 
   // всплывающая подсказка на кнопке "отправителяIDModeSchedule" ("показать расписание")
   @Input() butSenderEmployeeIdModeScheduleTitle: string = Literals.empty;
@@ -83,38 +79,17 @@ export class CardEmployeeComponent implements OnInit, OnDestroy {
 
   // конструктор
   constructor() {
-    console.log(`[-CardEmployeeComponent-constructor--`);
-
-    console.log(`*-this.employee: -*`);
-    console.dir(this.employee);
-
-    console.log(`--CardEmployeeComponent-constructor-]`);
   } // constructor
-
-
-  // 0. установка начальных значений и подписок
-  // сразу после загрузки компонента
-  ngOnInit() {
-    console.log(`[-CardEmployeeComponent-ngOnInit--`);
-
-    console.log(`*- параметры должны быть получены -*`);
-    console.log(`*-this.employee: -*`);
-    console.dir(this.employee);
-
-    console.log(`--CardEmployeeComponent-ngOnInit-]`);
-  } // ngOnInit
 
 
   // метод передачи данных об Id выбранного сотрудника
   sendEmployeeIdMode(mode: string): void {
-    console.log(`[-CardEmployeeComponent-sendEmployeeIdMode--`);
 
     // зажигаем событие передачи данных
     this.onSendEmployeeIdMode.emit({
       employeeId: this.employee.id, mode: mode
     });
 
-    console.log(`--CardEmployeeComponent-sendEmployeeIdMode-]`);
   } // sendEmployeeIdMode
 
 
@@ -138,13 +113,6 @@ export class CardEmployeeComponent implements OnInit, OnDestroy {
 
     return string;
   } // ratingToStar
-
-
-  // отмены подписок и необходимые методы при уничтожении компонента
-  ngOnDestroy() {
-    console.log(`[-CardEmployeeComponent-ngOnDestroy--`);
-    console.log(`--CardEmployeeComponent-ngOnDestroy-]`);
-  } // ngOnDestroy
 
 } // class CardEmployeeComponent
 // ----------------------------------------------------------------------------

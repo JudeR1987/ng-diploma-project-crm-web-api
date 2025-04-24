@@ -54,19 +54,7 @@ export interface IHomeComponent {
   route: string,
 
   // флаг включения спиннера при ожидании данных с сервера
-  isWaitFlag: boolean//,
-
-  // путь расположения изображений логотипов в приложении
-  //srcLogoPath: string,
-
-  // имя файла с изображением логотипа по умолчанию
-  //fileNameLogoDef: string,
-
-  // путь расположения изображений в приложении
-  //srcImagePath: string,
-
-  // имя файла с основным изображением компании по умолчанию
-  //fileNameCompanyTitleImageDef: string
+  isWaitFlag: boolean
 
   //endregion
 

@@ -39,74 +39,53 @@ export class AboutComponent implements OnInit, OnDestroy {
               private _languageService: LanguageService,
               private _webApiService: WebApiService) {
     Utils.helloComponent(Literals.about);
-    console.log(`[-AboutComponent-constructor--`);
-
-    console.log(`*-this.component.language='${this.component.language}'-*`);
-    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
 
     // получить маршрут
     this.component.route = this._router.url.slice(1);
-    console.log(`*-this.component.route='${this.component.route}'-*`);
 
-    console.log(`--AboutComponent-constructor-]`);
   } // constructor
 
 
   // 0. установка начальных значений и подписок
   // сразу после загрузки компонента
   ngOnInit(): void {
-    console.log(`[-AboutComponent-ngOnInit--`);
 
     // задать значение языка отображения и установить
     // значения строковых переменных
-    console.log(`*-this.component.language='${this.component.language}'-*`);
-    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
     this.changeLanguageLiterals(this._languageService.language);
 
     // подписаться на изменение значения названия выбранного языка
     this._languageSubscription = this._languageService.languageSubject
       .subscribe((language: string) => {
-        console.log(`[-AboutComponent-subscribe--`);
-        console.log(`*-subscribe-language='${language}'-*`);
 
         // задать значение языка отображения и установить
         // значения строковых переменных
         this.changeLanguageLiterals(language);
 
-        console.log(`--AboutComponent-subscribe-]`);
       }); // subscribe
 
-    console.log(`--AboutComponent-ngOnInit-]`);
   } // ngOnInit
 
 
   // метод изменения значения языка отображения
   // и переназначения строковых переменных
   changeLanguageLiterals(language: string): void {
-    console.log(`[-AboutComponent-changeLanguageLiterals--`);
-
-    console.log(`*-input-language='${language}'-*`);
-    console.log(`*-this.component.language='${this.component.language}'-*`);
 
     // задать значение языка отображения
     this.component.language = language;
-    console.log(`*-this.component.language='${this.component.language}'-*`);
 
     // установить значения строковых переменных
     this.component.title = Resources.aboutTitle[this.component.language];
 
-    console.log(`--AboutComponent-changeLanguageLiterals-]`);
   } // changeLanguageLiterals
 
 
   // отмены подписок и необходимые методы при уничтожении компонента
   ngOnDestroy(): void {
-    console.log(`[-AboutComponent-ngOnDestroy--`);
 
     // отмена подписки
     this._languageSubscription.unsubscribe();
 
-    console.log(`--AboutComponent-ngOnDestroy-]`);
   } // ngOnDestroy
 
 } // class AboutComponent

@@ -56,12 +56,6 @@ export class WorkDay {
   get deleted(): Date | null { return this._deleted; }
   set deleted(value: Date | null) { this._deleted = value; }
 
-  // вычисляемое свойство
-  // отображение даты в формате "дд.мм"
-  /*get dateDDPointMM(): string {
-    return this._date.toLocaleDateString().substring(0, 5);
-  } // get*/
-
   //#endregion
 
 
@@ -109,20 +103,6 @@ export class WorkDay {
   public static WorkDaysToDto(srcWorkDays: WorkDay[]): any[] {
     return srcWorkDays.map((workDay: WorkDay) => this.WorkDayToDto(workDay));
   } // WorkDaysToDto
-
-
-  // статический метод, возвращающий объект
-  // с интерфейсом для отображения в списке выбора
-  /*public static newCountryToSelect(srcCountry: Country): { id: number, name: string } {
-    return { id: srcCountry.id, name: srcCountry.name };
-  } // newCountryToSelect*/
-
-
-  // статический метод, возвращающий массив объектов
-  // с интерфейсом для отображения в списке выбора
-  /*public static parseCountriesToSelect(srcCountries: Country[]): { id: number, name: string }[] {
-    return srcCountries.map((country: Country) => this.newCountryToSelect(country));
-  } // parseCountriesToSelect*/
 
 } // class WorkDay
 // ----------------------------------------------------------------------------

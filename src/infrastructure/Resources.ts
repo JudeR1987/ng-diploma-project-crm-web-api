@@ -2,7 +2,6 @@
 // класс с набором строковых значений для разных языков
 // ----------------------------------------------------------------------------
 import {Literals} from './Literals';
-import {OnlineRecordEmployeesComponent} from '../components/online-record-employees/online-record-employees.component';
 
 export class Resources {
 
@@ -265,21 +264,6 @@ export class Resources {
   //#region LanguageComponent
 
   // всплывающая подсказка на выпадающем списке выбора языка отображения
- /* public static readonly langSelectTitle: Record<string, string> = {
-    'rus': 'выбор языка отображения',
-    'eng': 'select display language' };*/
-
-  // всплывающая подсказка элемента выбора русского языка отображения
-  /*public static readonly langOptionTitleRus: Record<string, string> = {
-    'rus': 'русский язык',
-    'eng': 'Russian language' };*/
-
-  // всплывающая подсказка элемента выбора английского языка отображения
-  /*public static readonly langOptionTitleEng: Record<string, string> = {
-    'rus': 'английский язык',
-    'eng': 'English language' };*/
-
-  // всплывающая подсказка на выпадающем списке выбора языка отображения
   public static readonly langDropdownTitle: Record<string, string> = {
     'rus': 'выбор языка отображения',
     'eng': 'select display language' };
@@ -313,10 +297,6 @@ export class Resources {
   public static readonly homeButRecordValue: Record<string, string> = {
     'rus': 'записаться',
     'eng': 'sign up' };
-
-  // сообщения об ошибках
-
-
 
   //endregion
 

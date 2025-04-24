@@ -140,7 +140,6 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
   protected readonly zero: number          = Literals.zero;
   protected readonly one: number           = Literals.one;
   protected readonly createService: string = Literals.createService;
-  protected readonly editService: string   = Literals.editService;
   protected readonly hundred: number       = Literals.hundred;
   protected readonly fifteen: number       = Literals.fifteen;
 
@@ -161,28 +160,10 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
               private _authGuardService: AuthGuardService) {
     Utils.helloComponent(Literals.serviceForm);
 
-    console.log(`[-ServiceFormComponent-constructor--`);
-
-    console.log(`*-this.component.language='${this.component.language}'-*`);
-    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
-
     // получить маршрут и значение режима создания/изменения данных об услуге
     let items: string[] = this._router.url.slice(1).split(Literals.slash);
-    console.log(`*- items -*`);
-    console.dir(items);
-
     this.component.route = items[0];
-    console.log(`*- this.component.route = '${this.component.route}' -*`);
-
     this.component.route_mode = items[1].split(Literals.question)[0];
-    console.log(`*- this.component.route_mode = '${this.component.route_mode}' -*`);
-
-    console.log(`*-this._mode: '${this._mode}' -*`);
-    console.log(`*-this._companyId: '${this._companyId}' -*`);
-    console.log(`*-this._servicesCategoryId: '${this._servicesCategoryId}' -*`);
-    console.log(`*-this._serviceId: '${this._serviceId}' -*`);
-    console.log(`*-this.service-*`);
-    console.dir(this.service);
 
     // отключить список выбора категории услуг
     this.servicesCategoryId.disable();
@@ -193,19 +174,15 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
     // отключить поле ввода наименования новой категории услуг
     this.newServicesCategoryName.disable();
 
-    console.log(`--ServiceFormComponent-constructor-]`);
   } // constructor
 
 
   // 0. установка начальных значений и подписок
   // сразу после загрузки компонента
   async ngOnInit(): Promise<void> {
-    console.log(`[-ServiceFormComponent-ngOnInit--`);
 
     // задать значение языка отображения и установить
     // значения строковых переменных
-    console.log(`*-this.component.language='${this.component.language}'-*`);
-    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
     this.changeLanguageLiterals(this._languageService.language);
 
     // в заголовке установить значение по умолчанию
@@ -214,27 +191,15 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
     // подписаться на изменение значения названия выбранного языка
     this._languageSubscription = this._languageService.languageSubject
       .subscribe((language: string) => {
-        console.log(`[-ServiceFormComponent-subscribe--`);
-        console.log(`*-subscribe-language='${language}'-*`);
 
         // задать значение языка отображения и установить
         // значения строковых переменных
         this.changeLanguageLiterals(language);
 
-        console.log(`--ServiceFormComponent-subscribe-]`);
       }); // subscribe
-
-    // получить данные о пользователе из сервиса-хранилища
-    /*let user: User = this._userService.user;
-    console.log(`*-(было)-this._userId: '${this._userId}'-*`);
-    this._userId = user.id;
-    console.log(`*-(стало)-this._userId: '${this._userId}' -*`);*/
 
 
     // получить параметры маршрута
-    console.dir(this._activatedRoute);
-    console.dir(this._activatedRoute.params);
-    console.dir(this._activatedRoute.queryParams);
     let mode: string = Literals.empty;
     let companyId: number = 0;
     let servicesCategoryId: number = 0;
@@ -244,11 +209,7 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
 
       // параметр о режиме создания/изменения, полученный из маршрута
       mode = params[Literals.mode];
-      console.log(`*-mode: '${mode}' [${typeof mode}] -*`);
-
-      console.log(`*-(было)-this._mode: '${this._mode}' -*`);
       this._mode = mode;
-      console.log(`*-(стало)-this._mode: '${this._mode}' -*`);
 
     }); // subscribe
 
@@ -256,37 +217,22 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
     this._activatedRoute.queryParams.subscribe(params => {
 
       // параметр об Id выбранной компании
-      console.log(`*-params['companyId']: '${params[Literals.companyId]}' -*`);
       companyId = params[Literals.companyId] != undefined
         ? +params[Literals.companyId]
         : 0;
-      console.log(`*-companyId: '${companyId}' [${typeof companyId}] -*`);
-
-      console.log(`*-(было)-this._companyId: '${this._companyId}' -*`);
       this._companyId = companyId;
-      console.log(`*-(стало)-this._companyId: '${this._companyId}' -*`);
 
       // параметр об Id выбранной категории услуг
-      console.log(`*-params['servicesCategoryId']: '${params[Literals.servicesCategoryId]}' -*`);
       servicesCategoryId = params[Literals.servicesCategoryId] != undefined
         ? +params[Literals.servicesCategoryId]
         : 0;
-      console.log(`*-servicesCategoryId: '${servicesCategoryId}' [${typeof servicesCategoryId}] -*`);
-
-      console.log(`*-(было)-this._servicesCategoryId: '${this._servicesCategoryId}' -*`);
       this._servicesCategoryId = servicesCategoryId;
-      console.log(`*-(стало)-this._servicesCategoryId: '${this._servicesCategoryId}' -*`);
 
       // параметр об Id выбранной услуги
-      console.log(`*-params['serviceId']: '${params[Literals.serviceId]}' -*`);
       serviceId = params[Literals.serviceId] != undefined
         ? +params[Literals.serviceId]
         : 0;
-      console.log(`*-serviceId: '${serviceId}' [${typeof serviceId}] -*`);
-
-      console.log(`*-(было)-this._serviceId: '${this._serviceId}' -*`);
       this._serviceId = serviceId;
-      console.log(`*-(стало)-this._serviceId: '${this._serviceId}' -*`);
 
     }); // subscribe
 
@@ -294,34 +240,8 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
     // проверки на возможность перехода по маршруту
     // (если вводить маршрут в командной строке браузера)
 
-    // если параметр пользователя отсутствует,
-    // требуется перейти на страницу "NotFound"
-    /*console.log(`*-this._userId: '${this._userId}' -*`);
-    if (this._userId === this.zero) {
-      console.log(`*- Переход на "NotFound" - 'TRUE' -*`);
-
-      // перейти по маршруту на страницу "NotFound"
-      this._router.navigateByUrl(Literals.routeNotFound).then((e) => {
-        console.log(`*- переход: ${e} -*`);
-
-        // сообщение об ошибке
-        this._errorMessageService.errorMessageSubject
-          .next(Resources.incorrectUserIdData[this.component.language]);
-
-        console.log(`--ServiceFormComponent-ngOnInit-]`);
-      }); // navigateByUrl
-
-      return;
-    } // if
-    console.log(`*- Переход на "NotFound" - 'FALSE' -*`);*/
-
     // если Id компании НЕ добавлен, требуется перейти на страницу "NotFound"
-    console.log(`*-this._mode: '${this._mode}' -*`);
-    console.log(`*-this._companyId: '${this._companyId}' -*`);
-    console.log(`*-this._servicesCategoryId: '${this._servicesCategoryId}' -*`);
-    console.log(`*-this._serviceId: '${this._serviceId}' -*`);
     if (this._companyId === this.zero) {
-      console.log(`*- Переход на "NotFound" - 'TRUE' -*`);
 
       // перейти по маршруту на страницу "NotFound"
       this._router.navigateByUrl(Literals.routeNotFound).then((e) => {
@@ -331,12 +251,10 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
         this._errorMessageService.errorMessageSubject
           .next(Resources.incorrectCompanyIdData[this.component.language]);
 
-        console.log(`--ServiceFormComponent-ngOnInit-]`);
       }); // navigateByUrl
 
       return;
     } // if
-    console.log(`*- Переход на "NotFound" - 'FALSE' -*`);
 
 
     // если в режиме создания добавлен Id услуги ИЛИ
@@ -344,7 +262,6 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
     // требуется перейти на страницу "NotFound"
     if ((this._mode === Literals.createService && this._serviceId > this.zero) ||
       (this._mode === Literals.editService && this._serviceId === this.zero)) {
-      console.log(`*- Переход на "NotFound" - 'TRUE' -*`);
 
       // перейти по маршруту на страницу "NotFound"
       this._router.navigateByUrl(Literals.routeNotFound).then((e) => {
@@ -356,91 +273,57 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
             ? Resources.serviceFormCreateServiceIncorrectData[this.component.language]
             : Resources.serviceFormEditServiceIncorrectData[this.component.language]);
 
-        console.log(`--ServiceFormComponent-ngOnInit-]`);
       }); // navigateByUrl
 
       return;
     } // if
-    console.log(`*- Переход на "NotFound" - 'FALSE' -*`);
 
 
     // установим объекту услуги идентификатор
-    console.log(`*-(было)-this.service.id: '${this.service.id}' -*`);
     this.service.id = this._serviceId;
-    console.log(`*-(стало)-this.service.id: '${this.service.id}' -*`);
-
-    console.log(`*-(было)-this.service: -*`);
-    console.dir(this.service);
 
     // при режиме изменения! во время загрузки компонента
     // отправить запрос на получение данных об изменяемой услуге
-    console.log(`*-this._mode: '${this._mode}' -*`);
     if (this._mode === Literals.editService) {
-      console.log(`*- получить услугу с ID=${this._serviceId} -*`);
 
       // запрос на получение записи об услуге из БД для изменения
       await this.requestGetServiceById();
 
       // если данные не получены(т.е. Id=0), перейти на домашнюю страницу
       if (this.service.id === this.zero) {
-        console.log(`*- Переход на "Home" - 'TRUE' -*`);
-
-        // "отключить" удаление временных папок с временными
-        // изображениями при уничтожении компонента
-        // this.component.isChangedFlag = true;
 
         // перейти по маршруту на главную страницу
-        this._router.navigateByUrl(Literals.routeHomeEmpty).then((e) => {
-          console.log(`*- переход: ${e} -*`);
-
-          console.log(`--ServiceFormComponent-ngOnInit-]`);
-        }); // navigateByUrl
+        this._router.navigateByUrl(Literals.routeHomeEmpty)
+          .then((e) => { console.log(`*- переход: ${e} -*`);  });
 
         return;
       } // if
-      console.log(`*- Переход на "Home" - 'FALSE' -*`);
 
-    } /*else {
-      console.log(`*- задать параметры для новой компании -*`);
-
-      // задать путь к файлу с изображением логотипа по умолчанию
-      this.company.logo = Literals.pathLogoDef;
-
-      // задать путь к файлу с основным изображением компании по умолчанию
-      this.company.titleImage = Literals.pathTitleImageDef;
-
-    }*/ // if
-
-    console.log(`*-(стало)-this.service: -*`);
-    console.dir(this.service);
+    } // if
 
     // задать значение языка отображения и установить
     // значения строковых переменных
     this.changeLanguageLiterals(this._languageService.language);
 
+
     // после получения данных об услуге отправить запрос на получение коллекции
     // категорий услуг для списка выбора в форме создания/изменения данных об услуге
     await this.requestGetAllServicesCategories();
+
 
     // создание объектов полей ввода и формы создания/изменения данных об услуге
     this.createFormControls();
     this.createForm();
 
-    console.log(`--ServiceFormComponent-ngOnInit-]`);
   } // ngOnInit
 
 
   // метод изменения значения языка отображения
   // и переназначения строковых переменных
   changeLanguageLiterals(language: string): void {
-    console.log(`[-ServiceFormComponent-changeLanguageLiterals--`);
-
-    console.log(`*-input(пришло)-language='${language}'-*`);
-    console.log(`*-(было)-this.component.language='${this.component.language}'-*`);
 
     // задать значение языка отображения
     this.component.language = language;
-    console.log(`*-(стало)-this.component.language='${this.component.language}'-*`);
 
     // установить значения строковых переменных
     this.component.title = this._serviceId === Literals.zero
@@ -475,77 +358,15 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
     this.component.butServiceCreateValue                   = Resources.butCreateValue[this.component.language];
     this.component.butServiceEditTitle                     = Resources.serviceFormButServiceEditTitle[this.component.language];
     this.component.butServiceEditValue                     = Resources.butEditValue[this.component.language];
-    /*this.component.labelCompanyName              = Resources.labelName[this.component.language];
-    this.component.labelCity                     = Resources.labelCity[this.component.language];
-    this.component.labelStreetName               = Resources.labelStreetName[this.component.language];
-    this.component.labelBuilding                 = Resources.labelBuilding[this.component.language];
-    this.component.labelPhone                    = Resources.labelPhone[this.component.language];
-    this.component.firstOptionCities             = Resources.firstOptionCities[this.component.language];
-    this.component.labelDescription              = Resources.companyFormLabelDescription[this.component.language];
-    this.component.labelSchedule                 = Resources.companyFormLabelSchedule[this.component.language];
-    this.component.labelSite                     = Resources.companyFormLabelSite[this.component.language];
-    this.component.streetNamePlaceholder         = Resources.companyFormStreetNamePlaceholder[this.component.language];
-    this.component.buildingPlaceholder           = Resources.companyFormBuildingPlaceholder[this.component.language];
-    this.component.companyDescriptionPlaceholder = Resources.companyFormCompanyDescriptionPlaceholder[this.component.language];
-    this.component.errorCompanyNameMaxLengthTitle
-      = Resources.errorNameMaxLength(this.component.language, this.component.companyNameLength);
-    this.component.errorPhoneValidatorTitle      = Resources.errorPhoneValidator[this.component.language];
-    this.component.errorScheduleMaxLengthTitle
-      = Resources.companyFormErrorScheduleMaxLength(this.component.language, this.component.scheduleLength);
-    this.component.errorSiteMaxLengthTitle
-      = Resources.companyFormErrorSiteMaxLength(this.component.language, this.component.siteLength);
-    this.component.errorCitySelectedZeroValidatorTitle    = Resources.companyFormErrorCitySelectedZeroValidator[this.component.language];
-    this.component.errorStreetNameMaxLengthTitle
-      = Resources.companyFormErrorStreetNameMaxLength(this.component.language, this.component.streetNameLength);
-    this.component.errorBuildingMaxLengthTitle
-      = Resources.companyFormErrorBuildingMaxLength(this.component.language, this.component.buildingLength);
-    this.component.logoTitle = this._companyId === Literals.zero
-      ? Resources.companyFormCreateLogoTitle[this.component.language]
-      : Resources.companyFormEditLogoTitleWithCompanyName(this.component.language, this.company.name);
-    this.component.titleImageTitle = this._companyId === Literals.zero
-      ? Resources.companyFormCreateTitleImageTitle[this.component.language]
-      : Resources.companyFormEditTitleImageTitleWithCompanyName(this.component.language, this.company.name);
-    this.component.labelInputImageLogo           = Resources.companyFormLabelInputImageLogo[this.component.language];
-    this.component.labelInputImageTitleImage     = Resources.companyFormLabelInputImageTitleImage[this.component.language];
-    this.component.labelNewLogoFileName          = Resources.labelNewFileName[this.component.language];
-    this.component.labelNewTitleImageFileName    = Resources.labelNewFileName[this.component.language];
-    this.component.labelFileNotSelected          = Resources.labelFileNotSelected[this.component.language];
-    this.component.butNewLogoFileNameTitle       = Resources.companyFormButNewLogoFileNameTitle[this.component.language];
-    this.component.butNewLogoFileNameValue       = Resources.butNewFileNameValue[this.component.language];
-    this.component.butNewTitleImageFileNameTitle = Resources.companyFormButNewTitleImageFileNameTitle[this.component.language];
-    this.component.butNewTitleImageFileNameValue = Resources.butNewFileNameValue[this.component.language];*/
-    /*this.component.labelUserName                  = Resources.userFormLabelUserName[this.component.language];
-    this.component.labelEmail                     = Resources.labelEmail[this.component.language];
-    this.component.errorRegisteredPhone.message   = Resources.registeredPhone[this.component.language];
-    this.component.errorRegisteredEmail.message   = Resources.registeredEmail[this.component.language];
-    this.component.errorEmailMaxLengthTitle       = Resources.errorEmailMaxLength(this.component.language, this.component.emailLength);
-    this.component.errorEmailValidatorTitle       = Resources.errorEmailValidator[this.component.language];
-    this.component.phoneNoErrorsTitle             = Resources.phoneNoErrors[this.component.language];
-    this.component.labelInputImage                = Resources.userFormLabelInputImage[this.component.language];
-    this.component.labelNewFileName               = Resources.userFormLabelNewFileName[this.component.language];
-    this.component.labelFileNotSelected           = Resources.userFormLabelFileNotSelected[this.component.language];
-    this.component.labelCheckboxDeletingFlag      = Resources.userFormLabelCheckboxDeletingFlag[this.component.language];
-    this.component.butDeleteUserTitle             = Resources.userFormButDeleteUserTitle[this.component.language];
-    this.component.butDeleteUserValue             = Resources.userFormButDeleteUserValue[this.component.language];
-    this.component.titleConfirmation              = Resources.titleAttention[this.component.language];
-    this.component.messageConfirmation            = Resources.userFormMessageConfirmation[this.component.language];
-    this.component.butConfirmedOkTitle            = Resources.userFormButConfirmedOkTitle[this.component.language];
-    this.component.butConfirmedOkValue            = Resources.userFormButConfirmedOkValue[this.component.language];
-    this.component.butConfirmedCancelTitle        = Resources.userFormButConfirmedCancelTitle[this.component.language];
-    this.component.butConfirmedCancelValue        = Resources.userFormButConfirmedCancelValue[this.component.language];
-*/
-    console.log(`--ServiceFormComponent-changeLanguageLiterals-]`);
+
   } // changeLanguageLiterals
 
 
   // запрос на получение записи об услуге из БД для изменения
   async requestGetServiceById(): Promise<void> {
-    console.log(`[-ServiceFormComponent-requestGetServiceById--`);
 
     // включение спиннера ожидания данных
     this.component.isWaitFlag = true;
-
-    console.log(`--ServiceFormComponent-0-(обновление токена)-`);
 
     // если токена нет ИЛИ время его действия закончилось -
     // выполнить запрос на обновление токена
@@ -560,14 +381,11 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
         // выключение спиннера ожидания данных
         this.component.isWaitFlag = false;
 
-        console.log(`--ServiceFormComponent-requestGetServiceById-КОНЕЦ-]`);
         return;
       } // if
 
       // иначе - переходим к последующему запросу
     } // if
-
-    console.log(`--ServiceFormComponent-1-(запрос на получение услуги)-`);
 
     // запрос на получение записи об услуге
     let result: { message: any, service: Service } =
@@ -579,30 +397,19 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
       let webResult: any = await firstValueFrom(
         this._webApiService.getById(Config.urlGetServiceById, this._serviceId, token)
       );
-      console.dir(webResult);
 
       result.service = Service.newService(webResult.service);
-
-    } catch (e: any) {
-
-      console.dir(e);
-      console.dir(e.error);
+    }
+    catch (e: any) {
 
       // ошибка авторизации ([Authorize])
-      if (e.status === Literals.error401 && e.error === null) {
-        console.log(`*- отработал [Authorize] -*`);
-        result.message = Resources.unauthorizedUserIdData[this.component.language]
-      }
+      if (e.status === Literals.error401 && e.error === null)
+        result.message = Resources.unauthorizedUserIdData[this.component.language];
       // другие ошибки
       else
         result.message = e.error;
 
     } // try-catch
-
-    console.log(`--ServiceFormComponent-result:`);
-    console.dir(result);
-
-    console.log(`--ServiceFormComponent-2-(ответ на запрос получен)-`);
 
     // выключение спиннера ожидания данных
     this.component.isWaitFlag = false;
@@ -614,14 +421,12 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
       let message: string = Literals.empty;
 
       // ошибки данных
-      console.log(`--result.message.serviceId: '${result.message.serviceId}'`);
       if (result.message.serviceId != undefined)
         message = result.message.serviceId === this.zero
           ? Resources.incorrectServiceIdData[this.component.language]
           : Resources.notRegisteredServiceIdData[this.component.language];
 
       // ошибки сервера
-      console.log(`--result.message.title: '${result.message.title}'`);
       if (result.message.title != undefined) message = result.message.title;
 
       // если результат уже содержит строку с сообщением
@@ -632,27 +437,23 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
 
       // при ошибках установить услуге нулевой идентификатор
       this.service.id = this.zero;
-
-    } else {
+    }
+    else {
 
       // присвоить значение полученных данных
       this.service = result.service;
 
     } // if
 
-    console.log(`--ServiceFormComponent-requestGetServiceById-]`);
   } // requestGetServiceById
 
 
   // запрос на получение коллекции категорий услуг для списка
   // выбора в форме создания/изменения данных об услуге
   async requestGetAllServicesCategories(): Promise<void> {
-    console.log(`[-ServiceFormComponent-requestGetAllServicesCategories--`);
 
     // включение спиннера ожидания данных
     this.component.isWaitFlag = true;
-
-    console.log(`--ServiceFormComponent-0-(обновление токена)-`);
 
     // если токена нет ИЛИ время его действия закончилось -
     // выполнить запрос на обновление токена
@@ -667,14 +468,11 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
         // выключение спиннера ожидания данных
         this.component.isWaitFlag = false;
 
-        console.log(`--ServiceFormComponent-requestGetAllServicesCategories-КОНЕЦ-]`);
         return;
       } // if
 
       // иначе - переходим к последующему запросу
     } // if
-
-    console.log(`--ServiceFormComponent-1-(запрос на получение категорий услуг)-`);
 
     // запрос на получение коллекции категорий услуг
     let result: { message: any, allServicesCategories: ServicesCategory[] } =
@@ -682,42 +480,27 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
     try {
       // получить jwt-токен
       let token: string = this._tokenService.token;
-      console.log(`*-token: '${token}' -*`);
 
       let webResult: any = await firstValueFrom(
         this._webApiService.get(Config.urlGetAllServicesCategories, token)
       );
-      console.dir(webResult);
 
       result.allServicesCategories = ServicesCategory
         .parseServicesCategories(webResult.allServicesCategories);
-
-    } catch (e: any) {
-
-      console.dir(e);
-      console.dir(e.error);
+    }
+    catch (e: any) {
 
       // ошибка авторизации ([Authorize])
-      if (e.status === Literals.error401 && e.error === null) {
-        console.log(`*- отработал [Authorize] -*`);
-        result.message = Resources.unauthorizedUserIdData[this.component.language]
-      }
+      if (e.status === Literals.error401 && e.error === null)
+        result.message = Resources.unauthorizedUserIdData[this.component.language];
       // другие ошибки
       else
         result.message = e.error;
 
     } // try-catch
 
-    console.log(`--ServiceFormComponent-result:`);
-    console.dir(result);
-    console.dir(result.message);
-    console.dir(result.allServicesCategories);
-
-    console.log(`--ServiceFormComponent-2-(ответ на запрос получен)-`);
-
     // выключение спиннера ожидания данных
     this.component.isWaitFlag = false;
-
 
     // если сообщение с ошибкой - завершаем обработку, остаёмся в форме
     if (result.message != Literals.Ok) {
@@ -725,11 +508,7 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
       // сформируем соответствующее сообщение об ошибке
       let message: string = Literals.empty;
 
-      // ошибки данных
-      /* --- */
-
       // ошибки сервера
-      console.log(`--result.message.title: '${result.message.title}'`);
       if (result.message.title != undefined) message = result.message.title;
 
       // если результат уже содержит строку с сообщением
@@ -737,112 +516,64 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
 
       // изменить результат на сообщение для вывода
       result.message = message;
+    }
+    else {
 
-    } else {
       // иначе - сообщение об успехе
       result.message = Resources.formParamsOkData[this.component.language];
 
       // присвоить значения полученных данных
       this.component.allServicesCategories = result.allServicesCategories;
-      console.log(`*- this.component.allServicesCategories: -*`);
-      console.dir(this.component.allServicesCategories);
 
       // создать массив данных для списка выбора
       this.component.servicesCategoriesList = ServicesCategory
         .parseServicesCategoriesToSelect(this.component.allServicesCategories);
-      console.log(`*- this.component.servicesCategoriesList: -*`);
-      console.dir(this.component.servicesCategoriesList);
 
     } // if
 
     // передать сообщение об ошибке в AppComponent для отображения
     this._errorMessageService.errorMessageSubject.next(result.message);
 
-    console.log(`--ServiceFormComponent-requestGetAllServicesCategories-]`);
   } // requestGetAllServicesCategories
 
 
   // обработчик события передачи данных из формы на сервер
   async onSubmit(): Promise<void> {
-    console.log(`[-ServiceFormComponent-onSubmit--`);
-
-    console.log("Отправка данных на сервер");
-    console.dir(this.serviceForm.value);
-    console.log(`*- this.serviceForm.valid = '${this.serviceForm.valid}' -*`);
 
     // задать значения параметров запроса
 
     // 1) наименование услуги
-    console.log(`*-(было)-this.service.name = '${this.service.name}' -*`);
     this.service.name = this.serviceName.value;
-    console.log(`*-(стало)-this.service.name = '${this.service.name}' -*`);
-
 
     // 2) данные о категории услуг
-    console.log(`*- this.servicesCategoryId.value: '${this.servicesCategoryId.value} [${typeof this.servicesCategoryId.value}]' -*`);
-    console.log(`*- this.isNewServicesCategory.value: '${this.isNewServicesCategory.value} [${typeof this.isNewServicesCategory.value}]' -*`);
-    console.log(`*- this.newServicesCategoryName.value: '${this.newServicesCategoryName.value} [${typeof this.newServicesCategoryName.value}]' -*`);
-
     let servicesCategoryId: number = +this.servicesCategoryId.value;
-    console.log(`*- servicesCategoryId: '${servicesCategoryId} [${typeof servicesCategoryId}]' -*`);
 
     // получить выбранную категорию услуг
-    let servicesCategory: ServicesCategory = this.isNewServicesCategory.value
+    this.service.servicesCategory = this.isNewServicesCategory.value
       ? new ServicesCategory(this.zero, this.newServicesCategoryName.value, null)
-      : this.component.allServicesCategories
-        .find((servicesCategory: ServicesCategory) => servicesCategory.id === servicesCategoryId) ?? new ServicesCategory();
-    console.log(`*- servicesCategory: -*`);
-    console.dir(servicesCategory);
-    console.log(`*-(было)-this.service.servicesCategory: -*`);
-    console.dir(this.service.servicesCategory);
-    this.service.servicesCategory = servicesCategory;
-    console.log(`*-(стало)-this.service.servicesCategory: -*`);
-    console.dir(this.service.servicesCategory);
-
+      : this.component.allServicesCategories.find((servicesCategory: ServicesCategory) =>
+        servicesCategory.id === servicesCategoryId) ?? new ServicesCategory();
 
     // 3) данные о компании, для которой услуга определена
-    console.log(`*-(было)-this.service.companyId = '${this.service.companyId}' -*`);
     this.service.companyId = this._companyId;
-    console.log(`*-(стало)-this.service.companyId = '${this.service.companyId}' -*`);
-
 
     // 4) данные о минимальной цене на услугу
-    console.log(`*- this.priceMin.value: '${this.priceMin.value} [${typeof this.priceMin.value}]' -*`);
-    console.log(`*-(было)-this.service.priceMin = '${this.service.priceMin}' -*`);
     this.service.priceMin = +this.priceMin.value;
-    console.log(`*-(стало)-this.service.priceMin = '${this.service.priceMin}' -*`);
-
 
     // 5) данные о максимальной цене на услугу
-    console.log(`*- this.priceMax.value: '${this.priceMax.value} [${typeof this.priceMax.value}]' -*`);
-    console.log(`*-(было)-this.service.priceMax = '${this.service.priceMax}' -*`);
     this.service.priceMax = +this.priceMax.value;
-    console.log(`*-(стало)-this.service.priceMax = '${this.service.priceMax}' -*`);
-
 
     // 6) данные о длительности услуги
-    console.log(`*- this.duration.value: '${this.duration.value} [${typeof this.duration.value}]' -*`);
-    console.log(`*-(было)-this.service.duration = '${this.service.duration}' -*`);
     this.service.durationFromMinutes = +this.duration.value;
-    console.log(`*-(стало)-this.service.duration = '${this.service.duration}' -*`);
-
 
     // 7) комментарий к услуге
-    console.log(`*- this.comment.value: '${this.comment.value} [${typeof this.comment.value}]' -*`);
-    console.log(`*-(было)-this.service.comment = '${this.service.comment}' -*`);
     this.service.comment = this.comment.value === Literals.empty
       ? null
       : this.comment.value;
-    console.log(`*-(стало)-this.service.comment = '${this.service.comment}' -*`);
-
-    console.log(`*- this.service: -*`);
-    console.dir(this.service);
 
 
     // включение спиннера ожидания данных
     this.component.isWaitFlag = true;
-
-    console.log(`--ServiceFormComponent-0-(обновление токена)-`);
 
     // если токена нет ИЛИ время его действия закончилось -
     // выполнить запрос на обновление токена
@@ -857,53 +588,37 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
         // выключение спиннера ожидания данных
         this.component.isWaitFlag = false;
 
-        console.log(`--ServiceFormComponent-onSubmit-КОНЕЦ-]`);
         return;
       } // if
 
       // иначе - переходим к последующему запросу
     } // if
 
-    console.log(`--ServiceFormComponent-1-(запрос на создание/изменение)-`);
-
     // запрос на создание/изменение данных об услуге
     let result: any = Literals.Ok;
     try {
       // получить jwt-токен
       let token: string = this._tokenService.token;
-      console.log(`*-token: '${token}' -*`);
 
       let webResult: any = await firstValueFrom(
         this._serviceId === Literals.zero
           ? this._webApiService.createServicePUT(Config.urlCreateService, this.service, token)
           : this._webApiService.editServicePOST(Config.urlEditService, this.service, token)
       );
-      console.dir(webResult);
-
-    } catch (e: any) {
-
-      console.dir(e);
-      console.dir(e.error);
+    }
+    catch (e: any) {
 
       // ошибка авторизации ([Authorize])
-      if (e.status === Literals.error401 && e.error === null) {
-        console.log(`*- отработал [Authorize] -*`);
-        result = Resources.unauthorizedUserIdData[this.component.language]
-      }
+      if (e.status === Literals.error401 && e.error === null)
+        result = Resources.unauthorizedUserIdData[this.component.language];
       // другие ошибки
       else
         result = e.error;
 
     } // try-catch
 
-    console.log(`--ServiceFormComponent-result:`);
-    console.dir(result);
-
-    console.log(`--ServiceFormComponent-2-(ответ на запрос получен)-`);
-
     // выключение спиннера ожидания данных
     this.component.isWaitFlag = false;
-
 
     // если сообщение с ошибкой - завершаем обработку, остаёмся в форме
     if (result != Literals.Ok) {
@@ -912,28 +627,22 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
       let message: string = Literals.empty;
 
       // ошибки данных
-      console.log(`--result.serviceId: '${result.serviceId}'`);
       if (result.serviceId != undefined)
         message = result.serviceId === this.zero
-          ? Resources.incorrectServiceIdData[this.component.language] // 'некорректные данные об услуге салона'
-          : Resources.notRegisteredServiceIdData[this.component.language]; // 'услуга не найдена'
+          ? Resources.incorrectServiceIdData[this.component.language]
+          : Resources.notRegisteredServiceIdData[this.component.language];
 
-      console.log(`--result.servicesCategoryId: '${result.servicesCategoryId}'`);
       if (result.servicesCategoryId === this.zero)
-        message = Resources.notRegisteredServicesCategoryIdData[this.component.language]; //'категория услуг не найдена'
+        message = Resources.notRegisteredServicesCategoryIdData[this.component.language];
 
-      console.log(`--result.companyId: '${result.companyId}'`);
       if (result.companyId === this.zero)
-        message = Resources.incorrectCompanyIdData[this.component.language]; // 'некорректные данные о салоне'
+        message = Resources.incorrectCompanyIdData[this.component.language];
 
       // ошибки сервера
-      console.log(`--result.title: '${result.title}'`);
       if (result.title != undefined) message = result.title;
 
-      console.log(`--result.createMessage: '${result.createMessage}'`);
       if (result.createMessage != undefined) message = result.createMessage;
 
-      console.log(`--result.updateMessage: '${result.updateMessage}'`);
       if (result.updateMessage != undefined) message = result.updateMessage;
 
       // если результат уже содержит строку с сообщением
@@ -943,14 +652,13 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
       result = message;
 
       // сбросить флаг изменений данных в форме
-      console.log(`*-(было)-this.component.isChangedFormFlag: '${this.component.isChangedFormFlag}' -*`);
       this.component.isChangedFormFlag = false;
-      console.log(`*-(стало)-this.component.isChangedFormFlag: '${this.component.isChangedFormFlag}' -*`);
 
       // переход в начало страницы
       Utils.toStart();
+    }
+    else {
 
-    } else {
       // иначе - сообщение об успехе
       result = this._serviceId === this.zero
         ? Resources.serviceFormCreateOkData[this.component.language]
@@ -965,13 +673,11 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
     // передать сообщение об ошибке в AppComponent для отображения
     this._errorMessageService.errorMessageSubject.next(result);
 
-    console.log(`--ServiceFormComponent-onSubmit-]`);
   } // onSubmit
 
 
   // создание объектов полей ввода формы создания/изменения данных об услуге
   createFormControls(): void {
-    console.log(`[-ServiceFormComponent-createFormControls--`);
 
     // поле выбора категории услуг салона
     this.servicesCategoryId = new FormControl(
@@ -981,7 +687,6 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
         : this.service.servicesCategory.id,
       // синхронные валидаторы
       [
-        /*Validators.required,*/
         UserValidators.selectedZero
       ]
     );
@@ -1053,127 +758,82 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
       this.service.comment,
       // синхронные валидаторы
       [
-        /*Validators.required,*/
         Validators.maxLength(this.component.commentLength)
       ]
     );
 
 
-    // подписка на изменения в поле выбора категории услуг салона
-    this.servicesCategoryId.valueChanges.subscribe((servicesCategoryId: number) => {
-      console.log(`[-ServiceFormComponent-this.servicesCategoryId.valueChanges.subscribe--`);
-      console.log(`*- при выборе категории ... -*`);
-
-      // сменим тип данных на параметре выбора Id категории услуг
-      console.log(`*- servicesCategoryId: '${servicesCategoryId}' [${typeof servicesCategoryId}]`);
-      servicesCategoryId = +servicesCategoryId;
-      console.log(`*- servicesCategoryId: '${servicesCategoryId}' [${typeof servicesCategoryId}]`);
-
-      console.log(`--ServiceFormComponent-this.servicesCategoryId.valueChanges.subscribe-]`);
-    }); // subscribe
-
-
     // подписка на изменения в чек-боксе включения режима ввода наименования новой категории услуг
     this.isNewServicesCategory.valueChanges.subscribe((data: boolean) => {
-      console.log(`[-ServiceFormComponent-this.isNewServicesCategory.valueChanges.subscribe--`);
-
-      console.log(`*- this.isNewServicesCategory.value: '${this.isNewServicesCategory.value}' -*`);
-      console.log(`*- data: '${data}' -*`);
 
       // если чек-бокс отмечен - включить поле ввода
       if (data) {
 
         // отключить список выбора
-        console.log(`*-(было)- this.servicesCategoryId.disabled: '${this.servicesCategoryId.disabled}' -*`);
         this.servicesCategoryId.disable();
-        console.log(`*-(стало)- this.servicesCategoryId.disabled: '${this.servicesCategoryId.disabled}' -*`);
 
         // включить поле ввода наименования новой категории услуг
-        console.log(`*-(было)- this.newServicesCategoryName.enabled: '${this.newServicesCategoryName.enabled}' -*`);
         this.newServicesCategoryName.enable();
-        console.log(`*-(стало)- this.newServicesCategoryName.enabled: '${this.newServicesCategoryName.enabled}' -*`);
-
-      } else { // иначе - включить список
+      }
+      // иначе - включить список
+      else {
 
         // включить список выбора
-        console.log(`*-(было)- this.servicesCategoryId.enabled: '${this.servicesCategoryId.enabled}' -*`);
         this.servicesCategoryId.enable();
-        console.log(`*-(стало)- this.servicesCategoryId.enabled: '${this.servicesCategoryId.enabled}' -*`);
 
         // отключить поле ввода наименования новой категории услуг
-        console.log(`*-(было)- this.newServicesCategoryName.disabled: '${this.newServicesCategoryName.disabled}' -*`);
         this.newServicesCategoryName.disable();
-        console.log(`*-(стало)- this.newServicesCategoryName.disabled: '${this.newServicesCategoryName.disabled}' -*`);
 
       } // if
 
       // в поле ввода задать пустое значение
-      console.log(`*-(было)- this.newServicesCategoryName.value: '${this.newServicesCategoryName.value}' -*`);
       this.newServicesCategoryName.setValue(Literals.empty);
-      console.log(`*-(стало)- this.newServicesCategoryName.value: '${this.newServicesCategoryName.value}' -*`);
 
-      console.log(`--ServiceFormComponent-this.newServicesCategoryName.valueChanges.subscribe-]`);
     }); // subscribe
 
 
     // подписка на изменения в поле ввода минимальной цены на услугу
     this.priceMin.valueChanges.subscribe((data: number) => {
-      console.log(`[-ServiceFormComponent-this.priceMin.valueChanges.subscribe--`);
-
-      console.log(`*- data: '${data}' [${typeof data}]`);
 
       // проверка вводимых значений, this.priceMin.value >= 0 !
       if (data < this.zero || data === null)
         this.priceMin.setValue(this.zero);
 
-      console.log(`*- this.priceMin.value: '${this.priceMin.value}' [${typeof this.priceMin.value}]`);
-
       // проверка условия priceMin <= priceMax
-      if (this.priceMin.value > this.priceMax.value) this.priceMax.setValue(data);
+      if (this.priceMin.value > this.priceMax.value)
+        this.priceMax.setValue(data);
 
-      console.log(`--ServiceFormComponent-this.priceMin.valueChanges.subscribe-]`);
     }); // subscribe
 
 
     // подписка на изменения в поле ввода максимальной цены на услугу
     this.priceMax.valueChanges.subscribe((data: number) => {
-      console.log(`[-ServiceFormComponent-this.priceMax.valueChanges.subscribe--`);
-
-      console.log(`*- data: '${data}' [${typeof data}]`);
 
       // проверка вводимых значений, this.priceMax.value >= 0 !
       if (data < this.zero || data === null)
         this.priceMax.setValue(this.zero);
 
-      console.log(`*- this.priceMax.value: '${this.priceMax.value}' [${typeof this.priceMax.value}]`);
-
       // проверка условия priceMin <= priceMax
-      if (this.priceMax.value < this.priceMin.value) this.priceMin.setValue(data);
+      if (this.priceMax.value < this.priceMin.value)
+        this.priceMin.setValue(data);
 
-      console.log(`--ServiceFormComponent-this.priceMax.valueChanges.subscribe-]`);
     }); // subscribe
 
 
     // подписка на изменения в поле ввода длительности услуги
     this.duration.valueChanges.subscribe((data: number) => {
-      console.log(`[-ServiceFormComponent-this.duration.valueChanges.subscribe--`);
-
-      console.log(`*- data: '${data}' [${typeof data}]`);
 
       // проверка вводимых значений, this.duration.value >= 0 !
       if (data < this.zero || data === null)
         this.duration.setValue(this.zero);
 
-      console.log(`--ServiceFormComponent-this.duration.valueChanges.subscribe-]`);
     }); // subscribe
 
-    console.log(`--ServiceFormComponent-createFormControls-]`);
   } // createFormControls
 
 
   // создание объекта формы создания/изменения данных об услуге
   createForm(): void {
-    console.log(`[-ServiceFormComponent-createForm--`);
 
     this.serviceForm = new FormGroup( {
       servicesCategoryId:      this.servicesCategoryId,
@@ -1192,15 +852,6 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
       newServicesCategoryName: string, serviceName: string,
       priceMin: number, priceMax: number, duration: number, comment: string
     }) => {
-      console.log(`[-ServiceFormComponent-this.serviceForm.valueChanges.subscribe--`);
-      console.dir(data);
-
-      console.log(`*- this.servicesCategoryId.value: '${this.servicesCategoryId.value}' -*`);
-      console.log(`*- data.servicesCategoryId: '${data.servicesCategoryId}' -*`);
-      console.log(`*- this.isNewServicesCategory.value: '${this.isNewServicesCategory.value}' -*`);
-      console.log(`*- data.isNewServicesCategory: '${data.isNewServicesCategory}' -*`);
-      console.log(`*- this.newServicesCategoryName.value: '${this.newServicesCategoryName.value}' -*`);
-      console.log(`*- data.newServicesCategoryName: '${data.newServicesCategoryName}' -*`);
 
       // если в поле ввода наименования новой категории услуг вводится запись, то
       // проводим проверку на совпадение с уже зарегистрированными категориями услуг
@@ -1208,48 +859,35 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
         this.checkingExisting(data.newServicesCategoryName);
 
       // установить флаг изменений данных в форме в положение "изменения БЫЛИ"
-      console.log(`*-(было)-this.component.isChangedFormFlag: '${this.component.isChangedFormFlag}' -*`);
       this.component.isChangedFormFlag = true;
-      console.log(`*-(стало)-this.component.isChangedFormFlag: '${this.component.isChangedFormFlag}' -*`);
 
-      console.log(`--ServiceFormComponent-this.serviceForm.valueChanges.subscribe-]`);
     }); // subscribe
 
 
     // сбросить флаг изменений данных в форме
-    console.log(`*-(было)-this.component.isChangedFormFlag: '${this.component.isChangedFormFlag}' -*`);
     this.component.isChangedFormFlag = false;
-    console.log(`*-(стало)-this.component.isChangedFormFlag: '${this.component.isChangedFormFlag}' -*`);
 
-    console.log(`--ServiceFormComponent-createForm-]`);
   } // createForm
 
 
   // проверка наименования новой категории услуг на совпадение с уже зарегистрированными
   checkingExisting(servicesCategoryName: string): void {
-    console.log(`[-ServiceFormComponent-checkingExisting--`);
-
-    console.log(`*- servicesCategoryName: '${servicesCategoryName}' -*`);
 
     // проверить совпадение с хотя бы одним элементом списка уже зарегистрированных
-    this.component.errorRegisteredServicesCategoryName.isRegistered = this.component.allServicesCategories
-      .some((servicesCategory: ServicesCategory) => servicesCategory.name.toLowerCase() === servicesCategoryName.toLowerCase());
-    console.log(`*- this.component.errorRegisteredServicesCategoryName.isRegistered: '${this.component.errorRegisteredServicesCategoryName.isRegistered}' -*`);
+    this.component.errorRegisteredServicesCategoryName.isRegistered =
+      this.component.allServicesCategories.some((servicesCategory: ServicesCategory) =>
+        servicesCategory.name.toLowerCase() === servicesCategoryName.toLowerCase());
 
-    console.log(`--ServiceFormComponent-checkingExisting-]`);
   } // checkingExisting
 
 
   // метод выполнения/НЕ_выполнения обновления токена
   private async isRefreshToken(): Promise<boolean> {
-    console.log(`Обновляем токен!`);
 
     // запрос на обновление токена
     let result: boolean;
     let message: any;
     [result, message] = await this._authGuardService.refreshToken();
-
-    console.log(`--message: '${message}'`);
 
     // сообщение об успехе
     if (message === Literals.Ok)
@@ -1260,8 +898,6 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
       Resources.incorrectUserIdData[this.component.language];
 
     // ошибки данных о пользователе
-    console.log(`--message.userId: '${message.userId}'`);
-    console.log(`--message.userToken: '${message.userToken}'`);
     if (message.userId != undefined && message.userToken === undefined)
       message = Resources.notRegisteredUserIdData[this.component.language];
 
@@ -1270,7 +906,6 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
       message = Resources.unauthorizedUserIdData[this.component.language];
 
     // ошибки сервера
-    console.log(`--message.title: '${message.title}'`);
     if (message.title != undefined) message = message.title;
 
     // передать сообщение об ошибке в AppComponent для отображения
@@ -1284,12 +919,10 @@ export class ServiceFormComponent implements OnInit, OnDestroy {
 
   // отмены подписок и необходимые методы при уничтожении компонента
   async ngOnDestroy(): Promise<void> {
-    console.log(`[-ServiceFormComponent-ngOnDestroy--`);
 
     // отмена подписки
     this._languageSubscription.unsubscribe();
 
-    console.log(`--ServiceFormComponent-ngOnDestroy-]`);
   } // ngOnDestroy
 
 } // class ServiceFormComponent

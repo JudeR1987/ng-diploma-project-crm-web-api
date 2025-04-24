@@ -41,17 +41,14 @@ export class TableHeaderRecordsComponent {
     // установить свойства сортировки
     if (this.sortProp === prop) {
 
-      if (this.sortMode === this.asc) {
+      if (this.sortMode === this.asc)
         this.sortMode = this.desc;
-      } else if (this.sortMode === this.desc) {
+      else if (this.sortMode === this.desc)
         this.sortMode = this.empty;
-      } else {
+      else
         this.sortMode = this.asc;
-      } // if
-
-    } else {
-      this.sortMode = this.asc;
-    } // if
+    }
+    else this.sortMode = this.asc;
 
     this.sortProp = prop;
 

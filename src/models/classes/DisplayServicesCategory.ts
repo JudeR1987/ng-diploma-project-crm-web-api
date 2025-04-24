@@ -60,35 +60,5 @@ export class DisplayServicesCategory {
     return services;
   } // allServices
 
-
-  // статический метод, возвращающий объект-DTO
-  /*public static ServicesCategoryToDto(srcServicesCategory: ServicesCategory): any {
-    return {
-      id:      srcServicesCategory.id,
-      name:    srcServicesCategory.name,
-      deleted: srcServicesCategory.deleted
-    }; // return
-  } // ServicesCategoryToDto*/
-
-
-  // статический метод, возвращающий массив объектов-DTO
-  /*public static ServicesCategoriesToDto(srcServicesCategories: ServicesCategory[]): any[] {
-    return srcServicesCategories.map((servicesCategory: ServicesCategory) => this.ServicesCategoryToDto(servicesCategory));
-  } // ServicesCategoriesToDto*/
-
-
-  // статический метод, возвращающий объект
-  // с интерфейсом для отображения в списке выбора
-  /*public static newServicesCategoryToSelect(srcServicesCategory: ServicesCategory): { id: number, name: string } {
-    return { id: srcServicesCategory.id, name: srcServicesCategory.name };
-  } // newServicesCategoryToSelect*/
-
-
-  // статический метод, возвращающий массив объектов
-  // с интерфейсом для отображения в списке выбора
-  /*public static parseServicesCategoriesToSelect(srcServicesCategories: ServicesCategory[]): { id: number, name: string }[] {
-    return srcServicesCategories.map((servicesCategory: ServicesCategory) => this.newServicesCategoryToSelect(servicesCategory));
-  } // parseServicesCategoriesToSelect*/
-
 } // class DisplayServicesCategory
 // ----------------------------------------------------------------------------

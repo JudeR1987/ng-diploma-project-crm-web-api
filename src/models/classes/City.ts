@@ -14,9 +14,6 @@ export class City {
     // наименование города
     private _name: string = Literals.empty,
 
-    // идентификатор записи о стране принадлежности
-    //private _countryId: number = Literals.zero,
-
     // данные о стране принадлежности
     private _country: Country = new Country(),
 

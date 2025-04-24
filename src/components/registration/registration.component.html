@@ -11,23 +11,6 @@
 
   <div class="col-md-10 col-lg-8 col-xl-7 col-xxl-5 m-0 my-sm-2 p-0">
 
-    <!-- контейнер для вывода сообщений результатов операции -->
-    <!--<div class="position-fixed right-2rem align-items-end"
-         [class.w-90]="component.errorMessage.length > 100"
-         *ngIf="!component.validRegistration">
-      <div class="alert alert-warning alert-dismissible
-                  fade show border-2 m-1 py-2">
-        <button class="btn-close bg-secondary m-1 p-1"
-                type="button" data-bs-dismiss="alert">
-        </button>
-        <div [class.h-50vh]="component.errorMessage.length > 100"
-             style="overflow: auto">
-          <span id="errorMessage" [innerHTML]="component.errorMessage"></span>
-        </div>
-      </div>
-    </div>-->
-
-
     <!-- форма регистрации -->
     <form class="form-control p-2" novalidate
           [formGroup]="registrationForm"

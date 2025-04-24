@@ -7,10 +7,6 @@ export class LoginModel {
 
   // конструктор с параметрами по умолчанию
   constructor(
-    // логин пользователя
-    // (логин=телефону только при регистрации)
-    //private _login: string = Literals.empty,
-
     // имя пользователя
     private _userName: string = Literals.empty,
 
@@ -27,9 +23,6 @@ export class LoginModel {
 
 
   //#region открытые аксессоры свойств
-
-  /*get login(): string { return this._login; }
-  set login(value: string) { this._login = value; }*/
 
   get userName(): string { return this._userName; }
   set userName(value: string) { this._userName = value; }
@@ -49,7 +42,6 @@ export class LoginModel {
   // статический метод, возвращающий новый объект-копию
   public static newLoginModel(srcLoginModel: LoginModel | any): LoginModel {
     return new LoginModel(
-      //srcLoginModel.login,
       srcLoginModel.userName,
       srcLoginModel.phone,
       srcLoginModel.email,
@@ -68,7 +60,6 @@ export class LoginModel {
   // статический метод, возвращающий объект-DTO
   public static LoginModelToDto(srcLoginModel: LoginModel): any {
     return {
-      //login: srcLoginModel.login,
       userName: srcLoginModel.userName,
       phone:    srcLoginModel.phone,
       email:    srcLoginModel.email,

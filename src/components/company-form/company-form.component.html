@@ -107,7 +107,7 @@
             </div>
           </div>
 
-          <!-- выбор страны расположения компании     [disabled]="component.isWaitFlag || component.isDeletingFlag" -->
+          <!-- выбор страны расположения компании -->
           <div class="row m-0 mt-1 p-0 justify-content-center align-items-center">
             <label class="form-label col-sm-4 col-md-3 col-xl-4 m-0 px-2" for="countryId">
               {{component.labelCountry}}:
@@ -130,9 +130,6 @@
 
               @if (countryId.errors && (countryId.dirty || countryId['touched'])) {
                 <div class="text-danger ps-2 fw-bold">
-                  <!--<span *ngIf="countryId.errors[component.errorRequired]">
-                    {{component.errorRequiredTitle}}
-                  </span>-->
                   <span *ngIf="countryId.errors[component.errorSelectedZeroValidator]">
                     {{component.errorCountrySelectedZeroValidatorTitle}}
                   </span>
@@ -167,9 +164,7 @@
 
                 @if (!isNewCity.value) {
 
-                  <!-- список выбора города, соответствующего выбранной стране
-                  [disabled]="component.isWaitFlag || component.isDeletingFlag ||
-                                      (countryId.errors && countryId.errors[component.errorSelectedZeroValidator])"-->
+                  <!-- список выбора города, соответствующего выбранной стране -->
                   <select class="form-select px-2 pe-4"
                           id="cityId" name="cityId" formControlName="cityId"
                           [class.opacity-50]="component.isWaitFlag ||
@@ -183,7 +178,7 @@
 
                 } @else {
 
-                  <!-- поле ввода названия нового города       [readOnly]="component.isWaitFlag || component.isDeletingFlag" -->
+                  <!-- поле ввода названия нового города -->
                   <input class="form-control px-2" type="text"
                          id="newCityName" name="newCityName" formControlName="newCityName"
                          placeholder="{{component.newCityNamePlaceholder}}"
@@ -222,12 +217,8 @@
               @if (!isNewCity.value) {
 
                 <!-- ошибки для списка выбора города -->
-                <!-- @if (cityId.errors && (cityId.dirty || cityId['touched'])) { -->
                 @if (cityId.errors) {
                   <div class="text-danger ps-2 fw-bold">
-                    <!--<span *ngIf="cityId.errors[component.errorRequired]">
-                      {{component.errorRequiredTitle}}
-                    </span>-->
                     <span *ngIf="cityId.errors[component.errorSelectedZeroValidator]">
                       {{component.errorCitySelectedZeroValidatorTitle}}
                     </span>
@@ -239,7 +230,6 @@
               } @else {
 
                 <!-- ошибки для поля ввода названия нового города -->
-                <!-- @if (newCityName.errors && (newCityName.dirty || newCityName['touched'])) { -->
                 @if (newCityName.errors || component.errorRegisteredCity.isRegistered) {
                   <div class="text-danger ps-2 fw-bold">
 
@@ -533,48 +523,6 @@
 
       <!-- подвал - кнопки создать/изменить/удалить -->
       <div class="bg-primary d-flex justify-content-evenly p-0">
-
-        <!-- при выборе удаления данных о компании, включаем кнопку "удалить" -->
-        <!--@if (!component.isDeletingFlag) {
-
-          <button class="btn bg-success-subtle fw-bold text-success
-                         text-opacity-75 w-50 w-min-140-max-160 m-1
-                         border border-success border-2 border-opacity-50"
-                  type="submit"
-                  [class.disabled]="userForm.invalid ||
-                                    component.errorRegisteredPhone.isRegistered ||
-                                    component.errorRegisteredEmail.isRegistered ||
-                                    component.isWaitFlag"
-                  title="{{component.butUserEditTitle}}">
-            @if (component.isWaitFlag) {
-              <div class="row m-0 p-0 justify-content-center align-items-center">
-                <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
-              </div>
-            } @else {
-              {{component.butUserEditValue}}
-            } &lt;!&ndash; if &ndash;&gt;
-          </button>
-
-        } @else {
-
-          <button class="btn bg-danger-subtle fw-bold text-danger
-                         text-opacity-75 w-50 w-min-140-max-160 m-1
-                         border border-danger border-2 border-opacity-50"
-                  type="button"
-                  [class.disabled]="component.isWaitFlag && component.isDeletingFlag"
-                  title="{{component.butDeleteUserTitle}}"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modalDeletingUserConfirmation" >
-            @if (component.isWaitFlag) {
-              <div class="row m-0 p-0 justify-content-center align-items-center">
-                <span class="col-1 spinner-border spinner-border-sm mx-2 my-1 p-1"></span>
-              </div>
-            } @else {
-              {{component.butDeleteUserValue}}
-            } &lt;!&ndash; if &ndash;&gt;
-          </button>
-
-        }--> <!-- if -->
 
         <!-- кнопка "создать/изменить" -->
         <button class="btn bg-success-subtle fw-bold text-success

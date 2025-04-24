@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------------
 // компонент отображения данных о пагинации страницы
 // ----------------------------------------------------------------------------
-import {Component, Input, EventEmitter, Output, OnInit, OnDestroy} from '@angular/core';
+import {Component, Input, EventEmitter, Output} from '@angular/core';
 import {PageViewModel} from '../../infrastructure/PageViewModel';
 import {Literals} from '../../infrastructure/Literals';
 
@@ -12,7 +12,7 @@ import {Literals} from '../../infrastructure/Literals';
   templateUrl: './pagination.component.html',
   styleUrl: './pagination.component.css'
 })
-export class PaginationComponent implements OnInit, OnDestroy {
+export class PaginationComponent {
 
   // входные параметры
   // информация о пагинации страницы
@@ -51,44 +51,16 @@ export class PaginationComponent implements OnInit, OnDestroy {
 
   // конструктор
   constructor() {
-    console.log(`[-PaginationComponent-constructor--`);
-
-    console.log(`*-this.pageViewModel: -*`);
-    console.dir(this.pageViewModel);
-
-    console.log(`--PaginationComponent-constructor-]`);
   } // constructor
-
-
-  // 0. установка начальных значений и подписок
-  // сразу после загрузки компонента
-  ngOnInit() {
-    console.log(`[-PaginationComponent-ngOnInit--`);
-
-    console.log(`*- параметры должны быть получены -*`);
-    console.log(`*-this.pageViewModel: -*`);
-    console.dir(this.pageViewModel);
-
-    console.log(`--PaginationComponent-ngOnInit-]`);
-  } // ngOnInit
 
 
   // метод передачи данных
   sendPage(page: number): void {
-    console.log(`[-PaginationComponent-sendPage--`);
 
     // зажигаем событие передачи данных
     this.onSendPage.emit(page);
 
-    console.log(`--PaginationComponent-sendPage-]`);
   } // sendCompanyId
-
-
-  // отмены подписок и необходимые методы при уничтожении компонента
-  ngOnDestroy() {
-    console.log(`[-PaginationComponent-ngOnDestroy--`);
-    console.log(`--PaginationComponent-ngOnDestroy-]`);
-  } // ngOnDestroy
 
 } // class TempComponent
 // ----------------------------------------------------------------------------

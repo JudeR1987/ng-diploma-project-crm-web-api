@@ -1,7 +1,6 @@
 // ----------------------------------------------------------------------------
 // интерфейс объекта с параметрами компонента ServiceFormComponent
 // ----------------------------------------------------------------------------
-import {ServiceFormComponent} from '../../components/service-form/service-form.component';
 import {ServicesCategory} from '../classes/ServicesCategory';
 
 export interface IServiceFormComponent {
@@ -20,9 +19,6 @@ export interface IServiceFormComponent {
   // заголовок поля ввода наименования услуги салона
   labelServiceName: string,
 
-  // заголовок списка выбора страны расположения компании
-  //labelCountry: string,
-
   // первый элемент списка выбора категории услуг салона
   firstOptionServicesCategories: string,
 
@@ -31,21 +27,6 @@ export interface IServiceFormComponent {
 
   // заголовок чек-бокса включения режима ввода новой категории услуг
   labelCheckboxIsNewServicesCategory: string,
-
-  // заголовок списка выбора города расположения компании
-  //labelCity: string,
-
-  // первый элемент списка выбора города расположения компании
-  //firstOptionCities: string,
-
-  // заголовок поля ввода названия нового города расположения компании
-  //labelNewCityName: string,
-
-  // заголовок поля ввода названия улицы расположения компании
-  //labelStreetName: string,
-
-  // заголовок поля ввода номера дома/строения расположения компании
-  //labelBuilding: string,
 
   // заголовок поля ввода минимальной цены на услугу
   labelPriceMin: string,
@@ -59,72 +40,25 @@ export interface IServiceFormComponent {
   // заголовок поля ввода текста комментария к услуге
   labelComment: string,
 
-  // заголовок поля ввода текста графика работы компании
-  //labelSchedule: string,
-
-  // заголовок поля ввода текста сайта компании
-  //labelSite: string,
-
-  // заголовок поля ввода нового пароля пользователя
-  //labelNewPassword: string,
-
-  // заголовок поля подтверждения нового пароля пользователя
-  //labelNewPasswordConfirmation: string,
-
-  // заголовок чек-бокса изменения отображения пароля при вводе
-  //labelCheckboxPassword: string,
-
-  // шаблон поля ввода названия нового города расположения компании
-  //newCityNamePlaceholder: string,
-
   // шаблон поля ввода наименования новой категории услуг
   newServicesCategoryNamePlaceholder: string,
 
   // шаблон поля ввода наименования услуги салона
   serviceNamePlaceholder: string,
 
-  // шаблон поля ввода названия улицы расположения компании
-  //streetNamePlaceholder: string,
-
-  // шаблон поля ввода номера дома/строения расположения компании
-  //buildingPlaceholder: string,
-
   // шаблон поля ввода текста комментария к услуге
   commentPlaceholder: string,
 
-  // шаблон поля ввода текста графика работы компании
-  //schedulePlaceholder: string,
-
-  // шаблон поля ввода текста сайта компании
-  //sitePlaceholder: string,
-
   // значения сообщений об ошибках
-  errorRequiredTitle:                           string,
-
-  //errorPhoneValidatorTitle:                     string,
-
-  //errorScheduleMaxLengthTitle:                  string,
-  //errorSiteMaxLengthTitle:                      string,
+  errorRequiredTitle:                              string,
   errorServicesCategorySelectedZeroValidatorTitle: string,
-  //errorCitySelectedZeroValidatorTitle:          string,
-  errorRegisteredServicesCategoryName:          { message: string, isRegistered: boolean },
-  errorNewServicesCategoryNameMaxLengthTitle:   string,
-  errorServiceNameMaxLengthTitle:               string,
-  errorMinValueTitle:                           string,
-  errorPriceMaxValueTitle:                      string,
-  errorDurationMaxValueTitle:                   string,
-  errorCommentMaxLengthTitle:                   string,
-  //errorStreetNameMaxLengthTitle:                string,
-  //errorBuildingMaxLengthTitle:                  string,
-  //errorPasswordValidatorTitle:    string,
-  //errorPasswordMinMaxLengthTitle: string,
-  //errorMatchValidatorTitle:       string,
-
-  // всплывающая подсказка на логотипе компании
-  //logoTitle: string,
-
-  // всплывающая подсказка на основном изображении компании
-  //titleImageTitle: string,
+  errorRegisteredServicesCategoryName:             { message: string, isRegistered: boolean },
+  errorNewServicesCategoryNameMaxLengthTitle:      string,
+  errorServiceNameMaxLengthTitle:                  string,
+  errorMinValueTitle:                              string,
+  errorPriceMaxValueTitle:                         string,
+  errorDurationMaxValueTitle:                      string,
+  errorCommentMaxLengthTitle:                      string,
 
   // всплывающая подсказка на кнопке "создать услугу"
   butServiceCreateTitle: string,
@@ -137,39 +71,6 @@ export interface IServiceFormComponent {
 
   // значение кнопки "изменить услугу"
   butServiceEditValue: string,
-
-  // заголовок поля выбора изображения логотипа компании
-  //labelInputImageLogo: string,
-
-  // заголовок поля выбора основного изображения компании
-  //labelInputImageTitleImage: string,
-
-  // заголовок поля вывода имени файла выбранного логотипа компании
-  //labelNewLogoFileName: string,
-
-  // заголовок поля вывода имени файла выбранного изображения компании
-  //labelNewTitleImageFileName: string,
-
-  // заголовок поля вывода имени файла при невыбранном логотипе компании
-  //labelFileNotSelected: string,
-
-  // всплывающая подсказка на кнопке "выбрать логотип"
-  //butNewLogoFileNameTitle: string,
-
-  // значение кнопки "выбрать логотип"
-  //butNewLogoFileNameValue: string,
-
-  // всплывающая подсказка на кнопке "выбрать изображение салона"
-  //butNewTitleImageFileNameTitle: string,
-
-  // значение кнопки "выбрать изображение салона"
-  //butNewTitleImageFileNameValue: string,
-
-  // заголовок чек-бокса ввода нового города
-  //labelCheckboxIsNewCity: string,
-
-  // всплывающая подсказка на заголовке чек-бокса "новый город"
-  //labelCheckboxIsNewCityTitle: string,
 
   //endregion
 
@@ -190,30 +91,9 @@ export interface IServiceFormComponent {
   // флаг включения спиннера при ожидании данных с сервера
   isWaitFlag: boolean,
 
-  // флаг состояния изменений в данных о компании
-  // false - изменений нет, true - изменения есть (true после onSubmit)
-  //isChangedFlag: boolean,
-
-  // флаг включения возможности удаления данных о компании
-  // false - запрещено удалять, true - разрешено удалять
-  //isDeletingFlag: boolean,
-
-  // флаг состояния подтверждения об удалении данных о компании
-  // true - подтверждено, false - НЕ_подтверждено
-  //isConfirmedFlag: boolean,
-
   // флаг состояния изменений в форме
   // false - изменений нет, true - изменения есть (true после this.userForm.valueChanges)
   isChangedFormFlag: boolean,
-
-  // шаблон поля ввода номера телефона компании
-  //phonePlaceholder: string,
-
-  // шаблон поля ввода пароля пользователя
-  //passwordPlaceholder: string,
-
-  // минимальная длина пароля пользователя
-  //passwordMinLength: number,
 
   // длина наименования новой категории услуг
   newServicesCategoryNameLength: number,
@@ -230,64 +110,18 @@ export interface IServiceFormComponent {
   // длина комментария к услуге
   commentLength: number,
 
-  // длина строкового значения номера дома/строения расположения компании
-  //buildingLength: number,
-
-  // длина номера телефона компании
-  //phoneLength: number,
-
-  // длина текста описания компании
-  //companyDescriptionLength: number,
-
-  // длина текста графика работы компании
-  //scheduleLength: number,
-
-  // длина текста сайта компании
-  //siteLength: number,
-
-  // максимальная длина пароля пользователя
-  //passwordMaxLength: number,
-
   // типы ошибок
   errorRequired:              string,
-  //errorMinLength:         string,
   errorMaxLength:             string,
-  //errorPhoneValidator:        string,
   errorSelectedZeroValidator: string,
   errorMinValue:              string,
   errorMaxValue:              string,
-  //errorPasswordValidator: string,
-  //errorMatchValidator:    string,
-
-  // объект с типами поля ввода пароля
-  //passwordInputTypes: { text: string, password: string }
-
-  // имя выбранного файла с изображением логотипа компании
-  //newLogoFileName: string,
-
-  // имя выбранного файла с изображением компании
-  //newTitleImageFileName: string,
-
-  // класс, определяющий допустимые размеры отображаемого изображения логотипа компании
-  //logoSizeImage: string,
-
-  // класс, определяющий допустимые размеры отображаемого основного изображения компании
-  //titleImageSizeImage: string,
 
   // коллекция всех записей о категориях услуг
   allServicesCategories: ServicesCategory[],
 
   // коллекция всех записей о категориях услуг для списка выбора
-  servicesCategoriesList: { id: number, name: string }[],
-
-  // коллекция всех записей о городах
-  //allCities: City[],
-
-  // коллекция всех записей о городах для списка выбора
-  //citiesList: { id: number, name: string }[],
-
-  // коллекция всех записей об улицах
-  //allStreets: Street[],
+  servicesCategoriesList: { id: number, name: string }[]
 
   //endregion
 

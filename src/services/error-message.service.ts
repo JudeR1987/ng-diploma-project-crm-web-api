@@ -13,8 +13,6 @@ export class ErrorMessageService {
   public errorMessageSubject: Subject<string> = new Subject<string>();
 
   constructor() {
-    console.log(`[-ErrorMessageService-constructor--`);
-    console.log(`--ErrorMessageService-constructor-]`);
   } // constructor
 
 } // class ErrorMessageService

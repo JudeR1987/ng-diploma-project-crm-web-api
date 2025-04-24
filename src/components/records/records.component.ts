@@ -59,14 +59,9 @@ export class RecordsComponent implements OnInit, OnDestroy {
   // информация о пагинации страницы
   public pageViewModel: PageViewModel = new PageViewModel();
 
-  // режим сортировки
-  public sortMode: string = Literals.empty;
-
   // свойство для ограничения отображения элементов разметки
   protected readonly zero: number = Literals.zero;
   protected readonly one: number  = Literals.one;
-  protected readonly asc: string  = Literals.asc;
-  protected readonly desc: string = Literals.desc;
 
 
   // конструктор с DI для подключения к объекту маршрутизатора
@@ -84,123 +79,76 @@ export class RecordsComponent implements OnInit, OnDestroy {
               private _authGuardService: AuthGuardService) {
     Utils.helloComponent(Literals.records);
 
-    console.log(`[-RecordsComponent-constructor--`);
-    console.log(`*-this.component.language='${this.component.language}'-*`);
-    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
-
     // получить маршрут
     this.component.route = this._router.url.slice(1).split(Literals.slash)[0];
-    console.log(`*-this.component.route='${this.component.route}'-*`);
 
-    console.log(`*-this.records: -*`);
-    console.dir(this.records);
-
-    console.log(`--RecordsComponent-constructor-]`);
   } // constructor
 
 
   // 0. установка начальных значений и подписок
   // сразу после загрузки компонента
   async ngOnInit(): Promise<void> {
-    console.log(`[-RecordsComponent-ngOnInit--`);
 
     // задать значение языка отображения и установить
     // значения строковых переменных
-    console.log(`*-this.component.language='${this.component.language}'-*`);
-    console.log(`*-this._languageService.language='${this._languageService.language}'-*`);
     this.changeLanguageLiterals(this._languageService.language);
 
     // подписаться на изменение значения названия выбранного языка
     this._languageSubscription = this._languageService.languageSubject
       .subscribe((language: string) => {
-        console.log(`[-RecordsComponent-subscribe--`);
-        console.log(`*-subscribe-language='${language}'-*`);
 
         // задать значение языка отображения и установить
         // значения строковых переменных
         this.changeLanguageLiterals(language);
 
-        console.log(`--RecordsComponent-subscribe-]`);
       }); // subscribe
 
 
     // получить параметры маршрута
-    console.dir(this._activatedRoute);
-    console.dir(this._activatedRoute.params);
     let companyId: number = 0;
     // подписка на получение результата перехода по маршруту
     this._activatedRoute.params.subscribe(params => {
 
       // параметр об Id компании, полученный из маршрута
-      console.log(`*-params['id']: '${params[Literals.id]}' -*`);
       companyId = (params[Literals.id] != undefined && !isNaN(params[Literals.id]) && params[Literals.id] > 0)
         ? +params[Literals.id]
         : 0;
-      console.log(`*-companyId: '${companyId}' [${typeof companyId}] -*`);
-
-      console.log(`*-(было)-this.company.id: '${this.company.id}' -*`);
       this.company.id = companyId;
-      console.log(`*-(стало)-this.company.id: '${this.company.id}' -*`);
 
     }); // subscribe
 
-
-    console.log(`*-(было)-this.company: -*`);
-    console.dir(this.company);
 
     // запрос на получение записи о компании из БД для отображения
     await this.requestGetCompanyById();
 
     // если данные не получены(т.е. Id=0), перейти на домашнюю страницу
     if (this.company.id === this.zero) {
-      console.log(`*- Переход на "Home" - 'TRUE' -*`);
 
       // перейти по маршруту на главную страницу
-      this._router.navigateByUrl(Literals.routeHomeEmpty).then((e) => {
-        console.log(`*- переход: ${e} -*`);
-
-        console.log(`--RecordsComponent-ngOnInit-]`);
-      }); // navigateByUrl
+      this._router.navigateByUrl(Literals.routeHomeEmpty)
+        .then((e) => { console.log(`*- переход: ${e} -*`); });
 
       return;
     } // if
-    console.log(`*- Переход на "Home" - 'FALSE' -*`);
-
-    console.log(`*-(стало)-this.company: -*`);
-    console.dir(this.company);
 
 
     // запрос на получение части коллекции записей заданной компании для первой страницы
-    console.log(`*-(было)-this.records: -*`);
-    console.dir(this.records);
-    console.log(`*-(было)-this.pageViewModel: -*`);
-    console.dir(this.pageViewModel);
     await this.requestGetAllRecordsByCompanyIdByPage(Literals.one);
-    console.log(`*-(стало)-this.records: -*`);
-    console.dir(this.records);
-    console.log(`*-(стало)-this.pageViewModel: -*`);
-    console.dir(this.pageViewModel);
 
     // установить соответствующий заголовок
     this.component.title = this.records.length === this.zero
       ? Resources.recordsZeroCollectionTitle[this.component.language]
       : Resources.recordsTitle[this.component.language];
 
-    console.log(`--RecordsComponent-ngOnInit-]`);
   } // ngOnInit
 
 
   // метод изменения значения языка отображения
   // и переназначения строковых переменных
   changeLanguageLiterals(language: string): void {
-    console.log(`[-RecordsComponent-changeLanguageLiterals--`);
-
-    console.log(`*-input-language='${language}'-*`);
-    console.log(`*-this.component.language='${this.component.language}'-*`);
 
     // задать значение языка отображения
     this.component.language = language;
-    console.log(`*-this.component.language='${this.component.language}'-*`);
 
     // установить значения строковых переменных
     this.component.title = this.records.length === this.zero
@@ -214,18 +162,14 @@ export class RecordsComponent implements OnInit, OnDestroy {
     this.component.butNextValue                = Resources.butNextValue[this.component.language];
     this.component.butToLastPageTitle          = Resources.butToLastPageTitle[this.component.language];
 
-    console.log(`--RecordsComponent-changeLanguageLiterals-]`);
   } // changeLanguageLiterals
 
 
   // запрос на получение записи о компании из БД для отображения
   async requestGetCompanyById(): Promise<void> {
-    console.log(`[-RecordsComponent-requestGetCompanyById--`);
 
     // включение спиннера ожидания данных
     this.component.isWaitFlag = true;
-
-    console.log(`--RecordsComponent-0-(обновление токена)-`);
 
     // если токена нет ИЛИ время его действия закончилось -
     // выполнить запрос на обновление токена
@@ -240,14 +184,11 @@ export class RecordsComponent implements OnInit, OnDestroy {
         // выключение спиннера ожидания данных
         this.component.isWaitFlag = false;
 
-        console.log(`--RecordsComponent-requestGetCompanyById-КОНЕЦ-]`);
         return;
       } // if
 
       // иначе - переходим к последующему запросу
     } // if
-
-    console.log(`--RecordsComponent-1-(запрос на получение компании)-`);
 
     // запрос на получение записи о компании
     let result: { message: any, company: Company } =
@@ -259,30 +200,19 @@ export class RecordsComponent implements OnInit, OnDestroy {
       let webResult: any = await firstValueFrom(
         this._webApiService.getById(Config.urlGetCompanyById, this.company.id, token)
       );
-      console.dir(webResult);
 
       result.company = Company.newCompany(webResult.company);
     }
     catch (e: any) {
 
-      console.dir(e);
-      console.dir(e.error);
-
       // ошибка авторизации ([Authorize])
-      if (e.status === Literals.error401 && e.error === null) {
-        console.log(`*- отработал [Authorize] -*`);
-        result.message = Resources.unauthorizedUserIdData[this.component.language]
-      }
+      if (e.status === Literals.error401 && e.error === null)
+        result.message = Resources.unauthorizedUserIdData[this.component.language];
       // другие ошибки
       else
         result.message = e.error;
 
     } // try-catch
-
-    console.log(`--RecordsComponent-result:`);
-    console.dir(result);
-
-    console.log(`--RecordsComponent-2-(ответ на запрос получен)-`);
 
     // выключение спиннера ожидания данных
     this.component.isWaitFlag = false;
@@ -294,14 +224,12 @@ export class RecordsComponent implements OnInit, OnDestroy {
       let message: string = Literals.empty;
 
       // ошибки данных
-      console.log(`--result.message.companyId: '${result.message.companyId}'`);
       if (result.message.companyId != undefined)
         message = result.message.companyId === this.zero
           ? Resources.incorrectCompanyIdData[this.component.language]
           : Resources.notRegisteredCompanyIdData[this.component.language];
 
       // ошибки сервера
-      console.log(`--result.message.title: '${result.message.title}'`);
       if (result.message.title != undefined) message = result.message.title;
 
       // если результат уже содержит строку с сообщением
@@ -320,18 +248,14 @@ export class RecordsComponent implements OnInit, OnDestroy {
 
     } // if
 
-    console.log(`--RecordsComponent-requestGetCompanyById-]`);
   } // requestGetCompanyById
 
 
   // запрос на получение части коллекции записей заданной компании для заданной страницы
   async requestGetAllRecordsByCompanyIdByPage(page: number): Promise<void> {
-    console.log(`[-RecordsComponent-requestGetAllRecordsByCompanyIdByPage--`);
 
     // включение спиннера ожидания данных
     this.component.isWaitFlag = true;
-
-    console.log(`--RecordsComponent-0-(обновление токена)-`);
 
     // если токена нет ИЛИ время его действия закончилось -
     // выполнить запрос на обновление токена
@@ -346,14 +270,11 @@ export class RecordsComponent implements OnInit, OnDestroy {
         // выключение спиннера ожидания данных
         this.component.isWaitFlag = false;
 
-        console.log(`--RecordsComponent-requestGetAllRecordsByCompanyIdByPage-КОНЕЦ-]`);
         return;
       } // if
 
       // иначе - переходим к последующему запросу
     } // if
-
-    console.log(`--RecordsComponent-1-(запрос на получение записей)-`);
 
     // запрос на получение части коллекции записей для заданной страницы
     let result: { message: any, records: Record[], pageViewModel: PageViewModel } =
@@ -365,36 +286,23 @@ export class RecordsComponent implements OnInit, OnDestroy {
       let webResult: any = await firstValueFrom(this._webApiService.getAllByIdByPage(
         Config.urlGetAllRecordsByCompanyId, this.company.id, page, token
       ));
-      console.dir(webResult);
 
       result.records = Record.parseRecords(webResult.records);
       result.pageViewModel = PageViewModel.newPageViewModel(webResult.pageViewModel);
     }
     catch (e: any) {
 
-      console.dir(e);
-      console.dir(e.error);
-      console.dir(e.status);
-
       // если отсутствует соединение
-      if (e.status === Literals.zero) {
+      if (e.status === Literals.zero)
         result.message = Resources.noConnection[this.component.language];
-
-        // ошибка авторизации ([Authorize])
-      } else if (e.status === Literals.error401 && e.error === null) {
-        console.log(`*- отработал [Authorize] -*`);
-        result.message = Resources.unauthorizedUserIdData[this.component.language]
-
-        // другие ошибки
-      } else
+      // ошибка авторизации ([Authorize])
+      else if (e.status === Literals.error401 && e.error === null)
+        result.message = Resources.unauthorizedUserIdData[this.component.language];
+      // другие ошибки
+      else
         result.message = e.error;
 
     } // try-catch
-
-    console.log(`--RecordsComponent-result:`);
-    console.dir(result);
-
-    console.log(`--RecordsComponent-2-(ответ на запрос получен)-`);
 
     // выключение спиннера ожидания данных
     this.component.isWaitFlag = false;
@@ -406,16 +314,13 @@ export class RecordsComponent implements OnInit, OnDestroy {
       let message: string = Literals.empty;
 
       // ошибки данных
-      console.log(`--result.message.page: '${result.message.page}'`);
       if (result.message.page <= Literals.zero) message =
         Resources.incorrectPageData[this.component.language];
 
-      console.log(`--result.message.companyId: '${result.message.companyId}'`);
       if (result.message.companyId === Literals.zero)
         message = Resources.incorrectCompanyIdData[this.component.language];
 
       // ошибки сервера
-      console.log(`--result.message.title: '${result.message.title}'`);
       if (result.message.title != undefined) message = result.message.title;
 
       // если результат уже содержит строку с сообщением
@@ -435,47 +340,26 @@ export class RecordsComponent implements OnInit, OnDestroy {
 
     } // if
 
-    console.log(`--RecordsComponent-requestGetAllRecordsByCompanyIdByPage-]`);
   } // requestGetAllRecordsByCompanyIdByPage
 
 
   // обработчик события получения данных о номере выбранной страницы
   async sendPageHandler(page: number): Promise<void> {
-    console.log(`[-RecordsComponent-sendPageHandler--`);
-
-    console.log(`*- page: '${page}' -*`);
 
     // переход в начало страницы
     Utils.toStart();
 
     // удалить элементы части коллекции клиентов, загруженные ранее
-    console.log(`*-(было)-this.records: -*`);
-    console.dir(this.records);
     this.records = [];
-    console.log(`*-(стало)-this.records: -*`);
-    console.dir(this.records);
 
     // запрос на получение части коллекции записей для выбранной страницы
-    console.log(`*-(было)-this.records: -*`);
-    console.dir(this.records);
-    console.log(`*-(было)-this.pageViewModel: -*`);
-    console.dir(this.pageViewModel);
     await this.requestGetAllRecordsByCompanyIdByPage(page);
-    console.log(`*-(стало)-this.records: -*`);
-    console.dir(this.records);
-    console.log(`*-(стало)-this.pageViewModel: -*`);
-    console.dir(this.pageViewModel);
 
-    console.log(`--RecordsComponent-sendPageHandler-]`);
   } // sendPageHandler
 
 
   // обработчик события получения данных о сортировках (из заголовка таблицы)
   sendSortParamsHandler(param: { sortMode: string, sortProp: string }): void {
-    console.log(`[-RecordsComponent-sendSortParamsHandler--`);
-
-    console.log(`*- param.sortMode: '${param.sortMode}' -*`);
-    console.log(`*- param.sortProp: '${param.sortProp}' -*`);
 
     // выбираем обработку для сортировки в зависимости от выбранного поля
     if (param.sortMode != Literals.empty) {
@@ -544,37 +428,26 @@ export class RecordsComponent implements OnInit, OnDestroy {
         record1.date.toLocaleString().localeCompare(record2.date.toLocaleString()))
     } // if
 
-    console.log(`--RecordsComponent-sendSortParamsHandler-]`);
   } // sendClientIdHandler
 
 
   // метод выполнения/НЕ_выполнения обновления токена
   private async isRefreshToken(): Promise<boolean> {
-    console.log(`Обновляем токен!`);
 
     // запрос на обновление токена
     let result: boolean;
     let message: any;
     [result, message] = await this._authGuardService.refreshToken();
 
-    console.log(`--result: '${result}'`);
-
-    console.log(`--message: '${message}'`);
-    console.dir(message);
-
     // сообщение об успехе
     if (message === Literals.Ok)
       message = Resources.refreshTokenOk[this.component.language];
 
     // ошибки данных
-    console.log(`--message.refreshModel: '${message.refreshModel}'`);
-    console.dir(message.refreshModel);
     if (message.refreshModel) message =
       Resources.incorrectUserIdData[this.component.language];
 
     // ошибки данных о пользователе
-    console.log(`--message.userId: '${message.userId}'`);
-    console.log(`--message.userToken: '${message.userToken}'`);
     if (message.userId != undefined && message.userToken === undefined)
       message = Resources.notRegisteredUserIdData[this.component.language];
 
@@ -583,7 +456,6 @@ export class RecordsComponent implements OnInit, OnDestroy {
       message = Resources.unauthorizedUserIdData[this.component.language];
 
     // ошибки сервера
-    console.log(`--message.title: '${message.title}'`);
     if (message.title != undefined) message = message.title;
 
     // передать сообщение об ошибке в AppComponent для отображения
@@ -597,12 +469,10 @@ export class RecordsComponent implements OnInit, OnDestroy {
 
   // отмены подписок и необходимые методы при уничтожении компонента
   ngOnDestroy() {
-    console.log(`[-RecordsComponent-ngOnDestroy--`);
 
     // отмена подписки
     this._languageSubscription.unsubscribe();
 
-    console.log(`--RecordsComponent-ngOnDestroy-]`);
   } // ngOnDestroy
 
 } // class RecordsComponent
